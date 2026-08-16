@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operating Systems — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'operating-systems', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // Operating Systems</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">7 sheets · full syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#processes"><span class="num">01</span> Processes, Threads &amp; System Calls</a></div>
+      <div class="navgroup"><a class="navlink" href="#scheduling"><span class="num">02</span> CPU Scheduling</a></div>
+      <div class="navgroup"><a class="navlink" href="#sync"><span class="num">03</span> Synchronization &amp; IPC</a></div>
+      <div class="navgroup"><a class="navlink" href="#deadlock"><span class="num">04</span> Deadlock</a></div>
+      <div class="navgroup"><a class="navlink" href="#memory"><span class="num">05</span> Memory Management</a></div>
+      <div class="navgroup"><a class="navlink" href="#filesystems"><span class="num">06</span> File Systems &amp; I/O</a></div>
+      <div class="navgroup"><a class="navlink" href="#revision"><span class="num">07</span> Revision Sheet</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Schematic notes · GATE CSE 2027</span>
+      <h1>The OS, opened up <em>like a running kernel</em>, not memorized like a manual.</h1>
+      <p>Seven short sheets covering the complete GATE CSE Operating Systems syllabus — processes/threads/system calls, CPU scheduling, synchronization &amp; IPC, deadlock, memory management, and file systems — with worked numericals and the exact traps GATE likes to set. One of the highest-ROI subjects: 8–12 marks, heavily numerical, and very practice-drillable.</p>
+      <div class="chips">
+        <span class="chip">01 Processes &amp; Threads</span>
+        <span class="chip">02 CPU Scheduling</span>
+        <span class="chip">03 Sync &amp; IPC</span>
+        <span class="chip">04 Deadlock</span>
+        <span class="chip">05 Memory Mgmt</span>
+        <span class="chip">06 File Systems</span>
+        <span class="chip">07 Revision</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g fill="none" stroke="#2a2b33" stroke-width="1.4">
+          <rect x="30" y="30" width="60" height="34" rx="3"/>
+          <rect x="30" y="86" width="60" height="34" rx="3"/>
+          <rect x="30" y="142" width="60" height="34" rx="3"/>
+        </g>
+        <g stroke="#cba36b" stroke-width="1.6" fill="none">
+          <path d="M90 47 L150 47" />
+          <path d="M143 41 L150 47 L143 53" />
+          <path d="M90 103 L150 103" />
+          <path d="M143 97 L150 103 L143 109" />
+        </g>
+        <g fill="none" stroke="#d98a5f" stroke-width="1.4">
+          <rect x="150" y="30" width="120" height="146" rx="3" stroke-dasharray="3,3"/>
+          <line x1="150" y1="66" x2="270" y2="66"/>
+          <line x1="150" y1="103" x2="270" y2="103"/>
+          <line x1="150" y1="140" x2="270" y2="140"/>
+        </g>
+        <g font-family="JetBrains Mono" font-size="10" fill="#6f6a60">
+          <text x="35" y="24">Ready</text>
+          <text x="35" y="80">Running</text>
+          <text x="35" y="136">Waiting</text>
+          <text x="180" y="24" fill="#d98a5f">Memory</text>
+        </g>
+      </svg>
+    </section>
+
+    <section class="topic" id="processes">
+      <div class="topic-head"><span class="idx">01</span><h2>Processes, Threads &amp; System Calls</h2></div>
+      <div class="topic-kicker">PROCESS STATES · PCB · CONTEXT SWITCH · THREADS VS PROCESSES</div>
+
+      <h3 class="sub">Process state diagram</h3>
+      <p>Every process moves through a fixed set of states during its lifetime:</p>
+      <div class="eq">New → Ready → Running → (Waiting ⟷ Running) → Terminated
+Ready → Running: scheduler dispatch          Running → Ready: timer interrupt / preemption
+Running → Waiting: I/O or event wait          Waiting → Ready: I/O or event completion</div>
+      <div class="card note">
+        <span class="label">The transition GATE tests most</span>
+        <p>A process can go directly from Running to Waiting (blocking for I/O) but NEVER directly from Waiting to Running — it must always pass through Ready first, to be re-selected by the scheduler.</p>
+      </div>
+
+      <h3 class="sub">Process Control Block (PCB) &amp; context switch</h3>
+      <p>The PCB stores everything needed to pause and later resume a process exactly where it left off: process state, program counter, CPU registers, memory-management info, scheduling info, and open file list (the exact field set is OS/architecture dependent). A <strong>context switch</strong> is the act of saving the current process's PCB and loading another's — it's scheduling/management overhead relative to the user workload, since no application instructions from either process execute during the switch itself (though the kernel bookkeeping it performs is still necessary work, not meaningless).</p>
+
+      <h3 class="sub">Process vs Thread</h3>
+      <table>
+        <tr><th>Aspect</th><th>Process</th><th>Thread</th></tr>
+        <tr><td>Memory space</td><td>Own separate address space</td><td>Shares address space with sibling threads</td></tr>
+        <tr><td>Creation/switch cost</td><td>Expensive (heavyweight)</td><td>Cheap (lightweight)</td></tr>
+        <tr><td>Communication</td><td>Needs IPC (pipes, shared memory, etc. — see Section 03's IPC breakdown below)</td><td>Direct — shared memory already</td></tr>
+        <tr><td>Crash isolation</td><td>One process crashing doesn't affect others</td><td>One thread crashing can bring down the whole process</td></tr>
+      </table>
+
+      <h3 class="sub">System calls</h3>
+      <p>The only sanctioned way for a user-mode process to request a kernel-mode service (file I/O, process creation, memory allocation). A system call triggers a mode switch — from user mode to kernel mode — and that transition itself carries overhead (saving/restoring context, privilege-level change), just like a context switch does. But don't conflate the two: unlike a context switch, the kernel-mode work a system call actually performs (reading the file, allocating the memory, creating the process) is useful, necessary computation — it's the mode-switch boundary that's overhead, not the system call as a whole.</p>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>fork() in Unix-like systems returns TWICE — once in the parent (with the child's PID) and once in the child (with return value 0). GATE frequently asks "how many processes are created" or "how many times is X printed" after a sequence of fork() calls — always trace both branches carefully; n fork() calls in sequence create 2ⁿ total processes.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">Copy-on-write (COW) — how modern fork() avoids copying all of memory upfront</span>
+        <p>Naively, fork() sounds like it should duplicate the entire address space of the parent immediately — but that's expensive and often wasteful (many programs immediately call exec() after fork(), discarding the copy entirely). Modern Unix-style implementations instead use <strong>copy-on-write</strong>: right after fork(), the parent and child share the SAME physical pages, with both processes' page tables pointing to those pages and marked <strong>read-only</strong> (even for pages that were writable before the fork). No actual data is copied at fork() time.</p>
+        <p>The moment either process (parent or child) attempts to <strong>write</strong> to one of these shared pages, the read-only marking triggers a <strong>page fault</strong>. The kernel's fault handler recognizes this as a COW fault (not an illegal access), allocates a fresh physical page, copies the original page's content into it, updates the writing process's page table entry to point to the new page (now marked writable), and only then lets the write proceed. The other process's page table entry is untouched and still points to the original shared page.</p>
+        <p>This ties together three OS ideas in one mechanism: <strong>process creation</strong> (fork() itself), <strong>virtual memory</strong> (page tables mapping virtual pages to shared physical frames, with permission bits), and <strong>page faults</strong> (repurposed here not as "page missing from memory" but as "page present but access not yet permitted," triggering the actual copy). GATE can ask what happens on a write immediately after fork() — the answer involves a page fault even though the page was never absent from memory.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A program calls fork() twice in sequence (not nested inside a conditional). Assuming both fork() calls succeed, how many total processes exist after both calls?</summary>
+          <div class="ans">
+            <p>Each fork() doubles the number of processes executing the subsequent code. Starting from 1 process: after 1st fork → 2 processes; after 2nd fork (each of those 2 calls it) → 4 processes. (In reality fork() can fail — returning -1 with no child created — in which case fewer processes would exist; GATE questions of this style always intend the successful case unless stated otherwise.)</p>
+            <p class="final">Answer: 4 processes (2² ), assuming both fork() calls succeed</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Can a process move directly from the Waiting state to the Running state?</summary>
+          <div class="ans">
+            <p>No — a waiting process must first move to Ready when its event/I/O completes, and only then can the scheduler dispatch it to Running.</p>
+            <p class="final">Answer: No, it must pass through Ready first</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> What information is saved in a PCB during a context switch, and why is a context switch considered scheduling overhead?</summary>
+          <div class="ans">
+            <p>A PCB typically saves process state, program counter, CPU register values, scheduling/accounting information, and references to memory-management information (e.g. page tables) and open files — the exact field list is OS/architecture dependent, not a fixed universal standard. It's overhead relative to the application workload because no user-process instructions from either process execute during the switch itself — the CPU is busy bookkeeping, not running application computation. That bookkeeping is still necessary kernel work, though, not meaningless work — "overhead" here means "not the workload," not "worthless."</p>
+            <p class="final">Answer: State/PC/registers/memory-info/scheduling-info; it's overhead relative to user computation, since no application instructions run during the switch itself (the kernel bookkeeping is still necessary work)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Why is thread creation generally cheaper than process creation?</summary>
+          <div class="ans">
+            <p>Threads within the same process share the address space, open files, and most other resources — creating a thread mainly needs a new stack and register set, whereas creating a process needs an entirely new address space and duplicated resources.</p>
+            <p class="final">Answer: Threads share address space/resources, avoiding the duplication a new process requires</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A system call is invoked. What mode transition occurs, and why is this necessary?</summary>
+          <div class="ans">
+            <p>The CPU switches from user mode to kernel mode. This is necessary because privileged operations (direct hardware access, memory protection changes, etc.) must go through the kernel, which enforces the actual access checks — user code alone cannot be trusted to perform them safely.</p>
+            <p class="final">Answer: User mode → kernel mode, to safely perform privileged operations</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="scheduling">
+      <div class="topic-head"><span class="idx">02</span><h2>CPU Scheduling</h2></div>
+      <div class="topic-kicker">FCFS · SJF · PRIORITY · ROUND ROBIN · TURNAROUND/WAITING TIME NUMERICALS</div>
+
+      <h3 class="sub">Key timing definitions — get these exactly right</h3>
+      <div class="eq">Turnaround Time (TAT) = Completion Time − Arrival Time
+Waiting Time (WT) = Turnaround Time − Burst Time
+Response Time = Time of first CPU allocation − Arrival Time</div>
+      <div class="card note">
+        <span class="label">The single most common numerical mistake</span>
+        <p>Waiting time is NOT completion time minus arrival time — that's turnaround time. Waiting time subtracts out the actual burst (execution) time too. Confusing these two is the #1 source of wrong answers in GATE scheduling numericals.</p>
+      </div>
+
+      <h3 class="sub">Scheduling algorithms — comparison</h3>
+      <table>
+        <tr><th>Algorithm</th><th>Preemptive?</th><th>Selection criterion</th><th>Key drawback</th></tr>
+        <tr><td>FCFS (First-Come-First-Served)</td><td>No</td><td>Arrival order</td><td>Convoy effect (short jobs stuck behind long ones)</td></tr>
+        <tr><td>SJF (Shortest Job First)</td><td>No</td><td>Smallest burst time</td><td>Starvation of long jobs; needs burst time known in advance</td></tr>
+        <tr><td>SRTF (Shortest Remaining Time First)</td><td>Yes</td><td>Smallest remaining burst time</td><td>Same starvation risk, plus frequent context switches</td></tr>
+        <tr><td>Priority Scheduling</td><td>Either</td><td>Highest priority</td><td>Starvation of low-priority processes (aging can reduce/prevent this — see note below)</td></tr>
+        <tr><td>Round Robin</td><td>Yes</td><td>Fixed time quantum, cyclic order</td><td>Too-small quantum ⟹ excessive context-switch overhead</td></tr>
+      </table>
+
+      <div class="card formula">
+        <span class="label">Provably optimal (average waiting time) — with assumptions</span>
+        <p>Non-preemptive SJF minimizes average waiting time — but only under the standard scheduling-theory assumptions GATE questions implicitly rely on: (1) it's the <strong>non-preemptive</strong> variant being compared (SRTF is the preemptive analogue and optimal in its own preemptive class); (2) burst times are <strong>known in advance</strong> exactly — real schedulers only estimate them; (3) the objective is specifically <strong>minimizing average waiting time</strong> — SJF is not optimal for other objectives like maximum waiting time or fairness; (4) the comparison is over the <strong>full, fixed set of jobs</strong> considered together (all present/arriving as modeled), under the standard single-CPU scheduling model. Drop any of these and the optimality claim can break.</p>
+      </div>
+
+      <div class="card note">
+        <span class="label">Aging — a mitigation, not a magic fix</span>
+        <p>Don't state it as "aging fixes starvation" — the more accurate claim is: <strong>aging can prevent or reduce indefinite starvation by gradually increasing the priority of processes the longer they wait</strong>, so a long-waiting low-priority process eventually becomes high-priority enough to run. It doesn't guarantee every possible starvation scenario is eliminated — the exact behaviour depends on the aging rate, how quickly new high-priority work keeps arriving, and the specific scheduling policy layered on top of it. Treat aging as a well-known mitigation technique, not an absolute guarantee.</p>
+      </div>
+
+      <h3 class="sub">Worked example — FCFS</h3>
+      <div class="eq">Process   Arrival   Burst
+P1        0         5
+P2        1         3
+P3        2         8
+
+FCFS order: P1, P2, P3 (by arrival)
+P1: starts 0, ends 5   → TAT=5,  WT=0
+P2: starts 5, ends 8   → TAT=7,  WT=4
+P3: starts 8, ends 16  → TAT=14, WT=6
+Average WT = (0+4+6)/3 = 3.33</div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Round Robin's average waiting time is highly sensitive to the time quantum — too large approaches FCFS behavior (and its convoy effect), too small causes excessive context-switch overhead. GATE often asks for the "ideal" quantum reasoning: a good quantum is slightly larger than the average burst time, not the smallest possible value.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> P1(AT=0,BT=6), P2(AT=1,BT=4), P3(AT=2,BT=2). Using non-preemptive SJF, find the execution order.</summary>
+          <div class="ans">
+            <p>At t=0, only P1 has arrived, so it must start (SJF is non-preemptive, so once started it runs to completion). At t=6, P2(BT4) and P3(BT2) have both arrived — pick smaller: P3, then P2.</p>
+            <p class="final">Answer: P1 → P3 → P2</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> For P1(AT=0,BT=4), P2(AT=0,BT=3) under FCFS (P1 first), find the waiting time of P2.</summary>
+          <div class="ans">
+            <p>P1 runs 0→4 (WT=0). P2 starts at 4, completes at 4+3=7. TAT of P2 = 7−0=7. WT = TAT − BT = 7−3.</p>
+            <p class="final">Answer: WT(P2) = 4</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Two processes P1(BT=10) and P2(BT=2) both arrive at t=0. Round Robin with quantum=4. Trace the schedule and find P2's waiting time.</summary>
+          <div class="ans">
+            <p>t=0-4: P1 runs first (ready queue order: P1, P2), consuming its full quantum with 6 units remaining. t=4-6: P2 finally gets to run and completes (BT=2, finishes at t=6). P2 arrived at t=0 but had to wait while P1 occupied the CPU for its first quantum — so P2 sits idle in the ready queue from t=0 to t=4 (4 units of waiting) before starting its only run at t=4.</p>
+            <p class="final">Answer: WT(P2) = 4 (P2 waits from t=0 to t=4, then runs to completion with no further waiting)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Why does SJF risk starvation, and what does Round Robin guarantee that SJF does not?</summary>
+          <div class="ans">
+            <p>SJF always favors shorter jobs, so a long job can be perpetually pushed back if shorter jobs keep arriving — no upper bound on its wait. Round Robin, by cycling through all ready processes with a fixed quantum, provides fairness: under the standard model of a finite, fixed ready set, every continuously-ready process gets CPU time within a bounded number of turns — roughly one cycle through the ready queue. With processes continuously arriving and leaving, the exact wait bound depends on how many processes are competing at any given time, so "guaranteed within one cycle" isn't a universal law — the key guaranteed property is that no ready process is skipped indefinitely (no starvation), unlike SJF.</p>
+            <p class="final">Answer: SJF can starve long jobs indefinitely; RR guarantees no process is skipped indefinitely — bounded wait (roughly one cycle under a fixed ready set, more generally bounded by the number of competing processes)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> P1(AT=0,BT=8) and P2(AT=1,BT=4) with SRTF (preemptive). At what time (if any) does preemption occur, and why?</summary>
+          <div class="ans">
+            <p>At t=1, P1 has 7 units remaining while newly-arrived P2 needs only 4. Since SRTF always picks the smallest REMAINING time, P2 preempts P1 at t=1.</p>
+            <p class="final">Answer: Preemption occurs at t=1 (P2's remaining time 4 &lt; P1's remaining time 7)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="sync">
+      <div class="topic-head"><span class="idx">03</span><h2>Synchronization &amp; IPC</h2></div>
+      <div class="topic-kicker">CRITICAL SECTION · SEMAPHORES · MUTEX · CLASSIC SYNC PROBLEMS · IPC (SHARED MEMORY, MESSAGE PASSING, PIPES, SIGNALS)</div>
+
+      <h3 class="sub">Critical section requirements</h3>
+      <table>
+        <tr><th>Requirement</th><th>Meaning</th></tr>
+        <tr><td>Mutual Exclusion</td><td>At most one process in the critical section at a time</td></tr>
+        <tr><td>Progress</td><td>If no process is in the CS, a waiting process must eventually be allowed to enter (no indefinite postponement by non-waiting processes)</td></tr>
+        <tr><td>Bounded Waiting</td><td>A limit exists on how many times other processes can enter before a waiting process gets its turn</td></tr>
+      </table>
+
+      <h3 class="sub">Peterson's algorithm — a software-only solution for 2 processes</h3>
+      <p>Peterson's algorithm solves mutual exclusion for exactly <strong>two</strong> processes (P0 and P1) using only two shared variables — no hardware support required. It's the classic textbook proof that mutual exclusion is achievable in software alone.</p>
+      <div class="eq">shared: boolean flag[2] = {false, false};   // flag[i]: does Pi want to enter?
+shared: int turn;                            // whose turn is it if both want in?
+
+Process Pi (the other process is Pj, j = 1−i):
+  flag[i] = true;      // I want to enter
+  turn = j;             // but be polite — let the other go first if it also wants in
+  while (flag[j] &amp;&amp; turn == j)
+      ;                 // busy-wait
+  &lt;critical section&gt;
+  flag[i] = false;      // done, I no longer want in</div>
+      <div class="card note">
+        <span class="label">Why all three properties hold</span>
+        <p><strong>Mutual exclusion:</strong> both processes in the CS simultaneously would require <code>turn</code> to equal both 0 and 1 at once — impossible, since <code>turn</code> is a single variable set last by whichever process entered second (its "turn = j" write is the more recent one, so the other process's wait condition holds). <strong>Progress:</strong> if only one process wants in, its own flag check on the other's (false) <code>flag[j]</code> lets it proceed immediately; if both want in, exactly one value of <code>turn</code> can hold at a time, so exactly one process's wait condition is false and it proceeds. <strong>Bounded waiting:</strong> after a process exits the CS (setting its flag to false), the other process — if waiting — enters next, and can be made to wait for at most one entry by the first process before its own turn, so no indefinite postponement occurs.</p>
+        <p>This is a <strong>busy-waiting</strong> (spinlock-style) solution — the <code>while</code> loop spins consuming CPU cycles rather than blocking, exactly like the spinlock implementation of semaphore wait() discussed below.</p>
+      </div>
+
+      <h3 class="sub">Hardware synchronization primitives</h3>
+      <p>Peterson's algorithm shows mutual exclusion is possible in pure software, but real systems mostly rely on <strong>atomic hardware instructions</strong> instead — a single CPU instruction that reads and modifies a memory location as one indivisible (uninterruptible) step, which sidesteps the need for the kind of careful multi-variable protocol Peterson's algorithm requires.</p>
+      <table>
+        <tr><th>Primitive</th><th>Effect (atomic)</th></tr>
+        <tr><td>Test-and-Set (TAS)</td><td>Reads the old value of a boolean/lock variable, unconditionally sets it to true, and returns the old value — all as one indivisible step</td></tr>
+        <tr><td>Compare-and-Swap (CAS)</td><td>Compares a memory location's current value to an expected value; if they match, swaps in a new value (all atomically) and reports success — the basis of modern lock-free data structures</td></tr>
+        <tr><td>Swap / XCHG</td><td>Atomically exchanges the values held in two memory locations (or a register and a memory location)</td></tr>
+      </table>
+      <div class="card formula">
+        <span class="label">Building a lock from Test-and-Set</span>
+        <div class="eq">lock (shared boolean, init false):
+acquire():
+  while (TestAndSet(lock) == true)
+      ;              // busy-wait — someone else holds it
+release():
+  lock = false;</div>
+        <p>Because TestAndSet is atomic, only one process can ever see the lock flip from false to true (get "old value = false") at a given moment — that process is the one that acquires the lock; every other concurrent caller sees "old value = true" and keeps spinning. This is also busy-waiting, same as Peterson's algorithm and the spinlock version of semaphore wait().</p>
+      </div>
+      <div class="card note">
+        <span class="label">The synchronization hierarchy, from lowest level to highest</span>
+        <p><strong>Peterson's algorithm</strong> — a pure software solution, works only for 2 processes, needs no special hardware. <strong>Test-and-Set / Compare-and-Swap / Swap</strong> — atomic hardware instructions that any number of processes can use as a building block; still busy-waiting on their own. <strong>Semaphore / Mutex</strong> — higher-level synchronization abstractions, typically implemented on top of one of these hardware primitives, that add blocking (rather than pure spinning) and richer semantics (counting, ownership). GATE questions that ask "what's the lowest-level mechanism here" usually want the hardware primitive, not the semaphore built on top of it.</p>
+      </div>
+
+      <h3 class="sub">Semaphores</h3>
+      <div class="eq">wait(S) [a.k.a P(S)]:   decrement S; if S &lt; 0 (no resource available), block the calling process
+signal(S) [a.k.a V(S)]: increment S; if a process was blocked on S, wake one of them
+
+Binary semaphore: S ∈ {0,1}  — behaves like a mutex lock
+Counting semaphore: S can take any integer — controls access to a pool of k resources (init S=k)</div>
+      <div class="card note">
+        <span class="label">This is the semantic definition, not one implementation</span>
+        <p>wait/signal are defined by their effect (block when unavailable, wake a waiter on release) — how that's implemented is a separate design choice. A textbook spinlock implementation of wait(S) is <code>while(S ≤ 0);  S = S − 1;</code>, which busy-waits instead of blocking. That's one valid implementation, not the definition of a semaphore.</p>
+      </div>
+      <div class="card note">
+        <span class="label">Mutex vs Binary Semaphore — the subtle distinction</span>
+        <p>They look identical in code, but conceptually a mutex is meant to be released only by the process that acquired it (ownership matters). A binary semaphore has no ownership concept — any process can signal it, even one that never called wait. GATE occasionally tests this conceptual distinction directly.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">Priority inversion</span>
+        <p>A classic trap that combines priority scheduling with locking: a <strong>high-priority</strong> process needs a lock currently held by a <strong>low-priority</strong> process, so it must wait. Meanwhile, an unrelated <strong>medium-priority</strong> process keeps preempting the low-priority process (since it doesn't need the lock and simply outranks it) — so the low-priority process rarely gets to run, finish its critical section, and release the lock. Net effect: the high-priority process is effectively blocked by the medium-priority one, inverting the intended priority order.</p>
+        <p>Two standard mitigations: <strong>priority inheritance</strong> — the low-priority process temporarily inherits the waiting high-priority process's priority while it holds the lock, so medium-priority processes can no longer preempt it; and <strong>priority ceiling</strong> — the lock itself is assigned a priority ceiling (the highest priority of any process that might lock it), and any process holding it runs at that ceiling priority immediately, preventing the inversion from arising at all.</p>
+      </div>
+
+      <h3 class="sub">Classic synchronization problems — the recognizable signature</h3>
+      <table>
+        <tr><th>Problem</th><th>Core constraint</th></tr>
+        <tr><td>Producer-Consumer (bounded buffer)</td><td>Producer waits if buffer full; consumer waits if buffer empty</td></tr>
+        <tr><td>Readers-Writers</td><td>Multiple readers can read simultaneously; writers need exclusive access</td></tr>
+        <tr><td>Dining Philosophers</td><td>Shared resources (forks) arranged in a cycle — classic deadlock-risk scenario</td></tr>
+      </table>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>The busy-waiting implementation of wait(S) — <code>while(S ≤ 0); S = S − 1;</code> — wastes CPU cycles spinning instead of blocking. GATE sometimes calls this a "spinlock" and contrasts it with the blocking implementation (which puts the waiting process on a queue instead of spinning). Know both exist and which one is implied by the question's context.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">7 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A counting semaphore is initialized to 3. After 2 wait() calls and 1 signal() call, what is its value?</summary>
+          <div class="ans">
+            <p>Start=3. wait() decrements: 3→2→1 (after 2 waits). signal() increments: 1→2 (after 1 signal).</p>
+            <p class="final">Answer: 2</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Which critical-section requirement is violated if a process waiting to enter can be bypassed by other processes an unbounded number of times?</summary>
+          <div class="ans">
+            <p>This directly violates Bounded Waiting — there must be a finite limit on how many times others can enter before the waiting process gets a turn.</p>
+            <p class="final">Answer: Bounded waiting</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> In the Producer-Consumer problem with a bounded buffer of size 5, if 3 items are currently in the buffer, and the "empty" counting semaphore starts at 5, what is its current value?</summary>
+          <div class="ans">
+            <p>The "empty" semaphore tracks empty slots — it decreases by 1 each time an item is produced (wait) and increases when consumed (signal). Starting at 5 with 3 items produced (and none consumed yet, matching "3 items currently in buffer"): 5−3.</p>
+            <p class="final">Answer: empty = 2 (2 slots remain empty)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Why can a binary semaphore substitute for a mutex in most code, but the reverse substitution is conceptually risky?</summary>
+          <div class="ans">
+            <p>A binary semaphore has no notion of ownership — any thread can call signal() on it even without having called wait(), which can accidentally "unlock" a resource that thread never locked. A true mutex enforces that only the owner can release it, which is a safety property binary semaphores don't guarantee by construction.</p>
+            <p class="final">Answer: Binary semaphores lack ownership enforcement that a mutex guarantees</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> In the Readers-Writers problem, can two readers access the shared resource simultaneously? Can a reader and a writer?</summary>
+          <div class="ans">
+            <p>Yes — multiple readers can read concurrently since reading doesn't modify data. No — a writer requires exclusive access, so no reader (or other writer) can access the resource while a writer is active.</p>
+            <p class="final">Answer: Readers can share access; writers require full exclusivity</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q6</span> In Peterson's algorithm, why does the mutual exclusion argument fail if the shared <code>turn</code> variable is removed and only <code>flag[]</code> is kept?</summary>
+          <div class="ans">
+            <p>Without <code>turn</code>, both processes could set their own flag to true and then both find the other's flag also true at essentially the same moment, with no tiebreaker variable to decide who waits and who proceeds — both could then busy-wait on each other forever (violating progress) or, depending on the exact race, both could see the other's flag flip false-to-true-to-false and slip into the critical section together (violating mutual exclusion). The <code>turn</code> variable exists precisely to break this symmetry deterministically.</p>
+            <p class="final">Answer: Without turn there's no tiebreaker when both processes want in simultaneously — the algorithm can no longer guarantee mutual exclusion or progress</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q7</span> Why is Test-and-Set preferred over Peterson's algorithm for building a lock usable by more than 2 processes?</summary>
+          <div class="ans">
+            <p>Peterson's algorithm is specifically designed for exactly 2 processes — its correctness argument relies on a single shared <code>turn</code> variable that only makes sense between two parties (extending it to n processes needs a fundamentally different, more complex protocol, e.g. the bakery algorithm). Test-and-Set, by contrast, is a single atomic hardware instruction that works identically no matter how many processes are contending for the lock — any number of processes can spin on the same TestAndSet call, and atomicity guarantees exactly one succeeds at a time.</p>
+            <p class="final">Answer: Peterson's algorithm doesn't generalize past 2 processes without a different protocol; Test-and-Set works for any number of processes as-is</p>
+          </div>
+        </details>
+      </div>
+
+      <h3 class="sub">Synchronization vs communication — the distinction GATE expects</h3>
+      <div class="card note">
+        <span class="label">Two different problems, often mixed up</span>
+        <p><strong>Synchronization</strong> (semaphores, mutexes, monitors) controls the <em>ordering/timing</em> of access to shared resources — it doesn't by itself move data between processes. <strong>Inter-process communication (IPC)</strong> is about actually <em>exchanging data</em> between processes, which may or may not need synchronization alongside it (e.g. shared memory needs synchronization to be safe; a well-designed message queue often handles ordering internally). Threads communicate "for free" via shared address space and mainly need synchronization; processes need explicit IPC mechanisms since they don't share memory by default.</p>
+      </div>
+
+      <h3 class="sub">Inter-process communication (IPC) mechanisms</h3>
+      <p>Since processes (unlike threads) have separate address spaces, they need OS-provided channels to exchange data. The two broad models are <strong>shared memory</strong> and <strong>message passing</strong>; everything else below is a specific mechanism implementing one of those models.</p>
+      <table>
+        <tr><th>Model</th><th>How data moves</th><th>Trade-off</th></tr>
+        <tr><td>Shared memory</td><td>OS maps a region of physical memory into both processes' address spaces; they read/write it directly, no kernel involvement per access</td><td>Fast (no per-message syscall overhead) but requires explicit synchronization by the processes (e.g. semaphores) to avoid races</td></tr>
+        <tr><td>Message passing</td><td>Processes exchange discrete messages via <code>send()</code>/<code>receive()</code>, routed through the kernel</td><td>Simpler to get correct (no shared-state races), naturally handles synchronization, but slower — every message is a kernel-mediated copy</td></tr>
+      </table>
+
+      <h4 class="subsub">Pipes</h4>
+      <p>A unidirectional byte-stream channel, typically between a parent and child process (created before fork(), then inherited). Data written at one end is read in FIFO order at the other. Exists only in kernel memory for the lifetime of the processes holding it open — no filesystem name.</p>
+
+      <h4 class="subsub">Named pipes (FIFOs)</h4>
+      <p>Functionally the same byte-stream idea as a pipe, but given a name in the filesystem (a FIFO special file), so unrelated processes (not just parent/child) can open it by name and communicate — this is the key difference from a plain pipe.</p>
+
+      <h4 class="subsub">Signals</h4>
+      <p>A lightweight, asynchronous notification mechanism — the OS delivers a small integer signal (e.g. SIGKILL, SIGTERM, SIGCHLD) to a process, interrupting its normal flow to run a signal handler (or a default action like terminate). Carries almost no data (just which signal fired) — it's a notification/control mechanism, not a channel for transferring payloads like pipes or shared memory are.</p>
+
+      <h4 class="subsub">Sockets <span style="color:var(--text-faint); font-weight:400; font-size:13px;">— supporting</span></h4>
+      <p>A message-passing endpoint that works both locally (same machine, via Unix domain sockets) and across a network (via TCP/IP sockets) — the same API extends IPC beyond a single machine. Lower GATE priority than pipes/shared memory/signals, but useful to recognize as the mechanism that generalizes message passing to distributed systems.</p>
+
+      <div class="card formula">
+        <span class="label">One-line IPC comparison to memorize</span>
+        <p>Shared memory = fast, needs your own synchronization. Message passing (pipes, named pipes, sockets) = slower, kernel-mediated with synchronization semantics provided by the communication primitives themselves (e.g. blocking reads/writes). Signals = not really "data transfer," just async notification.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — IPC (original)</h3><span class="pcount">4 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Two unrelated processes (no parent-child relationship) need to communicate via a byte stream. Can a plain (unnamed) pipe be used? What should be used instead?</summary>
+          <div class="ans">
+            <p>Normally no — a plain pipe only exists as an inherited file descriptor, so it's typically shared only between a process and its descendants (who received the descriptor via fork()). Unrelated processes generally need a named pipe (FIFO), which has a filesystem path either process can open independently — or another IPC mechanism. (Note: an unrelated process could still gain access to an unnamed pipe's descriptor if it were explicitly passed to it, e.g. via a Unix domain socket using SCM_RIGHTS — the "only descendants" rule is the normal case, not an absolute limitation of pipes themselves.)</p>
+            <p class="final">Answer: Not by default; use a named pipe (FIFO) or another IPC mechanism instead</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Why does shared memory IPC need explicit synchronization but message passing typically doesn't need the processes to add their own?</summary>
+          <div class="ans">
+            <p>Shared memory requires explicit synchronization because multiple processes directly access the same memory and can race. Message-passing systems provide synchronization semantics through operations such as send/receive, but the exact ordering and blocking guarantees depend on the IPC mechanism — whether it is blocking or non-blocking, synchronous or asynchronous, buffered or unbuffered. So message passing doesn't universally eliminate ordering concerns; it just supplies ordering through its communication primitives rather than requiring the processes to bolt on their own.</p>
+            <p class="final">Answer: Shared memory requires explicit synchronization; message passing provides synchronization through its communication primitives, with exact ordering depending on the mechanism.</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A process receives SIGCHLD. What does this signal typically indicate, and does it carry the child's exit data directly?</summary>
+          <div class="ans">
+            <p>SIGCHLD typically indicates a child process has terminated or stopped. As a notification, it should not be treated as the mechanism for reaping the child — the parent normally calls wait()/waitpid() to obtain and reap the child's exit status. (On POSIX systems using the SA_SIGINFO handler flag, the signal's siginfo_t can carry some information such as the child's PID and status, but wait()/waitpid() is still what actually reaps the child and retrieves the full wait status.)</p>
+            <p class="final">Answer: Notifies that a child changed state; exit data must be separately fetched via wait()</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Why are Unix domain sockets and TCP sockets both classified under "message passing" rather than "shared memory" IPC?</summary>
+          <div class="ans">
+            <p>Both move discrete messages/byte streams through kernel-mediated send/receive (or read/write) calls rather than exposing a shared region of memory both processes access directly — the defining feature of the message-passing model, regardless of whether the peer is local or remote.</p>
+            <p class="final">Answer: Both use kernel-mediated send/receive rather than a directly shared memory region</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="deadlock">
+      <div class="topic-head"><span class="idx">04</span><h2>Deadlock</h2></div>
+      <div class="topic-kicker">4 NECESSARY CONDITIONS · RESOURCE ALLOCATION GRAPH · BANKER'S ALGORITHM</div>
+
+      <h3 class="sub">The four necessary conditions (Coffman conditions)</h3>
+      <p>All four must hold simultaneously for a deadlock to occur — breaking any single one prevents deadlock:</p>
+      <table>
+        <tr><th>Condition</th><th>Meaning</th></tr>
+        <tr><td>Mutual Exclusion</td><td>At least one resource must be held in a non-shareable mode</td></tr>
+        <tr><td>Hold and Wait</td><td>A process holding a resource is waiting to acquire more</td></tr>
+        <tr><td>No Preemption</td><td>Resources can't be forcibly taken away — only voluntarily released</td></tr>
+        <tr><td>Circular Wait</td><td>A cycle of processes exists, each waiting for a resource held by the next</td></tr>
+      </table>
+
+      <h3 class="sub">Resource Allocation Graph (RAG) — the fast visual check</h3>
+      <div class="card note">
+        <span class="label">Cycle detection rule</span>
+        <p>With single-instance resources: a cycle in the RAG ⟺ deadlock exists. With multiple-instance resources: a cycle is necessary but NOT sufficient for deadlock — you must additionally verify no valid execution order exists that resolves it.</p>
+      </div>
+
+      <h3 class="sub">Banker's Algorithm — safety check</h3>
+      <p>Determines whether a system state is "safe" (some order exists in which all processes can complete) before granting a resource request. A state is <strong>safe</strong> if a sequence of processes exists such that each process's remaining need can be satisfied by currently available resources plus resources released by already-finished processes in the sequence.</p>
+      <div class="eq">Need[i] = Max[i] − Allocation[i]
+A request from process i is granted only if it can be satisfied AND the resulting state remains safe</div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>An "unsafe" state is NOT automatically a deadlocked state — it simply means the system cannot GUARANTEE avoiding deadlock; deadlock might still not actually occur depending on future requests. Don't conflate "unsafe" with "deadlocked" — Banker's algorithm is deliberately conservative.</p>
+      </div>
+
+      <h3 class="sub">Deadlock vs Starvation — don't conflate the two</h3>
+      <table>
+        <tr><th></th><th>Deadlock</th><th>Starvation</th></tr>
+        <tr><td>What happens to processes</td><td>Wait indefinitely due to a cyclic resource dependency</td><td>A process may repeatedly lose access to the CPU/resource, without any cycle involved</td></tr>
+        <tr><td>Progress of the system</td><td>The specific set of mutually-blocked processes makes zero progress — they're permanently stuck</td><td>Other processes continue making progress just fine; only the unlucky (typically low-priority) process is denied service</td></tr>
+        <tr><td>Typical fix</td><td>Break one of the four Coffman conditions (prevention), or run detection/avoidance (Banker's algorithm)</td><td>Aging, or a fair scheduling policy (e.g. Round Robin) that guarantees every process eventually gets a turn</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">The core distinction, in one line</span>
+        <p>Deadlock is a <strong>mutual, cyclic</strong> block — a specific group of processes is stuck waiting on each other, and no external event resolves it without intervention. Starvation is a <strong>one-sided, ongoing disadvantage</strong> — one process (or a few) keeps losing out to others under a scheduling/allocation policy that's individually reasonable each time, but collectively unfair over the long run; the system as a whole keeps making progress, just never for that unlucky process. A deadlocked process is, in a sense, always starving (it's waiting forever) — but a starving process is not necessarily deadlocked (the resource it wants is repeatedly available, it's just repeatedly given to someone else first).</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> If all resources involved in the system can be safely preempted from a process without harm, can deadlock occur?</summary>
+          <div class="ans">
+            <p>No — if every resource that could be part of a hold-and-wait cycle can be preempted, the "No Preemption" necessary condition is broken for the whole system, and deadlock cannot occur regardless of the other three conditions. (Note: if only *some* resources are preemptable while others involved in a potential cycle are not, deadlock can still occur via the non-preemptable resources — the guarantee only holds when preemption is possible for all relevant resources.)</p>
+            <p class="final">Answer: No, deadlock cannot occur (No Preemption condition is violated for all resources)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A RAG with single-instance resources has no cycle. Is deadlock possible right now?</summary>
+          <div class="ans">
+            <p>For single-instance resource systems, a cycle in the RAG is both necessary and sufficient for deadlock. No cycle means deadlock is not currently present.</p>
+            <p class="final">Answer: No deadlock currently exists</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Total instances of resource R = 10. Currently allocated: P1=3, P2=4, P3=2. Available = ?</summary>
+          <div class="ans">
+            <p>Available = Total − sum of allocations = 10 − (3+4+2) = 10 − 9.</p>
+            <p class="final">Answer: Available = 1</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Process P has Max=[7,5,3], Allocation=[2,1,1]. Find Need.</summary>
+          <div class="ans">
+            <p>Need = Max − Allocation = [7−2, 5−1, 3−1].</p>
+            <p class="final">Answer: Need = [5, 4, 2]</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A system is found to be in an "unsafe" state by Banker's algorithm. Does this guarantee deadlock will occur?</summary>
+          <div class="ans">
+            <p>No — "unsafe" means the algorithm cannot guarantee a completion sequence exists for all currently claimed future requests; it does not mean deadlock is certain. Processes might still request resources in an order that avoids deadlock, but the system can no longer promise this.</p>
+            <p class="final">Answer: No — unsafe ≠ deadlocked; it only means safety can no longer be guaranteed</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="memory">
+      <div class="topic-head"><span class="idx">05</span><h2>Memory Management</h2></div>
+      <div class="topic-kicker">PAGING · SEGMENTATION · PAGE TABLES · ADDRESS TRANSLATION · DEMAND PAGING · PAGE FAULTS · VIRTUAL MEMORY · PAGE REPLACEMENT · TLB</div>
+
+      <h3 class="sub">Paging — fixed-size division</h3>
+      <div class="eq">Logical address = (Page number, Offset)
+Physical address = (Frame number, Offset)      [offset is identical in both — only the page→frame mapping changes]
+
+Number of bits for page number = log₂(number of pages)
+Number of bits for offset = log₂(page size)</div>
+      <div class="card note">
+        <span class="label">Why paging eliminates external fragmentation</span>
+        <p>Since pages and frames are fixed, equal-sized units, any free frame can hold any page — there's no need for contiguous physical memory. Internal fragmentation can still occur though (last page of a process may not fully use its frame).</p>
+      </div>
+
+      <h3 class="sub">Segmentation — variable-size, logical division</h3>
+      <p>Divides memory by logical units (code segment, stack segment, heap segment) rather than fixed size. Suffers from external fragmentation (variable-sized holes) but maps more naturally onto how programs are actually structured.</p>
+
+      <h3 class="sub">Contiguous allocation strategies — finding a hole for a new process</h3>
+      <p>Before a process can run in a contiguous (non-paged) memory model, the OS must pick WHICH free hole to give it when several are large enough. Four classic strategies:</p>
+      <table>
+        <tr><th>Strategy</th><th>Basic idea</th></tr>
+        <tr><td>First Fit</td><td>First sufficiently large hole</td></tr>
+        <tr><td>Best Fit</td><td>Smallest sufficiently large hole</td></tr>
+        <tr><td>Worst Fit</td><td>Largest hole</td></tr>
+        <tr><td>Next Fit</td><td>Continue search from previous position</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap — Best Fit is not actually "best" in practice</span>
+        <p>Despite the name, <strong>Best Fit is NOT generally the best-performing strategy</strong> — choosing the tightest possible hole leaves behind slivers of memory too small to be useful for future allocations, causing rapid external fragmentation. Empirically, <strong>First Fit and Best Fit tend to perform similarly and generally better than Worst Fit</strong> in both speed and memory utilization — don't assume Best Fit wins on both fragmentation and speed just because of its name. Next Fit avoids First Fit's tendency to leave many small fragments clustered near the start of memory, by resuming the scan from where it last stopped rather than always restarting from address 0.</p>
+      </div>
+
+      <h3 class="sub">Virtual vs physical address, and the page table</h3>
+      <p>A process only ever sees <strong>virtual (logical) addresses</strong> — the address space it believes it owns, starting at 0. The MMU (memory management unit) translates each virtual address to a <strong>physical address</strong> — the actual location in RAM — using the process's <strong>page table</strong>, which the OS maintains per-process. Virtual memory decouples "how much address space a program can use" from "how much physical RAM actually exists," letting the OS run processes whose total virtual footprint exceeds physical memory.</p>
+      <div class="eq">Address translation (single-level):
+1. Split virtual address into (page number, offset)
+2. Look up page number in the page table → get frame number (+ valid/invalid bit, protection bits)
+3. Physical address = (frame number, offset)   [offset unchanged — only the page→frame part translates]</div>
+
+      <div class="card note">
+        <span class="label">Why a single-level page table doesn't scale</span>
+        <p>A page table needs one entry per page in the virtual address space — for a 32-bit address space with 4KB pages, that's 2²⁰ (~1 million) entries, and every process needs its own table. Multi-level (hierarchical) paging fixes this: the virtual address is split into multiple page-number fields (outer, inner, offset), each indexing into a smaller table, and outer-level entries for unused regions of the address space are simply left invalid — so sparsely-used address spaces don't need every leaf table allocated.</p>
+      </div>
+      <div class="eq">Multi-level (2-level) translation:
+Virtual address = (outer page #, inner page #, offset)
+1. Outer page # indexes the outer (root) page table → gives address of an inner page table
+2. Inner page # indexes that inner page table → gives frame number
+3. Physical address = (frame number, offset)
+Cost: 2 memory accesses just for translation (before the actual data access) if the TLB misses — this compounds with more levels.</div>
+
+      <div class="card formula">
+        <span class="label">Page-table memory overhead — the numerical GATE actually asks</span>
+        <p>Single-level page table size = (number of pages) × (bytes per page-table entry). This can itself be enormous for large address spaces with small pages — which is precisely the motivation for multi-level tables (only allocate the inner tables that are actually needed) and for the TLB (avoid repeatedly paying the page-table lookup cost at all).</p>
+      </div>
+
+      <h3 class="sub">Page faults &amp; demand paging</h3>
+      <p>A <strong>page fault</strong> is the trap that occurs when a process accesses a page whose valid bit is 0 in the page table — but a valid bit of 0 itself covers two different situations, and the OS has to tell them apart when handling the trap. If the reference is to a legitimate part of the process's address space that simply isn't currently resident (e.g. it's been paged out, or never yet loaded under demand paging), the OS obtains/constructs the needed page — commonly by loading it from disk (secondary storage) into a free frame, though depending on the case it could also be a zero-filled page, a copy-on-write copy, or another backing mechanism — updates the page table, and resumes the instruction — this is the common "page not resident" case. But if the reference is to an address the process has no business touching at all (outside its allocated address space, or violating protection bits), there's no page to fetch from disk — the OS instead treats it as an illegal/invalid memory reference, typically delivering a segmentation-fault-style signal that can terminate the process. Both cases start as the same trap (valid bit = 0), but they diverge sharply in how the OS resolves them. <strong>Demand paging</strong> is the strategy of loading legitimately-resident-but-not-yet-loaded pages into memory only when first referenced (lazily), rather than loading a process's entire address space upfront — it's what makes virtual memory practical, since most programs never touch every page they could.</p>
+      <div class="card pyq">
+        <span class="label">GATE trap — page fault vs TLB miss, don't conflate them</span>
+        <p>A TLB miss just means the translation isn't cached — the page table (in memory) is still consulted and usually succeeds, costing one extra memory access. A page fault means the page genuinely isn't in physical memory at all — it requires a disk access (orders of magnitude slower) and possibly evicting another page. Every page fault implies the TLB also missed, but a TLB miss does NOT imply a page fault.</p>
+      </div>
+
+      <h3 class="sub">Effective Access Time with page faults</h3>
+      <div class="eq">EAT (with page-fault probability p) = (1−p)·(memory access time) + p·(page fault service time)
+Page fault service time typically includes: trap overhead + disk I/O time to fetch the page + restart overhead
+— this is on the order of milliseconds, vs nanoseconds for a normal memory access, so even a small p dominates EAT.</div>
+      <p>This is a distinct numerical setup from the TLB-hit-ratio EAT formula above — TLB EAT compares "cached translation" vs "page-table lookup," while page-fault EAT compares "page present in memory" vs "page fetched from disk." GATE sometimes combines both into one multi-level EAT problem (TLB hit/miss, then page present/fault) — read carefully which probabilities are given for which stage.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — Virtual Memory (original)</h3><span class="pcount">3 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A 32-bit virtual address space uses 4KB pages and a single-level page table with 4-byte entries. How large is the page table for one process?</summary>
+          <div class="ans">
+            <p>Number of pages = 2³² / 2¹² = 2²⁰. Page table size = 2²⁰ entries × 4 bytes = 2²² bytes = 4MB per process — this is exactly the overhead that motivates multi-level paging.</p>
+            <p class="final">Answer: 4 MB per process</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A process accesses a page with valid bit = 0, and the reference is to a legitimate (in-bounds) part of the address space that simply isn't resident right now. What happens, and how is this different from a TLB miss on a page with valid bit = 1?</summary>
+          <div class="ans">
+            <p>Valid bit = 0 triggers a page fault. Here, since the reference itself is legitimate, the OS traps, obtains/constructs the needed page — commonly by reading it from disk (swap or a file-backed mapping), but it could also be a zero-filled page, a copy-on-write copy, or another backing mechanism depending on the system — updates the page table, and restarts the instruction. When disk I/O is involved this is a disk-speed operation, though not every legitimate page fault requires it. (If the access had instead been to an out-of-bounds or protection-violating address, the same valid-bit-0 trap fires, but the OS has nothing to fetch or construct — it instead treats it as an illegal reference, which can terminate the process, e.g. a segmentation fault.) A TLB miss on a page with valid bit = 1 is a much cheaper case: it just means the cached translation wasn't found; the page table (already in memory) is consulted directly — a memory-speed operation, no disk I/O.</p>
+            <p class="final">Answer: Page fault on a legitimate but non-resident page → OS handles the fault and obtains/constructs the page (commonly via disk I/O, but not always); the same trap on an illegal reference instead raises an access violation; TLB miss on a resident valid page = one extra memory access only</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Memory access = 100ns, page fault service time = 8ms, page fault rate p = 0.001. Assume the given page-fault service time already covers the full fault handling (trap + disk I/O + restart) and does NOT separately include the eventual memory access that follows the fault — so that access isn't double-counted. Find the EAT.</summary>
+          <div class="ans">
+            <p>EAT = (1−p)(memory time) + p(page fault service time) = 0.999(100ns) + 0.001(8,000,000ns) = 99.9ns + 8000ns ≈ 8099.9ns. (If a question instead states that the page-fault service time excludes the final memory access, you'd add one more p×(memory time) term — the numerical difference here is negligible since 100ns is tiny next to 8ms, but for smaller service times relative to access time it matters, so always check which model the question intends.)</p>
+            <p class="final">Answer: EAT ≈ 8100 ns (≈8.1 µs) — note how even p=0.001 makes the fault term dominate completely</p>
+          </div>
+        </details>
+      </div>
+
+      <h3 class="sub">Translation Lookaside Buffer (TLB)</h3>
+      <div class="eq">Effective Access Time (EAT) = h·(TLB time + Memory time) + (1−h)·(TLB time + 2×Memory time)
+where h = TLB hit ratio</div>
+      <p>A TLB hit needs one memory access (data); a TLB miss needs two (page table, then data) — this is the standard EAT numerical setup GATE uses repeatedly.</p>
+
+      <div class="card formula">
+        <span class="label">Consolidated EAT formula sheet — don't mix these two scales</span>
+        <table>
+          <tr><th>Case</th><th>What happens</th><th>Cost (order of magnitude)</th></tr>
+          <tr><td>TLB hit</td><td>TLB lookup + one memory access (for the data itself)</td><td>Nanoseconds — TLB time + Memory time</td></tr>
+          <tr><td>TLB miss (page still in memory)</td><td>TLB lookup + page-table access (in memory) + memory access (for the data)</td><td>Nanoseconds — TLB time + 2×Memory time (page table lookup counted as one memory access)</td></tr>
+          <tr><td>Page fault (page NOT in memory)</td><td>Trap + disk I/O to fetch the page + restart, on top of whatever TLB/page-table work already happened</td><td>Milliseconds — orders of magnitude larger than either TLB case</td></tr>
+        </table>
+        <p>Keep these as two separate EAT computations layered on top of each other, not one formula: first resolve TLB hit/miss (nanosecond scale, using h) to get the address translation, THEN separately account for whether the resulting page is actually resident or needs to page-fault in (millisecond scale, using p). A combined problem gives you both h and p and expects: EAT = (TLB-level EAT) blended with the page-fault term — e.g. EAT ≈ [TLB/page-table cost] + (1−p)(memory time) + p(page fault service time). Because the page-fault term is so much larger, even a small p will dominate the total far more than the TLB hit ratio does — don't let the TLB formula distract from that.</p>
+      </div>
+
+      <h3 class="sub">Page replacement algorithms</h3>
+      <table>
+        <tr><th>Algorithm</th><th>Rule</th><th>Notable behavior</th></tr>
+        <tr><td>FIFO</td><td>Evict the oldest-loaded page</td><td>Can suffer Belady's Anomaly (more frames → more faults, counter-intuitively)</td></tr>
+        <tr><td>Optimal (OPT/MIN)</td><td>Replaces the page whose next use is farthest in the future</td><td>Theoretical best case — not implementable online, since future references are unknown</td></tr>
+        <tr><td>LRU</td><td>Evict the least-recently-used page</td><td>Good practical approximation of OPT/MIN; never suffers Belady's Anomaly</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">One canonical name — Optimal (OPT/MIN)</span>
+        <p>This algorithm goes by three names in textbooks and question papers — <strong>Optimal</strong>, <strong>OPT</strong>, and <strong>MIN</strong> — all referring to the exact same rule: <strong>replace the page whose next use is farthest in the future</strong> (equivalently, the page that won't be needed for the longest time, or that may never be needed again). It is theoretically optimal — provably minimizes page faults for a given reference string and frame count — but is <strong>generally not implementable online</strong>, because it requires knowing the future reference string in advance. It's used only as a theoretical benchmark to evaluate how close a practical algorithm (like LRU) comes to the best possible.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — the general theory behind Belady's Anomaly</span>
+        <p>Belady's Anomaly (more page frames causing MORE page faults) is a signature property specifically of FIFO — it does NOT occur with LRU or Optimal (OPT/MIN) replacement. GATE frequently asks you to trace a reference string under FIFO with two different frame counts specifically to demonstrate this anomaly.</p>
+        <p>The deeper, more testable reason: a replacement algorithm is called a <strong>stack algorithm</strong> if, for any reference string, the set of pages resident with k frames is always a <em>subset</em> of the set resident with k+1 frames, at every point in time. This subset property mathematically guarantees page faults can only stay the same or decrease as frames increase — never increase — so <strong>stack algorithms never suffer Belady's Anomaly, by construction</strong> (it's not just an empirical observation). <strong>LRU and Optimal (OPT/MIN) are both stack algorithms</strong> — LRU because the k most-recently-used pages are always a subset of the k+1 most-recently-used pages; Optimal because the k pages needed soonest are always a subset of the k+1 pages needed soonest. <strong>FIFO is NOT a stack algorithm</strong> — the "oldest loaded" page depends on load order, not recency of use, so no such subset relationship holds in general, which is exactly why it's vulnerable to the anomaly.</p>
+      </div>
+
+      <h3 class="sub">Thrashing and the working-set model</h3>
+      <p>The classic causal chain: <strong>too many processes running concurrently → each gets too few frames → excessive page faults per process → the CPU spends most of its time servicing page faults (paging) instead of executing → CPU utilization collapses → thrashing.</strong> Counter-intuitively, the OS's usual fix for low CPU utilization (admit more processes, i.e. increase the degree of multiprogramming) is exactly what CAUSES thrashing in the first place — it shrinks each process's frame allocation further, triggering even more faults, in a vicious cycle.</p>
+      <div class="card formula">
+        <span class="label">Working set</span>
+        <p>The <strong>working set</strong> of a process at a given time is the set of pages it has actively referenced during a recent window of Δ references (the working-set window) — an approximation of the pages that process actually needs resident in memory right now to run without excessive faulting.</p>
+      </div>
+      <div class="card note">
+        <span class="label">Working-set model as thrashing prevention</span>
+        <p>If the sum of all processes' working-set sizes exceeds the total number of available frames, thrashing can occur — there simply isn't enough physical memory to hold what everyone actively needs at once. The OS can use this as an admission-control rule: only start a new process (or bring a suspended one back in) if doing so wouldn't push total working-set demand over the available frame count — trading a lower degree of multiprogramming for actually-productive CPU time, instead of chasing utilization by over-committing frames.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A system has 64 pages and page size 1024 bytes. How many bits are needed for the page number and the offset?</summary>
+          <div class="ans">
+            <p>Page number bits = log₂(64) = 6. Offset bits = log₂(1024) = 10.</p>
+            <p class="final">Answer: 6 bits for page number, 10 bits for offset (16-bit logical address)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> TLB hit ratio = 0.8. Memory access = 100ns, TLB access = 10ns. Find the Effective Access Time.</summary>
+          <div class="ans">
+            <p>EAT = h(TLB+Mem) + (1−h)(TLB+2×Mem) = 0.8(10+100) + 0.2(10+200) = 0.8(110) + 0.2(210) = 88 + 42.</p>
+            <p class="final">Answer: EAT = 130 ns</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Reference string: 1,2,3,4,1,2,5,1,2,3,4,5 with 3 frames, using FIFO. Count the page faults.</summary>
+          <div class="ans">
+            <p>FIFO queue trace, 3 frames: 1→fault{1}; 2→fault{1,2}; 3→fault{1,2,3}; 4→fault, evict 1→{2,3,4}; 1→fault, evict 2→{3,4,1}; 2→fault, evict 3→{4,1,2}; 5→fault, evict 4→{1,2,5}; 1→hit; 2→hit; 3→fault, evict 1→{2,5,3}; 4→fault, evict 2→{5,3,4}; 5→hit. Faults occur on 1,2,3,4,1,2,5,3,4 — 9 references miss.</p>
+            <p class="final">Answer: 9 page faults (standard result for this classic reference string with 3 frames, FIFO)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Same reference string and frame count as Q3, but why might using LRU instead never exhibit Belady's Anomaly if frames were increased to 4?</summary>
+          <div class="ans">
+            <p>LRU is a "stack algorithm" — the set of pages held with k frames is always a subset of what would be held with k+1 frames at every step. This subset property mathematically guarantees that page faults can only decrease (or stay the same), never increase, as frames increase — unlike FIFO.</p>
+            <p class="final">Answer: LRU has the stack property, which structurally prevents Belady's Anomaly</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Why does segmentation suffer from external fragmentation while pure paging does not?</summary>
+          <div class="ans">
+            <p>Segments are variable-sized, so as segments are allocated and freed over time, memory becomes divided into non-contiguous free blocks that may be too small individually to satisfy a new request even though total free memory is sufficient. Paging avoids this since all frames are the same fixed size — any free frame fits any page.</p>
+            <p class="final">Answer: Variable segment sizes create unusable gaps; paging's fixed-size frames don't</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="filesystems">
+      <div class="topic-head"><span class="idx">06</span><h2>File Systems &amp; I/O</h2></div>
+      <div class="topic-kicker">DIRECTORIES · METADATA/INODES · FREE-SPACE MGMT · ACCESS METHODS · PROTECTION · ALLOCATION · DISK SCHEDULING</div>
+
+      <h3 class="sub">File metadata &amp; the inode concept</h3>
+      <p>A file is more than its data bytes — the OS tracks <strong>metadata</strong> separately: owner, permissions, size, timestamps (created/modified/accessed), and the list of blocks holding the data. In Unix-style systems this metadata lives in an <strong>inode</strong> (index node) — a fixed-size structure holding all of it except the filename, plus pointers to the data blocks (often via indexed allocation, sometimes with direct pointers for small files and indirect pointers for large ones). The filename itself lives only in the directory entry, which just maps name → inode number — this is why hard links work: multiple directory entries can point to the same inode.</p>
+
+      <h3 class="sub">Directory structures</h3>
+      <table>
+        <tr><th>Structure</th><th>Shape</th><th>Trade-off</th></tr>
+        <tr><td>Single-level</td><td>One directory, all files</td><td>Simple but no grouping; name collisions across all files</td></tr>
+        <tr><td>Two-level</td><td>One directory per user</td><td>Isolates users but no further grouping within a user's files</td></tr>
+        <tr><td>Tree-structured</td><td>Directories can contain subdirectories, arbitrary depth</td><td>Standard modern layout; supports absolute and relative paths</td></tr>
+        <tr><td>Acyclic-graph</td><td>Tree plus shared subdirectories/files (links)</td><td>Enables sharing, but needs care to avoid actual cycles and to handle deletion (reference counting)</td></tr>
+      </table>
+
+      <h3 class="sub">Free-space management</h3>
+      <p>The OS needs to track which blocks are unallocated so it knows where new files/extensions can go. Two standard schemes:</p>
+      <table>
+        <tr><th>Scheme</th><th>How it works</th><th>Trade-off</th></tr>
+        <tr><td>Bitmap (bit vector)</td><td>One bit per block: 1=allocated, 0=free</td><td>Compact, fast to scan for contiguous runs; bitmap size grows with disk size</td></tr>
+        <tr><td>Linked list of free blocks</td><td>Free blocks chained together, OS holds a pointer to the first</td><td>No wasted space describing allocated blocks, but no O(1) way to find contiguous free runs</td></tr>
+      </table>
+
+      <h3 class="sub">File access methods</h3>
+      <table>
+        <tr><th>Method</th><th>Access pattern</th></tr>
+        <tr><td>Sequential access</td><td>Read/write proceeds in order from the start; matches how tape and many simple files are used</td></tr>
+        <tr><td>Direct (random) access</td><td>Jump to any block/offset directly, given a block number — needs indexed-style allocation to be efficient</td></tr>
+        <tr><td>Indexed access</td><td>An index (like a database index, not the same as indexed allocation) maps keys to record locations, allowing lookup without scanning</td></tr>
+      </table>
+
+      <h3 class="sub">Protection &amp; permissions</h3>
+      <p>Access control is typically expressed per file as a set of permissions (read/write/execute) for distinct classes of user — commonly owner, group, and others in Unix-style systems (the familiar <code>rwx rwx rwx</code> triad). More fine-grained systems use <strong>access control lists (ACLs)</strong>, listing specific permissions per individual user/group rather than just three fixed classes. GATE mainly expects you to recognize the owner/group/other model and reason about what a given permission bit pattern allows.</p>
+
+      <h3 class="sub">File allocation methods — and the underlying trade-off</h3>
+      <p>Allocation is fundamentally a trade-off between <strong>sequential access efficiency + simplicity</strong> (contiguous) and <strong>flexible growth + random access</strong> (linked/indexed) — no single method wins on every axis, which is why GATE questions usually ask you to pick the right one for a stated access pattern rather than name "the best" method in the abstract.</p>
+      <table>
+        <tr><th>Method</th><th>How it works</th><th>Key drawback</th></tr>
+        <tr><td>Contiguous</td><td>File occupies a single contiguous block range</td><td>External fragmentation; hard to grow files</td></tr>
+        <tr><td>Linked</td><td>Each block points to the next (linked list)</td><td>No efficient random access — must traverse sequentially</td></tr>
+        <tr><td>Indexed</td><td>A dedicated index block stores pointers to all data blocks</td><td>Extra block needed even for small files; multi-level index needed for very large files</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">Why indexed allocation supports fast random access</span>
+        <p>Since all block pointers live in one index block, jumping to block k just means reading the k-th pointer directly — no traversal needed, unlike linked allocation where reaching block k requires following k links from the start.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — Directories, Metadata &amp; Free Space (original)</h3><span class="pcount">3 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Two directory entries in different directories point to the same inode number. What does this represent, and what happens to the file's data if one entry is deleted?</summary>
+          <div class="ans">
+            <p>This is a hard link — both names refer to the same underlying file (same inode, same data blocks). Deleting one directory entry only removes that name; the inode (and data) survives as long as at least one link/reference to it remains, tracked via a link/reference count in the inode.</p>
+            <p class="final">Answer: A hard link; the file's data persists as long as any link to the inode remains</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A disk has 10,000 blocks. Using a bitmap for free-space management, how many bytes does the bitmap need?</summary>
+          <div class="ans">
+            <p>One bit per block = 10,000 bits = 10,000/8 = 1250 bytes (rounding up to whole bytes as needed).</p>
+            <p class="final">Answer: 1250 bytes</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A file has Unix permission bits rw-r--r-- for owner/group/other. Can a user in the file's group modify it? Can the owner?</summary>
+          <div class="ans">
+            <p>Group permissions are r-- (read only) — a group member cannot write/modify the file. Owner permissions are rw- (read and write), so the owner can modify it.</p>
+            <p class="final">Answer: Group member: no (read-only); Owner: yes (read+write)</p>
+          </div>
+        </details>
+      </div>
+
+      <h3 class="sub">Disk scheduling algorithms</h3>
+      <table>
+        <tr><th>Algorithm</th><th>Rule</th></tr>
+        <tr><td>FCFS</td><td>Service requests strictly in arrival order</td></tr>
+        <tr><td>SSTF (Shortest Seek Time First)</td><td>Service the request closest to current head position</td></tr>
+        <tr><td>SCAN ("elevator")</td><td>Head sweeps in one direction servicing requests, reverses only at the disk end</td></tr>
+        <tr><td>C-SCAN</td><td>Like SCAN, but jumps back to the start after reaching the end (services only in one direction)</td></tr>
+      </table>
+      <div class="card formula">
+        <span class="label">Total seek distance — the standard numerical setup</span>
+        <p>Given a starting head position and a request queue, total seek distance = sum of absolute differences between consecutive positions in the actual service order the algorithm produces. GATE typically asks you to compute this for SSTF or SCAN given a specific request sequence.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>SCAN and C-SCAN both require knowing which direction the head is already moving and the disk's boundary (0 to max cylinder) — GATE questions that omit direction are testing whether you notice the ambiguity. Also: C-SCAN's "jump back" to the start is NOT counted as a serviced seek in most standard formulations, but conventions vary — always check what the specific question defines.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Disk head at cylinder 50. Requests: 82, 170, 43, 140, 24, 16, 190. Using SSTF, what is the first request serviced?</summary>
+          <div class="ans">
+            <p>Find the request closest to 50: |82−50|=32, |43−50|=7, |24−50|=26, |16−50|=34, |140−50|=90, |170−50|=120, |190−50|=140. Smallest distance is 43 (distance 7).</p>
+            <p class="final">Answer: 43 is serviced first</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A file needs random access to its blocks frequently. Which allocation method is least suitable, and why?</summary>
+          <div class="ans">
+            <p>Linked allocation is least suitable — reaching block k requires traversing k pointers sequentially from the start, making random access slow. Indexed allocation is far better suited since any block can be reached directly via the index.</p>
+            <p class="final">Answer: Linked allocation (no direct random access)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Head starts at 53, moving toward higher cylinder numbers, disk range 0–199, requests: 98, 183, 37, 122, 14, 124, 65, 67. Using SCAN, in what order are requests near the end serviced before reversing?</summary>
+          <div class="ans">
+            <p>Moving toward higher numbers from 53, SCAN services requests in increasing order until it hits the disk boundary: 65, 67, 98, 122, 124, 183, then goes to 199 (the boundary, even with no request there), then reverses to service 37, 14 in decreasing order.</p>
+            <p class="final">Answer: 65,67,98,122,124,183 → (199 boundary) → reverses → 37,14</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Why does contiguous allocation make it hard to grow a file after creation?</summary>
+          <div class="ans">
+            <p>Since the file occupies a single contiguous run of blocks, growing it requires the immediately following blocks to also be free — if they're already allocated to another file, the whole file must be relocated to a larger contiguous space elsewhere.</p>
+            <p class="final">Answer: Growth requires contiguous free space right after the file, which often isn't available</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A single-level index block holds 256 pointers, and each data block is 512 bytes. What is the maximum file size this index can address?</summary>
+          <div class="ans">
+            <p>Maximum blocks addressable = number of pointers = 256. Maximum file size = 256 × 512 bytes = 131072 bytes.</p>
+            <p class="final">Answer: 131072 bytes (128 KB)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="revision">
+      <div class="topic-head"><span class="idx">07</span><h2>Revision Sheet</h2></div>
+      <div class="topic-kicker">EVERYTHING ON ONE SCREEN — LAST-MINUTE PASS</div>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Process states</span>
+          <p>New→Ready→Running→Terminated, with Running⟷Waiting. Never Waiting→Running directly — always through Ready.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">fork() semantics</span>
+          <p>Returns twice (parent gets child PID, child gets 0). n sequential forks ⟹ 2ⁿ total processes.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Scheduling timings</span>
+          <p>TAT = Completion − Arrival. WT = TAT − Burst. Response = first CPU allocation − Arrival. Don't confuse WT with TAT.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Scheduling algorithms</span>
+          <p>SJF minimizes avg WT (non-preemptive optimum, assuming burst times are known in advance). SRTF is its preemptive version. RR fairness depends heavily on quantum size.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Critical section requirements</span>
+          <p>Mutual Exclusion + Progress + Bounded Waiting — all three required, each independently checkable.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Synchronization mechanisms — lowest to highest level</span>
+          <p>Peterson's algorithm: pure software, 2 processes only, uses flag[]+turn, busy-waits. Test-and-Set/CAS/Swap: atomic hardware instructions, work for any number of processes, also busy-wait on their own. Semaphore/Mutex: higher-level abstractions usually built on top of a hardware primitive, add blocking instead of pure spinning.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Semaphores</span>
+          <p>wait(S): S--, block if S≤0. signal(S): S++. A binary semaphore can implement mutual exclusion, but is NOT the same abstraction as a mutex — see the dedicated box below.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Deadlock — 4 necessary conditions</span>
+          <p>Mutual Exclusion, Hold-and-Wait, No Preemption, Circular Wait. All four required; breaking any one prevents deadlock — see the dedicated box below.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Deadlock vs Starvation</span>
+          <p>Deadlock: cyclic wait, the blocked set makes zero progress, fixed by breaking a Coffman condition or avoidance. Starvation: no cycle, a process is repeatedly denied while others progress fine, fixed by aging/fair scheduling. Deadlocked ⟹ starving, but not the reverse.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Banker's algorithm</span>
+          <p>Need = Max − Allocation. "Unsafe" ≠ "deadlocked" — unsafe only means safety can't be guaranteed.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Paging vs Segmentation</span>
+          <p>Paging: fixed-size, no external fragmentation (internal possible). Segmentation: variable/logical-size, external fragmentation possible.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Contiguous allocation strategies</span>
+          <p>First Fit: first hole big enough. Best Fit: smallest hole big enough. Worst Fit: largest hole. Next Fit: resume from last position. Best Fit isn't actually best in practice — First Fit performs comparably or better.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Page faults &amp; demand paging</span>
+          <p>Page fault = trap caused by an invalid/non-resident page-table state; handling may require disk I/O (common case), but not every page fault necessarily does (zero-fill, copy-on-write, other backing mechanisms). TLB miss ≠ page fault (page table lookup is memory-speed). EAT with faults = (1−p)(mem time) + p(fault service time).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">TLB &amp; EAT</span>
+          <p>EAT = h(TLB+Mem) + (1−h)(TLB+2×Mem). TLB hit = 1 memory access; miss = 2 (page table + data).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Page replacement</span>
+          <p>FIFO can suffer Belady's Anomaly. LRU (stack algorithm) never does. Optimal (OPT/MIN): replaces the page whose next use is farthest in the future — theoretically best, but not implementable online since future references are unknown.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Thrashing &amp; working set</span>
+          <p>Too many processes → too few frames each → excessive faults → CPU spends most time paging → thrashing. Working set = pages actively referenced in a recent window Δ. If total working-set demand &gt; available frames, thrashing can occur.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">IPC — shared memory vs message passing</span>
+          <p>Shared memory: fast, needs your own synchronization. Message passing (pipes/named pipes/sockets): slower, ordering built in. Signals: async notification only, no real payload.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">File metadata &amp; free space</span>
+          <p>Inode holds metadata + block pointers; directory entry just maps name→inode (hard links share an inode). Free space tracked via bitmap or linked list.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">File allocation &amp; disk scheduling</span>
+          <p>Indexed allocation gives fast random access; linked doesn't. SCAN sweeps like an elevator; C-SCAN services one direction only.</p>
+        </div>
+      </div>
+
+      <div class="card pyq" style="margin-top:26px;">
+        <span class="label">Mutex vs Semaphore — do not treat these as interchangeable</span>
+        <div class="two-col" style="margin:12px 0 0;">
+          <div class="card">
+            <h4 class="subsub">Mutex</h4>
+            <ul>
+              <li>Ownership-oriented mutual exclusion</li>
+              <li>Only the process/thread that locked it is meant to unlock it</li>
+              <li>A binary locking primitive — no counting</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4 class="subsub">Semaphore</h4>
+            <ul>
+              <li>Counter-based synchronization primitive</li>
+              <li>Can be binary (0/1) or counting (any non-negative integer)</li>
+              <li>No general ownership requirement — any process can call signal(), even one that never called wait()</li>
+            </ul>
+          </div>
+        </div>
+        <p style="margin-top:12px;">A binary semaphore <em>can</em> be used to implement mutual exclusion, which is why it's loosely described as "like a mutex" — but don't let <strong>"mutex = binary semaphore"</strong> become your final mental model. They are related but not interchangeable abstractions: a mutex enforces ownership by design; a binary semaphore is just a counter capped at 1, with no ownership enforcement built in.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">Deadlock — the four Coffman conditions (canonical list)</span>
+        <ol style="margin-top:8px; margin-left:20px; color:var(--text-dim);">
+          <li>Mutual exclusion</li>
+          <li>Hold and wait</li>
+          <li>No preemption</li>
+          <li>Circular wait</li>
+        </ol>
+        <p style="margin-top:10px;"><strong>Deadlock requires all four to hold simultaneously.</strong> Breaking any <strong>one</strong> of them is sufficient to prevent deadlock — this is the single most GATE-tested fact in this topic, and it's exactly why every deadlock-prevention scheme works by attacking just one condition (e.g. requiring all resources upfront breaks Hold-and-Wait; a global resource-ordering rule breaks Circular Wait).</p>
+      </div>
+
+      <div class="card note" style="margin-top:26px;">
+        <span class="label">How to use this sheet</span>
+        <p>Read sections 01–06 once for understanding, then loop back to this page alone for every later revision pass — if any card doesn't immediately make sense, that's the section to reopen. OS is one of the highest-ROI subjects in GATE (8–12 marks, heavily numerical) — prioritize drilling the scheduling, memory management, and deadlock numericals until they're fast and automatic.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — rapid-fire mix (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> P1(AT=0,BT=5), P2(AT=2,BT=3) under FCFS. Find average turnaround time.</summary>
+          <div class="ans">
+            <p>P1: 0→5, TAT=5−0=5. P2: starts at 5 (P1 still running till then), ends 5+3=8, TAT=8−2=6. Average TAT = (5+6)/2.</p>
+            <p class="final">Answer: Average TAT = 5.5</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A system violates the Hold-and-Wait condition by requiring processes to request all resources upfront. Does this prevent deadlock?</summary>
+          <div class="ans">
+            <p>Yes — if a process can never hold some resources while waiting for others (because it must acquire everything at once or nothing), the Hold-and-Wait necessary condition is broken, which prevents deadlock (though it can hurt resource utilization).</p>
+            <p class="final">Answer: Yes, deadlock is prevented</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Logical address space = 2²⁰ bytes, page size = 2¹⁰ bytes. How many pages exist, and how many offset bits are needed?</summary>
+          <div class="ans">
+            <p>Number of pages = 2²⁰/2¹⁰ = 2¹⁰. Offset bits = log₂(page size) = 10 (page number needs the remaining 10 bits of a 20-bit address).</p>
+            <p class="final">Answer: 1024 pages, 10 offset bits</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A binary semaphore is used for mutual exclusion around a critical section. If initialized to 0 instead of 1, what happens on the first wait() call?</summary>
+          <div class="ans">
+            <p>wait(S) blocks while S≤0, and remains blocked until some thread/process performs signal(S) to release a permit. Starting at S=0, the very first process calling wait() blocks immediately since no permit is available yet. In this specific mutual-exclusion setup, that block turns out to be permanent: signal(S) is only ever called after a process has entered and is leaving the critical section, which requires its wait() to have succeeded first — so with no process able to get past wait(), no signal() can ever occur either, and the first entrant deadlocks forever. This is a classic off-by-initialization bug.</p>
+            <p class="final">Answer: The first process blocks indefinitely — wrong initial value causes immediate deadlock</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Reference string with increasing frame count under LRU never increases page faults. What property guarantees this?</summary>
+          <div class="ans">
+            <p>LRU is a "stack algorithm" — the set of pages resident with k frames is always a subset of the set resident with k+1 frames at every point in the reference string, which mathematically forces page faults to be monotonically non-increasing as frames increase.</p>
+            <p class="final">Answer: The stack property (subset guarantee across frame counts)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      Blueprint Notes — Operating Systems for GATE CSE · built for revision, not first-read · official syllabus: system calls, processes, threads, inter-process communication, concurrency and synchronization, deadlock, CPU and I/O scheduling, memory management (paging, segmentation, virtual memory), file systems.
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

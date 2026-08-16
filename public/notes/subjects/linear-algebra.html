@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linear Algebra — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'linear-algebra', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // Linear Algebra</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">7 sheets · full syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#matrices"><span class="num">01</span> Matrices — Types &amp; Operations</a></div>
+      <div class="navgroup"><a class="navlink" href="#determinants"><span class="num">02</span> Determinants</a></div>
+      <div class="navgroup"><a class="navlink" href="#systems"><span class="num">03</span> Systems of Linear Equations</a></div>
+      <div class="navgroup"><a class="navlink" href="#eigen"><span class="num">04</span> Eigenvalues &amp; Eigenvectors</a></div>
+      <div class="navgroup"><a class="navlink" href="#diagonalization"><span class="num">05</span> Diagonalization &amp; Cayley-Hamilton</a></div>
+      <div class="navgroup"><a class="navlink" href="#lu"><span class="num">06</span> LU Decomposition</a></div>
+      <div class="navgroup"><a class="navlink" href="#revision"><span class="num">07</span> Revision Sheet</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Schematic notes · GATE CSE 2027</span>
+      <h1>Linear Algebra, mapped out <em>like a transformation</em>, not memorized like a formula sheet.</h1>
+      <p>Seven short sheets covering the complete GATE CSE Linear Algebra syllabus — matrices, determinants, systems of equations, eigenvalues/eigenvectors, diagonalization, and LU decomposition — with worked examples, property tables, and the exact traps GATE likes to set. Low weightage (2–3 marks), high accuracy-per-hour if drilled right.</p>
+      <div class="chips">
+        <span class="chip">01 Matrices</span>
+        <span class="chip">02 Determinants</span>
+        <span class="chip">03 Linear Systems</span>
+        <span class="chip">04 Eigen Values</span>
+        <span class="chip">05 Diagonalization</span>
+        <span class="chip">06 LU Decomposition</span>
+        <span class="chip">07 Revision</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g fill="none" stroke="#2a2b33" stroke-width="1.4">
+          <rect x="30" y="30" width="120" height="120" rx="3"/>
+          <line x1="30" y1="70" x2="150" y2="70"/>
+          <line x1="30" y1="110" x2="150" y2="110"/>
+          <line x1="70" y1="30" x2="70" y2="150"/>
+          <line x1="110" y1="30" x2="110" y2="150"/>
+          <line x1="150" y1="90" x2="185" y2="90" stroke="#cba36b"/>
+          <path d="M178 84 L185 90 L178 96" stroke="#cba36b"/>
+        </g>
+        <g stroke="#d98a5f" stroke-width="1.6" fill="none">
+          <line x1="215" y1="90" x2="270" y2="55"/>
+          <path d="M262 53 L270 55 L266 62" />
+          <line x1="215" y1="90" x2="260" y2="130"/>
+          <path d="M251 124 L260 130 L252 134" />
+        </g>
+        <g font-family="JetBrains Mono" font-size="10" fill="#6f6a60">
+          <text x="80" y="20">A</text>
+          <text x="200" y="95" fill="#a8a196">v</text>
+          <text x="272" y="50" fill="#d98a5f">λ₁v</text>
+          <text x="262" y="145" fill="#d98a5f">λ₂v</text>
+        </g>
+      </svg>
+    </section>
+
+    <section class="topic" id="matrices">
+      <div class="topic-head"><span class="idx">01</span><h2>Matrices — Types &amp; Operations</h2></div>
+      <div class="topic-kicker">SPECIAL MATRICES · RANK · OPERATIONS · TRANSPOSE PROPERTIES</div>
+
+      <h3 class="sub">What GATE actually tests here</h3>
+      <p>Matrices themselves rarely carry a full question — they're the language the rest of the syllabus (determinants, eigenvalues, systems) is written in. GATE tests whether you instantly recognize <strong>special matrix types</strong> and their guaranteed properties, since that recognition shortcuts otherwise long computations.</p>
+
+      <h3 class="sub">Special matrices — properties GATE relies on</h3>
+      <p>The eigenvalue guarantees below (real, purely imaginary, orthonormal rows/columns) specifically assume a <strong>real matrix</strong> — i.e. all entries are real numbers, which is the standard GATE setting unless a question explicitly introduces complex entries. Stated for complex matrices, the corresponding guarantees actually belong to the broader classes Hermitian, skew-Hermitian, and unitary matrices instead.</p>
+      <table>
+        <tr><th>Type</th><th>Definition</th><th>Key guaranteed property (for a real matrix)</th></tr>
+        <tr><td>Symmetric</td><td>A = Aᵀ</td><td>Eigenvalues always real</td></tr>
+        <tr><td>Skew-symmetric</td><td>A = −Aᵀ</td><td>Diagonal = 0; eigenvalues purely imaginary or 0</td></tr>
+        <tr><td>Orthogonal</td><td>A·Aᵀ = I</td><td>det(A) = ±1; rows/cols form an orthonormal set (unit length, mutually perpendicular)</td></tr>
+        <tr><td>Idempotent</td><td>A² = A</td><td>Eigenvalues are only 0 or 1</td></tr>
+        <tr><td>Nilpotent</td><td>Aᵏ = 0 for some k</td><td>All eigenvalues are 0</td></tr>
+        <tr><td>Involutory</td><td>A² = I</td><td>Eigenvalues are only +1 or −1</td></tr>
+        <tr><td>Diagonal</td><td>Non-zero entries only on diagonal</td><td>Eigenvalues = diagonal entries themselves</td></tr>
+        <tr><td>Upper/Lower triangular</td><td>Zeros above/below diagonal</td><td>Eigenvalues = diagonal entries; det = product of diagonal</td></tr>
+      </table>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>"Symmetric ⇒ real eigenvalues" is a one-way guarantee, and it's specifically a statement about <strong>real symmetric</strong> matrices. A matrix can have all-real eigenvalues without being symmetric at all — never use the converse. And if the matrix has complex entries, being symmetric (A=Aᵀ, without conjugation) no longer guarantees real eigenvalues; that stronger guarantee belongs to Hermitian matrices (A = A͞ᵀ) instead.</p>
+      </div>
+
+      <h3 class="sub">Rank of a matrix</h3>
+      <p>Rank = number of linearly independent rows (equivalently, columns) = size of the largest non-zero minor (sub-determinant).</p>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Computing rank fast</span>
+          <p>Reduce to row-echelon form via elementary row operations. Rank = number of non-zero rows remaining. Row operations never change rank.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Bounds</span>
+          <p>For an m×n matrix: rank ≤ min(m, n). A square n×n matrix has rank n iff it is invertible (non-singular).</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Transpose &amp; multiplication rules</h3>
+      <div class="eq">(Aᵀ)ᵀ = A         (A + B)ᵀ = Aᵀ + Bᵀ         (AB)ᵀ = Bᵀ·Aᵀ   (order reverses!)
+(kA)ᵀ = k·Aᵀ      (ABC)ᵀ = Cᵀ·Bᵀ·Aᵀ</div>
+      <div class="card note">
+        <span class="label">Multiplication is not commutative</span>
+        <p>AB ≠ BA in general, even when both products are defined and same-sized. GATE frequently builds a "which of these is always true" MCQ around this — only special cases (e.g. A and A⁻¹, or two diagonal matrices) commute.</p>
+      </div>
+
+      <h3 class="sub">Matrix inverse — existence &amp; formula (2×2, 3×3)</h3>
+      <p>A square matrix A is invertible iff det(A) ≠ 0. For a 2×2 matrix:</p>
+      <div class="eq">A = [a b; c d]   ⇒   A⁻¹ = 1/det(A) · [d −b; −c a]      where det(A) = ad − bc</div>
+      <p>For larger matrices: A⁻¹ = adj(A) / det(A), where adj(A) is the transpose of the cofactor matrix.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A 4×4 matrix has rank 3. What can you conclude about det(A)?</summary>
+          <div class="ans">
+            <p>A square n×n matrix has full rank n iff it is invertible (det ≠ 0). Rank 3 &lt; 4 means the matrix is singular.</p>
+            <p class="final">Answer: det(A) = 0</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> If A is a 3×3 skew-symmetric matrix, what is the value of det(A)?</summary>
+          <div class="ans">
+            <p>For skew-symmetric A: det(A) = det(Aᵀ) = det(−A) = (−1)ⁿ·det(A). For odd n (n=3), this gives det(A) = −det(A), forcing det(A) = 0.</p>
+            <p class="final">Answer: det(A) = 0</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Find the inverse of A = [2 1; 1 1].</summary>
+          <div class="ans">
+            <p>det(A) = 2(1) − 1(1) = 1. A⁻¹ = (1/1)·[1 −1; −1 2] = [1 −1; −1 2].</p>
+            <p class="final">Answer: A⁻¹ = [1 −1; −1 2]</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Is it possible for AB = BA when A and B are both diagonal matrices of the same size?</summary>
+          <div class="ans">
+            <p>Yes — diagonal matrices always commute, since multiplying two diagonal matrices just multiplies corresponding diagonal entries element-wise, regardless of order.</p>
+            <p class="final">Answer: Yes, always commute</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A matrix A satisfies A² = A. What are the only possible eigenvalues of A?</summary>
+          <div class="ans">
+            <p>If Av = λv, then A²v = λ²v. Since A² = A, λ²v = λv ⇒ λ² = λ ⇒ λ(λ−1) = 0.</p>
+            <p class="final">Answer: λ = 0 or λ = 1 (idempotent matrix)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="determinants">
+      <div class="topic-head"><span class="idx">02</span><h2>Determinants</h2></div>
+      <div class="topic-kicker">PROPERTIES · COFACTOR EXPANSION · EFFECT OF ROW OPS</div>
+
+      <h3 class="sub">Core properties GATE tests directly</h3>
+      <table>
+        <tr><th>Operation / condition</th><th>Effect on determinant</th></tr>
+        <tr><td>Swap two rows/columns</td><td>Determinant changes sign</td></tr>
+        <tr><td>Multiply one row by scalar k</td><td>Determinant scales by k</td></tr>
+        <tr><td>Multiply entire n×n matrix by k</td><td>Determinant scales by kⁿ</td></tr>
+        <tr><td>Add multiple of one row to another</td><td>Determinant unchanged</td></tr>
+        <tr><td>Two rows/columns identical or proportional</td><td>Determinant = 0</td></tr>
+        <tr><td>Transpose: det(A) vs det(Aᵀ)</td><td>Equal — det(A) = det(Aᵀ)</td></tr>
+      </table>
+
+      <div class="card formula">
+        <span class="label">Multiplicative &amp; inverse relations</span>
+        <div class="eq">det(AB) = det(A)·det(B)          det(A⁻¹) = 1 / det(A)          det(kA) = kⁿ · det(A)  (n×n matrix)
+det(A) = product of eigenvalues        trace(A) = sum of eigenvalues</div>
+      </div>
+
+      <h3 class="sub">Cofactor expansion (Laplace expansion)</h3>
+      <p>Expand along any row or column — the answer is identical regardless of which row/column you pick, so always choose the one with the most zeros.</p>
+      <div class="eq">det(A) = Σⱼ aᵢⱼ · Cᵢⱼ    where Cᵢⱼ = (−1)^(i+j) · Mᵢⱼ  (Mᵢⱼ = minor: delete row i, column j)</div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>det(A + B) ≠ det(A) + det(B) in general — determinant is not additive. Only multiplicative relations (det(AB) = det(A)det(B)) are guaranteed.</p>
+      </div>
+
+      <h3 class="sub">Triangular &amp; block matrices</h3>
+      <p>For upper/lower triangular (and diagonal) matrices, det = product of the diagonal entries — this is why Gaussian elimination to triangular form is the fastest way to compute a determinant by hand for larger matrices.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> If det(A) = 5 for a 3×3 matrix A, find det(2A).</summary>
+          <div class="ans">
+            <p>det(kA) = kⁿ·det(A) for an n×n matrix. Here n=3, k=2: det(2A) = 2³ × 5 = 8 × 5.</p>
+            <p class="final">Answer: det(2A) = 40</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A is a 3×3 matrix with det(A) = 4. Find det(A⁻¹) and det(Aᵀ).</summary>
+          <div class="ans">
+            <p>det(A⁻¹) = 1/det(A) = 1/4. det(Aᵀ) = det(A) = 4 (transpose never changes determinant).</p>
+            <p class="final">Answer: det(A⁻¹) = 1/4, det(Aᵀ) = 4</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Evaluate det([3 0 0; 5 2 0; 7 1 4]) using the triangular shortcut.</summary>
+          <div class="ans">
+            <p>This is lower triangular (all entries above the diagonal are 0), so det = product of diagonal entries = 3 × 2 × 4.</p>
+            <p class="final">Answer: det = 24</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> If two rows of a 4×4 matrix are swapped and then one row is scaled by 3, and the original determinant was 6, what is the new determinant?</summary>
+          <div class="ans">
+            <p>Swapping two rows flips the sign: 6 → −6. Scaling one row by 3 then multiplies by 3: −6 × 3 = −18.</p>
+            <p class="final">Answer: −18</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Matrices A and B are both 3×3 with det(A) = 2 and det(B) = −3. Find det(AB) and det(A²B⁻¹).</summary>
+          <div class="ans">
+            <p>det(AB) = det(A)det(B) = 2 × (−3) = −6. det(A²B⁻¹) = det(A)²/det(B) = 4/(−3).</p>
+            <p class="final">Answer: det(AB) = −6, det(A²B⁻¹) = −4/3</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="systems">
+      <div class="topic-head"><span class="idx">03</span><h2>Systems of Linear Equations</h2></div>
+      <div class="topic-kicker">CONSISTENCY · RANK CRITERIA · GAUSSIAN ELIMINATION</div>
+
+      <h3 class="sub">The rank-based consistency test</h3>
+      <p>For a system Ax = b with A the m×n coefficient matrix and [A|b] the augmented matrix, consistency depends entirely on comparing ranks:</p>
+      <table>
+        <tr><th>Condition</th><th>Result</th></tr>
+        <tr><td>rank(A) ≠ rank([A|b])</td><td>Inconsistent — no solution</td></tr>
+        <tr><td>rank(A) = rank([A|b]) = n (number of unknowns)</td><td>Consistent — unique solution</td></tr>
+        <tr><td>rank(A) = rank([A|b]) &lt; n</td><td>Consistent — infinitely many solutions (n − rank free variables)</td></tr>
+      </table>
+
+      <div class="card formula">
+        <span class="label">Homogeneous systems (Ax = 0)</span>
+        <p>Always consistent (x = 0 is always a solution — the "trivial" solution). Non-trivial solutions exist iff rank(A) &lt; n, which for a square matrix is equivalent to det(A) = 0.</p>
+      </div>
+
+      <h3 class="sub">Gaussian elimination — the mechanical process</h3>
+      <p>Convert [A|b] to row-echelon form using elementary row operations (swap rows, scale a row, add a multiple of one row to another), then back-substitute from the bottom row upward.</p>
+      <div class="eq">Row-echelon example:
+[1  2  1 | 4]        [1  2  1 | 4]
+[2  1 -1 | 1]   →    [0 -3 -3 | -7]   (R2 → R2 − 2R1)
+[1 -1  2 | 3]        [0 -3  1 | -1]   (R3 → R3 − R1)
+[0  0  4 | -8]   (R3 → R3 − R2)</div>
+      <p>Back-substitute: 4z = −8 ⇒ z = −2. −3y − 3(−2) = −7 ⇒ y = 13/3... (illustrative — the point is the pattern, not this specific arithmetic).</p>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>"Number of free variables" = n − rank(A), NOT n − (number of equations). A system with 5 equations in 4 unknowns where only 3 equations are independent still has 4 − rank = 4 − 3 = 1 free variable — the extra dependent equation doesn't add constraints.</p>
+      </div>
+
+      <h3 class="sub">Cramer's rule (unique-solution case only)</h3>
+      <p>Valid only when det(A) ≠ 0 (square system, unique solution guaranteed):</p>
+      <div class="eq">xᵢ = det(Aᵢ) / det(A)     where Aᵢ = A with column i replaced by b</div>
+      <div class="card note">
+        <span class="label">When not to reach for Cramer's rule</span>
+        <p>It's computationally expensive beyond 3×3 and fails outright (division by zero) whenever det(A) = 0 — even though the system might still have infinite solutions in that case. Gaussian elimination handles every case; Cramer's rule only handles the "nice" one.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A system Ax = b has A of size 3×3 with rank(A) = 2, and rank([A|b]) = 3. What does this tell you?</summary>
+          <div class="ans">
+            <p>Since rank(A) ≠ rank([A|b]), the system is inconsistent — b is not in the column space of A.</p>
+            <p class="final">Answer: No solution (inconsistent)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A homogeneous system Ax = 0 has A as a 4×4 matrix with det(A) = 0 and rank(A) = 2. How many linearly independent solutions exist?</summary>
+          <div class="ans">
+            <p>Number of independent solutions (dimension of null space) = n − rank(A) = 4 − 2.</p>
+            <p class="final">Answer: 2 linearly independent solutions</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> For what value of k does the system x + y = 2, 2x + ky = 4 have infinitely many solutions?</summary>
+          <div class="ans">
+            <p>For infinite solutions, the two equations must be proportional: 2/1 = k/1 = 4/2. From 2/1 = 4/2 = 2, we need k/1 = 2, so k = 2. Check: second equation becomes 2x + 2y = 4, i.e., x + y = 2 — identical to the first.</p>
+            <p class="final">Answer: k = 2</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A square system Ax = b has det(A) ≠ 0. What can you say about the solution using Cramer's rule reasoning?</summary>
+          <div class="ans">
+            <p>det(A) ≠ 0 means A is invertible, so rank(A) = n (full rank) which automatically equals rank([A|b]) since adding a column can't exceed rank n for an n×n system with unique solution — the system has exactly one solution.</p>
+            <p class="final">Answer: Unique solution exists</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A system has 4 equations in 3 unknowns. If rank(A) = 3 and rank([A|b]) = 3, is the system consistent, and how many solutions?</summary>
+          <div class="ans">
+            <p>rank(A) = rank([A|b]) = 3 = n (number of unknowns) ⇒ consistent with a unique solution, even though there are more equations (4) than unknowns (3) — the 4th equation is simply dependent on the other three.</p>
+            <p class="final">Answer: Consistent, unique solution</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="eigen">
+      <div class="topic-head"><span class="idx">04</span><h2>Eigenvalues &amp; Eigenvectors</h2></div>
+      <div class="topic-kicker">CHARACTERISTIC EQUATION · PROPERTIES · SPECIAL-MATRIX SHORTCUTS</div>
+
+      <h3 class="sub">The defining equation</h3>
+      <p>For a square matrix A, a non-zero vector v is an eigenvector with eigenvalue λ if applying A to v just scales it — the direction doesn't change:</p>
+      <div class="eq">A·v = λ·v      ⟺      (A − λI)·v = 0      (has non-trivial solution iff det(A − λI) = 0)</div>
+      <p>det(A − λI) = 0 is the <strong>characteristic equation</strong>; its roots are the eigenvalues. This is the single most frequently tested computation in this entire subject.</p>
+
+      <h3 class="sub">Worked example — 2×2 characteristic equation</h3>
+      <div class="eq">A = [4 1; 2 3]
+det(A − λI) = det([4−λ  1; 2  3−λ]) = (4−λ)(3−λ) − 2 = λ² − 7λ + 10 = 0
+⇒ (λ−5)(λ−2) = 0  ⇒  λ = 5, λ = 2</div>
+      <p>To find the eigenvector for λ = 5: solve (A − 5I)v = 0 → [−1 1; 2 −2]v = 0 → v = [1, 1]ᵀ (any scalar multiple).</p>
+
+      <h3 class="sub">Fast checks GATE rewards</h3>
+      <table>
+        <tr><th>Quantity</th><th>Shortcut</th></tr>
+        <tr><td>Sum of eigenvalues</td><td>= trace(A) (sum of diagonal entries)</td></tr>
+        <tr><td>Product of eigenvalues</td><td>= det(A)</td></tr>
+        <tr><td>Eigenvalues of Aᵀ</td><td>Same as eigenvalues of A</td></tr>
+        <tr><td>Eigenvalues of A⁻¹ (A invertible)</td><td>1/λᵢ for each eigenvalue λᵢ of A</td></tr>
+        <tr><td>Eigenvalues of Aᵏ</td><td>λᵢᵏ for each eigenvalue λᵢ of A</td></tr>
+        <tr><td>Eigenvalues of A + kI</td><td>λᵢ + k for each eigenvalue λᵢ of A</td></tr>
+        <tr><td>Eigenvalues of triangular/diagonal A</td><td>Read directly off the diagonal — no computation needed</td></tr>
+      </table>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — "eigenvalues of A⁻¹ = 1/λᵢ" needs A invertible</span>
+        <p>This shortcut silently assumes A is nonsingular. If A has 0 as an eigenvalue, then det(A) = product of eigenvalues = 0, so A is singular and A⁻¹ doesn't exist at all — there's nothing to take reciprocals of. The correct statement: <strong>if A is invertible (equivalently, all its eigenvalues are nonzero), then A⁻¹ exists and its eigenvalues are exactly 1/λᵢ.</strong> Always confirm no eigenvalue is 0 before applying this shortcut.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Eigenvalues can repeat (algebraic multiplicity &gt; 1), but that does NOT guarantee two independent eigenvectors for that eigenvalue (geometric multiplicity can be less than algebraic multiplicity). This gap is exactly what breaks diagonalizability — see Sheet 05.</p>
+      </div>
+
+      <div class="card note">
+        <span class="label">Eigenvectors for distinct eigenvalues</span>
+        <p>Eigenvectors corresponding to distinct eigenvalues are always linearly independent. This is why an n×n matrix with n distinct eigenvalues is guaranteed diagonalizable.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A 3×3 matrix has trace = 9 and two of its eigenvalues are 2 and 3. Find the third eigenvalue.</summary>
+          <div class="ans">
+            <p>Sum of eigenvalues = trace = 9. Third eigenvalue = 9 − 2 − 3.</p>
+            <p class="final">Answer: λ₃ = 4</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Find the eigenvalues of A = [2 0; 0 5].</summary>
+          <div class="ans">
+            <p>A is diagonal, so eigenvalues are read directly off the diagonal entries — no characteristic-equation computation needed.</p>
+            <p class="final">Answer: λ = 2, λ = 5</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A matrix A has eigenvalues 1, 2, 3. Find det(A) and the eigenvalues of A⁻¹.</summary>
+          <div class="ans">
+            <p>det(A) = product of eigenvalues = 1×2×3 = 6 ≠ 0, so A is invertible and the reciprocal-eigenvalue shortcut applies. Eigenvalues of A⁻¹ = reciprocals = 1, 1/2, 1/3.</p>
+            <p class="final">Answer: det(A) = 6; eigenvalues of A⁻¹ are 1, 1/2, 1/3</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Find the eigenvalues of A = [3 −2; 4 −1].</summary>
+          <div class="ans">
+            <p>trace = 3 + (−1) = 2. det = 3(−1) − (−2)(4) = −3 + 8 = 5. Characteristic equation: λ² − 2λ + 5 = 0. λ = (2 ± √(4−20))/2 = 1 ± 2i.</p>
+            <p class="final">Answer: λ = 1 + 2i, 1 − 2i (complex conjugate pair)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> If A has eigenvalue λ = 3 with eigenvector v, what is the corresponding eigenvalue of A² + 2A for the same eigenvector v?</summary>
+          <div class="ans">
+            <p>If Av = 3v, then A²v = 9v. So (A² + 2A)v = 9v + 2(3v) = 15v.</p>
+            <p class="final">Answer: 15</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="diagonalization">
+      <div class="topic-head"><span class="idx">05</span><h2>Diagonalization &amp; Cayley-Hamilton</h2></div>
+      <div class="topic-kicker">P⁻¹AP = D · ALGEBRAIC VS GEOMETRIC MULTIPLICITY · CAYLEY-HAMILTON THEOREM</div>
+
+      <h3 class="sub">Diagonalization condition</h3>
+      <p>A is diagonalizable (A = PDP⁻¹, D diagonal) iff it has n linearly independent eigenvectors for an n×n matrix. Equivalently: for every eigenvalue, geometric multiplicity (dimension of its eigenspace) must equal algebraic multiplicity (its multiplicity as a root of the characteristic polynomial).</p>
+      <div class="two-col">
+        <div class="card note">
+          <span class="label">Guaranteed diagonalizable</span>
+          <p>n distinct eigenvalues, OR any real symmetric matrix (always diagonalizable, and by an orthogonal matrix — spectral theorem).</p>
+        </div>
+        <div class="card pyq">
+          <span class="label">Not diagonalizable</span>
+          <p>A repeated eigenvalue whose eigenspace dimension is less than its multiplicity. Classic example: [1 1; 0 1] has eigenvalue 1 (multiplicity 2) but only 1 independent eigenvector.</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Why diagonalization matters — matrix powers</h3>
+      <p>Once A = PDP⁻¹, computing Aᵏ becomes trivial since D is diagonal:</p>
+      <div class="eq">Aᵏ = P·Dᵏ·P⁻¹     where Dᵏ just raises each diagonal entry to the power k</div>
+      <p>This is the standard route for "find A¹⁰⁰" or "find a closed form for a linear recurrence" style questions.</p>
+
+      <h3 class="sub">Cayley-Hamilton theorem <span style="font-family:var(--mono, monospace); font-size:10.5px; font-weight:700; letter-spacing:.06em; padding:2px 9px; border-radius:20px; background:rgba(255,255,255,0.05); color:var(--text-faint); border:1px solid var(--line-soft); text-transform:uppercase;">🟡 supporting / historical</span></h3>
+      <p>Not explicitly named in the revised GATE CSE 2027 Linear Algebra syllabus (matrices, determinants, systems of linear equations, eigenvalues/eigenvectors, LU decomposition) — kept here because it's a genuinely useful technique (e.g. for finding A⁻¹ or high powers of A) and has appeared in past papers, but treat it as supporting material rather than an explicit syllabus item.</p>
+      <p>Every square matrix satisfies its own characteristic equation. If the characteristic polynomial is p(λ) = λⁿ + c₁λⁿ⁻¹ + ... + cₙ, then:</p>
+      <div class="eq">p(A) = Aⁿ + c₁Aⁿ⁻¹ + ... + cₙI = 0   (the zero matrix)</div>
+      <div class="card formula">
+        <span class="label">Practical use — finding A⁻¹ without cofactors</span>
+        <p>For a 2×2 matrix with characteristic equation λ² − (trace)λ + det = 0, Cayley-Hamilton gives A² − (trace)A + det·I = 0. Rearranging: A⁻¹ = [(trace)I − A] / det(A) — often faster than the adjugate method.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Cayley-Hamilton is also the standard trick for reducing high powers of A: express Aⁿ (for large n) in terms of lower powers of A using the characteristic equation as a substitution rule, rather than multiplying A by itself n times.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">6 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A = [1 1; 0 1]. Is A diagonalizable? Justify using multiplicities.</summary>
+          <div class="ans">
+            <p>Characteristic equation: (1−λ)² = 0 ⇒ λ = 1 (algebraic multiplicity 2). Solving (A−I)v=0 gives [0 1; 0 0]v = 0 ⇒ only one independent eigenvector (geometric multiplicity 1). Since 1 &lt; 2, it fails the diagonalizability condition.</p>
+            <p class="final">Answer: Not diagonalizable (geometric &lt; algebraic multiplicity)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A 3×3 real symmetric matrix — can you say for certain it is diagonalizable, and by what kind of matrix P?</summary>
+          <div class="ans">
+            <p>By the spectral theorem, every real symmetric matrix is diagonalizable, and it can be diagonalized by an orthogonal matrix (P⁻¹ = Pᵀ).</p>
+            <p class="final">Answer: Yes, always diagonalizable by an orthogonal matrix</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Using Cayley-Hamilton, find A⁻¹ for A = [2 1; 1 2].</summary>
+          <div class="ans">
+            <p>trace = 4, det = 3. Characteristic equation: λ² − 4λ + 3 = 0 ⇒ A² − 4A + 3I = 0 ⇒ A⁻¹ = (4I − A)/3 = [(4−2) −1; −1 (4−2)]/3 = [2 −1; −1 2]/3.</p>
+            <p class="final">Answer: A⁻¹ = (1/3)[2 −1; −1 2]</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A has eigenvalues 2 and 3 (distinct, 2×2 matrix). Is it automatically diagonalizable?</summary>
+          <div class="ans">
+            <p>Yes — distinct eigenvalues always guarantee linearly independent eigenvectors, which for a 2×2 matrix with 2 distinct eigenvalues means diagonalizability is automatic, no further check needed.</p>
+            <p class="final">Answer: Yes, guaranteed diagonalizable</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> For A = [2 1; 1 2] with eigenvalues 1 and 3, find the eigenvalues of A⁵ using diagonalization reasoning (no need to find P).</summary>
+          <div class="ans">
+            <p>Since A = PDP⁻¹, Aⁿ = PDⁿP⁻¹ — the eigenvalues of Aⁿ are simply λⁿ for each eigenvalue λ of A. So A⁵ has eigenvalues 1⁵=1 and 3⁵=243 (trace of A⁵ = 244, determinant of A⁵ = 243). Note this only gives the eigenvalues of A⁵, not the full matrix — computing the actual matrix A⁵ additionally requires the eigenvectors (to build P) or direct matrix exponentiation.</p>
+            <p class="final">Answer: Eigenvalues of A⁵ are 1 and 243</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5b</span> Bonus — actually compute the full matrix A⁵ for the same A, and verify it against Q5's trace/determinant.</summary>
+          <div class="ans">
+            <p>Write A = I + B where B = [1 1; 1 1]. Since B² = 2B, B is "idempotent up to a scalar," so Bᵏ = 2^(k−1)B for k ≥ 1. Then Aⁿ = (I+B)ⁿ = I + [(1+2)ⁿ − 1]/2 · B by binomial expansion (using Bᵏ = 2^(k-1)B for every k≥1 term). For n=5: (3⁵−1)/2 = (243−1)/2 = 121, so A⁵ = I + 121·B.</p>
+            <p class="final">Answer: A⁵ = [122 121; 121 122] — trace = 122+122 = 244 ✓ and determinant = 122² − 121² = (122−121)(122+121) = 243 ✓, both matching Q5's eigenvalue-based prediction exactly</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="lu">
+      <div class="topic-head"><span class="idx">06</span><h2>LU Decomposition</h2></div>
+      <div class="topic-kicker">A = LU · DOOLITTLE METHOD · SOLVING SYSTEMS VIA FORWARD/BACK SUBSTITUTION</div>
+
+      <h3 class="sub">What LU decomposition is</h3>
+      <p>Express a square matrix A as the product of a lower-triangular matrix L (with 1's on its diagonal, Doolittle convention) and an upper-triangular matrix U — exactly the matrix Gaussian elimination produces along the way.</p>
+      <div class="eq">A = L · U
+L = lower triangular, diag(L) = 1,1,...,1        U = upper triangular (the row-echelon result)</div>
+
+      <h3 class="sub">Worked example — 3×3</h3>
+      <div class="eq">A = [2 3 1; 4 7 2; 2 5 4]
+
+R2 → R2 − 2R1 (multiplier 2):   [2 3 1; 0 1 0; 2 5 4]
+R3 → R3 − 1R1 (multiplier 1):   [2 3 1; 0 1 0; 0 2 3]
+R3 → R3 − 2R2 (multiplier 2):   [2 3 1; 0 1 0; 0 0 3]  = U
+
+L stores the multipliers used (below diagonal), 1's on diagonal:
+L = [1 0 0; 2 1 0; 1 2 1]
+
+Check: L · U = A ✓</div>
+      <div class="card note">
+        <span class="label">The rule of thumb</span>
+        <p>The multiplier used to zero out entry (i,j) during elimination goes directly into L at position (i,j). U is simply the final row-echelon form. No extra computation is needed beyond the elimination you'd do anyway.</p>
+      </div>
+
+      <h3 class="sub">Why LU decomposition is useful — solving Ax = b</h3>
+      <p>Once A = LU, solving Ax = b splits into two easy triangular solves instead of one harder elimination:</p>
+      <div class="eq">Ax = b  ⟺  LUx = b
+Step 1: Solve Ly = b for y   (forward substitution — top to bottom, trivial since diag(L)=1)
+Step 2: Solve Ux = y for x   (back substitution — bottom to top)</div>
+      <div class="card formula">
+        <span class="label">Why this matters for GATE-adjacent computing</span>
+        <p>If you need to solve Ax = b for many different b vectors with the same A, you factor A = LU once, then each new b only costs two cheap triangular solves — this is the actual reason LU decomposition exists in numerical computing, and GATE occasionally frames a question around this efficiency argument.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>LU decomposition (without row-pivoting) can fail even when A is invertible — it requires that no zero pivot appears during elimination without swapping rows. If a pivot would be zero, plain LU (as taught in the GATE syllabus) doesn't directly apply; that's a signal to recheck the matrix or use PA = LU with a permutation matrix P (this refinement is occasionally referenced but rarely the crux of a GATE question).</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Find the LU decomposition of A = [4 3; 6 3].</summary>
+          <div class="ans">
+            <p>Eliminate: R2 → R2 − (6/4)R1 = R2 − 1.5R1 → [4 3; 0 −1.5]. So U = [4 3; 0 −1.5], and the multiplier 1.5 goes into L: L = [1 0; 1.5 1].</p>
+            <p class="final">Answer: L = [1 0; 1.5 1], U = [4 3; 0 −1.5]</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> For A = LU with L = [1 0; 2 1] and U = [3 1; 0 5], find det(A).</summary>
+          <div class="ans">
+            <p>det(A) = det(L)·det(U). det(L) = 1 (triangular, diag = 1's). det(U) = 3×5 = 15.</p>
+            <p class="final">Answer: det(A) = 15</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Why is solving Ly = b called "forward substitution" while solving Ux = y is "back substitution"?</summary>
+          <div class="ans">
+            <p>L is lower triangular, so its first equation involves only y₁, letting you solve top-down (forward). U is upper triangular, so its last equation involves only the last unknown, letting you solve bottom-up (backward).</p>
+            <p class="final">Answer: Determined by which unknown each triangular system isolates first</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A is 3×3 and needs a row swap during elimination to avoid a zero pivot. Can standard LU (A = LU) still be found directly?</summary>
+          <div class="ans">
+            <p>No — a zero pivot without swapping breaks the standard Doolittle LU process. A permutation matrix P is needed, giving PA = LU instead of A = LU directly.</p>
+            <p class="final">Answer: Not directly; needs PA = LU with a permutation matrix</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Given L = [1 0; 3 1], U = [2 1; 0 4], and b = [4, 14]ᵀ, solve Ax = b via LUx = b.</summary>
+          <div class="ans">
+            <p>Step 1 (Ly=b, forward): y₁ = 4. 3y₁ + y₂ = 14 ⇒ y₂ = 14−12 = 2. Step 2 (Ux=y, backward): 4x₂ = 2 ⇒ x₂ = 0.5. 2x₁ + x₂ = 4 ⇒ 2x₁ = 3.5 ⇒ x₁ = 1.75.</p>
+            <p class="final">Answer: x₁ = 1.75, x₂ = 0.5</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="revision">
+      <div class="topic-head"><span class="idx">07</span><h2>Revision Sheet</h2></div>
+      <div class="topic-kicker">EVERYTHING ON ONE SCREEN — LAST-MINUTE PASS</div>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Rank &amp; consistency</span>
+          <p>rank(A)≠rank([A|b]): no solution. rank=rank=n: unique. rank=rank&lt;n: infinite solutions.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Homogeneous systems</span>
+          <p>Always consistent (x=0 works). Non-trivial solution exists iff rank(A)&lt;n, i.e. det(A)=0 for square A.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Determinant scaling</span>
+          <p>det(kA) = kⁿ·det(A) for n×n. det(AB)=det(A)det(B). det(A⁻¹)=1/det(A). det(A)=det(Aᵀ).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Triangular shortcut</span>
+          <p>Upper/lower triangular &amp; diagonal matrices: eigenvalues = diagonal entries; det = product of diagonal.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Characteristic equation</span>
+          <p>det(A − λI) = 0. Sum of roots = trace(A). Product of roots = det(A).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Special matrix eigenvalue rules (real matrices)</span>
+          <p>Real symmetric → real λ. Real orthogonal → det=±1. Idempotent → λ∈{0,1}. Nilpotent → λ=0. Involutory → λ∈{−1,1}.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Eigenvalue transformations</span>
+          <p>A⁻¹ → 1/λ (only if A invertible, i.e. no λ=0). Aᵏ → λᵏ. A+kI → λ+k. Aᵀ → same λ as A.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Diagonalizability</span>
+          <p>Needs n independent eigenvectors, i.e. geometric multiplicity = algebraic multiplicity for every eigenvalue. Distinct eigenvalues ⇒ automatic. Real symmetric ⇒ always (orthogonally).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Cayley-Hamilton</span>
+          <p>Every matrix satisfies its own characteristic equation: p(A) = 0. Used to find A⁻¹ or reduce high powers of A.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">LU decomposition</span>
+          <p>A = LU (diag(L)=1). Solve via Ly=b (forward), then Ux=y (backward). det(A) = product of U's diagonal.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">2×2 inverse</span>
+          <p>A=[a b; c d] ⇒ A⁻¹ = (1/(ad−bc))·[d −b; −c a].</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Cramer's rule</span>
+          <p>xᵢ = det(Aᵢ)/det(A), only valid when det(A)≠0 (square, unique-solution case).</p>
+        </div>
+      </div>
+
+      <div class="card note" style="margin-top:26px;">
+        <span class="label">How to use this sheet</span>
+        <p>Read sections 01–06 once for understanding, then loop back to this page alone for every later revision pass — if any card doesn't immediately make sense, that's the section to reopen. Linear Algebra is low-weightage (2–3 marks) but high-accuracy if these shortcuts are automatic — don't over-invest study time relative to Digital Logic, DS/Algo, or OS.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — rapid-fire mix (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A is a 3×3 orthogonal matrix. What are the possible values of det(A)?</summary>
+          <div class="ans">
+            <p>Orthogonal means AAᵀ = I, so det(A)·det(Aᵀ) = det(I) = 1. Since det(A) = det(Aᵀ), det(A)² = 1.</p>
+            <p class="final">Answer: det(A) = +1 or −1</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A 4×4 nilpotent matrix — what are all its eigenvalues, and what is det(A)?</summary>
+          <div class="ans">
+            <p>Nilpotent means Aᵏ = 0 for some k. If Av=λv then Aᵏv=λᵏv=0, forcing λ=0 for every eigenvalue (since v≠0). det(A) = product of eigenvalues = 0.</p>
+            <p class="final">Answer: All eigenvalues = 0; det(A) = 0</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A system has 3 equations, 3 unknowns, and the coefficient determinant is 0, but the system is still consistent. How many solutions does it have?</summary>
+          <div class="ans">
+            <p>det(A)=0 rules out a unique solution (Cramer's rule fails). Consistent + det(A)=0 means rank(A)=rank([A|b])&lt;3, so the system has infinitely many solutions, not zero.</p>
+            <p class="final">Answer: Infinitely many solutions</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A has eigenvalues 2, 2, 5 for a 3×3 matrix, and is known to be diagonalizable. What is det(A) and trace(A)?</summary>
+          <div class="ans">
+            <p>trace = sum of eigenvalues = 2+2+5 = 9. det = product of eigenvalues = 2×2×5 = 20.</p>
+            <p class="final">Answer: trace(A) = 9, det(A) = 20</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Using Cayley-Hamilton for A = [1 2; 2 1] (trace=2, det=−3), express A³ in terms of A and I.</summary>
+          <div class="ans">
+            <p>Characteristic equation: A² − 2A − 3I = 0 ⇒ A² = 2A + 3I. Multiply both sides by A: A³ = 2A² + 3A = 2(2A+3I) + 3A = 4A + 6I + 3A = 7A + 6I.</p>
+            <p class="final">Answer: A³ = 7A + 6I</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      Blueprint Notes — Linear Algebra for GATE CSE · built for revision, not first-read · official syllabus: matrices, determinants, systems of linear equations, eigenvalues &amp; eigenvectors, LU decomposition.
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

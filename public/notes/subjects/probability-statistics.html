@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Probability & Statistics — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'probability-statistics', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // Probability & Statistics</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">7 sheets · full syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#probability-basics"><span class="num">01</span> Probability Basics</a></div>
+      <div class="navgroup"><a class="navlink" href="#bayes"><span class="num">02</span> Bayes' Theorem</a></div>
+      <div class="navgroup"><a class="navlink" href="#random-variables"><span class="num">03</span> Random Variables</a></div>
+      <div class="navgroup"><a class="navlink" href="#discrete-distributions"><span class="num">04</span> Discrete Distributions</a></div>
+      <div class="navgroup"><a class="navlink" href="#continuous-distributions"><span class="num">05</span> Continuous Distributions</a></div>
+      <div class="navgroup"><a class="navlink" href="#descriptive-stats"><span class="num">06</span> Descriptive Statistics</a></div>
+      <div class="navgroup"><a class="navlink" href="#revision"><span class="num">07</span> Revision Sheet</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Schematic notes · GATE CSE 2027</span>
+      <h1>Probability &amp; Statistics, mapped out <em>like a distribution</em>, not scattered like random noise.</h1>
+      <p>Seven short sheets covering the complete GATE CSE Probability &amp; Statistics syllabus — covering fundamentals, random variables, standard discrete and continuous distributions, and descriptive statistics — with worked examples and the exact traps GATE likes to set.</p>
+      <div class="chips">
+        <span class="chip">01 Probability Basics</span>
+        <span class="chip">02 Bayes' Theorem</span>
+        <span class="chip">03 Random Variables</span>
+        <span class="chip">04 Discrete Distributions</span>
+        <span class="chip">05 Continuous Distributions</span>
+        <span class="chip">06 Descriptive Statistics</span>
+        <span class="chip">07 Revision</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g fill="none" stroke="#2a2b33" stroke-width="1.4">
+          <line x1="20" y1="190" x2="280" y2="190"/>
+          <line x1="150" y1="20" x2="150" y2="200"/>
+          <path d="M40 190 C 80 190, 110 50, 150 50 S 220 190, 260 190" stroke="#cba36b" stroke-width="1.8"/>
+        </g>
+        <g stroke="#d98a5f" stroke-width="1.4" stroke-dasharray="3,3">
+          <line x1="180" y1="95" x2="180" y2="190"/>
+          <line x1="120" y1="95" x2="120" y2="190"/>
+        </g>
+        <g font-family="JetBrains Mono" font-size="10" fill="#6f6a60">
+          <text x="270" y="205">x</text>
+          <text x="155" y="30">f(x)</text>
+          <text x="135" y="205" fill="#d98a5f">μ</text>
+          <text x="175" y="205" fill="#d98a5f">μ+σ</text>
+          <text x="100" y="205" fill="#d98a5f">μ-σ</text>
+        </g>
+      </svg>
+    </section>
+
+    <section class="topic" id="probability-basics">
+      <div class="topic-head"><span class="idx">01</span><h2>Probability Basics &amp; Conditional Probability</h2></div>
+      <div class="topic-kicker">SAMPLE SPACE · AXIOMS · ADDITION RULE · CONDITIONAL · INDEPENDENCE</div>
+
+      <h3 class="sub">Axioms of Probability</h3>
+      <p>For any event A in sample space S:</p>
+      <div class="eq">1. 0 ≤ P(A) ≤ 1
+2. P(S) = 1
+3. For mutually exclusive events A and B: P(A ∪ B) = P(A) + P(B)</div>
+
+      <h3 class="sub">Addition and Multiplication Rules</h3>
+      <div class="eq">Addition Rule: P(A ∪ B) = P(A) + P(B) − P(A ∩ B)
+Multiplication Rule: P(A ∩ B) = P(A) · P(B|A) = P(B) · P(A|B)</div>
+
+      <h3 class="sub">Conditional Probability &amp; Independence</h3>
+      <p>The probability of event A given that event B has occurred:</p>
+      <div class="eq">P(A|B) = P(A ∩ B) / P(B), provided P(B) > 0</div>
+      <p>Two events A and B are <strong>independent</strong> if knowing that B happened gives no information about A. This translates to P(A|B) = P(A), which gives:</p>
+      <div class="eq">P(A ∩ B) = P(A) · P(B)   (iff A and B are independent)</div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Do NOT confuse "independent events" with "mutually exclusive events". Mutually exclusive means they cannot happen together (P(A ∩ B) = 0). Independent means the occurrence of one doesn't affect the probability of the other (P(A ∩ B) = P(A)P(B)). In fact, if A and B are mutually exclusive (with non-zero probabilities), they are mathematically guaranteed to be dependent.</p>
+      </div>
+
+      <h3 class="sub">Conditional independence</h3>
+      <p>A and B are <strong>conditionally independent given C</strong> if, once you already know C occurred, learning A gives no further information about B (and vice versa):</p>
+      <div class="eq">P(A ∩ B | C) = P(A|C) · P(B|C)</div>
+      <div class="card note">
+        <span class="label">Conditional independence ≠ unconditional independence</span>
+        <p>These are genuinely different properties, and neither implies the other. A and B can be conditionally independent given C, yet be <strong>dependent</strong> when C is unknown/unconditioned on — and conversely, A and B can be unconditionally independent yet become dependent once you condition on some C. A classic example: A = "sprinkler was on", B = "grass is wet from rain", C = "the ground is wet". A and B may look correlated unconditionally (both tend to coincide with "wet ground" scenarios), but once C is fixed, learning about the sprinkler tells you nothing extra about whether it rained, or vice versa. This is exactly the reasoning pattern behind Bayesian-network-style questions: an edge structure encodes exactly which variables are conditionally independent given which others, and GATE questions often hinge on spotting this distinction rather than computing a number.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Let P(A) = 0.4, P(B) = 0.5, and P(A ∪ B) = 0.7. Are A and B independent?</summary>
+          <div class="ans">
+            <p>First find P(A ∩ B) using the addition rule: P(A ∪ B) = P(A) + P(B) − P(A ∩ B) ⇒ 0.7 = 0.4 + 0.5 − P(A ∩ B) ⇒ P(A ∩ B) = 0.2.</p>
+            <p>Now check for independence: P(A)P(B) = (0.4)(0.5) = 0.2. Since P(A ∩ B) = P(A)P(B), the events are independent.</p>
+            <p class="final">Answer: Yes</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A fair coin is tossed 3 times. What is the probability of getting exactly 2 heads given that the first toss is a head?</summary>
+          <div class="ans">
+            <p>Let B = "first toss is a head" = {HHH, HHT, HTH, HTT}. P(B) = 4/8.</p>
+            <p>Let A = "exactly 2 heads". A ∩ B = "first toss is head AND exactly 2 heads" = {HHT, HTH}. P(A ∩ B) = 2/8.</p>
+            <p>P(A|B) = P(A ∩ B) / P(B) = (2/8) / (4/8) = 2/4 = 1/2.</p>
+            <p class="final">Answer: 1/2</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> If A and B are mutually exclusive and P(A) > 0, P(B) > 0, find P(A|B).</summary>
+          <div class="ans">
+            <p>Mutually exclusive means P(A ∩ B) = 0. By definition, P(A|B) = P(A ∩ B) / P(B) = 0 / P(B) = 0.</p>
+            <p class="final">Answer: 0</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A bag contains 4 red and 6 blue balls. Two balls are drawn without replacement. What is the probability both are red?</summary>
+          <div class="ans">
+            <p>Let R₁ be the event the first is red, R₂ the event the second is red.</p>
+            <p>P(R₁ ∩ R₂) = P(R₁) · P(R₂|R₁) = (4/10) · (3/9) = 12/90 = 2/15.</p>
+            <p class="final">Answer: 2/15</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Let P(A) = 0.3, P(A ∪ B) = 0.6. Find P(B) if A and B are independent.</summary>
+          <div class="ans">
+            <p>Since A and B are independent, P(A ∩ B) = P(A)P(B) = 0.3 · P(B).</p>
+            <p>Addition rule: P(A ∪ B) = P(A) + P(B) − P(A ∩ B) ⇒ 0.6 = 0.3 + P(B) − 0.3 · P(B).</p>
+            <p>0.3 = 0.7 · P(B) ⇒ P(B) = 0.3 / 0.7 = 3/7.</p>
+            <p class="final">Answer: 3/7</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="bayes">
+      <div class="topic-head"><span class="idx">02</span><h2>Bayes' Theorem</h2></div>
+      <div class="topic-kicker">TOTAL PROBABILITY · BAYES' RULE · POSTERIOR PROBABILITY</div>
+
+      <h3 class="sub">Law of Total Probability</h3>
+      <p>If A₁, A₂, ..., Aₙ form a partition of the sample space (mutually exclusive and exhaustive), then for any event B:</p>
+      <div class="eq">P(B) = ∑ P(B|Aᵢ)P(Aᵢ)  for i = 1 to n</div>
+
+      <h3 class="sub">Bayes' Theorem</h3>
+      <p>It reverses the condition: given that B has occurred, what is the probability it was caused by Aᵢ?</p>
+      <div class="eq">P(Aᵢ|B) = [ P(B|Aᵢ)P(Aᵢ) ] / P(B)</div>
+      <p>Where P(B) is calculated using the Law of Total Probability.</p>
+      <p><strong>Terminology:</strong> P(Aᵢ) is the <em>prior</em> probability, P(B|Aᵢ) is the <em>likelihood</em>, and P(Aᵢ|B) is the <em>posterior</em> probability.</p>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>In total probability / Bayes' problems, a common mistake is forgetting to account for ALL partitions when calculating the denominator P(B). Always verify that your A₁, A₂, ..., Aₙ probabilities sum to 1. E.g., if checking for a defective item from machines X, Y, Z, ensure you include the defect paths from all three machines.</p>
+      </div>
+
+      <h3 class="sub">Conditional Expectation &amp; Law of Total Expectation</h3>
+      <p><strong>Conditional expectation</strong> E[X|A] is the expected value of X restricted to the outcomes where event A has occurred — computed the same way as an ordinary expectation, but using the conditional distribution of X given A instead of its unconditional distribution.</p>
+      <p>If A₁, A₂, ..., Aₙ form a partition of the sample space (same setup as the Law of Total Probability), the <strong>Law of Total Expectation</strong> lets you build E[X] from the conditional expectations on each piece of the partition, weighted by how likely each piece is:</p>
+      <div class="eq">E[X] = ∑ E[X|Aᵢ] P(Aᵢ)  for i = 1 to n</div>
+      <p>This mirrors the Law of Total Probability exactly, with E[X|Aᵢ] playing the role that P(B|Aᵢ) played there. It's useful whenever a random variable's behavior naturally splits across a few cases/conditions (e.g. expected defect cost when items come from different machines, or expected wait time given which of several servers picks up a request) and it's easier to reason about each case separately than about X directly.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Machine X produces 60% of items and Machine Y produces 40%. 2% of X's output is defective, and 3% of Y's is defective. Find the total probability an item is defective.</summary>
+          <div class="ans">
+            <p>P(Defect) = P(D|X)P(X) + P(D|Y)P(Y) = (0.02)(0.60) + (0.03)(0.40) = 0.012 + 0.012 = 0.024 (or 2.4%).</p>
+            <p class="final">Answer: 0.024</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> In the previous question, if an item is found defective, what is the probability it came from Machine Y?</summary>
+          <div class="ans">
+            <p>Using Bayes' theorem: P(Y|D) = P(D|Y)P(Y) / P(D) = (0.03)(0.40) / 0.024 = 0.012 / 0.024 = 1/2.</p>
+            <p class="final">Answer: 0.5</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A disease affects 1% of a population. A test has 99% sensitivity (correctly positive when diseased) and 99% specificity (correctly negative when healthy). If a person tests positive, what is the probability they actually have the disease?</summary>
+          <div class="ans">
+            <p>Let D = disease, H = healthy. P(D) = 0.01, P(H) = 0.99. Sensitivity gives P(+|D) = 0.99; specificity gives P(-|H) = 0.99, so P(+|H) = 0.01.</p>
+            <p>P(+) = P(+|D)P(D) + P(+|H)P(H) = (0.99)(0.01) + (0.01)(0.99) = 0.0198.</p>
+            <p>P(D|+) = P(+|D)P(D) / P(+) = 0.0099 / 0.0198 = 1/2 = 50%.</p>
+            <p class="final">Answer: 0.5 (or 50%)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Urn 1 has 3 red and 4 black balls. Urn 2 has 5 red and 6 black balls. A fair die is rolled: if it shows 1 or 2, Urn 1 is chosen; otherwise Urn 2. A ball is drawn and is red. Probability it was Urn 1?</summary>
+          <div class="ans">
+            <p>P(U₁) = 2/6 = 1/3, P(U₂) = 4/6 = 2/3. P(R|U₁) = 3/7, P(R|U₂) = 5/11.</p>
+            <p>P(R) = (3/7)(1/3) + (5/11)(2/3) = 1/7 + 10/33 = 33/231 + 70/231 = 103/231.</p>
+            <p>P(U₁|R) = P(R|U₁)P(U₁) / P(R) = (1/7) / (103/231) = (33/231) / (103/231) = 33/103.</p>
+            <p class="final">Answer: 33/103</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A student knows the answer to a multiple choice question with probability 0.6; otherwise (probability 0.4) they guess. There are 4 options. If they got it right, what's the probability they actually knew it?</summary>
+          <div class="ans">
+            <p>Let K = knows, G = guesses. P(K) = 0.6, P(G) = 0.4. P(Correct|K) = 1 (assuming knowing means getting it right). P(Correct|G) = 1/4 = 0.25.</p>
+            <p>P(C) = P(C|K)P(K) + P(C|G)P(G) = (1)(0.6) + (0.25)(0.4) = 0.6 + 0.1 = 0.7.</p>
+            <p>P(K|C) = P(C|K)P(K) / P(C) = 0.6 / 0.7 = 6/7.</p>
+            <p class="final">Answer: 6/7</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="random-variables">
+      <div class="topic-head"><span class="idx">03</span><h2>Random Variables</h2></div>
+      <div class="topic-kicker">DISCRETE VS CONTINUOUS · PMF/PDF · CDF · EXPECTATION &amp; VARIANCE</div>
+
+      <h3 class="sub">PMF, PDF, and CDF</h3>
+      <p><strong>Discrete RV (PMF):</strong> P(X = x). Must satisfy P(x) ≥ 0 and ∑ P(x) = 1.</p>
+      <p><strong>Continuous RV (PDF):</strong> f(x). Must satisfy f(x) ≥ 0 and ∫ f(x)dx = 1 over the domain. The probability at an exact point is 0; we calculate probability over intervals: P(a ≤ X ≤ b) = ∫ₐᵇ f(x)dx.</p>
+      <div class="card formula">
+        <span class="label">Cumulative Distribution Function (CDF)</span>
+        <div class="eq">F(x) = P(X ≤ x)</div>
+        <p>Properties: Non-decreasing, right-continuous, lim(x→−∞)F(x) = 0, lim(x→∞)F(x) = 1.</p>
+        <p>For continuous RVs: f(x) = d/dx F(x).</p>
+      </div>
+
+      <h3 class="sub">Expectation and Variance</h3>
+      <p><strong>Expectation (Mean, μ):</strong></p>
+      <div class="eq">Discrete: E[X] = ∑ xᵢ·P(xᵢ)
+Continuous: E[X] = ∫ x·f(x)dx</div>
+      
+      <p><strong>Variance (σ²) and Standard Deviation (σ):</strong></p>
+      <div class="eq">Var(X) = E[ (X − μ)² ] = E[X²] − (E[X])²
+σ = √Var(X)</div>
+      
+      <h3 class="sub">Properties of Expectation and Variance</h3>
+      <div class="eq">E[aX + b] = aE[X] + b
+Var(aX + b) = a²Var(X)
+E[X + Y] = E[X] + E[Y]     (always holds)
+Var(X + Y) = Var(X) + Var(Y)   (if X,Y are independent)</div>
+
+      <h3 class="sub">Covariance and Correlation</h3>
+      <div class="eq">Cov(X,Y) = E[XY] − E[X]E[Y]
+Cov(X,X) = Var(X)     (a variance is just a variable's covariance with itself)</div>
+      <p>Covariance generalizes the variance-of-a-sum formula above to the general (not-necessarily-independent) case:</p>
+      <div class="eq">Var(X + Y) = Var(X) + Var(Y) + 2·Cov(X,Y)</div>
+      <p>This collapses to the earlier independent-case formula only because independence forces Cov(X,Y) = 0 — the "if X,Y are independent" caveat above is really just this general formula with its cross-term dropped.</p>
+      <div class="card formula">
+        <span class="label">Correlation coefficient (ρ)</span>
+        <div class="eq">ρ = Cov(X,Y) / (σ_X · σ_Y),      −1 ≤ ρ ≤ 1</div>
+        <p>Correlation is covariance rescaled to be unit-free and bounded — it measures the strength and direction of the <strong>linear</strong> relationship between X and Y, independent of either variable's own units or scale.</p>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — ρ is undefined (not zero) when either variance is zero</span>
+        <p>The formula divides by σ_X·σ_Y, so ρ is only <strong>defined when σ_X &gt; 0 AND σ_Y &gt; 0</strong>. A <strong>constant random variable</strong> (one that takes a single fixed value with probability 1, e.g. X ≡ 5 always) has Var(X) = 0, hence σ_X = 0 — its correlation with any other variable Y is a division by zero, and is therefore <strong>undefined</strong>, not 0. Don't report ρ = 0 for a constant just because Cov(X,Y) also happens to be 0 in that case (a constant's covariance with anything is indeed always 0) — the correct statement is that the ratio 0/0 is undefined, and "correlation" simply doesn't apply to a variable with no variance at all.</p>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — Cov(X,Y)=0 (or ρ=0) does NOT imply independence</span>
+        <p>Independence is a strictly stronger condition than zero covariance. Independence ⟹ Cov(X,Y)=0 always, but the converse is <strong>false</strong> in general: X and Y can be strongly, even deterministically, related through a <strong>non-linear</strong> relationship and still have zero covariance, because covariance/correlation only capture linear association. Classic example: let X be uniform on [−1,1] and Y = X². Y is completely determined by X — about as dependent as two variables can be — yet Cov(X,Y) = E[X³] − E[X]·E[X²] = 0 − 0 = 0, since both E[X³] and E[X] vanish for a distribution symmetric about 0. Zero correlation only rules out a <em>linear</em> relationship; it says nothing about non-linear dependence.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>For continuous variables, the PDF f(x) is a density, not a probability. While probabilities must be ≤ 1, a PDF value can easily exceed 1! Example: Uniform distribution on [0, 0.5] has f(x) = 2. Never eliminate an option just because f(x) &gt; 1.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Find k such that f(x) = kx for 0 &lt; x &lt; 2 is a valid PDF.</summary>
+          <div class="ans">
+            <p>Must integrate to 1. ∫₀² kx dx = k[x²/2]₀² = k(2) = 1. Therefore, k = 1/2.</p>
+            <p class="final">Answer: 1/2</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A discrete RV has P(X=0)=0.2, P(X=1)=0.5, P(X=2)=0.3. Find E[X] and E[X²].</summary>
+          <div class="ans">
+            <p>E[X] = 0(0.2) + 1(0.5) + 2(0.3) = 0 + 0.5 + 0.6 = 1.1.</p>
+            <p>E[X²] = 0²(0.2) + 1²(0.5) + 2²(0.3) = 0 + 0.5 + 1.2 = 1.7.</p>
+            <p class="final">Answer: E[X] = 1.1, E[X²] = 1.7</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> If Var(X) = 4, find Var(3X + 5).</summary>
+          <div class="ans">
+            <p>Using the property Var(aX + b) = a²Var(X).</p>
+            <p>Var(3X + 5) = 3²Var(X) = 9(4) = 36.</p>
+            <p class="final">Answer: 36</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Find the CDF F(x) for the PDF f(x) = 2x for 0 &lt; x &lt; 1, and 0 otherwise.</summary>
+          <div class="ans">
+            <p>For x &lt; 0, F(x) = 0.</p>
+            <p>For 0 ≤ x ≤ 1, F(x) = ∫₀ˣ 2t dt = [t²]₀ˣ = x².</p>
+            <p>For x &gt; 1, F(x) = 1.</p>
+            <p class="final">Answer: F(x) = x² on [0,1], 0 for x&lt;0, 1 for x&gt;1</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> If X and Y are independent random variables with Var(X)=2 and Var(Y)=3, find Var(2X - Y).</summary>
+          <div class="ans">
+            <p>Var(2X - Y) = Var(2X) + Var(-Y) (since independent) = 2²Var(X) + (-1)²Var(Y) = 4(2) + 1(3) = 8 + 3 = 11.</p>
+            <p class="final">Answer: 11</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="discrete-distributions">
+      <div class="topic-head"><span class="idx">04</span><h2>Standard Discrete Distributions</h2></div>
+      <div class="topic-kicker">BINOMIAL · POISSON · POISSON APPROXIMATION · GEOMETRIC</div>
+
+      <h3 class="sub">Binomial Distribution — B(n,p)</h3>
+      <p>Models the number of successes in n independent Bernoulli trials, each with probability of success p.</p>
+      <div class="eq">PMF: P(X = k) = C(n,k) pᵏ (1−p)ⁿ⁻ᵏ
+Mean: μ = np
+Variance: σ² = np(1−p)</div>
+
+      <h3 class="sub">Poisson Distribution — Poisson(λ)</h3>
+      <p>Models the number of events occurring in a fixed interval of time or space, when events occur with a known constant mean rate λ and independently of the time since the last event.</p>
+      <div class="eq">PMF: P(X = k) = e⁻λ · λᵏ / k!
+Mean: μ = λ
+Variance: σ² = λ</div>
+
+      <div class="card formula">
+        <span class="label">Poisson Approximation to Binomial</span>
+        <p>As a quick rule of thumb: when n is very large and p is very small, calculating the Binomial PMF directly is computationally awkward, and the Poisson distribution with λ = np approximates it well.</p>
+        <p>The precise limiting statement behind this rule: for Binomial(n, p) as n → ∞ and p → 0 <strong>while np → λ stays fixed and finite</strong>, the Binomial PMF converges to the Poisson(λ) PMF. The "np held fixed" condition is the part GATE expects you to know — n large and p small on their own aren't enough if their product isn't a moderate, stable value.</p>
+      </div>
+
+      <h3 class="sub">Geometric Distribution — Geom(p) <span style="font-family:var(--mono, monospace); font-size:10.5px; font-weight:700; letter-spacing:.06em; padding:2px 9px; border-radius:20px; background:rgba(255,255,255,0.05); color:var(--text-faint); border:1px solid var(--line-soft); text-transform:uppercase;">🟡 supporting / historical</span></h3>
+      <p>Not explicitly named in the revised GATE CSE 2027 probability syllabus (which lists Uniform, Normal, Exponential, Poisson, Binomial, random variables, mean/median/mode/SD, conditional probability, and Bayes) — kept here because it's a well-established, frequently useful distribution and has appeared in past GATE papers, but treat it as supporting material rather than a core syllabus item.</p>
+      <p>Models the number of independent Bernoulli(p) trials needed to get the <strong>first success</strong>. This is the "trial number of first success" convention — the one GATE uses by default unless a question says otherwise.</p>
+      <div class="eq">PMF: P(X = k) = (1−p)^(k−1) p ,  k = 1, 2, 3, ...
+Mean: μ = 1/p
+Variance: σ² = (1−p)/p²</div>
+      <div class="card note">
+        <span class="label">Watch for the other convention</span>
+        <p>Some textbooks instead define the geometric random variable as the <strong>number of failures before</strong> the first success, with support k = 0, 1, 2, ... In that convention: P(X=k) = (1−p)^k p, mean = (1−p)/p, and variance is unchanged at (1−p)/p². Same distribution, shifted by 1 — always check which convention a question is using before quoting mean/PMF, since mixing them up is a common, entirely avoidable error.</p>
+      </div>
+      <div class="card formula">
+        <span class="label">Memoryless property</span>
+        <p>The geometric distribution is the only discrete distribution with the memoryless property: P(X &gt; m+n | X &gt; m) = P(X &gt; n) for all m, n ≥ 0. Having already failed m trials tells you nothing about how many more trials remain — the process "forgets" how long it's been waiting.</p>
+      </div>
+
+      <table>
+        <tr><th>Distribution</th><th>Mean</th><th>Variance</th><th>When to use</th></tr>
+        <tr><td>Binomial</td><td>np</td><td>np(1−p)</td><td>Fixed n trials, each success/failure</td></tr>
+        <tr><td>Poisson</td><td>λ</td><td>λ</td><td>Counting events in fixed interval, rare events</td></tr>
+        <tr><td>Geometric</td><td>1/p</td><td>(1−p)/p²</td><td>Trials until the first success</td></tr>
+      </table>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — Mean = Variance does NOT imply Poisson</span>
+        <p>For a <em>known</em> Poisson(λ) distribution, E[X] = Var(X) = λ — that direction is a true, useful fact. But the converse is <strong>false</strong>: "mean equals variance" does not identify a distribution as Poisson, because it isn't a characterizing property. Other discrete random variables can satisfy E[X] = Var(X) too (constructed examples exist outside the standard named families), so mean=variance is at most a piece of supporting evidence for Poisson, never proof. Don't reason backward from "mean = variance" to "must be Poisson" — only reason forward, from "given Poisson" to "mean = variance = λ."</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A fair coin is tossed 10 times. What is the probability of getting exactly 5 heads?</summary>
+          <div class="ans">
+            <p>Binomial with n=10, p=0.5, k=5. P(X=5) = C(10,5)(0.5)⁵(0.5)⁵ = (252) / 2¹⁰ = 252/1024 = 63/256.</p>
+            <p class="final">Answer: 63/256 ≈ 0.246</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A call center receives an average of 3 calls per minute. What is the probability of receiving exactly 2 calls in a given minute?</summary>
+          <div class="ans">
+            <p>Poisson with λ=3. P(X=2) = e⁻³ · 3² / 2! = 9e⁻³ / 2 = 4.5e⁻³.</p>
+            <p class="final">Answer: 4.5e⁻³</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> The probability of a defective item is 0.01. In a batch of 200 items, find the approximate probability of getting exactly 2 defective items using Poisson.</summary>
+          <div class="ans">
+            <p>Here n=200, p=0.01. So λ = np = 2. Use Poisson PMF for k=2: P(X=2) = e⁻² · 2² / 2! = 4e⁻² / 2 = 2e⁻².</p>
+            <p class="final">Answer: 2e⁻²</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> For a binomial random variable X, if the mean is 4 and the variance is 3, find n and p.</summary>
+          <div class="ans">
+            <p>μ = np = 4. Var = np(1−p) = 3.</p>
+            <p>Substitute np=4 into the variance equation: 4(1−p) = 3 ⇒ 1−p = 3/4 ⇒ p = 1/4.</p>
+            <p>Then n(1/4) = 4 ⇒ n = 16.</p>
+            <p class="final">Answer: n = 16, p = 1/4</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> If X follows a Poisson distribution such that P(X=1) = P(X=2), find P(X=4).</summary>
+          <div class="ans">
+            <p>P(X=1) = e⁻λλ¹/1! = λe⁻λ. P(X=2) = e⁻λλ²/2! = (λ²/2)e⁻λ.</p>
+            <p>Equating them: λe⁻λ = (λ²/2)e⁻λ ⇒ 1 = λ/2 (since λ&gt;0) ⇒ λ = 2.</p>
+            <p>Now find P(X=4) = e⁻² · 2⁴ / 4! = 16e⁻² / 24 = (2/3)e⁻².</p>
+            <p class="final">Answer: (2/3)e⁻²</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="continuous-distributions">
+      <div class="topic-head"><span class="idx">05</span><h2>Standard Continuous Distributions</h2></div>
+      <div class="topic-kicker">UNIFORM · EXPONENTIAL · NORMAL · MEMORYLESS PROPERTY</div>
+
+      <h3 class="sub">Uniform Distribution — U(a,b)</h3>
+      <p>Constant probability density over the interval [a, b].</p>
+      <div class="eq">PDF: f(x) = 1/(b−a)  for x ∈ [a,b]
+Mean: μ = (a+b)/2
+Variance: σ² = (b−a)²/12</div>
+
+      <h3 class="sub">Exponential Distribution — Exp(λ)</h3>
+      <p>Models the time between events in a Poisson process.</p>
+      <div class="eq">PDF: f(x) = λe⁻λˣ  for x ≥ 0
+CDF: F(x) = 1 − e⁻λˣ
+Mean: μ = 1/λ
+Variance: σ² = 1/λ²</div>
+      
+      <div class="card formula">
+        <span class="label">The Memoryless Property</span>
+        <p>The exponential distribution is the ONLY continuous distribution with this property. P(X > s+t | X > s) = P(X > t). In plain terms: if you've waited 's' minutes, the probability you have to wait 't' more minutes is exactly the same as if you just started waiting.</p>
+      </div>
+
+      <h3 class="sub">Normal Distribution — N(μ,σ²)</h3>
+      <p>The classic bell curve. Symmetric about the mean μ. The sum of independent normal RVs is also normal.</p>
+      <div class="eq">PDF: f(x) = (1 / √(2πσ²)) · e^(−(x−μ)² / (2σ²))
+Standard Normal (Z): Z ~ N(0,1), formed by Z = (X−μ)/σ
+Empirical Rule: 68% in ±1σ, 95% in ±2σ, 99.7% in ±3σ</div>
+
+      <table>
+        <tr><th>Distribution</th><th>Mean</th><th>Variance</th></tr>
+        <tr><td>Uniform</td><td>(a+b)/2</td><td>(b−a)²/12</td></tr>
+        <tr><td>Exponential</td><td>1/λ</td><td>1/λ²</td></tr>
+        <tr><td>Normal</td><td>μ</td><td>σ²</td></tr>
+      </table>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>When computing probabilities for a Normal Distribution, ALWAYS convert it to the standard normal Z first using Z = (X−μ)/σ. GATE will provide the Φ(Z) values (the standard normal CDF values) in the question or useful data section.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> X is uniformly distributed on [2, 8]. Find P(X > 6).</summary>
+          <div class="ans">
+            <p>PDF f(x) = 1/(8−2) = 1/6. P(X &gt; 6) = ∫₆⁸ (1/6) dx = (1/6)[8 − 6] = 2/6 = 1/3.</p>
+            <p class="final">Answer: 1/3</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> The time to failure of a machine follows an exponential distribution with a mean of 5 years. Find the probability it survives past 5 years.</summary>
+          <div class="ans">
+            <p>Mean = 1/λ = 5 ⇒ λ = 1/5 = 0.2. CDF F(x) = P(X ≤ x) = 1 − e⁻λˣ.</p>
+            <p>P(X &gt; 5) = 1 − P(X ≤ 5) = e⁻⁰·²⁽⁵⁾ = e⁻¹.</p>
+            <p class="final">Answer: e⁻¹ ≈ 0.368</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> (Continuing Q2) If the machine has already survived 3 years, what is the probability it survives 5 more years?</summary>
+          <div class="ans">
+            <p>Due to the memoryless property of the exponential distribution, P(X &gt; 3+5 | X &gt; 3) = P(X &gt; 5). This is identical to the previous answer.</p>
+            <p class="final">Answer: e⁻¹ ≈ 0.368</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> X is a normally distributed RV with μ = 50 and σ = 10. Find P(X &lt; 70) in terms of the standard normal CDF Φ.</summary>
+          <div class="ans">
+            <p>Convert to standard normal: Z = (X − μ) / σ = (70 − 50) / 10 = 20 / 10 = 2.</p>
+            <p>P(X &lt; 70) = P(Z &lt; 2) = Φ(2).</p>
+            <p class="final">Answer: Φ(2)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> If X ~ N(μ=2, σ²=4) and Y ~ N(μ=3, σ²=5) are independent, what is the distribution of Z = X + Y?</summary>
+          <div class="ans">
+            <p>Note: N(μ, σ²) is used here — the second parameter is the <em>variance</em>, not the standard deviation (some texts use N(μ, σ) instead, so always check which convention a problem uses).</p>
+            <p>The sum of independent normal RVs is also normal. The means add: μ_z = μ_x + μ_y = 2 + 3 = 5. The variances add: σ²_z = σ²_x + σ²_y = 4 + 5 = 9. So Z ~ N(μ=5, σ²=9).</p>
+            <p class="final">Answer: Normal with mean 5, variance 9</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="descriptive-stats">
+      <div class="topic-head"><span class="idx">06</span><h2>Descriptive Statistics</h2></div>
+      <div class="topic-kicker">MEAN · MEDIAN · MODE · STANDARD DEVIATION · TRANSFORMATIONS</div>
+
+      <h3 class="sub">Measures of Central Tendency</h3>
+      <p><strong>Mean (Arithmetic):</strong> Sum of all values divided by n. Highly affected by outliers.</p>
+      <p><strong>Median:</strong> The middle value when sorted. Robust to outliers. If n is even, it's the average of the two middle values.</p>
+      <p><strong>Mode:</strong> The most frequently occurring value(s).</p>
+      
+      <div class="card formula">
+        <span class="label">Empirical Relationship</span>
+        <p>For moderately skewed, unimodal distributions:</p>
+        <div class="eq">Mode ≈ 3 · Median − 2 · Mean</div>
+        <p>This is Pearson's empirical approximation, not an exact identity — it's a rough estimate that holds reasonably well for moderately skewed unimodal distributions, not a formula derivable from first principles for arbitrary data.</p>
+      </div>
+
+      <h3 class="sub">Measures of Dispersion</h3>
+      <p><strong>Standard Deviation (σ):</strong> The square root of the variance.</p>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Population</span>
+          <div class="eq">σ² = (1/N) Σ(xᵢ − μ)²
+σ  = √σ²</div>
+        </div>
+        <div class="card formula">
+          <span class="label">Sample</span>
+          <div class="eq">s² = (1/(N−1)) Σ(xᵢ − x̄)²
+s  = √s²</div>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — don't automatically divide by N</span>
+        <p>These are two different quantities, not two notations for the same thing. <strong>Population</strong> standard deviation (σ) divides by N — used when the data given IS the entire population. <strong>Sample</strong> standard deviation (s) divides by <strong>N−1</strong> (Bessel's correction) — used when the data is a sample drawn from a larger population, and dividing by N−1 instead of N corrects the bias that comes from estimating spread around the sample's own mean x̄ rather than the true (unknown) population mean μ. Read the question carefully: if it explicitly says "sample standard deviation" or "sample variance," you MUST divide by N−1, not N — silently defaulting to N is one of the most common, entirely avoidable errors in this topic.</p>
+      </div>
+
+      <h3 class="sub">Linear Transformations</h3>
+      <p>If a new dataset Y is created by applying a linear transformation Y = aX + b to dataset X:</p>
+      <div class="eq">Mean(Y) = a · Mean(X) + b
+Median(Y) = a · Median(X) + b
+Mode(Y) = a · Mode(X) + b
+σ(Y) = |a| · σ(X)      (Adding a constant does NOT affect standard deviation)</div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>GATE questions often test your choice of average. If the data is highly skewed (e.g., salaries in a company, where a few people make vastly more than others), the <strong>Median</strong> is the best measure of central tendency, not the Mean, because the Mean will be artificially pulled upward by the outliers.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">6 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Find the median of: 12, 7, 3, 14, 9, 21.</summary>
+          <div class="ans">
+            <p>First sort the data: 3, 7, 9, 12, 14, 21. n=6 (even), so median is the average of the 3rd and 4th terms: (9+12)/2 = 10.5.</p>
+            <p class="final">Answer: 10.5</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A dataset has a mean of 45 and a median of 42. Estimate the mode using the empirical relationship.</summary>
+          <div class="ans">
+            <p>Mode ≈ 3(Median) − 2(Mean) = 3(42) − 2(45) = 126 − 90 = 36.</p>
+            <p class="final">Answer: 36</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> The mean and standard deviation of a dataset are 50 and 8, respectively. If every value is multiplied by 2 and then increased by 5, find the new mean and standard deviation.</summary>
+          <div class="ans">
+            <p>New mean = 2(Old Mean) + 5 = 2(50) + 5 = 105.</p>
+            <p>New std dev = |2|(Old Std Dev) = 2(8) = 16. (The +5 shift doesn't affect spread).</p>
+            <p class="final">Answer: Mean = 105, SD = 16</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Why is standard deviation preferred over variance in practical reporting?</summary>
+          <div class="ans">
+            <p>Standard deviation has the same units as the original data (e.g., meters, dollars), whereas variance is in squared units, making SD much easier to interpret.</p>
+            <p class="final">Answer: It has the same units as the data</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> If all values in a dataset are identical, what are the variance and standard deviation?</summary>
+          <div class="ans">
+            <p>If all values are identical, they all equal the mean. Thus (xᵢ − μ) = 0 for all i. The spread is zero.</p>
+            <p class="final">Answer: 0</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q6</span> A sample of 5 exam scores is {60, 70, 80, 90, 100}. Find the sample variance (not population variance).</summary>
+          <div class="ans">
+            <p>Sample mean x̄ = (60+70+80+90+100)/5 = 400/5 = 80. Squared deviations: (−20)²=400, (−10)²=100, 0²=0, 10²=100, 20²=400 → sum = 1000. Since this is explicitly a SAMPLE, divide by N−1 = 4, not N = 5: s² = 1000/4 = 250.</p>
+            <p class="final">Answer: s² = 250 (dividing by N−1=4; dividing by N=5 would give the wrong value 200, a population variance the question didn't ask for)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="revision">
+      <div class="topic-head"><span class="idx">07</span><h2>Revision Sheet</h2></div>
+      <div class="topic-kicker">EVERYTHING ON ONE SCREEN — LAST-MINUTE PASS</div>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Probability Rules</span>
+          <p>Addition: P(A∪B) = P(A)+P(B)−P(A∩B). Multiplication: P(A∩B) = P(A)P(B|A). Independence: P(A∩B) = P(A)P(B).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Conditional Independence</span>
+          <p>P(A∩B|C) = P(A|C)P(B|C). Conditional independence given C does NOT imply unconditional independence, and vice versa — they're separate properties.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Bayes' Theorem</span>
+          <p>P(Aᵢ|B) = [ P(B|Aᵢ)P(Aᵢ) ] / ∑[P(B|Aⱼ)P(Aⱼ)]. Useful for reversing conditionals.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Expectation Properties</span>
+          <p>E[aX+b] = aE[X]+b. Var(aX+b) = a²Var(X). E[X+Y]=E[X]+E[Y]. General: Var(X+Y) = Var(X)+Var(Y)+2Cov(X,Y).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Covariance &amp; Correlation</span>
+          <p>Cov(X,Y) = E[XY]−E[X]E[Y]. ρ = Cov(X,Y)/(σ_Xσ_Y), −1≤ρ≤1 — defined only when σ_X&gt;0 and σ_Y&gt;0 (a constant variable has undefined, not zero, correlation). Cov=0 (or ρ=0) does NOT imply independence — only rules out a linear relationship (e.g. Y=X² with symmetric X).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Binomial B(n,p)</span>
+          <p>P(X=k) = C(n,k)pᵏ(1−p)ⁿ⁻ᵏ. Mean = np. Var = np(1−p).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Poisson(λ)</span>
+          <p>P(X=k) = e⁻λλᵏ/k!. Mean = λ. Var = λ. Used for rare events. Mean=Var is necessary for Poisson, NOT sufficient to conclude it.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Geometric(p)</span>
+          <p>P(X=k) = (1−p)ᵏ⁻¹p, k≥1 (trials-to-first-success form). Mean = 1/p. Var = (1−p)/p². The only discrete memoryless distribution.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Uniform U(a,b)</span>
+          <p>f(x) = 1/(b−a). Mean = (a+b)/2. Var = (b−a)²/12.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Exponential Exp(λ)</span>
+          <p>f(x) = λe⁻λˣ. Mean = 1/λ. Var = 1/λ². Only continuous memoryless dist.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Normal N(μ,σ²)</span>
+          <p>Bell curve. Standardize using Z = (X−μ)/σ to use Z-tables. 68-95-99.7 rule.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Central Tendency</span>
+          <p>Mean (avg), Median (middle, robust to outliers), Mode (most freq). Mode ≈ 3Median − 2Mean.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Linear Transform</span>
+          <p>Y = aX+b ⇒ Mean changes by aX+b, but Std Dev changes ONLY by |a| (shift doesn't affect spread).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Population vs Sample SD — don't auto-divide by N</span>
+          <p>Population: σ² = (1/N)Σ(xᵢ−μ)². Sample: s² = (1/(N−1))Σ(xᵢ−x̄)². If the question says "sample," divide by N−1, not N.</p>
+        </div>
+      </div>
+
+      <div class="card note" style="margin-top:26px;">
+        <span class="label">How to use this sheet</span>
+        <p>Read sections 01–06 once for understanding, then loop back to this page alone for every later revision pass — if any card doesn't immediately make sense, that's the section to reopen. Memorize the distribution PMF/PDFs, means, and variances.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — rapid-fire mix (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> P(A)=0.5, P(B)=0.6, A and B independent. Find P(A∪B).</summary>
+          <div class="ans">
+            <p>P(A∩B) = (0.5)(0.6) = 0.3. P(A∪B) = 0.5 + 0.6 − 0.3 = 0.8.</p>
+            <p class="final">Answer: 0.8</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A discrete RV X has Poisson distribution. If E[X]=4, what is Var(2X)?</summary>
+          <div class="ans">
+            <p>For Poisson, Var(X) = E[X] = 4. Var(2X) = 2²Var(X) = 4(4) = 16.</p>
+            <p class="final">Answer: 16</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Exponential RV X has mean 10. Find P(X > 20 | X > 10).</summary>
+          <div class="ans">
+            <p>By memoryless property, P(X > 20 | X > 10) = P(X > 10). Mean = 10 ⇒ λ = 1/10. P(X > 10) = e⁻⁽¹/¹⁰⁾⁽¹⁰⁾ = e⁻¹.</p>
+            <p class="final">Answer: e⁻¹</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> The variance of data set X is 25. If each value is decreased by 10, what is the new standard deviation?</summary>
+          <div class="ans">
+            <p>Decreasing by 10 is a shift (b=−10), which doesn't change variance. Var = 25, so Standard Deviation = √25 = 5. (Never negative).</p>
+            <p class="final">Answer: 5</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> F(x) is the CDF of continuous RV X. Find P(a &lt; X ≤ b).</summary>
+          <div class="ans">
+            <p>By definition of CDF, P(X ≤ b) = F(b). To find interval (a, b], we subtract P(X ≤ a). So P(a &lt; X ≤ b) = F(b) − F(a).</p>
+            <p class="final">Answer: F(b) − F(a)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      Blueprint Notes — Probability &amp; Statistics for GATE CSE · built for revision, not first-read · official syllabus: random variables, distributions, mean/median/mode/standard deviation, conditional probability, Bayes theorem.
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

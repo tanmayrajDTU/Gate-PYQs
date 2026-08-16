@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Networks — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'computer-networks', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // Computer Networks</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">8 sheets · full syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#layering"><span class="num">01</span> Layering: OSI &amp; TCP/IP</a></div>
+      <div class="navgroup"><a class="navlink" href="#switching-datalink"><span class="num">02</span> Switching &amp; Data Link Layer</a></div>
+      <div class="navgroup"><a class="navlink" href="#mac-ethernet"><span class="num">03</span> Medium Access Control &amp; Ethernet</a></div>
+      <div class="navgroup"><a class="navlink" href="#routing"><span class="num">04</span> Routing Protocols</a></div>
+      <div class="navgroup"><a class="navlink" href="#network-layer"><span class="num">05</span> IP Addressing, CIDR &amp; Support Protocols</a></div>
+      <div class="navgroup"><a class="navlink" href="#transport"><span class="num">06</span> Transport Layer</a></div>
+      <div class="navgroup"><a class="navlink" href="#application"><span class="num">07</span> Application Layer Protocols</a></div>
+      <div class="navgroup"><a class="navlink" href="#revision"><span class="num">08</span> Revision Sheet</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Schematic notes · GATE CSE 2027</span>
+      <h1>A packet's <em>entire journey</em>, layer by layer, numeric to the bit.</h1>
+      <p>The official GATE syllabus lists this subject as seven dense clauses — layering, switching, the data link layer, routing, IP addressing, the transport layer, and application protocols. Eight sheets unpack every one of them, layer by layer bottom-up, with the exact numericals GATE repeats every year: subnetting, sliding-window efficiency, CRC, and TCP/congestion-window sizing. 6–8 marks, roughly half conceptual and half numerical.</p>
+      <div class="chips">
+        <span class="chip">01 Layering</span>
+        <span class="chip">02 Switching &amp; Data Link</span>
+        <span class="chip">03 MAC &amp; Ethernet</span>
+        <span class="chip">04 Routing</span>
+        <span class="chip">05 IP Addressing</span>
+        <span class="chip">06 Transport</span>
+        <span class="chip">07 Application Layer</span>
+        <span class="chip">08 Revision</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g font-family="JetBrains Mono" font-size="10" fill="#a8a196">
+          <rect x="30" y="15" width="160" height="24" rx="3" fill="none" stroke="#2a2b33"/>
+          <text x="40" y="31">Application</text>
+          <rect x="30" y="43" width="160" height="24" rx="3" fill="none" stroke="#2a2b33"/>
+          <text x="40" y="59">Transport</text>
+          <rect x="30" y="71" width="160" height="24" rx="3" fill="none" stroke="#cba36b" stroke-width="1.6"/>
+          <text x="40" y="87" fill="#cba36b">Network</text>
+          <rect x="30" y="99" width="160" height="24" rx="3" fill="none" stroke="#2a2b33"/>
+          <text x="40" y="115">Data Link</text>
+          <rect x="30" y="127" width="160" height="24" rx="3" fill="none" stroke="#2a2b33"/>
+          <text x="40" y="143">Physical</text>
+        </g>
+        <g font-family="JetBrains Mono" font-size="10" fill="#d98a5f">
+          <text x="210" y="87">10.1.2.0/24</text>
+          <path d="M195 83 L235 83" stroke="#d98a5f" stroke-width="1.3" fill="none"/>
+        </g>
+        <g font-family="JetBrains Mono" font-size="9" fill="#6f6a60">
+          <text x="30" y="180">SYN → SYN-ACK → ACK</text>
+        </g>
+      </svg>
+    </section>
+
+    <section class="topic" id="priority-map" style="padding-top:32px; padding-bottom:32px;">
+      <div class="card pyq">
+        <span class="label">🎯 GATE 2027 priority map — read this first</span>
+        <p>Everything below is kept, in full, in its natural layer-by-layer order — nothing is deleted. But not all of it carries equal weight for GATE CSE 2027. Use this map to triage your revision time: spend most of it on 🔥 Core, treat 🟡 Supporting/Legacy as "know it exists, recognize the basics, don't over-invest." Each topic below is tagged inline with the same badges so you can spot the split as you scroll.</p>
+        <div class="two-col" style="margin-top:14px;">
+          <div class="card" style="margin:0;">
+            <h4 class="subsub" style="color:var(--cyan);">🔥 GATE 2027 Core</h4>
+            <p>Switching + performance metrics · Data-link concepts (framing, error detection) · MAC &amp; Ethernet · Distance Vector · Link State · IPv4 · Fragmentation · CIDR · NAT · TCP · Flow control · Congestion control · Socket API · DNS · HTTP</p>
+          </div>
+          <div class="card" style="margin:0;">
+            <h4 class="subsub" style="color:var(--text-faint);">🟡 Supporting / Legacy</h4>
+            <p>ARP · DHCP · ICMP · UDP · SMTP · FTP · Email · Flooding · ARQ mechanics (Stop-and-Wait / Go-Back-N / Selective Repeat numericals — reliable delivery as a general concept is worth knowing, but the syllabus's explicit emphasis is data-link framing/error detection and transport flow/congestion control) · detailed generic shortest-path algorithm mechanics (the routing <em>concepts</em> — Distance Vector, Link State — are Core; the raw graph-traversal walkthrough is background)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="topic" id="layering">
+      <div class="topic-head"><span class="idx">01</span><h2>Layering: OSI &amp; TCP/IP</h2></div>
+      <div class="topic-kicker">CONCEPT OF LAYERING · OSI 7-LAYER MODEL · TCP/IP 4/5-LAYER MODEL · ENCAPSULATION</div>
+
+      <h3 class="sub">Why layering exists</h3>
+      <p>Each layer solves one well-defined problem and exposes a clean interface to the layer above it, independent of how the layer below is implemented. This is what lets, say, HTTP run identically over Ethernet, Wi-Fi, or a cellular link — the application layer never needs to know which physical medium carried the bits.</p>
+
+      <table>
+        <tr><th>OSI layer</th><th>TCP/IP layer</th><th>Job</th><th>PDU name</th></tr>
+        <tr><td>7 — Application</td><td rowspan="1">Application</td><td>User-facing protocols (HTTP, DNS, SMTP...)</td><td>Message</td></tr>
+        <tr><td>6 — Presentation</td><td>(merged into Application in TCP/IP)</td><td>Encryption, compression, encoding</td><td>—</td></tr>
+        <tr><td>5 — Session</td><td>(merged into Application in TCP/IP)</td><td>Session establishment/management</td><td>—</td></tr>
+        <tr><td>4 — Transport</td><td>Transport</td><td>End-to-end delivery, reliability, ports</td><td>Segment (TCP) / Datagram (UDP)</td></tr>
+        <tr><td>3 — Network</td><td>Internet</td><td>Logical addressing, routing between networks</td><td>Packet</td></tr>
+        <tr><td>2 — Data Link</td><td>Network Access / Link</td><td>Framing, physical addressing, error detection</td><td>Frame</td></tr>
+        <tr><td>1 — Physical</td><td>Network Access / Link</td><td>Raw bit transmission over the medium</td><td>Bit</td></tr>
+      </table>
+
+      <div class="card note">
+        <span class="label">OSI has 7 layers, TCP/IP has 4 (or 5) — GATE tests the mapping, not just the list</span>
+        <p>The classic TCP/IP model merges OSI's Application, Presentation, and Session layers into one Application layer — it was never designed with those three as separate layers in the first place. A 5-layer version (adding a separate Physical layer under Link) is also commonly taught and both are fair game.</p>
+      </div>
+
+      <h3 class="sub">Encapsulation — the same data, wrapped layer by layer</h3>
+      <p>As data moves down the stack at the sender, each layer prepends (and sometimes appends) its own header to the data handed down from above, treating everything above it as an opaque payload. At the receiver, each layer strips its own header and passes the remainder up — this nesting is why a single Ethernet frame on the wire actually contains an IP packet, which contains a TCP segment, which contains the application's message, all nested inside one another.</p>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>In the standard OSI abstraction used by GATE: a router operates primarily up through the Network layer (it reads IP headers to route, but doesn't need to touch transport/application data) — a switch operates primarily up through the Data Link layer (it reads MAC addresses) — a hub operates primarily at the Physical layer (it doesn't even read addresses, just repeats bits). GATE regularly asks "at which layer does device X operate," and the answer hinges on exactly how much of the header stack that device needs to inspect to do its job. (Real-world devices can blur this — e.g. Layer 3 switches or firewalls that inspect higher-layer information — but for GATE, use the textbook layer assignment above.)</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> At which OSI layer does a router primarily operate?</summary>
+          <div class="ans">
+            <p>A router reads the destination IP address to decide where to forward a packet — that's Network layer (layer 3) information, so routing decisions happen at layer 3.</p>
+            <p class="final">Answer: Network layer (Layer 3)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Which three OSI layers does the standard TCP/IP model merge into a single Application layer?</summary>
+          <div class="ans">
+            <p>OSI's Application, Presentation, and Session layers (layers 7, 6, and 5) are all folded into one Application layer in the TCP/IP model — TCP/IP was designed without separating these concerns.</p>
+            <p class="final">Answer: Application, Presentation, and Session</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> What is the protocol data unit (PDU) called at the transport layer for a TCP connection?</summary>
+          <div class="ans">
+            <p>Each layer's PDU has its own name: application=message, transport(TCP)=segment, network=packet, data link=frame, physical=bit.</p>
+            <p class="final">Answer: Segment</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A network hub simply repeats every incoming bit out all other ports, without reading any address. At which layer does it operate?</summary>
+          <div class="ans">
+            <p>Since it never inspects MAC or IP addresses — it just regenerates the raw electrical/optical signal — a hub operates purely at the Physical layer.</p>
+            <p class="final">Answer: Physical layer (Layer 1)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> During encapsulation, in what order are headers added as data moves from the application down to the physical layer?</summary>
+          <div class="ans">
+            <p>Each layer wraps the data it receives from the layer above with its own header (and the data link layer typically also adds a trailer): Application data → + Transport header → + Network header → + Data Link header/trailer → raw bits.</p>
+            <p class="final">Answer: Transport header, then Network header, then Data Link header/trailer (outermost)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="switching-datalink">
+      <div class="topic-head"><span class="idx">02</span><h2>Switching &amp; Data Link Layer</h2></div>
+      <div class="topic-kicker">PACKET/CIRCUIT/VIRTUAL-CIRCUIT SWITCHING · FRAMING · ERROR DETECTION · ARQ (STOP-AND-WAIT / GBN / SR)</div>
+
+      <h3 class="sub">Three switching paradigms<span class="pri-tag pri-core">🔥 core</span></h3>
+      <table>
+        <tr><th>Type</th><th>Path setup</th><th>Resource reservation</th><th>Example</th></tr>
+        <tr><td>Circuit switching</td><td>Dedicated path set up before data flows</td><td>Fixed bandwidth reserved for the whole call</td><td>Traditional telephone network</td></tr>
+        <tr><td>Packet switching (datagram)</td><td>No setup — each packet routed independently</td><td>None; bandwidth shared, packets may arrive out of order</td><td>IP / the Internet</td></tr>
+        <tr><td>Virtual-circuit switching</td><td>Logical path set up before data flows</td><td>No fixed bandwidth, but packets follow the same fixed path in order</td><td>ATM, MPLS</td></tr>
+      </table>
+
+      <div class="card note">
+        <span class="label">The core trade-off</span>
+        <p>Circuit switching wastes bandwidth during idle periods (the channel is reserved even when no data flows) but guarantees a fixed rate and in-order delivery with no per-packet routing decision. Pure packet switching uses bandwidth efficiently (statistical multiplexing) but offers no guarantees on order, delay, or delivery — the trade GATE tests you to articulate directly.</p>
+      </div>
+
+      <h3 class="sub">Framing — where does one frame end and the next begin?<span class="pri-tag pri-core">🔥 core</span></h3>
+      <table>
+        <tr><th>Method</th><th>How it marks boundaries</th></tr>
+        <tr><td>Byte/character counting</td><td>A length field at the start states how many bytes follow</td></tr>
+        <tr><td>Byte (character) stuffing</td><td>Special flag bytes mark start/end; an escape byte is inserted before any in-data byte that looks like the flag</td></tr>
+        <tr><td>Bit stuffing</td><td>A flag bit pattern (e.g. 01111110) marks boundaries; a 0 is inserted after every five consecutive 1s in the data to prevent false flags</td></tr>
+      </table>
+
+      <div class="card formula">
+        <span class="label">Bit stuffing trace</span>
+        <div class="eq">Data:      0 1 1 1 1 1 1 0 1
+After 5 consecutive 1's, insert a 0:
+Stuffed:   0 1 1 1 1 1 [0] 1 0 1
+// Receiver removes any 0 that immediately follows five 1's, reversing the stuffing</div>
+      </div>
+
+      <h3 class="sub">Error detection<span class="pri-tag pri-core">🔥 core</span></h3>
+      <table>
+        <tr><th>Method</th><th>Mechanism</th><th>Detects</th></tr>
+        <tr><td>Parity bit</td><td>One extra bit makes total 1-count even (or odd)</td><td>Any odd number of bit errors; misses even-count errors</td></tr>
+        <tr><td>Checksum</td><td>Sum data words, complement the result, append; receiver re-sums including checksum, expects all-1s (or 0)</td><td>Most burst/random errors, but can miss some patterns</td></tr>
+        <tr><td>CRC (Cyclic Redundancy Check)</td><td>Data treated as a polynomial, divided by a generator polynomial; remainder appended</td><td>All burst errors up to the length of the CRC bits, plus most longer bursts</td></tr>
+      </table>
+
+      <div class="card formula">
+        <span class="label">CRC computation — the standard GATE numerical</span>
+        <div class="eq">Given data D and generator G (degree r):
+1. Append r zero bits to D  → D·2^r
+2. XOR-divide (modulo-2 division) D·2^r by G
+3. The remainder R (r bits) is the CRC / FCS
+4. Transmitted frame = D followed by R
+Receiver divides the received frame by G — a zero remainder means no detected error.</div>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>CRC division is <strong>modulo-2 (XOR) division</strong>, not ordinary binary subtraction — there's no borrowing, and each step is just XOR between the current bits and the generator whenever the leading bit is 1. Students who apply ordinary long division get the wrong remainder almost every time.</p>
+      </div>
+
+      <h3 class="sub">Performance metrics<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p>The official GATE 2027 syllabus explicitly includes performance metrics. These quantify how well a network (or link) delivers data.</p>
+
+      <div class="card formula">
+        <span class="label">Four components of end-to-end delay</span>
+        <p><strong>d<sub>total</sub> = d<sub>proc</sub> + d<sub>queue</sub> + d<sub>trans</sub> + d<sub>prop</sub></strong></p>
+        <p>• <strong>Processing delay (d<sub>proc</sub>)</strong> — time to examine the packet header, check for errors, determine output link. Typically microseconds.<br>
+        • <strong>Queuing delay (d<sub>queue</sub>)</strong> — time waiting in the output buffer. Varies with traffic intensity; 0 if queue is empty.<br>
+        • <strong>Transmission delay (d<sub>trans</sub>)</strong> — time to push all bits onto the link = <strong>L / R</strong> (packet length / link bandwidth).<br>
+        • <strong>Propagation delay (d<sub>prop</sub>)</strong> — time for a bit to travel the physical distance = <strong>d / s</strong> (distance / propagation speed, typically ~2×10⁸ m/s for copper, ~3×10⁸ m/s for fiber).</p>
+      </div>
+
+      <div class="card formula">
+        <span class="label">Throughput and utilization</span>
+        <p><strong>Throughput</strong> = actual rate of data delivery (bits/sec), limited by the <strong>bottleneck link</strong> (the link with the lowest capacity on the path).<br>
+        <strong>Utilization (U)</strong> = fraction of time a link is busy = (actual traffic rate) / (link capacity). Simplified Stop-and-Wait utilization, <strong>assuming negligible ACK transmission time and negligible processing/queuing delay</strong> (no other traffic, no losses): U = (L/R) / (L/R + 2×d<sub>prop</sub>). Relaxing any of those assumptions — a non-negligible ACK size, real processing delay, or retransmissions — lowers U further below what this simplified formula gives; don't apply it blindly to a question that says otherwise.<br>
+        <strong>Bandwidth-delay product (BDP)</strong> = bandwidth × RTT = the maximum amount of data "in flight" (unacknowledged) the link can hold. Essential for window sizing.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — transmission vs propagation delay</span>
+        <p>⚠️ <strong>Transmission delay (L/R)</strong> depends on packet size and link bandwidth — it is the time to push the bits out. <strong>Propagation delay (d/s)</strong> depends on physical distance and has nothing to do with bandwidth or packet size. GATE questions often give both bandwidth and distance, and students confuse which to use where. Remember: doubling the bandwidth halves transmission delay but has zero effect on propagation delay.</p>
+      </div>
+
+      <h3 class="sub">ARQ protocols — how reliable delivery actually works<span class="pri-tag pri-legacy">🟡 supporting</span></h3>
+      <p>Automatic Repeat reQuest (ARQ) is the general family of retransmission-based reliability protocols: if no acknowledgment (ACK) arrives before a timer expires (or an explicit negative acknowledgment / NAK is received), the sender retransmits. The Stop-and-Wait utilization formula above is the simplest, least efficient member of this family — the other two let the sender keep multiple frames "in flight" at once to fill the pipe while waiting for ACKs. <strong>The timer model itself is protocol-specific — don't assume one universal rule:</strong></p>
+      <ul>
+        <li><strong>Stop-and-Wait:</strong> only one frame is ever outstanding at a time, so a <strong>single timer</strong> is enough — it's simply restarted for the one frame currently awaiting ACK.</li>
+        <li><strong>Go-Back-N:</strong> in the standard simplified model, the sender keeps <strong>one timer, for the oldest outstanding (unacknowledged) frame</strong> — not one per frame. If that timer expires, the cumulative-ACK/discard-out-of-order design means resending the oldest frame onward automatically covers everything after it too, so a single timer is sufficient.</li>
+        <li><strong>Selective Repeat:</strong> because the receiver buffers out-of-order frames individually and each is acknowledged and potentially retransmitted independently, the sender genuinely needs a <strong>timer per individual outstanding frame</strong> — this is the one case where "timer per outstanding frame" is actually accurate.</li>
+      </ul>
+
+      <table>
+        <tr><th></th><th>Stop-and-Wait</th><th>Go-Back-N</th><th>Selective Repeat</th></tr>
+        <tr><td>Outstanding (unacked) frames allowed</td><td>1</td><td>Up to window size N</td><td>Up to window size N</td></tr>
+        <tr><td>Receiver accepts out-of-order frames?</td><td>N/A</td><td>No — discards anything except the next expected frame</td><td>Yes — buffers them individually until the gap is filled</td></tr>
+        <tr><td>ACK type</td><td>Individual</td><td>Cumulative (ACK n means "all frames up to n received")</td><td>Individual (per-frame ACK)</td></tr>
+        <tr><td>On a timeout/lost frame, sender resends...</td><td>Just that one frame</td><td><strong>All</strong> outstanding frames from the lost one onward, even already-received later ones</td><td><strong>Only</strong> the specific lost frame</td></tr>
+        <tr><td>Minimum sequence-number space needed</td><td>2 (1 bit — the "alternating bit protocol")</td><td>N + 1</td><td>2N</td></tr>
+      </table>
+
+      <div class="card formula">
+        <span class="label">Why the sequence-number space differs — the classic numerical</span>
+        <p>The sequence numbers must be large enough that the sender's window and the receiver's window can never overlap in a way that makes an old (already-acknowledged) frame look identical to a new one. Go-Back-N's receiver window is always size 1 (it only ever expects exactly one specific next frame), so N+1 distinct sequence numbers are enough to keep sender and receiver windows unambiguous. Selective Repeat's receiver window is also size N (it buffers up to N out-of-order frames), so the two windows can potentially span up to 2N sequence numbers between them, requiring 2N to avoid ambiguity.</p>
+      </div>
+
+      <div class="card note">
+        <span class="label">Sliding-window utilization — the generalized version of the Stop-and-Wait formula</span>
+        <p>Let a = d<sub>prop</sub> / (L/R) (propagation delay relative to transmission delay). For a sliding-window protocol (GBN or SR) with window size N: if N ≥ 1+2a, the window is big enough to keep the link continuously busy and U = 1 (100% utilization, ignoring errors). If N &lt; 1+2a, the window empties before the first ACK returns and U = N / (1+2a) — this reduces exactly to the Stop-and-Wait formula above when N=1.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — Go-Back-N wastes bandwidth on correct frames</span>
+        <p>If frame 3 (out of frames 1–7 sent) is lost but frames 4–7 arrive correctly, Go-Back-N's receiver still discards frames 4–7 (since they arrived out of order) and the sender must resend <strong>3 through 7 entirely</strong> once it times out — even though 4–7 were never actually damaged. Selective Repeat avoids this waste by buffering 4–7 at the receiver and having the sender resend only frame 3. This throughput/complexity trade-off (GBN: simpler receiver, more retransmission; SR: more receiver buffering, less retransmission) is a frequent GATE comparison question.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">7 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Which switching type reserves a fixed, dedicated path for the entire duration of a connection?</summary>
+          <div class="ans">
+            <p>Circuit switching sets up and reserves a dedicated path (fixed bandwidth) before any data is sent, and holds it for the whole call, regardless of whether data is actively flowing.</p>
+            <p class="final">Answer: Circuit switching</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> In virtual-circuit switching, do all packets of one connection necessarily follow the same logical route?</summary>
+          <div class="ans">
+            <p>Yes, in the logical sense — that's the defining feature: a virtual circuit is a logical path/connection identifier set up once, and all subsequent packets of that connection follow that same VC in order, unlike pure datagram/packet switching where each packet is routed independently. This guarantee is about the logical VC and ordered-delivery semantics, not necessarily an unchanging physical path — depending on the underlying technology and control plane, the physical forwarding path can in principle change (rerouting/reconfiguration) while the VC's logical identity and ordering are preserved.</p>
+            <p class="final">Answer: Yes — same established logical route/path for that connection</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Data bits: 011111101. Apply bit stuffing (insert a 0 after every 5 consecutive 1's).</summary>
+          <div class="ans">
+            <p>Scan left to right counting consecutive 1's: 0,1,1,1,1,1 → five 1's reached, insert 0 → continue with remaining bits 1,0,1.</p>
+            <p class="final">Answer: 0 1 1 1 1 1 0 1 0 1</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A single parity bit is added to detect errors. Can it detect a 2-bit error?</summary>
+          <div class="ans">
+            <p>No — a single parity bit only detects an odd number of flipped bits (the parity flips only when an odd count of bits change). A 2-bit error is an even-count error, so the parity check still passes even though the data is corrupted.</p>
+            <p class="final">Answer: No, single parity bit cannot detect 2-bit (even-count) errors</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Data = 1101011011, Generator = 10011 (degree 4). How many zero bits are appended to the data before performing the CRC division?</summary>
+          <div class="ans">
+            <p>The number of appended zeros equals the degree of the generator polynomial (r), since CRC = D·2^r divided by G, and here G has degree 4 (5 bits, degree = bits−1).</p>
+            <p class="final">Answer: 4 zero bits</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q6</span> A Selective Repeat protocol uses a window size of 8. What is the minimum number of distinct sequence numbers required?</summary>
+          <div class="ans">
+            <p>Selective Repeat needs sequence-number space of at least 2N to keep the sender's and receiver's windows from overlapping ambiguously, since the receiver's window is also size N. With N=8: 2×8=16.</p>
+            <p class="final">Answer: 16 sequence numbers (needs 4 bits, since 2⁴=16)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q7</span> In Go-Back-N with window size 5, frames 1–5 are sent and frame 2 is lost in transit, while frames 1, 3, 4, 5 arrive safely. What does the sender do once it detects the loss (via timeout or a duplicate cumulative ACK)?</summary>
+          <div class="ans">
+            <p>The receiver only accepts frames in order, so it discards 3, 4, and 5 (they arrived after the gap left by frame 2) and keeps sending a cumulative ACK for frame 1 only. Once the sender's timer for frame 2 expires, Go-Back-N resends every outstanding frame from the lost one onward — frames 2, 3, 4, and 5 all get retransmitted, even though 3, 4, and 5 were never actually corrupted.</p>
+            <p class="final">Answer: Resends frames 2, 3, 4, and 5 — not just frame 2</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="mac-ethernet">
+      <div class="topic-head"><span class="idx">03</span><h2>Medium Access Control &amp; Ethernet</h2></div>
+      <div class="topic-kicker">MAC PROTOCOLS · CSMA/CD · CSMA/CA · ETHERNET BRIDGING</div>
+
+      <h3 class="sub">Why MAC exists — the shared-medium problem<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p>When multiple devices share one transmission medium (a bus, a wireless channel), simultaneous transmissions collide and corrupt each other. Medium Access Control protocols coordinate who gets to transmit when.</p>
+      <table>
+        <tr><th>Protocol family</th><th>Approach</th><th>Example</th></tr>
+        <tr><td>Channelization</td><td>Divide the medium statically (time/frequency/code slots)</td><td>TDMA, FDMA, CDMA</td></tr>
+        <tr><td>Random access</td><td>Devices transmit opportunistically, handle collisions when they occur</td><td>ALOHA, CSMA/CD, CSMA/CA</td></tr>
+        <tr><td>Controlled access</td><td>Devices take turns via reservation, polling, or token passing</td><td>Token Ring</td></tr>
+      </table>
+
+      <h3 class="sub">CSMA/CD — used in classic wired Ethernet<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p><strong>Carrier Sense Multiple Access with Collision Detection:</strong> listen before transmitting (carrier sense); if the medium is busy, wait; if a collision is detected mid-transmission, stop immediately, send a jam signal, and back off for a random time before retrying (binary exponential backoff).</p>
+
+      <div class="card formula">
+        <span class="label">Minimum frame size for collision detection to work</span>
+        <div class="eq">Transmission time must be ≥ 2 × propagation delay (round-trip time),
+so a sender is guaranteed to still be transmitting when a collision signal returns:
+
+Minimum frame size = 2 × propagation delay × bandwidth
+// This is exactly why classic Ethernet mandates a 64-byte minimum frame size</div>
+      </div>
+
+      <h3 class="sub">CSMA/CA — used in wireless (Wi-Fi)<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p><strong>Carrier Sense Multiple Access with Collision Avoidance:</strong> since wireless devices generally can't detect collisions while transmitting (their own strong outgoing signal drowns out a weak incoming collision), CSMA/CA instead tries to <em>avoid</em> collisions — via random backoff before every transmission attempt, and optionally an RTS/CTS (Request-to-Send / Clear-to-Send) handshake to reserve the channel and combat the "hidden terminal" problem.</p>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>CSMA/CD is not usable on modern full-duplex switched Ethernet (no shared medium, no collisions possible in the first place) — but GATE still tests the underlying half-duplex/shared-bus scenario numerically (minimum frame size, propagation delay calculations) because that's where the physics of the protocol is actually derived from.</p>
+      </div>
+
+      <h3 class="sub">Ethernet bridging<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p>A bridge (or switch) connects multiple LAN segments at the data link layer, forwarding frames based on MAC address rather than repeating everything like a hub. It builds a forwarding table by <strong>backward learning</strong> — recording which port each source MAC address arrived on — and floods (broadcasts) a frame out all ports only when the destination MAC isn't yet known.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A LAN has bandwidth 10 Mbps and one-way propagation delay 25.6 μs. Using CSMA/CD, what is the minimum frame size?</summary>
+          <div class="ans">
+            <p>Minimum frame size = 2 × propagation delay × bandwidth = 2 × 25.6μs × 10Mbps = 51.2μs × 10×10⁶ bps = 512 bits.</p>
+            <p class="final">Answer: 512 bits (64 bytes)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Why is CSMA/CD unsuitable for wireless networks, motivating CSMA/CA instead?</summary>
+          <div class="ans">
+            <p>A wireless transmitter's own outgoing signal is far stronger at its own antenna than any incoming signal, so it can't reliably "hear" a collision while transmitting — collision detection assumed in CD simply doesn't work on a wireless radio, so CA instead tries to avoid collisions upfront via backoff and RTS/CTS.</p>
+            <p class="final">Answer: Wireless devices can't detect collisions while transmitting (can't hear over their own signal)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> An Ethernet switch receives a frame with an unknown destination MAC address. What does it do?</summary>
+          <div class="ans">
+            <p>When the destination MAC isn't yet in its forwarding table, the switch floods the frame out every port except the one it arrived on — this is standard behaviour until it learns the destination's port from a future reply.</p>
+            <p class="final">Answer: Floods the frame out all ports except the incoming one</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> How does a learning bridge/switch build its forwarding table?</summary>
+          <div class="ans">
+            <p>By backward learning: for every frame it sees, it records the frame's source MAC address together with the port it arrived on, so future frames destined for that MAC can be forwarded directly instead of flooded.</p>
+            <p class="final">Answer: Backward learning — recording source MAC + arrival port from every observed frame</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> In binary exponential backoff after a collision, how does the maximum wait time change with each successive collision on the same frame?</summary>
+          <div class="ans">
+            <p>After the nth collision, a device picks a random backoff from a range that doubles each time (0 to 2ⁿ−1 slot times, up to a cap) — so the maximum possible wait grows exponentially with the number of consecutive collisions.</p>
+            <p class="final">Answer: The maximum backoff range doubles after each successive collision</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="routing">
+      <div class="topic-head"><span class="idx">04</span><h2>Routing Protocols</h2></div>
+      <div class="topic-kicker">SHORTEST PATH · FLOODING · DISTANCE VECTOR · LINK STATE</div>
+
+      <h3 class="sub">Flooding — the simplest (and least efficient) approach<span class="pri-tag pri-legacy">🟡 supporting</span></h3>
+      <p>Every incoming packet is forwarded out every outgoing link except the one it arrived on. In an <strong>unweighted / minimum-hop</strong> model, the first copy to reach the destination will have traveled along a minimum-hop path — since every path is explored in parallel, the fewest-hop route necessarily gets there first. But "shortest" isn't always "fewest hops": in a network where links carry different costs, delays, or weights, flooding does <strong>not</strong> generally guarantee the minimum-<em>cost</em> path — the first copy to arrive got there fastest in whatever metric governs propagation speed, which need not correspond to lowest total edge weight. It also generates massive redundant traffic — mainly used as a baseline or for specific robustness scenarios (e.g. some routing protocol updates), not general-purpose forwarding.</p>
+
+      <h3 class="sub">Distance Vector routing (Bellman-Ford based)<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p>Each router maintains a table of {destination: (cost, next-hop)} and periodically shares its <em>entire table</em> with directly connected neighbours only. Each router updates its own table using the Bellman-Ford relaxation idea: if a neighbour claims a cheaper path to some destination via itself, adopt that route.</p>
+      <div class="eq">D_x(y) = min over neighbours v of { c(x,v) + D_v(y) }
+// x's cost to y = cheapest (cost to neighbour v) + (v's own advertised cost to y)</div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — the count-to-infinity problem</span>
+        <p>Distance vector routing can suffer <strong>count-to-infinity</strong>: when a link fails, routers can keep advertising stale routes to each other in a loop, each incrementing the "distance" slightly, converging to infinity extremely slowly instead of immediately detecting the failure. GATE tests both the mechanism (why it happens — routers trusting neighbours' claims without knowing the actual topology) and mitigations (split horizon, split horizon with poison reverse).</p>
+      </div>
+
+      <h3 class="sub">Link State routing (Dijkstra based)<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p>Each router discovers its direct neighbours and link costs, then floods this information to <em>every</em> router in the network (not just neighbours) — so every router ends up with a complete, identical map of the topology. Each router then independently runs <strong>Dijkstra's shortest-path algorithm</strong> on that map to compute its own routing table.</p>
+
+      <table>
+        <tr><th></th><th>Distance Vector</th><th>Link State</th></tr>
+        <tr><td>What's shared</td><td>Own routing table (destination, cost) to neighbours only</td><td>Own link costs, flooded to the entire network</td></tr>
+        <tr><td>Topology knowledge</td><td>Only knows costs, not full topology ("routing by rumour")</td><td>Every router has the full network map</td></tr>
+        <tr><td>Algorithm used</td><td>Bellman-Ford (distributed)</td><td>Dijkstra (run locally by each router)</td></tr>
+        <tr><td>Convergence issue</td><td>Count-to-infinity on failures</td><td>Generally faster, more robust convergence</td></tr>
+        <tr><td>Example protocol</td><td>RIP</td><td>OSPF</td></tr>
+      </table>
+
+      <div class="card formula">
+        <span class="label">Dijkstra's algorithm — the core loop</span>
+        <div class="eq">dist[source] = 0; all others = ∞
+While unvisited nodes remain:
+    pick unvisited node u with minimum dist[u]
+    mark u visited
+    for each neighbour v of u:
+        if dist[u] + weight(u,v) < dist[v]:
+            dist[v] = dist[u] + weight(u,v)</div>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Which routing approach is known as "routing by rumour," and why?</summary>
+          <div class="ans">
+            <p>Distance vector routing — each router only knows what its neighbours tell it about their own costs, never seeing the actual network topology, so it's effectively trusting second-hand ("rumoured") cost claims rather than direct topology knowledge.</p>
+            <p class="final">Answer: Distance vector routing</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> What algorithm does link-state routing use once every router has the full topology map?</summary>
+          <div class="ans">
+            <p>Each router independently runs Dijkstra's shortest-path algorithm on its locally-held copy of the full network graph to compute its own shortest paths to every destination.</p>
+            <p class="final">Answer: Dijkstra's algorithm</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A link between two routers fails. Which routing approach is more prone to the "count-to-infinity" problem as a result?</summary>
+          <div class="ans">
+            <p>Distance vector — since routers only exchange summarized costs (not full topology) with neighbours, stale routes can keep circulating and slowly incrementing between routers instead of the failure being immediately recognized network-wide.</p>
+            <p class="final">Answer: Distance vector routing</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Router X has neighbours A (cost 2) and B (cost 5). A advertises a cost of 3 to destination Z; B advertises a cost of 1 to Z. What does X compute as its total cost to Z via each neighbour, and which does it choose?</summary>
+          <div class="ans">
+            <p>Via A: c(X,A)+D_A(Z) = 2+3 = 5. Via B: c(X,B)+D_B(Z) = 5+1 = 6. X picks the minimum of the two, choosing the cheaper route via A.</p>
+            <p class="final">Answer: Via A costs 5, via B costs 6 — X chooses the route via A (total cost 5)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> In flooding-based routing over an <strong>unweighted</strong> network (all links equal cost/delay), does the first copy of a packet to reach the destination travel via a minimum-hop path? Would this still hold if link weights/delays differed?</summary>
+          <div class="ans">
+            <p>In the unweighted case: yes — since a copy of the packet travels along every possible path in parallel and every hop takes the same "time" (one link traversal), the copy that took the fewest hops necessarily arrives first, so the first arrival corresponds to a minimum-hop path. This breaks down once links have different weights/costs/delays: the first copy to arrive is whichever one physically got there fastest, which is not necessarily the one that traversed the minimum-<em>cost</em> path — a path with more hops but faster/cheaper links could easily beat a shorter-hop path over slow/expensive links. So flooding gives a minimum-hop guarantee only in the unweighted model, not a general minimum-cost guarantee.</p>
+            <p class="final">Answer: Yes for minimum-hop in an unweighted network; no general minimum-cost guarantee once links have differing weights</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="network-layer">
+      <div class="topic-head"><span class="idx">05</span><h2>IP Addressing, CIDR &amp; Support Protocols</h2></div>
+      <div class="topic-kicker">FRAGMENTATION · IPv4 · CIDR NOTATION · ARP/DHCP/ICMP · NAT</div>
+
+      <h3 class="sub">IPv4 addressing &amp; subnetting<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p>An IPv4 address is 32 bits, written as four dotted decimal octets. A subnet mask (or CIDR prefix) splits the address into a network portion and a host portion.</p>
+      <div class="eq">CIDR notation: 192.168.1.0/24
+// /24 means the first 24 bits are the network portion
+// Remaining 32−24 = 8 bits are host bits → 2^8 = 256 addresses in this block
+// Usable hosts = 256 − 2 = 254 (subtract network address and broadcast address)</div>
+
+      <div class="card formula">
+        <span class="label">The subnetting numerical GATE repeats every year</span>
+        <div class="eq">Given a network 172.16.0.0/16 that needs to be split into 4 equal subnets:
+Borrow log2(4) = 2 bits from the host portion → new prefix = /18
+Each subnet has 2^(32−18) = 2^14 = 16384 addresses
+Subnets: 172.16.0.0/18, 172.16.64.0/18, 172.16.128.0/18, 172.16.192.0/18</div>
+      </div>
+
+      <h3 class="sub">Fragmentation<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p>When a packet is larger than the Maximum Transmission Unit (MTU) of a link it must cross, it gets split into smaller fragments, each with its own IP header carrying a fragment offset (in units of 8 bytes) and a "more fragments" flag. Fragments are reassembled only at the final destination, not at intermediate routers.</p>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>The fragment offset field is measured in units of <strong>8 bytes</strong>, not 1 byte — so a fragment's actual byte offset = offset field value × 8. GATE numericals on "how many fragments" or "what is the offset of the last fragment" almost always hinge on remembering this ×8 scaling factor and that all fragments except the last must have a length that's a multiple of 8 bytes.</p>
+      </div>
+
+      <h3 class="sub">IP support protocols<span class="pri-tag pri-legacy">🟡 supporting</span></h3>
+      <table>
+        <tr><th>Protocol</th><th>Purpose</th></tr>
+        <tr><td>ARP (Address Resolution Protocol)</td><td>Maps a known IP address to the corresponding MAC address on the local network</td></tr>
+        <tr><td>DHCP (Dynamic Host Configuration Protocol)</td><td>Automatically assigns an IP address (and other config) to a device joining a network</td></tr>
+        <tr><td>ICMP (Internet Control Message Protocol)</td><td>Carries error/diagnostic messages (e.g. "destination unreachable," used by ping and traceroute)</td></tr>
+      </table>
+
+      <h3 class="sub">NAT (Network Address Translation)<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p>Lets many devices on a private network share a single public IP address by rewriting source IP/port on outgoing packets (and the reverse on replies), tracking the mapping in a translation table. This is why private address ranges (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) can be reused identically across countless independent home/office networks without conflict.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">6 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> How many usable host addresses are available in the subnet 192.168.10.0/26?</summary>
+          <div class="ans">
+            <p>/26 leaves 32−26=6 host bits → 2⁶=64 total addresses. Subtract 2 for the network and broadcast addresses: 64−2=62.</p>
+            <p class="final">Answer: 62 usable host addresses</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A datagram of 4000 bytes (including a 20-byte header) must cross a link with MTU 1500 bytes. Roughly how many fragments are needed?</summary>
+          <div class="ans">
+            <p>Data to fragment = 4000−20 = 3980 bytes. Each fragment can carry up to 1500−20=1480 bytes of data (must be a multiple of 8; 1480 already is). Number of fragments = ceil(3980/1480) = ceil(2.69) = 3.</p>
+            <p class="final">Answer: 3 fragments</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Which protocol does a device use to discover the MAC address corresponding to a known IP address on its local network?</summary>
+          <div class="ans">
+            <p>ARP broadcasts a request ("who has this IP?") on the local network and the owning device replies with its MAC address, which the requester then caches.</p>
+            <p class="final">Answer: ARP (Address Resolution Protocol)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A fragment's offset field contains the value 370. What is its actual byte offset into the original datagram?</summary>
+          <div class="ans">
+            <p>The offset field is in units of 8 bytes, so actual byte offset = field value × 8 = 370 × 8.</p>
+            <p class="final">Answer: 2960 bytes</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> What does the "ping" utility use under the hood to test reachability of a remote host?</summary>
+          <div class="ans">
+            <p>ping sends ICMP Echo Request messages and listens for ICMP Echo Reply messages — it's a direct application of the ICMP protocol's diagnostic message types.</p>
+            <p class="final">Answer: ICMP (Echo Request / Echo Reply messages)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q6</span> An organization has 50 devices using private IP addresses (192.168.1.x). They all access the internet through a single public IP via NAT. How does the NAT router distinguish replies destined for different internal hosts?</summary>
+          <div class="ans">
+            <p>The NAT router maintains a translation table mapping each internal (private IP, port) to a unique (public IP, external port). When an outgoing packet leaves, the router rewrites the source IP:port to public IP:unique-port. When a reply arrives at that unique port, the router looks up the mapping to determine which internal host to forward to. The port number is the key differentiator.</p>
+            <p class="final">Answer: NAT uses a translation table mapping unique external port numbers to internal (IP, port) pairs</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="transport">
+      <div class="topic-head"><span class="idx">06</span><h2>Transport Layer</h2></div>
+      <div class="topic-kicker">FLOW CONTROL · CONGESTION CONTROL · UDP · TCP · SOCKETS</div>
+
+      <h3 class="sub">UDP vs. TCP<span class="pri-tag pri-legacy">🟡 UDP: supporting</span><span class="pri-tag pri-core">🔥 TCP: core</span></h3>
+      <table>
+        <tr><th></th><th>UDP</th><th>TCP</th></tr>
+        <tr><td>Connection</td><td>Connectionless</td><td>Connection-oriented (3-way handshake)</td></tr>
+        <tr><td>Reliability</td><td>None — no acknowledgment, no retransmission</td><td>Reliable — sequence numbers, ACKs, retransmission</td></tr>
+        <tr><td>Ordering</td><td>Not guaranteed</td><td>Guaranteed in-order delivery</td></tr>
+        <tr><td>Header size</td><td>8 bytes (minimal)</td><td>20 bytes (minimum, more with options)</td></tr>
+        <tr><td>Flow/congestion control</td><td>None</td><td>Both, built in</td></tr>
+        <tr><td>Typical use</td><td>DNS, streaming, VoIP (speed over reliability)</td><td>HTTP, FTP, email (reliability matters more)</td></tr>
+      </table>
+
+      <h3 class="sub">TCP's 3-way handshake<span class="pri-tag pri-core">🔥 core</span></h3>
+      <div class="eq">Client → Server: SYN (seq=x)
+Server → Client: SYN-ACK (seq=y, ack=x+1)
+Client → Server: ACK (ack=y+1)
+// Connection now established; both sides have confirmed the other is ready and reachable</div>
+
+      <h3 class="sub">Flow control — protecting the receiver<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p>The receiver advertises a <strong>window size</strong> (how much unacknowledged data it can currently buffer), and the sender must never have more than that much data in flight — this prevents a fast sender from overwhelming a slow receiver, independent of anything happening in the network itself.</p>
+
+      <h3 class="sub">Congestion control — protecting the network<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p>TCP separately tracks a <strong>congestion window (cwnd)</strong> that estimates how much the network path itself can currently handle, inferred from observed packet loss/delay rather than any explicit signal. The actual amount of data sent is capped by the minimum of the flow-control window and the congestion window.</p>
+
+      <div class="card formula">
+        <span class="label">TCP congestion control phases (standard simplified GATE model)</span>
+        <table>
+          <tr><th>Phase</th><th>Behaviour</th></tr>
+          <tr><td>Slow start</td><td>cwnd approximately doubles every RTT (exponential growth) until it hits ssthresh (slow start threshold) — the exact growth depends on ACK behavior (e.g. delayed ACKs) and the specific congestion-control variant, but "doubles per RTT" is the standard simplified model GATE uses</td></tr>
+          <tr><td>Congestion avoidance</td><td>cwnd grows by roughly 1 MSS per RTT (linear/additive growth) after ssthresh is reached</td></tr>
+        </table>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — loss handling differs by how the loss is detected</span>
+        <p>Don't treat "packet loss → cwnd resets to 1 MSS" as a universal rule — it depends on how the loss was detected:</p>
+        <table>
+          <tr><th>Detection event</th><th>Typical simplified behaviour</th></tr>
+          <tr><td>Timeout</td><td>ssthresh = cwnd/2; cwnd resets to 1 MSS; restart slow start — this "AIMD" pattern (additive increase, multiplicative decrease) is the core of TCP's fairness/stability behaviour</td></tr>
+          <tr><td>3 duplicate ACKs</td><td>Fast retransmit resends the missing segment immediately (without waiting for a timeout); fast recovery then sets ssthresh = cwnd/2 and cwnd ≈ ssthresh (not all the way down to 1 MSS), resuming congestion avoidance rather than restarting slow start from scratch</td></tr>
+        </table>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — flow control vs congestion control</span>
+        <p>Flow control and congestion control solve <strong>different</strong> problems and are commonly confused: flow control is receiver-driven (protects one slow receiver from one fast sender using the advertised window), while congestion control is network-driven (protects the shared network from being overwhelmed by all senders combined, inferred from loss/delay, using cwnd). GATE questions that describe "the receiver's buffer is full" point to flow control; questions describing "a router dropped packets" or "RTT increased" point to congestion control.</p>
+      </div>
+
+      <h3 class="sub">Sockets and the Socket API<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p>A <strong>socket</strong> is the programming-level endpoint of a network connection. A TCP connection is uniquely identified by the <strong>4-tuple (local IP, local port, remote IP, remote port)</strong> — not just the port number alone — which is exactly how a server can serve many simultaneous clients on the very same listening port. (Adding the protocol field gives a 5-tuple, which is used more generally for flow identification when distinguishing traffic across protocols, e.g. TCP vs UDP on the same port — but for identifying TCP connections specifically, the 4-tuple already suffices since the protocol is fixed.)</p>
+
+      <div class="card formula">
+        <span class="label">Socket API — TCP client-server flow</span>
+        <p><strong>Server side (in order):</strong></p>
+        <p>1. <code>socket()</code> — create a socket descriptor<br>
+        2. <code>bind()</code> — attach a local IP:port to the socket<br>
+        3. <code>listen()</code> — mark socket as passive (willing to accept connections)<br>
+        4. <code>accept()</code> — block until a client connects; returns a <em>new</em> connected socket for this specific client</p>
+        <p><strong>Client side (in order):</strong></p>
+        <p>1. <code>socket()</code> — create a socket descriptor<br>
+        2. <code>connect()</code> — initiate TCP 3-way handshake to the server's IP:port</p>
+        <p><strong>Both sides then use:</strong> <code>send()</code> / <code>recv()</code> for data transfer, <code>close()</code> to terminate.</p>
+      </div>
+
+      <div class="card formula">
+        <span class="label">UDP sockets are simpler</span>
+        <p>UDP sockets use <code>socket()</code> → <code>bind()</code> → <code>sendto()</code> / <code>recvfrom()</code>. No <code>listen()</code>, no <code>accept()</code>, no <code>connect()</code> — because UDP is connectionless. Each <code>sendto()</code> specifies the destination address independently.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — socket identity</span>
+        <p>⚠️ A server listening on port 80 can handle thousands of simultaneous TCP connections because each connection is identified by the <strong>4-tuple</strong> (local IP, local port, remote IP, remote port), not just the server port. The server's <code>accept()</code> call creates a <em>new</em> socket for each client, all sharing the same local port 80 but with different remote IP:port pairs.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Between TCP and UDP, which is generally preferred as the transport protocol for latency-sensitive real-time media such as a live video call, and why?</summary>
+          <div class="ans">
+            <p>UDP — for real-time media, a late/retransmitted packet is often worse than a lost one (it arrives too late to be useful), and UDP's lack of retransmission/ordering overhead keeps latency lower, which matters more than perfect reliability here. (In practice, real-time systems often run higher-level protocols such as RTP on top of UDP rather than using bare UDP, but between the two core transport protocols, UDP is the preferred base.)</p>
+            <p class="final">Answer: UDP (low latency matters more than guaranteed delivery)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A TCP sender's cwnd is 16 MSS when a timeout (packet loss) occurs. What do ssthresh and cwnd become afterward?</summary>
+          <div class="ans">
+            <p>On a timeout specifically (as opposed to detecting the loss via 3 duplicate ACKs): ssthresh is set to half the current cwnd (16/2=8), and cwnd resets all the way down to 1 MSS, restarting slow start from scratch.</p>
+            <p class="final">Answer: ssthresh = 8 MSS, cwnd = 1 MSS (timeout case)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A receiver's buffer is nearly full, so it advertises a small window size to the sender. Is this an example of flow control or congestion control?</summary>
+          <div class="ans">
+            <p>Flow control — this is specifically the receiver protecting itself from being overwhelmed (a buffer/processing limitation at the endpoint), which is exactly what the advertised window mechanism is for, as opposed to a network-wide congestion signal.</p>
+            <p class="final">Answer: Flow control</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> During TCP's slow start phase, how does cwnd grow with each round-trip time (RTT), assuming no loss?</summary>
+          <div class="ans">
+            <p>Slow start grows cwnd exponentially — under the standard simplified GATE model it roughly doubles every RTT, since each received ACK typically triggers sending two new segments, until ssthresh is reached and growth switches to the linear congestion-avoidance phase. The exact growth rate can vary with ACK behavior (e.g. delayed ACKs) and the specific TCP variant, but "doubles per RTT" is the assumption GATE numericals expect.</p>
+            <p class="final">Answer: Approximately doubles each RTT (exponential growth), under the standard simplified model</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Two different clients connect to the same web server on port 80 at the same time. How does the server distinguish between their two TCP connections?</summary>
+          <div class="ans">
+            <p>Each TCP connection is uniquely identified by the 4-tuple (server IP, server port, client IP, client port) — since the two clients have different client IPs (or at least different client ports), their connections remain distinct even though the server-side IP and port are identical.</p>
+            <p class="final">Answer: By the 4-tuple, which differs in client IP/port even though the server IP/port match</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="application">
+      <div class="topic-head"><span class="idx">07</span><h2>Application Layer Protocols</h2></div>
+      <div class="topic-kicker">DNS · SMTP · HTTP · FTP · EMAIL</div>
+
+      <h3 class="sub">DNS — the Domain Name System<span class="pri-tag pri-core">🔥 core</span></h3>
+      <p>Translates human-readable domain names into IP addresses, organized as a distributed, hierarchical database. A resolution typically walks from a root server → top-level-domain (TLD) server → authoritative server for the specific domain, and results are cached at each step (with a TTL) to avoid repeating the full walk for every lookup.</p>
+      <p>For conventional DNS over port 53, DNS primarily runs over <strong>UDP</strong> for ordinary queries — fast, low-overhead, and queries are small enough to fit in one packet — but falls back to <strong>TCP</strong> (still port 53) for zone transfers between DNS servers or when a response is too large to fit in a single UDP packet. This UDP-by-default/TCP-fallback pattern is what GATE tests; modern deployments can also carry DNS over other transports (DNS-over-TLS, DNS-over-HTTPS) for privacy, which is outside the classic port-53 scope.</p>
+
+      <h3 class="sub">HTTP — HyperText Transfer Protocol<span class="pri-tag pri-core">🔥 core</span></h3>
+      <table>
+        <tr><th>Version</th><th>Key characteristic</th></tr>
+        <tr><td>HTTP/1.0</td><td>New TCP connection for every single request/response — high overhead</td></tr>
+        <tr><td>HTTP/1.1</td><td>Persistent connections (keep-alive) reuse one TCP connection for multiple requests; pipelining allowed</td></tr>
+      </table>
+      <p>HTTP is stateless by design — the server retains no memory of previous requests from the same client between connections, which is exactly why cookies exist: to let applications layer state on top of an inherently stateless protocol.</p>
+
+      <h3 class="sub">SMTP &amp; Email<span class="pri-tag pri-legacy">🟡 supporting</span></h3>
+      <p>SMTP (Simple Mail Transfer Protocol) is used for mail <strong>submission and server-to-server transfer</strong> — from a client to its mail server, and between mail servers relaying a message toward its destination. Mailbox retrieval (a client pulling messages down from where they're stored) is normally handled by POP3 or IMAP instead, not SMTP.</p>
+      <table>
+        <tr><th>Protocol</th><th>Direction</th><th>Key behaviour</th></tr>
+        <tr><td>SMTP</td><td>Push (sending)</td><td>Client → server, or server → server relaying</td></tr>
+        <tr><td>POP3</td><td>Pull (retrieval)</td><td>Typically downloads mail to the client and deletes it from the server</td></tr>
+        <tr><td>IMAP</td><td>Pull (retrieval)</td><td>Keeps mail on the server, syncs state (read/unread, folders) across multiple devices</td></tr>
+      </table>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>SMTP cannot be used to download/retrieve mail from a mailbox — that's the job of POP3 or IMAP. GATE distractors sometimes list "SMTP" as an answer for a mail-retrieval scenario specifically to test this push-vs-pull distinction.</p>
+      </div>
+
+      <h3 class="sub">FTP — File Transfer Protocol<span class="pri-tag pri-legacy">🟡 supporting</span></h3>
+      <p>FTP is unusual among application protocols for using <strong>two separate TCP connections</strong>: a control connection (port 21, stays open for the whole session, carries commands like LIST/RETR/STOR) and a separate data connection (port 20 in active mode, or a negotiated port in passive mode) opened fresh for each actual file transfer.</p>
+
+      <div class="card note">
+        <span class="label">Quick port reference</span>
+        <p>HTTP: 80 · HTTPS: 443 · DNS: 53 · SMTP: 25 · POP3: 110 · IMAP: 143 · FTP control: 21 · FTP data: 20 · SSH: 22 — GATE occasionally tests these directly, especially in socket/well-known-port questions.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Which transport protocol does an ordinary DNS query typically use, and why?</summary>
+          <div class="ans">
+            <p>For conventional DNS over port 53, ordinary queries typically use UDP — queries and responses are usually small enough to fit in a single packet, and UDP's lack of connection-setup overhead makes lookups faster, which matters since DNS resolution sits on the critical path of nearly every network request. TCP is also used in specified cases such as zone transfers and large/truncated responses that don't fit in a single UDP packet.</p>
+            <p class="final">Answer: UDP (port 53) for ordinary queries; TCP for zone transfers and oversized/truncated responses</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A user wants to download and permanently sync their email across a phone and a laptop, keeping messages on the server. Which retrieval protocol suits this better — POP3 or IMAP?</summary>
+          <div class="ans">
+            <p>IMAP — it keeps mail on the server and syncs read/unread status and folder structure across multiple devices, whereas POP3 typically downloads and removes mail from the server, which would break multi-device sync.</p>
+            <p class="final">Answer: IMAP</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Why are cookies useful for maintaining application-level state, given that HTTP itself is stateless?</summary>
+          <div class="ans">
+            <p>HTTP itself is stateless — the server doesn't inherently remember anything about a client between separate requests. Cookies are a mechanism built on top of HTTP specifically to introduce state (e.g. login sessions, shopping carts) that the base protocol doesn't provide.</p>
+            <p class="final">Answer: Because HTTP itself is stateless; cookies add state on top of it</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> FTP uses how many TCP connections during a typical file-transfer session, and what is each one for?</summary>
+          <div class="ans">
+            <p>Two: one persistent control connection (port 21) for commands throughout the session, and one data connection opened specifically for each file transfer. The direction in which the data connection is established depends on active/passive mode: in active mode the server initiates the data connection back to the client, while in passive mode the client initiates the data connection to the server.</p>
+            <p class="final">Answer: Two — one persistent control connection (port 21) + one data connection per transfer; who initiates the data connection depends on active vs. passive mode</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Can SMTP be used by an email client to download new messages from a mail server?</summary>
+          <div class="ans">
+            <p>No — SMTP is used for mail submission and server-to-server mail transfer, not for retrieving mail from a mailbox. Retrieving/downloading mail requires POP3 or IMAP instead.</p>
+            <p class="final">Answer: No — SMTP only sends/relays mail; use POP3 or IMAP to retrieve it</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="revision">
+      <div class="topic-head"><span class="idx">08</span><h2>Revision Sheet</h2></div>
+      <div class="topic-kicker">EVERYTHING ON ONE SCREEN — LAST-MINUTE PASS</div>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">TCP/IP merges 3 OSI layers</span>
+          <p>Application, Presentation, and Session (OSI 7,6,5) all collapse into one Application layer in TCP/IP.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Device ↔ layer mapping</span>
+          <p>Hub = Physical. Switch/bridge = Data Link (MAC). Router = Network (IP).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Switching trade-off</span>
+          <p>Circuit: reserved bandwidth, no per-packet decision, wastes idle capacity. Packet: efficient, no guarantees.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">CRC is XOR (mod-2) division</span>
+          <p>No borrowing — pure XOR at every step. Append r zero-bits (r = generator degree) before dividing.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Min Ethernet frame size</span>
+          <p>= 2 × propagation delay × bandwidth, so a sender is still transmitting when a collision signal returns.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">CSMA/CD vs CSMA/CA</span>
+          <p>CD detects collisions mid-transmission (wired). CA avoids them upfront via backoff/RTS-CTS (wireless — can't detect over own signal).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Distance vector vs link state</span>
+          <p>DV: shares own table with neighbours only, Bellman-Ford, count-to-infinity risk. LS: floods link costs to everyone, Dijkstra, full topology view.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">CIDR host count</span>
+          <p>/n prefix → 2^(32−n) total addresses, minus 2 (network + broadcast) for usable hosts.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">IP fragment offset units</span>
+          <p>Offset field is in units of 8 bytes — multiply by 8 for the actual byte offset. Every fragment except the last must normally carry a payload length divisible by 8 bytes.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">ARP / DHCP / ICMP / NAT</span>
+          <p>ARP: IP→MAC lookup. DHCP: auto-assigns IP config. ICMP: error/diagnostic messages (ping). NAT: many private IPs share one public IP.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Flow control vs congestion control</span>
+          <p>Flow control = receiver-driven (protects one slow receiver). Congestion control = network-driven (protects the shared network via cwnd, AIMD).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">TCP loss response</span>
+          <p>On timeout: ssthresh = cwnd/2, cwnd resets to 1 MSS, restart slow start (exponential), then linear growth after ssthresh. On 3 duplicate ACKs: fast retransmit + fast recovery — ssthresh = cwnd/2 but cwnd drops only to ≈ssthresh, not all the way to 1 MSS.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">TCP connection identity</span>
+          <p>A TCP connection is the 4-tuple (local IP/port, remote IP/port) — not just the port number alone. Adding protocol gives a 5-tuple, used for general flow ID across protocols.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">SMTP: submission/relay, not retrieval</span>
+          <p>Sending/relaying only. Retrieval needs POP3 (download+delete) or IMAP (server-synced).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">FTP uses two connections</span>
+          <p>Control (port 21, persistent) + a separate data connection per file transfer.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Performance metrics: transmission vs propagation</span>
+          <p>d<sub>trans</sub> = L/R (packet size / bandwidth). d<sub>prop</sub> = d/s (distance / speed). Throughput ≤ bottleneck link capacity. BDP = bandwidth × RTT.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Framing techniques</span>
+          <p>Character count (length in header), byte stuffing (escape special chars), bit stuffing (insert 0 after five 1s). CRC checks integrity after deframing.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Socket API flow</span>
+          <p>Server: socket() → bind() → listen() → accept(). Client: socket() → connect(). Both: send()/recv() → close(). UDP: no listen/accept/connect — use sendto()/recvfrom().</p>
+        </div>
+      </div>
+
+      <div class="card note" style="margin-top:26px;">
+        <span class="label">How to use this sheet</span>
+        <p>Read sections 01–07 once for understanding, then loop back to this page alone for every later revision pass — if any card doesn't immediately make sense, that's the section to reopen. CN rewards drilling the recurring numericals (subnetting, CRC, sliding-window/CWND math, propagation-delay frame sizing) at least as much as the conceptual definitions — budget practice time for both.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — rapid-fire mix (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A network needs to be divided into subnets each supporting up to 30 hosts. What is the minimum subnet size (prefix length) needed?</summary>
+          <div class="ans">
+            <p>Need 2^h − 2 ≥ 30 usable hosts. h=5 gives 2⁵−2=30, exactly enough. Prefix length = 32−5 = 27.</p>
+            <p class="final">Answer: /27 (32 addresses, 30 usable hosts)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Which layer is responsible for reassembling IP fragments back into the original datagram?</summary>
+          <div class="ans">
+            <p>Reassembly happens only at the final destination's network layer (IP) — intermediate routers along the path never reassemble fragments, they just forward each fragment independently.</p>
+            <p class="final">Answer: Network layer, at the destination host only</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> True or false: UDP guarantees in-order delivery of datagrams.</summary>
+          <div class="ans">
+            <p>False — UDP provides no ordering, reliability, or delivery guarantees at all; it's a bare-minimum, connectionless "best-effort" protocol, unlike TCP.</p>
+            <p class="final">Answer: False</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A router's routing table is populated purely from information exchanged directly with adjacent routers, without ever seeing the full network graph. Is this distance vector or link state routing?</summary>
+          <div class="ans">
+            <p>Distance vector — link-state routing specifically floods link information to every router so each one builds the full topology graph; only relying on neighbour-only exchanges without full-graph knowledge is the distance-vector approach.</p>
+            <p class="final">Answer: Distance vector routing</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Which well-known port does HTTPS use by default?</summary>
+          <div class="ans">
+            <p>HTTPS (HTTP over TLS/SSL) uses port 443 by default, distinct from plain HTTP's port 80.</p>
+            <p class="final">Answer: Port 443</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      Blueprint Notes — Computer Networks for GATE CSE · built for revision, not first-read · official syllabus: "Concept of layering: OSI and TCP/IP Protocol Stacks; Basics of packet, circuit and virtual circuit-switching; Data link layer: framing, error detection, Medium Access Control, Ethernet bridging; Routing protocols: shortest path, flooding, distance vector and link state routing; Fragmentation and IP addressing, IPv4, CIDR notation, Basics of IP support protocols (ARP, DHCP, ICMP), Network Address Translation (NAT); Transport layer: flow control and congestion control, UDP, TCP, sockets; Application layer protocols: DNS, SMTP, HTTP, FTP, Email."
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Organization &amp; Architecture — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'computer-organization', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // Computer Organization &amp; Architecture</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">9 sheets · full syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#basics"><span class="num">01</span> Basic Organization &amp; Register Transfer</a></div>
+      <div class="navgroup"><a class="navlink" href="#isa"><span class="num">02</span> Instruction Set &amp; Addressing Modes</a></div>
+      <div class="navgroup"><a class="navlink" href="#alu"><span class="num">03</span> ALU Design</a></div>
+      <div class="navgroup"><a class="navlink" href="#datapath"><span class="num">04</span> Datapath &amp; Instruction Cycle</a></div>
+      <div class="navgroup"><a class="navlink" href="#control-unit"><span class="num">05</span> Control Unit Design</a></div>
+      <div class="navgroup"><a class="navlink" href="#memory-hierarchy"><span class="num">06</span> Memory Hierarchy &amp; Cache</a></div>
+      <div class="navgroup"><a class="navlink" href="#io"><span class="num">07</span> I/O — Interrupts &amp; DMA</a></div>
+      <div class="navgroup"><a class="navlink" href="#pipelining"><span class="num">08</span> Pipelining &amp; Hazards</a></div>
+      <div class="navgroup"><a class="navlink" href="#revision"><span class="num">09</span> Revision Sheet</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Schematic notes · GATE CSE 2027</span>
+      <h1>Computer Organization, drawn out <em>like a machine</em>, not summarized like a textbook.</h1>
+      <p>Nine short sheets covering the complete GATE CSE Computer Organization &amp; Architecture syllabus — instruction sets, ALU and control unit design, datapaths, memory hierarchy, I/O, and pipelining — with worked datapath traces, cache-mapping walkthroughs, and the exact traps GATE likes to set.</p>
+      <div class="chips">
+        <span class="chip">01 Basic Organization</span>
+        <span class="chip">02 ISA &amp; Addressing</span>
+        <span class="chip">03 ALU Design</span>
+        <span class="chip">04 Datapath</span>
+        <span class="chip">05 Control Unit</span>
+        <span class="chip">06 Memory Hierarchy</span>
+        <span class="chip">07 I/O</span>
+        <span class="chip">08 Pipelining</span>
+        <span class="chip">09 Revision</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g fill="none" stroke="#2a2b33" stroke-width="1.4">
+          <rect x="15" y="20" width="70" height="36" rx="3" stroke="#cba36b"/>
+          <rect x="15" y="80" width="70" height="36" rx="3"/>
+          <rect x="15" y="140" width="70" height="36" rx="3"/>
+          <rect x="130" y="80" width="70" height="36" rx="3"/>
+          <rect x="215" y="50" width="70" height="36" rx="3"/>
+          <rect x="215" y="110" width="70" height="36" rx="3"/>
+          <line x1="85" y1="38" x2="130" y2="90"/>
+          <line x1="85" y1="98" x2="130" y2="98"/>
+          <line x1="85" y1="158" x2="130" y2="106"/>
+          <line x1="200" y1="90" x2="215" y2="68"/>
+          <line x1="200" y1="98" x2="215" y2="128"/>
+        </g>
+        <g font-family="JetBrains Mono" font-size="9" fill="#6f6a60">
+          <text x="24" y="42">CU</text><text x="24" y="102">ALU</text><text x="24" y="162">REG</text>
+          <text x="145" y="102" fill="#a8a196">BUS</text>
+          <text x="225" y="72">MEM</text><text x="225" y="132">I/O</text>
+        </g>
+      </svg>
+    </section>
+
+    <section class="topic" id="basics">
+      <div class="topic-head"><span class="idx">01</span><h2>Basic Organization &amp; Register Transfer</h2></div>
+      <div class="topic-kicker">FUNCTIONAL UNITS · VON NEUMANN vs HARVARD · BUSES · RTL</div>
+
+      <h3 class="sub">The functional units of a computer</h3>
+      <p>Every computer, however it is built, is organized around five interacting functional units: the <strong>input</strong> unit, <strong>memory</strong>, the <strong>arithmetic-logic unit (ALU)</strong>, the <strong>output</strong> unit, and the <strong>control unit</strong>. The ALU and control unit together are usually referred to as the <strong>CPU</strong>, and the CPU plus memory plus I/O form the complete system, all tied together by a shared communication path called the <strong>bus</strong>.</p>
+      <div class="card">
+        <h4 class="subsub">CPU-centric view</h4>
+        <p>The CPU itself is built from three cooperating pieces: a <strong>register file</strong> (fast on-chip storage for operands and results), the <strong>ALU</strong> (does the actual arithmetic/logic), and the <strong>control unit</strong> (generates the timing and control signals that make the other two do the right thing at the right moment, driven by the instruction currently being executed).</p>
+      </div>
+
+      <h3 class="sub">Von Neumann vs Harvard architecture</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Von Neumann (stored-program)</h4>
+          <p>Single shared memory holds <strong>both instructions and data</strong>, accessed over a single bus. Simple and cheap, but the CPU cannot fetch an instruction and read/write data in the same cycle — this <strong>single shared bus is the "von Neumann bottleneck."</strong></p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Harvard architecture</h4>
+          <p><strong>Separate</strong> memories (and buses) for instructions and data, so instruction fetch and data access can happen in the <strong>same clock cycle</strong>. Used inside modern CPUs at the cache level (separate I-cache and D-cache) even though main memory is logically von Neumann.</p>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Most GATE questions describe a "modified Harvard" architecture without naming it: split L1 instruction/data caches feeding a single unified main memory. Don't assume pure Harvard just because caches are split — check what main memory looks like.</p>
+      </div>
+
+      <h3 class="sub">Bus organization</h3>
+      <p>A bus is a shared set of wires carrying <strong>address, data,</strong> and <strong>control</strong> signals between units. Because only one device can drive the bus at a time, bus width and bus arbitration directly bound system performance.</p>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Single bus</h4>
+          <p>One shared bus for everything — cheap, simple, but only one transfer can happen at a time (a structural bottleneck, closely related to pipeline structural hazards in Section 08).</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Multiple/dedicated buses</h4>
+          <p>Separate address, data, and control lines (or separate buses per functional unit) allow overlapped transfers — higher throughput at higher hardware cost.</p>
+        </div>
+      </div>
+      <table>
+        <tr><th>Bus type</th><th>Carries</th><th>Direction</th></tr>
+        <tr><td>Address bus</td><td>Memory/IO location to access</td><td>Unidirectional (CPU → memory)</td></tr>
+        <tr><td>Data bus</td><td>Actual operand/instruction bits</td><td>Bidirectional</td></tr>
+        <tr><td>Control bus</td><td>Read/Write, clock, interrupt, ready signals</td><td>Mixed</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">Address bus width ↔ address space</span>
+        <p>An address bus of <code>n</code> bits can address exactly <code>2ⁿ</code> distinct locations. A data bus of <code>w</code> bits moves <code>w</code> bits per transfer — so a 32-bit address bus with an 8-bit-addressable memory gives 2³² bytes = 4 GB of address space, regardless of the data bus width.</p>
+      </div>
+
+      <div class="card formula">
+        <span class="label">Endianness — which byte lives at the lowest address?<span class="pri-tag pri-core">🔥 core</span></span>
+        <p>For any multi-byte value, <strong>big-endian</strong> stores the most significant byte (MSB) at the lowest memory address, while <strong>little-endian</strong> stores the least significant byte (LSB) at the lowest address. This is purely a storage-order convention — it never changes the value itself, only which byte you'd find by reading a specific address.</p>
+        <div class="eq">32-bit value 0x12345678 stored starting at address 1000:
+
+Big-endian:              Little-endian:
+1000: 12  (MSB)           1000: 78  (LSB)
+1001: 34                  1001: 56
+1002: 56                  1002: 34
+1003: 78  (LSB)           1003: 12  (MSB)</div>
+        <p>x86/x86-64 is little-endian; most network protocols (and historically, many RISC/mainframe systems) use big-endian — this is exactly why network byte order is defined as big-endian and why code crossing that boundary calls functions like <code>htons</code>/<code>ntohs</code> to convert.</p>
+      </div>
+
+      <h3 class="sub">Register Transfer Language (RTL)</h3>
+      <p>Micro-operations — the elementary steps a CPU performs each clock cycle — are written using RTL notation. A transfer <code>R2 ← R1</code> means "the content of R1 is copied into R2, source unchanged." Arithmetic/logic micro-ops combine transfers with operators: <code>R3 ← R1 + R2</code>.</p>
+      <div class="eq">MAR ← PC          ; address of next instruction loaded into Memory Address Register
+MDR ← M[MAR]      ; memory read into Memory Data Register
+IR  ← MDR         ; instruction latched into Instruction Register
+PC  ← PC + 1      ; program counter advances to next instruction</div>
+      <div class="card formula">
+        <span class="label">Key CPU registers</span>
+        <p><strong>PC</strong> (Program Counter) — address of the next instruction. <strong>IR</strong> (Instruction Register) — currently executing instruction. <strong>MAR</strong> — address sent to memory. <strong>MDR/MBR</strong> — data being transferred to/from memory. <strong>Accumulator/GPRs</strong> — general operand storage.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">6 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Why can't a pure von Neumann machine fetch the next instruction and access data in the same cycle?</summary>
+          <div class="ans">
+            <p>Under the single shared memory/bus model assumed by "pure" von Neumann, instructions and data share one memory and one bus, so only one memory access — either the instruction fetch or the data access — can use that shared path in a given cycle. (This doesn't apply to modern CPUs, which use separate instruction/data caches at the hardware level even though main memory is logically von Neumann — see Q4.)</p>
+            <p class="final">Answer: They compete for the same single memory/bus (the von Neumann bottleneck)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A system has a 24-bit address bus and is byte-addressable. What is its maximum addressable memory?</summary>
+          <div class="ans">
+            <p>Address space = 2ⁿ locations for an n-bit address bus. 2²⁴ = 16,777,216 bytes.</p>
+            <p class="final">Answer: 16 MB (2²⁴ bytes)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> In RTL, what does the micro-operation sequence "MAR ← PC; MDR ← M[MAR]; IR ← MDR" collectively accomplish?</summary>
+          <div class="ans">
+            <p>The PC's value (address of the next instruction) is copied to MAR, that address is used to read memory into MDR, and MDR's content is then latched into IR — this is exactly the instruction-fetch micro-operation sequence.</p>
+            <p class="final">Answer: Instruction fetch (fetching the next instruction from memory into IR)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Why do modern CPUs use separate instruction and data caches (Harvard-style) even though main memory is unified (von Neumann)?</summary>
+          <div class="ans">
+            <p>Splitting only the fastest, closest level of the memory hierarchy lets the pipeline fetch an instruction and access data in the same cycle without the cost of fully duplicating main memory — the "modified Harvard" compromise.</p>
+            <p class="final">Answer: To remove the single-bus fetch/access bottleneck at the cache level without duplicating all of main memory</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A single shared bus connects CPU, memory, and I/O. What is the main performance disadvantage of this design over a multi-bus design?</summary>
+          <div class="ans">
+            <p>Because only one device can drive the shared bus at any instant, only one bus transaction can use the shared bus at a time — CPU↔memory, CPU↔I/O, and any DMA transfer all contend for the same physical medium, creating a serialization bottleneck. (This is the simple-bus model GATE assumes; real bus protocols can use pipelining or split transactions to overlap parts of different transfers, but the core limitation — one shared physical resource that can't be used by two transfers simultaneously — still applies.)</p>
+            <p class="final">Answer: Only one bus transaction can use the shared bus at a time (a structural bottleneck/serialization point), unlike multi-bus designs that allow concurrent transfers on separate buses</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q6</span> The 16-bit value 0x1234 is stored at address 2000 on a little-endian machine. What byte value is at address 2000, and what's at 2001?</summary>
+          <div class="ans">
+            <p>Little-endian stores the least significant byte at the lowest address. 0x1234's LSB is 0x34 and its MSB is 0x12, so address 2000 (the lowest address) holds 0x34, and address 2001 holds 0x12.</p>
+            <p class="final">Answer: Address 2000 = 0x34, address 2001 = 0x12</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_BASICS -->
+    <section class="topic" id="isa">
+      <div class="topic-head"><span class="idx">02</span><h2>Instruction Set &amp; Addressing Modes</h2></div>
+      <div class="topic-kicker">INSTRUCTION FORMATS · OPERAND COUNT · ADDRESSING MODES · CISC vs RISC</div>
+
+      <h3 class="sub">Instruction formats by operand count</h3>
+      <p>An instruction set's "architecture family" is usually described by how many explicit operands its ALU instructions take.</p>
+      <table>
+        <tr><th>Type</th><th>Form</th><th>Example (A = B + C)</th></tr>
+        <tr><td>0-address (stack)</td><td>opcode only</td><td>PUSH B; PUSH C; ADD; POP A</td></tr>
+        <tr><td>1-address (accumulator)</td><td>opcode, 1 operand</td><td>LOAD B; ADD C; STORE A</td></tr>
+        <tr><td>2-address</td><td>opcode, dest=src op</td><td>MOV A,B; ADD A,C</td></tr>
+        <tr><td>3-address</td><td>opcode, dest, src1, src2</td><td>ADD A,B,C</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">Trade-off</span>
+        <p>Fewer operands per instruction ⇒ shorter, denser instructions but more total instructions (and more memory traffic) needed for the same computation. 0-address code is smallest per-instruction but needs the most instructions; 3-address is the opposite.</p>
+      </div>
+
+      <h3 class="sub">Addressing modes</h3>
+      <p>An addressing mode is the rule for computing the <strong>effective address (EA)</strong> — the actual memory/register location an operand comes from — out of the bits given in the instruction.</p>
+      <table>
+        <tr><th>Mode</th><th>Effective address</th><th>Notes</th></tr>
+        <tr><td>Immediate</td><td>operand <em>is</em> in the instruction</td><td>No memory access for operand; fastest</td></tr>
+        <tr><td>Direct (absolute)</td><td>EA = address field</td><td>One memory access to get operand</td></tr>
+        <tr><td>Indirect</td><td>EA = M[address field]</td><td>Two memory accesses (fetch pointer, then operand)</td></tr>
+        <tr><td>Register</td><td>operand in register named by field</td><td>No memory access; fastest after immediate</td></tr>
+        <tr><td>Register indirect</td><td>EA = content of named register</td><td>One memory access</td></tr>
+        <tr><td>Displacement / indexed</td><td>EA = register + offset</td><td>Base+index addressing; arrays, records</td></tr>
+        <tr><td>PC-relative</td><td>EA = PC + offset</td><td>Position-independent branches</td></tr>
+        <tr><td>Autoincrement/decrement</td><td>EA = register, then register ± size</td><td>Sequential array traversal, stack push/pop</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Indirect addressing needs <strong>two</strong> memory references (one to fetch the pointer, one to fetch the actual operand) — GATE frequently asks for the total number of memory accesses across a chain of nested indirections; count each hop.</p>
+      </div>
+
+      <h3 class="sub">CISC vs RISC</h3>
+      <p>CISC and RISC are design <strong>philosophies</strong>, and the traits below are <strong>typical tendencies of each philosophy — not universal, defining requirements</strong>. GATE can (and does) construct a hypothetical architecture that's labeled RISC but has, say, a couple of variable-length instructions, or a CISC-labeled one with mostly hardwired control — treat every row below as "usually," not "always," and answer based on what the question actually states about a given machine rather than the label alone.</p>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">CISC (typical)</h4>
+          <p>Large, often variable-length instruction set; complex instructions can directly access memory (memory-to-memory operations) in many designs; microprogrammed control is common (though not required); fewer instructions per program but more cycles per instruction on average.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">RISC (typical)</h4>
+          <p>Small, typically fixed-length, uniform instruction set; commonly a <strong>load-store architecture</strong> — only LOAD/STORE touch memory, ALU ops are register-to-register; simple instructions make hardwired control a natural (but not mandatory) fit, easing pipelining.</p>
+        </div>
+      </div>
+      <table>
+        <tr><th>Feature</th><th>CISC (typical)</th><th>RISC (typical)</th></tr>
+        <tr><td>Instruction length</td><td>Often variable</td><td>Usually fixed</td></tr>
+        <tr><td>Memory access</td><td>Many instructions can touch memory</td><td>Usually only LOAD/STORE</td></tr>
+        <tr><td>Control unit</td><td>Commonly microprogrammed</td><td>Commonly hardwired</td></tr>
+        <tr><td>Addressing modes</td><td>Typically many</td><td>Typically few</td></tr>
+        <tr><td>Pipelining</td><td>Usually harder (variable timing)</td><td>Usually easier (uniform timing)</td></tr>
+        <tr><td>Example</td><td>x86</td><td>ARM, RISC-V, MIPS</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Don't answer a question by pattern-matching "this is called RISC, so it must have hardwired control" — these are correlated tendencies from historical design trade-offs, not logical entailments. If a question explicitly states an architecture's control unit type, instruction length, or addressing-mode count, go with what's stated even if it contradicts the "usual" RISC/CISC stereotype.</p>
+      </div>
+
+      <div class="card formula">
+        <span class="label">Instruction length vs opcode/operand split</span>
+        <p>For a fixed instruction word of <code>n</code> bits with <code>k</code> operand fields of <code>m</code> bits each, the opcode gets <code>n − k·m</code> bits, allowing up to <code>2^(n−k·m)</code> distinct instructions — a very common GATE numerical.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Compute A = B + C using strictly 1-address (accumulator) instructions.</summary>
+          <div class="ans">
+            <p>An accumulator machine implicitly uses the accumulator as one operand and the destination. LOAD B (Acc ← B); ADD C (Acc ← Acc + C); STORE A (A ← Acc).</p>
+            <p class="final">Answer: LOAD B; ADD C; STORE A (3 instructions)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> In a double (2-level) indirect operand access, how many memory accesses are required to fetch the operand, not counting the instruction fetch itself? State the convention you use.</summary>
+          <div class="ans">
+            <p>"Double indirect" is ambiguous unless you fix a convention, so define it explicitly: the instruction's address field A is already part of the fetched instruction, so reading it is not a separate memory access — it is not read again from memory. Memory accesses only start when A is used to reference memory: Memory[A] → P1 (access 1), Memory[P1] → P2 (access 2), Memory[P2] → operand (access 3). That is two levels of pointer-chasing beyond the direct-addressing access, for 3 accesses total.</p>
+            <p>Under this convention (counting only memory accesses after instruction fetch, and not counting the address-field read as one of them): direct addressing needs 1 access (Memory[A] = operand), single (1-level) indirect needs 2 (Memory[A] = P1, Memory[P1] = operand), and double (2-level) indirect needs 3 (Memory[A] = P1, Memory[P1] = P2, Memory[P2] = operand). Always state which convention a question uses, since "double indirect" is sometimes defined differently across textbooks.</p>
+            <p class="final">Answer: 3 memory accesses (Memory[A]→P1, Memory[P1]→P2, Memory[P2]→operand)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> An instruction word is 16 bits with one opcode field and two 5-bit register-operand fields. How many distinct opcodes can this format support?</summary>
+          <div class="ans">
+            <p>Operand fields consume 2 × 5 = 10 bits, leaving 16 − 10 = 6 bits for the opcode. 6 bits give 2⁶ = 64 distinct opcodes.</p>
+            <p class="final">Answer: 64 opcodes</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Why is a load-store (RISC) architecture generally easier to pipeline than one where ALU instructions can operate directly on memory?</summary>
+          <div class="ans">
+            <p>The load-store ISA provides more regular instruction formats and separates memory access from register-register ALU operations (memory is touched only by LOAD/STORE), which makes pipeline stages and control simpler and more predictable; instructions that unpredictably combine memory access with ALU computation cause variable-length stages and stalls.</p>
+            <p class="final">Answer: Uniform instruction timing avoids the variable-latency stalls that memory-operand ALU instructions cause</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> An array element access uses "base register + index register + constant offset" to form its effective address. Which addressing mode is this closest to, and why is it useful for arrays?</summary>
+          <div class="ans">
+            <p>This is base-indexed (displacement/indexed) addressing generalized with two registers — the base register holds the array's start address, the index register holds the running element position, and the constant offset can select a field within a record, letting one instruction template walk an entire array or array-of-structs.</p>
+            <p class="final">Answer: Indexed (base + index + displacement) addressing — avoids recomputing a new absolute address for every element</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_ISA -->
+    <section class="topic" id="alu">
+      <div class="topic-head"><span class="idx">03</span><h2>Design of the Arithmetic-Logic Unit (ALU)</h2></div>
+      <div class="topic-kicker">ADDERS · MULTIPLIERS · BOOTH'S ALGORITHM · RESTORING DIVISION</div>
+
+      <h3 class="sub">Adder circuits — the ALU's core building block</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Ripple carry adder (RCA)</h4>
+          <p>Chain of <code>n</code> full adders, each waiting for the carry-out of the previous stage. Simple and cheap in hardware, but <strong>worst-case delay is O(n)</strong> — the carry must ripple through every stage.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Carry look-ahead adder (CLA)</h4>
+          <p>Computes all carries in parallel from generate/propagate signals, cutting delay to <strong>O(log n)</strong> at the cost of more gates. <em>Generate</em> Gᵢ = AᵢBᵢ (a carry is produced regardless of Cin); <em>propagate</em> Pᵢ = Aᵢ⊕Bᵢ (an incoming carry passes through).</p>
+        </div>
+      </div>
+      <div class="eq">Cᵢ₊₁ = Gᵢ + Pᵢ·Cᵢ            (recurrence used by every carry stage)
+C₁ = G₀ + P₀C₀
+C₂ = G₁ + P₁G₀ + P₁P₀C₀
+C₃ = G₂ + P₂G₁ + P₂P₁G₀ + P₂P₁P₀C₀   ← each Cᵢ expands directly in terms of C₀, no rippling</div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>RCA delay of an n-bit adder is quoted as <strong>n·Δ</strong> (Δ = single full-adder delay) or sometimes <strong>2n·Δ</strong> depending on whether the question counts gate levels or full-adder stages — always check which delay model the question specifies before plugging in n.</p>
+      </div>
+
+      <h3 class="sub">Multiplication — array &amp; sequential multipliers</h3>
+      <p>Unsigned multiplication of two n-bit numbers is fundamentally repeated add-and-shift: for each multiplier bit that is 1, add the (shifted) multiplicand into a running partial-product sum.</p>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Array multiplier</h4>
+          <p>A 2-D grid of AND gates and adders computes all partial products in parallel and sums them combinationally — fast but hardware grows as O(n²).</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Sequential (shift-add) multiplier</h4>
+          <p>One partial product generated and added per cycle using a single adder, product register, and shift register — takes n cycles for n-bit operands but far less hardware.</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Booth's algorithm — signed multiplication</h3>
+      <p>Booth's algorithm multiplies signed (2's complement) numbers directly, without separate sign handling, and speeds up runs of consecutive 1s or 0s in the multiplier by treating them as a single subtract/add at the boundary.</p>
+      <div class="card formula">
+        <span class="label">Booth's recoding rule (examine Qₙ, Qₙ₋₁)</span>
+        <table>
+          <tr><th>Qₙ Qₙ₋₁</th><th>Operation on A (accumulator)</th></tr>
+          <tr><td>00</td><td>No operation (run of 0s continues)</td></tr>
+          <tr><td>01</td><td>A ← A + M (end of a run of 1s)</td></tr>
+          <tr><td>10</td><td>A ← A − M (start of a run of 1s)</td></tr>
+          <tr><td>11</td><td>No operation (run of 1s continues)</td></tr>
+        </table>
+        <p>After each step, arithmetic-shift-right the combined (A, Q, Qₙ₋₁) register. Repeat n times for n-bit operands. The scan always proceeds from the LSB toward the MSB — Qₙ₋₁ starts as the implicit 0 to the right of Q's LSB, and the shift-right after each step brings the next-more-significant bit into the examined pair.</p>
+      </div>
+      <div class="card note">
+        <span class="label">Why Booth's helps</span>
+        <p>A long run of 1s in the multiplier (e.g. 0111110) needs 5 additions the naive way, but Booth's collapses it to one subtraction at the run's start and one addition at its end — fewer arithmetic operations for multipliers with long runs of consecutive equal bits.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">Worked example</span>
+        <p>Multiply M = +3 (multiplicand) by Q = −4 (multiplier) using 4-bit registers. Expected result: 3 × (−4) = −12.</p>
+        <p>Initial state — A = 0000, Q = 1100, Qₙ₋₁ = 0, M = 0011 (and −M = 1101 for subtraction):</p>
+        <table>
+          <tr><th>Cycle</th><th>Qₙ Qₙ₋₁</th><th>Action</th><th>A after action</th><th>A, Q, Qₙ₋₁ after shift</th></tr>
+          <tr><td>1</td><td>0, 0</td><td>none</td><td>0000</td><td>0000&nbsp;0110&nbsp;0</td></tr>
+          <tr><td>2</td><td>0, 0</td><td>none</td><td>0000</td><td>0000&nbsp;0011&nbsp;0</td></tr>
+          <tr><td>3</td><td>1, 0</td><td>A ← A − M</td><td>1101</td><td>1110&nbsp;1001&nbsp;1</td></tr>
+          <tr><td>4</td><td>1, 1</td><td>none</td><td>1110</td><td>1111&nbsp;0100&nbsp;1</td></tr>
+        </table>
+        <p>After 4 cycles (= number of bits), the product is the concatenation <strong>A:Q = 1111 0100</strong>, an 8-bit 2's complement number. Converting: invert (0000 1011) and add 1 → 0000 1100 = 12, so the value is −12.</p>
+        <p class="final">Answer: A:Q = 1111 0100 = −12 ✓ matches 3 × (−4)</p>
+      </div>
+
+      <h3 class="sub">Restoring division</h3>
+      <p>Restoring division subtracts the divisor from a running partial remainder; if the result goes negative, it <strong>restores</strong> the previous remainder (adds the divisor back) and records quotient bit 0, otherwise it keeps the result and records quotient bit 1 — one iteration per quotient bit, shifting left each round.</p>
+      <div class="card">
+        <h4 class="subsub">Non-restoring division</h4>
+        <p>Skips the explicit restore step by choosing to add or subtract the divisor on the <em>next</em> iteration based on the current remainder's sign — same number of iterations, fewer total add/subtract operations than restoring division.</p>
+      </div>
+
+      <h3 class="sub">Logic operations &amp; the ALU's functional structure</h3>
+      <p>Besides arithmetic, an ALU implements bitwise AND, OR, XOR, NOT, and shift/rotate operations. A function-select input chooses which operation's result is routed to the output — typically via a multiplexer fed by parallel arithmetic and logic sub-units.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A 16-bit ripple carry adder is built from full adders, each with a 2 ns worst-case delay from any input to carry-out (assume the sum output settles by the time the carry-out does at each stage, so the final stage's carry-propagation delay also bounds when its sum bit is ready). What is the worst-case time for the final sum to stabilize?</summary>
+          <div class="ans">
+            <p>In the worst case (a carry generated at the LSB must ripple through all 16 stages before the final stage can produce its correct output), total delay = number of stages × per-stage carry delay = 16 × 2 ns. This model treats "2 ns" as the carry-propagation delay per stage — the dependency that actually chains across all 16 full adders. In a real full adder, the carry-out and sum outputs can have different gate delays, and sum is often ready sooner than carry-out at any single stage; but since sum depends on the carry-in from the previous stage, the LAST stage's sum can't be trusted until the carry has rippled all the way from stage 1, so the total worst-case time is still governed by the chain of carry delays, not sum delays. Questions should ideally state this explicitly rather than leave "2 ns" ambiguous between carry delay and sum delay.</p>
+            <p class="final">Answer: 32 ns, under the assumption that 2 ns is the per-stage carry-propagation delay driving the ripple chain</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Using Booth's algorithm, how many arithmetic (add/subtract) operations are triggered while multiplying by the multiplier 0 1 1 1 1 0 (scanning Qₙ,Qₙ₋₁ pairs from the LSB toward the MSB, i.e. right to left in the written string)?</summary>
+          <div class="ans">
+            <p>Booth's algorithm always examines bit pairs starting from the least significant bit and moving toward the most significant bit — with the string written as 011110 (leftmost = MSB, rightmost = LSB) and an implicit 0 appended to the right of the LSB as the initial Qₙ₋₁, scanning proceeds right-to-left across the written digits. That scan crosses the boundary from 0 to the run of 1s, triggering one subtract (10), and crosses the boundary from the run of 1s back to 0, triggering one add (01); the interior 11 pairs and the boundary 00 trigger nothing.</p>
+            <p class="final">Answer: 2 operations (one subtract, one add) — instead of 4 additions the naive way</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> In a carry look-ahead adder, express the carry-out of bit position 2 (C₂) purely in terms of C₀ and the generate/propagate signals.</summary>
+          <div class="ans">
+            <p>Each carry recurrence Cᵢ₊₁ = Gᵢ + PᵢCᵢ is expanded backward to C₀ so no stage waits on the previous stage's carry: C₂ = G₁ + P₁C₁ = G₁ + P₁(G₀ + P₀C₀) = G₁ + P₁G₀ + P₁P₀C₀.</p>
+            <p class="final">Answer: C₂ = G₁ + P₁G₀ + P₁P₀C₀</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> What is the main hardware trade-off of an array multiplier versus a sequential shift-add multiplier for n-bit operands?</summary>
+          <div class="ans">
+            <p>An array multiplier lays out all partial-product generation and summation combinationally, so it needs roughly O(n²) adder/gate hardware but produces the result in one combinational pass; a sequential multiplier reuses a single adder over n cycles, needing far less hardware but n times the latency.</p>
+            <p class="final">Answer: Array multiplier trades O(n²) hardware for speed; sequential multiplier trades n cycles of latency for minimal hardware</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> In restoring division, what action is taken when a trial subtraction of the divisor from the partial remainder produces a negative result?</summary>
+          <div class="ans">
+            <p>A negative trial result means the divisor didn't fit at this step, so the algorithm restores the partial remainder by adding the divisor back (undoing the trial subtraction) and records a quotient bit of 0 for this iteration.</p>
+            <p class="final">Answer: Add the divisor back to restore the remainder, and set the quotient bit to 0</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_ALU -->
+    <section class="topic" id="datapath">
+      <div class="topic-head"><span class="idx">04</span><h2>Datapath &amp; Instruction Cycle</h2></div>
+      <div class="topic-kicker">FETCH-DECODE-EXECUTE · SINGLE-CYCLE vs MULTI-CYCLE · CPI</div>
+
+      <h3 class="sub">The instruction cycle</h3>
+      <p>Every instruction, regardless of ISA, moves through the same broad phases every time it executes:</p>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Fetch</h4>
+          <p>IR ← M[PC]; PC ← PC + (instruction size). The instruction word is read from memory into the instruction register and PC advances to the next instruction.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Decode</h4>
+          <p>Control unit interprets the opcode and operand fields, determining which datapath control signals to assert for this specific instruction.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Operand fetch / Execute</h4>
+          <p>Registers or memory operands are read, the ALU performs the required computation (or a branch condition is evaluated).</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Memory / Writeback</h4>
+          <p>Memory is accessed if the instruction is a LOAD/STORE, and the result (if any) is written back into a register.</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Single-cycle vs multi-cycle datapath</h3>
+      <table>
+        <tr><th>Aspect</th><th>Single-cycle</th><th>Multi-cycle</th></tr>
+        <tr><td>Clock period</td><td>Fixed, set by the <em>slowest</em> instruction</td><td>Fixed per micro-step, shorter than single-cycle's period</td></tr>
+        <tr><td>Cycles per instruction (CPI)</td><td>Always 1</td><td>Varies (e.g. 3–5) by instruction type</td></tr>
+        <tr><td>Hardware reuse</td><td>Separate adders/ALU uses can't be shared within an instruction</td><td>Same ALU can be reused across multiple steps of one instruction</td></tr>
+        <tr><td>Total execution time</td><td>Every instruction is as slow as the slowest one</td><td>Simple instructions finish faster in wall-clock time</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>A single-cycle datapath having CPI = 1 does <em>not</em> mean it is faster overall — its clock period must accommodate the worst-case (usually LOAD, which touches register read, ALU address computation, memory access, and writeback all in one cycle), so its per-instruction time can exceed a well-pipelined or multi-cycle design's average.</p>
+        </div>
+
+      <h3 class="sub">Performance: CPI, clock rate, and execution time</h3>
+      <div class="card formula">
+        <span class="label">Core performance equation</span>
+        <div class="eq">CPU time = Instruction count × CPI × Clock cycle time
+                = (Instruction count × CPI) / Clock rate</div>
+        <p>When a program mixes instruction types with different CPIs, use the <strong>weighted average CPI</strong>: Σ(fraction of instruction type × its CPI) across all types.</p>
+      </div>
+      <div class="card note">
+        <span class="label">MIPS as a metric</span>
+        <p>MIPS = Clock rate / (CPI × 10⁶). MIPS is a flawed comparison metric across different instruction sets (a "MIPS-inflated" ISA using many cheap instructions can look faster while doing less useful work per instruction) — GATE sometimes uses this to test whether you compare instruction counts too, not just MIPS.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A program has 40% ALU instructions (CPI=1), 30% LOAD/STORE (CPI=3), and 30% branches (CPI=2). What is the average CPI?</summary>
+          <div class="ans">
+            <p>Weighted average CPI = Σ (fraction × CPI) = 0.4×1 + 0.3×3 + 0.3×2 = 0.4 + 0.9 + 0.6 = 1.9.</p>
+            <p class="final">Answer: 1.9</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A CPU runs at 2 GHz, executes a program with 10⁹ instructions at an average CPI of 1.5. What is the execution time?</summary>
+          <div class="ans">
+            <p>CPU time = (Instruction count × CPI) / Clock rate = (10⁹ × 1.5) / (2×10⁹) = 1.5/2 = 0.75 seconds.</p>
+            <p class="final">Answer: 0.75 seconds</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Why must a single-cycle datapath's clock period be set by the slowest instruction (typically LOAD) rather than the average instruction?</summary>
+          <div class="ans">
+            <p>In a single-cycle design every instruction — fast or slow — must fully complete within exactly one clock period, so the clock period has to be long enough for the worst-case instruction's critical path or the slower instructions would produce wrong results.</p>
+            <p class="final">Answer: All instructions share one fixed-length cycle, so the cycle must accommodate the worst-case (slowest) instruction</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A multi-cycle CPU takes 4 cycles for ALU ops and 5 cycles for LOAD, with a 250 MHz clock. If a program is 50% ALU and 50% LOAD instructions totaling 200 instructions, find the total execution time.</summary>
+          <div class="ans">
+            <p>Average CPI = 0.5×4 + 0.5×5 = 4.5. Total cycles = 200 × 4.5 = 900. Clock period = 1/(250×10⁶) = 4 ns. Execution time = 900 × 4 ns = 3600 ns.</p>
+            <p class="final">Answer: 3600 ns (3.6 μs)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Two CPUs execute the same source program but compile it to different instruction counts (e.g. different ISAs or compilers): CPU A has a higher MIPS rating than CPU B. Does that guarantee A finishes faster?</summary>
+          <div class="ans">
+            <p>MIPS only reflects instructions executed per second, not the actual work done per instruction — if CPU A's compiler generates more instructions to do the same job (a less efficient ISA or code generation), A can have higher MIPS yet still take more total time than B, since execution time = Instruction Count / (MIPS × 10⁶). Note: this "No" answer depends on the instruction counts differing. If both CPUs instead executed the identical binary (same instruction count), a higher MIPS rating on A would guarantee faster execution, since instruction count would then be fixed.</p>
+            <p class="final">Answer: No — because the two CPUs generate different instruction counts for the same source program; MIPS alone is not comparable across different ISAs/compilers</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_DATAPATH -->
+    <section class="topic" id="control-unit">
+      <div class="topic-head"><span class="idx">05</span><h2>Control Unit Design — Hardwired &amp; Microprogrammed</h2></div>
+      <div class="topic-kicker">HARDWIRED CONTROL · MICROPROGRAMMING · CONTROL WORD · HORIZONTAL vs VERTICAL</div>
+
+      <h3 class="sub">What the control unit does</h3>
+      <p>The control unit generates the sequence of control signals (register-enable, ALU-function-select, memory-read/write, etc.) needed to execute each instruction's micro-operations in the right order and at the right time, driven by the opcode in IR and the current step of the instruction cycle.</p>
+
+      <h3 class="sub">Hardwired control</h3>
+      <div class="card">
+        <h4 class="subsub">How it works</h4>
+        <p>Control signals are produced directly by combinational logic (and a state/step counter) built from the opcode bits, condition flags, and the current cycle count — essentially a custom finite state machine (see the FSM design ideas from Digital Logic) realized in gates.</p>
+      </div>
+      <table>
+        <tr><th>Property</th><th>Hardwired</th></tr>
+        <tr><td>Speed</td><td>Fast — pure combinational logic, no memory lookup</td></tr>
+        <tr><td>Flexibility</td><td>Low — adding/changing an instruction means redesigning logic</td></tr>
+        <tr><td>Typical use</td><td>RISC processors (small, regular instruction sets)</td></tr>
+        <tr><td>Complexity growth</td><td>Grows rapidly (and irregularly) with instruction set size</td></tr>
+      </table>
+
+      <h3 class="sub">Microprogrammed control</h3>
+      <div class="card">
+        <h4 class="subsub">How it works</h4>
+        <p>Each machine instruction is implemented as a small program — a sequence of <strong>microinstructions</strong> stored in a fast <strong>control store (ROM/RAM)</strong>. Each microinstruction contains a <strong>control word</strong> whose bits directly (or indirectly) drive the datapath's control signals for one micro-step.</p>
+      </div>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Horizontal microinstruction</span>
+          <p>One bit per control signal — wide control word, no decoding needed, but very large control store. Allows maximum parallelism (many signals asserted at once).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Vertical microinstruction</span>
+          <p>Encoded fields (like a mini-opcode) that must be decoded to produce actual control signals — narrower control word, smaller control store, but needs a decoder and allows less parallelism per microinstruction.</p>
+        </div>
+      </div>
+      <div class="card note">
+        <span class="label">Micro-program sequencing</span>
+        <p>Besides its control-signal field(s), each microinstruction carries addressing information for the <strong>next</strong> microinstruction — a simple increment for straight-line sequences, or a branch/jump (often conditioned on opcode bits or status flags) to implement per-instruction control flow, exactly the way a tiny CPU-within-a-CPU would.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">Worked example — sizing a control store</span>
+        <p>A control store holds 512 microinstructions. Each microinstruction is 32 bits wide: a 23-bit control field plus a 9-bit next-address field. Is the next-address field wide enough, and what is the total control store size?</p>
+        <div class="eq">Minimum next-address bits needed = ⌈log₂(512)⌉ = 9 bits   → 9 bits given, exactly sufficient (2⁹ = 512)
+
+Total control store size = (number of microinstructions) × (bits per microinstruction)
+                         = 512 × 32 bits
+                         = 16,384 bits = 2,048 bytes = 2 KB</div>
+        <p class="final">Answer: 9-bit next-address field is exactly sufficient; total control store size = 2 KB</p>
+      </div>
+      <div class="card note">
+        <span class="label">Where this trips people up</span>
+        <p>If the next-address field had been only 8 bits, 2⁸ = 256 locations could be addressed — not enough to reach all 512 microinstructions, meaning some of the store would be unreachable by a jump/branch microinstruction. Always check the next-address field width against the store size <em>before</em> computing total bits — GATE sometimes gives an under-sized field on purpose.</p>
+      </div>
+
+      <table>
+        <tr><th>Property</th><th>Microprogrammed</th></tr>
+        <tr><td>Speed</td><td>Slower — every control signal costs a control-store access</td></tr>
+        <tr><td>Flexibility</td><td>High — new/modified instructions just need new microcode, no redesign</td></tr>
+        <tr><td>Typical use</td><td>CISC processors (large, irregular instruction sets)</td></tr>
+        <tr><td>Ease of debugging/updating</td><td>Easy — microcode can be patched (even in the field, via microcode updates)</td></tr>
+      </table>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>"Horizontal" and "vertical" describe the <em>microinstruction encoding</em>, not the control unit type. A microprogrammed control unit can use either style. Also: hardwired is faster but rigid; microprogrammed is slower but flexible — GATE loves to test this exact trade-off with reworded distractors.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Why is hardwired control generally faster than microprogrammed control?</summary>
+          <div class="ans">
+            <p>Hardwired control is generally faster in the textbook CPU model that GATE assumes: control signals are generated directly by combinational logic gates reacting to the opcode, while microprogrammed control obtains them by first reading a microinstruction out of a control store (a memory access) before that signal can be produced.</p>
+            <p class="final">Answer: Hardwired uses direct combinational logic; microprogrammed pays a control-store memory-access delay per step</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A design team needs to add five new specialized instructions to an existing CPU without a hardware redesign. Which control unit style makes this feasible, and why?</summary>
+          <div class="ans">
+            <p>Microprogrammed control implements instructions as microcode routines in the control store — adding a new instruction just means writing new microinstructions and updating the sequencing logic that dispatches to them, with no change to the underlying combinational hardware.</p>
+            <p class="final">Answer: Microprogrammed control — new instructions are added as new microcode, not new logic gates</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A control store holds horizontal microinstructions with one bit per control signal, for 40 distinct control signals. How many bits wide is the control field of each microinstruction?</summary>
+          <div class="ans">
+            <p>By definition, a horizontal microinstruction dedicates exactly one bit to each control signal with no encoding/sharing, so the control field width equals the number of distinct signals.</p>
+            <p class="final">Answer: 40 bits</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A vertical microinstruction format encodes control signals into a 6-bit field that must be decoded by an external decoder. Assuming each encoded value selects one distinct control action (as is typical for vertical microcode), how many distinct encoded values can this field represent?</summary>
+          <div class="ans">
+            <p>A 6-bit encoded field can represent 2⁶ = 64 distinct binary patterns. In a typical vertical microinstruction, the encoded field selects one operation/control action from a mutually exclusive set — it doesn't inherently mean 64 arbitrary simultaneous control-signal combinations; that mapping (one encoded value → one control action) is a simplifying assumption, not something derivable from the field width alone.</p>
+            <p class="final">Answer: 64 distinct encoded values (each mapping to one control action, under the stated assumption)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Why do RISC processors typically favor hardwired control while CISC processors typically favor microprogrammed control?</summary>
+          <div class="ans">
+            <p>RISC's small, regular, fixed-format instruction set keeps the combinational logic for hardwired control manageable and fast, matching RISC's speed goals; CISC's large, irregular instruction set (many addressing modes, memory-to-memory ops) would make hardwired logic explode in complexity, so microcode's flexibility is worth its extra latency.</p>
+            <p class="final">Answer: RISC's simple, uniform ISA suits fast hardwired logic; CISC's complex, irregular ISA suits flexible microcode</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_CONTROL_UNIT -->
+    <section class="topic" id="memory-hierarchy">
+      <div class="topic-head"><span class="idx">06</span><h2>Memory Interfacing &amp; Hierarchy</h2></div>
+      <div class="topic-kicker">CHIP ORGANIZATION · ADDRESS DECODING · MEMORY EXPANSION · HIERARCHY PERFORMANCE · CACHE MAPPING · AAT</div>
+
+      <h3 class="sub">Memory chip organization</h3>
+      <p>A memory chip is specified as <strong>(number of words) × (bits per word)</strong> — e.g. a "4K × 8" chip stores 4096 words of 8 bits each. This size directly fixes two of the chip's pin counts:</p>
+      <table>
+        <tr><th>Chip pin group</th><th>Count</th><th>Purpose</th></tr>
+        <tr><td>Address lines</td><td>log₂(number of words)</td><td>Select which word inside <em>this</em> chip is being accessed</td></tr>
+        <tr><td>Data lines</td><td>bits per word</td><td>Carry the actual data in/out for that word</td></tr>
+        <tr><td>Chip-select (CS)</td><td>1 (or more, ANDed)</td><td>Enables/activates this specific chip; when unasserted the chip's data lines float (high-impedance), ignoring the address bus entirely</td></tr>
+        <tr><td>Read/Write (R/W̄)</td><td>1</td><td>Direction of the transfer on the data lines</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">Why chip-select exists</span>
+        <p>Every chip in a memory bank sees the <em>same</em> data and (some of the) address lines, since they all share the system bus. Without a chip-select input, every chip would try to respond to every access. Chip-select is what lets exactly one chip "listen" for a given address while all others stay electrically disconnected from the bus.</p>
+      </div>
+
+      <h3 class="sub">Address decoding</h3>
+      <p>A single memory chip only has enough address pins for its <em>own</em> word count — the system's full address bus is almost always wider than that. The extra, higher-order address bits are fed into a <strong>decoder</strong> whose outputs drive the chip-select lines of the different chips (or chip groups), so each higher-address range activates a different chip.</p>
+      <div class="eq">Total system address bits = log₂(total number of words in the whole memory)
+Address bits sent directly to each chip = log₂(words per chip)
+Remaining high-order bits = Total system address bits − Address bits per chip
+                           → these feed an (n-to-2ⁿ) decoder that generates the chip-select signals</div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>The <em>low-order</em> address bits go straight to every chip in parallel (they select the word <em>within</em> whichever chip is enabled); the <em>high-order</em> bits go only to the decoder (they select <em>which</em> chip is enabled). Don't mix up which end of the address is used for which job — GATE numericals rely on you splitting the address correctly.</p>
+      </div>
+
+      <h3 class="sub">Memory expansion: word-width vs capacity</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Word (width) expansion</h4>
+          <p>To build a wider data bus than a single chip provides, place chips <strong>side-by-side</strong> — all chips share the same address lines and the same chip-select, but each contributes a different slice of the output data bus. Chips needed for width = (desired word width) / (chip's word width).</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Capacity (depth) expansion</h4>
+          <p>To build more total words than one chip holds, place groups of chips <strong>side-by-side in the address space</strong> — each group covers a different range of addresses, selected by a different decoder output on chip-select. Groups needed for depth = (desired number of words) / (chip's number of words).</p>
+        </div>
+      </div>
+      <div class="card formula">
+        <span class="label">Total chips required</span>
+        <div class="eq">Chips per row (word expansion) = (desired data width) / (chip data width)
+Rows needed (capacity expansion) = (desired number of words) / (chip number of words)
+Total chips = Chips per row × Rows needed</div>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">Worked example — interfacing memory chips</span>
+        <p>Design a 16K × 16 memory system using 4K × 8 chips. How many chips are needed, and how should the address bus be split?</p>
+        <div class="eq">Chips per row (word expansion) = 16 / 8 = 2     (two 4K×8 chips side-by-side give one 4K×16 "row")
+Rows needed (capacity expansion) = 16K / 4K = 4  (four such rows cover the full 16K address range)
+Total chips = 2 × 4 = 8 chips
+
+Total system address bits = log₂(16K) = 14 bits
+Address bits per chip     = log₂(4K)  = 12 bits   → these 12 bits go directly to all 8 chips
+Remaining high-order bits = 14 − 12 = 2 bits      → these 2 bits feed a 2-to-4 decoder,
+                                                      whose 4 outputs chip-select one row each</div>
+        <p class="final">Answer: 8 chips total (2 chips per row × 4 rows), with the low 12 address bits shared by every chip and the top 2 address bits driving a 2-to-4 decoder for row selection</p>
+      </div>
+
+      <h3 class="sub">Why a memory hierarchy exists</h3>
+      <p>Registers are tiny and fast; main memory (DRAM) is large but slow; the gap between CPU speed and memory speed is bridged with progressively larger, slower <strong>cache</strong> levels (L1 → L2 → L3) that exploit <strong>temporal locality</strong> (recently used data is likely reused soon) and <strong>spatial locality</strong> (nearby addresses are likely accessed soon).</p>
+      <table>
+        <tr><th>Level</th><th>Typical size</th><th>Typical latency</th></tr>
+        <tr><td>Registers</td><td>&lt; 1 KB</td><td>&lt; 1 cycle</td></tr>
+        <tr><td>L1 cache</td><td>16–64 KB</td><td>~1–4 cycles</td></tr>
+        <tr><td>L2/L3 cache</td><td>256 KB–tens of MB</td><td>~10–40 cycles</td></tr>
+        <tr><td>Main memory (DRAM)</td><td>GBs</td><td>~100–300 cycles</td></tr>
+      </table>
+
+      <div class="card formula">
+        <span class="label">SRAM vs DRAM — why cache is SRAM and main memory is DRAM</span>
+        <table>
+          <tr><th></th><th>SRAM</th><th>DRAM</th></tr>
+          <tr><td>Storage cell</td><td>Flip-flop (typically 6 transistors)</td><td>Capacitor + 1 transistor</td></tr>
+          <tr><td>Needs refreshing?</td><td>No — flip-flop holds state as long as powered</td><td>Yes — capacitor leaks charge, must be periodically refreshed or data is lost</td></tr>
+          <tr><td>Speed</td><td>Faster</td><td>Slower</td></tr>
+          <tr><td>Density (bits per chip area)</td><td>Lower — more transistors per cell</td><td>Higher — one transistor per cell packs more bits in the same area</td></tr>
+          <tr><td>Typical use</td><td>Cache (L1/L2/L3)</td><td>Main memory</td></tr>
+        </table>
+        <p>The trade-off in one line: SRAM buys speed at the cost of density/cost per bit, DRAM buys density/cost at the cost of speed and the need for refresh circuitry — which is exactly why fast-but-small cache is SRAM and large-but-slower main memory is DRAM.</p>
+      </div>
+
+      <h3 class="sub">Cache mapping techniques</h3>
+      <p>A memory block must be located somewhere in cache using an address split into <strong>tag | index | offset</strong> fields. The mapping technique decides which cache line(s) a block is allowed to occupy.</p>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Direct mapped</h4>
+          <p>Each memory block maps to exactly <strong>one</strong> specific cache line: <code>line = (block address) mod (number of lines)</code>. Simple and fast, but suffers <strong>conflict misses</strong> when two frequently used blocks map to the same line.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Fully associative</h4>
+          <p>A block can go in <strong>any</strong> cache line — no conflict misses from mapping, but every line's tag must be compared in parallel (expensive comparator hardware), and a replacement policy (e.g. LRU) is needed.</p>
+        </div>
+      </div>
+      <div class="card">
+        <h4 class="subsub">Set-associative (k-way)</h4>
+        <p>A middle ground: cache is divided into sets, each set holding <code>k</code> lines. A block maps to exactly one set (<code>set = block address mod number of sets</code>) but can occupy any of the <code>k</code> lines within that set. Direct mapped is 1-way set-associative; fully associative is the limiting case where there is only 1 set.</p>
+      </div>
+      <div class="card formula">
+        <span class="label">Address split (for a set-associative cache)</span>
+        <p>This formula assumes a <strong>byte-addressable</strong> memory system — which is what "block size in bytes" implicitly relies on: for a byte-addressable system, a B-byte cache block requires log₂B offset bits, because each of the B individually-addressable bytes within the block needs its own distinct offset value.</p>
+        <div class="eq">Offset bits  = log₂(block size in bytes)      [byte-addressable memory]
+Index bits   = log₂(number of sets)
+Tag bits     = (total address bits) − Index bits − Offset bits</div>
+        <p>If the system is <strong>word-addressable</strong> instead (each address refers to a whole word, not a single byte), the calculation changes: offset bits = log₂(block size in <em>words</em>), not bytes — using the byte count directly would overcount the offset bits needed. Always check which addressing granularity a question specifies before applying this formula; GATE questions default to byte-addressable unless stated otherwise, but word-addressable variants do appear.</p>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>The <strong>index</strong> field selects the <em>set</em>, not a single line — for set-associative caches, once the correct set is found, the tags of <em>all</em> ways within that set are compared in parallel against the address tag to find a hit. Don't confuse "number of sets" with "number of lines" when computing index bits.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">Worked example — tracing hits and misses</span>
+        <p>A direct-mapped cache has 4 lines (0–3), one block per line, initially empty. The CPU accesses these block addresses in order: <strong>0, 1, 2, 3, 4, 0, 1, 4, 0, 3</strong>. Since it's direct-mapped, <code>line = block address mod 4</code>.</p>
+        <table>
+          <tr><th>#</th><th>Block</th><th>Line</th><th>Line held</th><th>Result</th><th>Line after</th></tr>
+          <tr><td>1</td><td>0</td><td>0</td><td>empty</td><td>Miss</td><td>0</td></tr>
+          <tr><td>2</td><td>1</td><td>1</td><td>empty</td><td>Miss</td><td>1</td></tr>
+          <tr><td>3</td><td>2</td><td>2</td><td>empty</td><td>Miss</td><td>2</td></tr>
+          <tr><td>4</td><td>3</td><td>3</td><td>empty</td><td>Miss</td><td>3</td></tr>
+          <tr><td>5</td><td>4</td><td>0</td><td>block 0</td><td>Miss (conflict)</td><td>4</td></tr>
+          <tr><td>6</td><td>0</td><td>0</td><td>block 4</td><td>Miss (conflict)</td><td>0</td></tr>
+          <tr><td>7</td><td>1</td><td>1</td><td>block 1</td><td><strong>Hit</strong></td><td>1</td></tr>
+          <tr><td>8</td><td>4</td><td>0</td><td>block 0</td><td>Miss (conflict)</td><td>4</td></tr>
+          <tr><td>9</td><td>0</td><td>0</td><td>block 4</td><td>Miss (conflict)</td><td>0</td></tr>
+          <tr><td>10</td><td>3</td><td>3</td><td>block 3</td><td><strong>Hit</strong></td><td>3</td></tr>
+        </table>
+        <p>Blocks 0 and 4 both map to line 0 (0 mod 4 = 4 mod 4 = 0), so every time one is accessed it evicts the other — this is exactly a <strong>conflict miss</strong>, and it is why blocks 0 and 4 never once hit despite being accessed repeatedly, while blocks 1 and 3 (no line-mate accessed in between) hit the second time around.</p>
+        <p class="final">Answer: 2 hits, 8 misses out of 10 accesses → hit ratio = 20%</p>
+      </div>
+
+      <h3 class="sub">Replacement &amp; write policies</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Replacement (associative/set-associative)</h4>
+          <p><strong>LRU</strong> (evict least-recently-used line — best locality match, costliest to implement exactly, needs extra bits/counters per line to track recency), <strong>FIFO</strong> (evict the line that's been resident longest, regardless of recent use — cheaper than LRU, needs only a pointer/counter per set), and <strong>Random</strong> (evict an arbitrary line — cheapest to implement, surprisingly competitive in practice, no tracking overhead at all) are the classic choices.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Write policy (write-HIT behavior)</h4>
+          <p><strong>Write-through</strong>: on a write hit, updates cache and memory immediately (simpler, more memory traffic). <strong>Write-back</strong>: on a write hit, updates only the cache line (marked <em>dirty</em>); memory is updated only when that line is evicted (less traffic, but needs a dirty bit and more complex control).</p>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — direct-mapped cache has NO replacement policy at all</span>
+        <p>Replacement policy (LRU/FIFO/Random) only matters when a block has a CHOICE of multiple lines it could occupy — that's true for set-associative (choice among the k lines in its set) and fully-associative (choice among all lines) caches. In a <strong>direct-mapped</strong> cache, each memory block maps to exactly ONE specific line (<code>line = block address mod number of lines</code>) — there is no choice to make, so there is no replacement policy to speak of: the mapping function alone determines which line gets evicted (whatever was already sitting in that one line, period). If a GATE question asks "which replacement policy does a direct-mapped cache use," the correct answer is that the question doesn't apply — the mapping itself dictates placement.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">The other write-policy axis — write miss handling (write-allocate vs no-write-allocate)</span>
+        <p><strong>These are two separate axes describing two different situations — don't let one substitute for the other:</strong></p>
+        <div class="eq">Write-through / write-back        →  what happens on a WRITE HIT (block already in cache)
+Write-allocate / no-write-allocate →  what happens on a WRITE MISS (block not in cache)</div>
+        <ul>
+          <li><strong>Write-allocate (fetch-on-write):</strong> on a write miss, first bring the block into cache (like a read miss would), then perform the write on the now-resident cache line.</li>
+          <li><strong>No-write-allocate (write-around):</strong> on a write miss, write directly to memory and do NOT bring the block into cache at all.</li>
+        </ul>
+        <p>These two axes are logically independent — either write-hit policy could in principle pair with either write-miss policy — but two combinations are far more common in real designs, because they're the pairings that make internal sense together:</p>
+        <table>
+          <tr><th></th><th>Write-through</th><th>Write-back</th></tr>
+          <tr><td>Write miss</td><td>usually paired with <strong>no-write-allocate</strong></td><td>usually paired with <strong>write-allocate</strong></td></tr>
+          <tr><td>Memory update timing (on a write hit)</td><td>immediately, on every write</td><td>deferred, only on eviction of a dirty line</td></tr>
+        </table>
+        <p>The intuition for why these pairings are common (not guaranteed): write-back benefits from write-allocate because once a block is resident, subsequent writes to it accumulate in the cache and get flushed as one batched write on eviction — worth the up-front fetch. Write-through gains less from allocating on a write miss, since every write goes to memory immediately anyway regardless of whether the block is cached, so many write-through designs skip the fetch (no-write-allocate) to save the bandwidth/latency of pulling in a block that isn't obviously about to be re-read. Say <strong>"usually"</strong> deliberately — these are common design choices driven by that intuition, not a mathematical necessity, and GATE can describe a write-through + write-allocate cache (or the reverse) as a valid, if less typical, design.</p>
+      </div>
+
+      <h3 class="sub">Average access time (AAT) &amp; hierarchy performance</h3>
+      <div class="card formula">
+        <span class="label">Average Access Time</span>
+        <div class="eq">AAT = Hit time + Miss rate × Miss penalty
+
+For a 2-level hierarchy (L1 backed by main memory):
+AAT = H1 + M1 × MP1
+where H1 = L1 hit time, M1 = L1 miss rate, MP1 = L1 miss penalty (≈ memory access time)</div>
+        <p>For multi-level caches this nests: the "miss penalty" of L1 is itself the AAT/expected access cost of the level below it (L2, and so on down to main memory).</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — multi-level cache nesting (AMAT)</span>
+        <p>With two cache levels (L1 backed by L2, L2 backed by main memory), don't treat L1's miss penalty as a flat number — it IS the average access time of the L2/memory system, computed the same way one level down:</p>
+        <div class="eq">AMAT = HT₁ + MR₁ × (HT₂ + MR₂ × MP₂)
+
+where:
+HT₁, HT₂  = hit time at L1, L2
+MR₁, MR₂  = miss rate at L1, L2 (L1's rate is out of all accesses; L2's rate is typically defined as "local" — out of only the accesses that reached L2, i.e. L1 misses)
+MP₂       = miss penalty when L2 also misses (≈ main memory access time)</div>
+        <p>Read carefully whether a question gives <strong>local miss rate</strong> (misses at that level ÷ accesses reaching that level) or <strong>global miss rate</strong> (misses at that level ÷ total original accesses) — the nested formula above uses local miss rates at each stage; mixing in a global rate without converting it first is a common source of wrong answers. This nesting generalizes to any number of levels: each level's "miss penalty" is just the next level's full AMAT expression.</p>
+        <p><strong>Worked example:</strong> HT₁ = 1 ns, MR₁ = 0.1 (local), HT₂ = 8 ns, MR₂ = 0.2 (local, i.e. of the L1 misses that reach L2), MP₂ = 100 ns (main memory). Then AMAT = 1 + 0.1 × (8 + 0.2 × 100) = 1 + 0.1 × (8 + 20) = 1 + 0.1 × 28 = 1 + 2.8 = 3.8 ns.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">7 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A cache has 256 sets, 4-way set-associative, with a 64-byte block size, on a 32-bit address. Find the number of tag, index, and offset bits.</summary>
+          <div class="ans">
+            <p>Offset bits = log₂(64) = 6. Index bits = log₂(256) = 8. Tag bits = 32 − 8 − 6 = 18.</p>
+            <p class="final">Answer: Tag = 18 bits, Index = 8 bits, Offset = 6 bits</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A system has L1 hit time 2 ns, L1 miss rate 5%, and a miss penalty (main memory access) of 100 ns. What is the average access time?</summary>
+          <div class="ans">
+            <p>AAT = Hit time + Miss rate × Miss penalty = 2 + 0.05 × 100 = 2 + 5 = 7 ns.</p>
+            <p class="final">Answer: 7 ns</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Why does a fully associative cache eliminate conflict misses that a direct-mapped cache of the same total size would suffer?</summary>
+          <div class="ans">
+            <p>In a direct-mapped cache each block is forced into exactly one specific line, so two frequently-accessed blocks mapping to the same line will keep evicting each other; a fully associative cache lets any block occupy any line, so capacity — not a rigid mapping rule — is the only limit on what stays resident.</p>
+            <p class="final">Answer: Because any block can occupy any line, so no two blocks are forced to contend for one fixed line</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Under the usual write-allocate/write-back vs. write-through comparison, and for repeated writes to cache-resident lines, which policy generates more memory bus traffic, and why?</summary>
+          <div class="ans">
+            <p>Write-through sends every single write to memory immediately regardless of how many times that location is subsequently overwritten in cache, whereas write-back accumulates multiple writes to the same cache line and sends only one memory update, when the line is eventually evicted. (This comparison assumes repeated writes hit the same resident line; actual traffic in a real system also depends on the write-allocate policy on misses and how frequently lines get evicted, so it isn't an absolute rule for every workload.)</p>
+            <p class="final">Answer: Write-through generally generates more traffic — every write goes to memory, not just evictions</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> In a 2-way set-associative cache lookup, once the index selects a set, how many tag comparisons happen in parallel, and what determines a hit?</summary>
+          <div class="ans">
+            <p>A 2-way set holds 2 lines, so both lines' stored tags are compared simultaneously against the incoming address's tag field; a hit occurs if either comparison matches and that line's valid bit is set.</p>
+            <p class="final">Answer: 2 parallel tag comparisons; a hit occurs on a matching tag with the valid bit set in either way</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q6</span> Build a 32K × 8 memory system using 8K × 8 chips. How many chips are needed, and how many address bits go to the row-select decoder?</summary>
+          <div class="ans">
+            <p>The desired word width (8 bits) exactly matches the chip's word width (8 bits), so no word-expansion is needed — chips per row = 8/8 = 1. Capacity expansion: rows = 32K / 8K = 4. Total chips = 1 × 4 = 4. Total system address bits = log₂(32K) = 15; address bits per chip = log₂(8K) = 13; remaining bits for the decoder = 15 − 13 = 2, feeding a 2-to-4 decoder to select one of the 4 chips.</p>
+            <p class="final">Answer: 4 chips total; 2 address bits go to the decoder (2-to-4) for chip/row selection</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q7</span> What happens on a memory chip's data lines when its chip-select (CS) input is not asserted, even if a valid address is present on the address bus?</summary>
+          <div class="ans">
+            <p>An unasserted chip-select disables the chip entirely for that access — its data output lines go to a high-impedance (floating/tri-state) state, electrically disconnecting the chip from the shared data bus, regardless of what address is present. This is exactly what allows multiple chips to share one data bus: only the chip whose CS is asserted actually drives the bus.</p>
+            <p class="final">Answer: The data lines float (high-impedance/tri-state) — the chip does not respond to the address at all</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_MEMORY_HIERARCHY -->
+    <section class="topic" id="io">
+      <div class="topic-head"><span class="idx">07</span><h2>I/O Interface — Interrupts &amp; DMA</h2></div>
+      <div class="topic-kicker">PROGRAMMED I/O · INTERRUPT-DRIVEN I/O · MASKABLE/NMI · PRIORITY &amp; NESTING · DMA · CYCLE STEALING</div>
+
+      <h3 class="sub">Three ways the CPU talks to I/O devices</h3>
+      <div class="card">
+        <h4 class="subsub">Programmed I/O (polling)</h4>
+        <p>CPU repeatedly polls a device's status register in a busy-wait loop until it's ready, then transfers data itself. Simple, but wastes CPU cycles busy-waiting — the CPU cannot do other useful work while polling.</p>
+      </div>
+      <div class="card">
+        <h4 class="subsub">Interrupt-driven I/O</h4>
+        <p>CPU issues the I/O request and continues other work; the device raises an <strong>interrupt</strong> when it's ready, and the CPU (after finishing its current instruction) suspends its program, runs an <strong>interrupt service routine (ISR)</strong> to handle the transfer, then resumes. Removes busy-waiting, but each transfer still costs a full CPU context switch to and from the ISR.</p>
+      </div>
+      <div class="card">
+        <h4 class="subsub">Direct Memory Access (DMA)</h4>
+        <p>A dedicated <strong>DMA controller</strong> transfers an entire block of data directly between the I/O device and memory <strong>without CPU involvement</strong> for each word — the CPU only sets up the transfer (source, destination, count) and is interrupted once when the whole block is done.</p>
+      </div>
+
+      <h3 class="sub">Interrupt handling mechanics</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Vectored interrupts</h4>
+          <p>The interrupting device/system supplies an <strong>interrupt vector</strong> — an identifier or index, not universally a literal ISR memory address — which the CPU uses to locate the corresponding ISR, typically by indexing into a <strong>vector table</strong> stored in memory. Fast dispatch, no need to poll each device to find the source.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Non-vectored / polled interrupts</h4>
+          <p>All devices share a single interrupt line; the CPU must poll each device's status in priority order to discover which one interrupted — simpler hardware, slower dispatch.</p>
+        </div>
+      </div>
+      <div class="card note">
+        <span class="label">What "handling an interrupt" actually costs</span>
+        <p>On an interrupt, the CPU must save its current context (PC and often other registers/flags) onto the stack, jump to the ISR, execute it, then restore the saved context and resume — this save/restore overhead is exactly why interrupt-driven I/O still isn't free, and why DMA (only one interrupt per whole block) is preferred for bulk transfers.</p>
+        </div>
+
+      <h3 class="sub">Maskable, non-maskable, priority, and nested interrupts<span class="pri-tag pri-core">🔥 core</span></h3>
+      <table>
+        <tr><th>Concept</th><th>What it means</th></tr>
+        <tr><td>Maskable interrupt</td><td>Can be selectively enabled/disabled by software via an interrupt mask register — the CPU can choose to ignore it temporarily (e.g. during a critical section)</td></tr>
+        <tr><td>Non-maskable interrupt (NMI)</td><td>Cannot be disabled by software at all — reserved for events too critical to ever ignore (e.g. power failure, hardware memory error)</td></tr>
+        <tr><td>Interrupt priority</td><td>When multiple devices interrupt simultaneously (or a new one arrives while another is being serviced), a priority scheme (fixed hardware priority, or a priority encoder) decides which one the CPU services first</td></tr>
+        <tr><td>Nested interrupts</td><td>A higher-priority interrupt is allowed to interrupt an ISR that's already running for a lower-priority one — the CPU pushes another context on top and services the higher-priority request first, then unwinds back through both ISRs in reverse order</td></tr>
+        <tr><td>Interrupt acknowledgment (INTA)</td><td>The CPU's signal back to the interrupting device confirming "I've seen your request and am about to service it" — this is also typically the point at which a vectored device places its interrupt vector (an identifier, used to look up the ISR — not necessarily a literal ISR address) on the data bus</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap — masking ≠ ignoring forever</span>
+        <p>A masked (disabled) maskable interrupt isn't discarded — most designs still latch the request as "pending," and the CPU services it once the mask is cleared. Also, nesting is only allowed for a <strong>strictly higher</strong>-priority interrupt; a same-or-lower-priority interrupt arriving during an ISR simply waits until the current ISR finishes (or is masked out entirely, depending on the design) — it does not nest on top of the running one.</p>
+      </div>
+
+      <h3 class="sub">DMA transfer modes</h3>
+      <table>
+        <tr><th>Mode</th><th>How it shares the bus with the CPU</th></tr>
+        <tr><td>Burst (block) mode</td><td>DMA controller holds the bus and transfers the entire block at once; CPU is locked out until the transfer completes</td></tr>
+        <tr><td>Cycle stealing</td><td>DMA controller transfers one word, then releases the bus for one CPU cycle, repeating — CPU and DMA interleave, slowing the CPU slightly but not blocking it entirely</td></tr>
+        <tr><td>Transparent (interleaved) mode</td><td>DMA only uses bus cycles the CPU isn't using — zero CPU slowdown, but requires the DMA controller to synchronize with idle cycles</td></tr>
+      </table>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>DMA still needs the <strong>system bus</strong> to move data, so it does contend with the CPU for bus cycles (except in transparent mode) — DMA removes per-word <em>CPU instruction</em> overhead, not bus contention. Don't assume DMA is "free"; it just moves the cost from CPU cycles to bus cycles.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">6 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Why is programmed I/O (polling) inefficient for a slow device like a keyboard?</summary>
+          <div class="ans">
+            <p>The CPU must repeatedly check the device's status in a busy-wait loop until it becomes ready, and since a keyboard is extremely slow relative to CPU speed, the vast majority of those polling cycles are wasted doing no useful work.</p>
+            <p class="final">Answer: The CPU busy-waits, wasting cycles that could run other programs while the slow device isn't ready</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A 1 MB block must be transferred from disk to memory. Compare, at a high level, how many times the CPU is interrupted under interrupt-driven I/O (word-at-a-time) versus DMA.</summary>
+          <div class="ans">
+            <p>Interrupt-driven I/O interrupts the CPU once per unit transferred, so a 1 MB transfer at, say, one word per interrupt would need one interrupt per word. In the standard textbook DMA model, the CPU receives one completion interrupt for the entire programmed block transfer. (Real systems can differ — some DMA controllers interrupt per chunk/block within a larger transfer, or use interrupt coalescing/moderation to batch completions — but "one interrupt per block" is the standard GATE-level assumption unless a question states otherwise.)</p>
+            <p class="final">Answer: Interrupt-driven I/O interrupts once per word transferred; in the standard DMA model, DMA interrupts only once for the whole block</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> What is the key advantage of vectored interrupts over non-vectored (polled) interrupts when multiple devices share the interrupt line?</summary>
+          <div class="ans">
+            <p>With vectored interrupts the device/system supplies an interrupt vector — an identifier the CPU uses to locate the corresponding ISR, typically via a vector table lookup (not necessarily a literal ISR address handed over directly by the device) — so the CPU dispatches straight to the correct handler; with non-vectored interrupts the CPU must poll each device in turn to find which one raised the interrupt, adding dispatch latency.</p>
+            <p class="final">Answer: Vectored interrupts let the CPU dispatch directly to the correct ISR (via the supplied vector/vector-table lookup) without polling every device</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> In cycle-stealing DMA, why does the CPU slow down slightly rather than stop completely, unlike burst-mode DMA?</summary>
+          <div class="ans">
+            <p>Cycle stealing has the DMA controller take just one bus cycle at a time and then release the bus back, so the CPU only loses isolated individual cycles rather than being locked out for the whole transfer duration as it would be in burst mode.</p>
+            <p class="final">Answer: DMA takes the bus only one cycle at a time and releases it back, interleaving with the CPU instead of blocking it</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> List, in order, the essential steps the CPU performs when handling an interrupt (from the moment the interrupt line is asserted to resuming the interrupted program).</summary>
+          <div class="ans">
+            <p>The CPU finishes its current instruction, saves its context (PC and status/registers) onto the stack, identifies the interrupt source and jumps to the corresponding ISR, executes the ISR, then restores the saved context and resumes the interrupted program from where it left off.</p>
+            <p class="final">Answer: Finish current instruction → save context → dispatch to ISR → execute ISR → restore context → resume</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q6</span> Assume nested interrupts are enabled and a higher-priority interrupt may preempt a lower-priority ISR. While the CPU is inside the ISR for a medium-priority interrupt, a higher-priority interrupt and, separately, a same-priority interrupt each arrive. What happens to each?</summary>
+          <div class="ans">
+            <p>The higher-priority interrupt is allowed to nest — it interrupts the currently running (medium-priority) ISR, and the CPU saves another context and services it first before returning to finish the medium-priority ISR. The same-priority interrupt does not nest; it waits until the currently running ISR completes (or is queued/masked, depending on the design) before being serviced.</p>
+            <p class="final">Answer: The higher-priority interrupt nests and is serviced immediately; the same-priority one waits</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_IO -->
+    <section class="topic" id="pipelining">
+      <div class="topic-head"><span class="idx">08</span><h2>Instruction Pipelining &amp; Pipeline Hazards</h2></div>
+      <div class="topic-kicker">5-STAGE PIPELINE · STRUCTURAL/DATA/CONTROL HAZARDS · FORWARDING · AMDAHL'S LAW</div>
+
+      <h3 class="sub">The classic 5-stage pipeline</h3>
+      <p>Pipelining overlaps the execution of successive instructions by splitting the instruction cycle into stages, each handled by dedicated hardware, so a new instruction can enter the pipeline every cycle once it's full.</p>
+      <div class="gate-grid" style="grid-template-columns:repeat(5,1fr);">
+        <div class="gate-card"><span class="gname">IF</span><span class="gexpr">Instruction Fetch</span></div>
+        <div class="gate-card"><span class="gname">ID</span><span class="gexpr">Decode / Reg Read</span></div>
+        <div class="gate-card"><span class="gname">EX</span><span class="gexpr">Execute (ALU)</span></div>
+        <div class="gate-card"><span class="gname">MEM</span><span class="gexpr">Memory Access</span></div>
+        <div class="gate-card"><span class="gname">WB</span><span class="gexpr">Write Back</span></div>
+      </div>
+      <div class="card formula">
+        <span class="label">Ideal pipeline speedup</span>
+        <p>This is the <strong>ideal k-stage pipeline model</strong>: all k stages take exactly one cycle each, the pipeline cycle time T is constant across every stage, there are no stalls, and no complications beyond simple fill/drain are considered.</p>
+        <div class="eq">Time for n instructions, k stages, cycle time T:
+  Non-pipelined: n × k × T
+  Pipelined:     (k + n − 1) × T
+
+Speedup (n → ∞) → k   (approaches the number of stages)</div>
+      </div>
+      <div class="card note">
+        <span class="label">When stage delays are unequal — T is the MAXIMUM stage delay, not an average</span>
+        <p>Real stages rarely take identical time. The pipeline's cycle time T must accommodate the <strong>slowest (bottleneck) stage</strong> — every stage advances together each cycle, so the whole pipeline is only as fast as its slowest link: <code>T = max(t₁, t₂, ..., tₖ)</code>, where tᵢ is stage i's own delay. Plug this maximum-stage-delay T into the same (k+n−1)×T formula above; don't average the stage delays or use the delay of any single stage other than the maximum — that's the classic version of this question GATE asks once stage times differ.</p>
+      </div>
+
+      <div class="card">
+        <h4 class="subsub">Timing diagram — 5 instructions, no hazards</h4>
+        <p>Each instruction advances one stage per cycle; a new instruction enters IF every cycle once the pipeline is full. Total cycles = k + n − 1 = 5 + 5 − 1 = 9.</p>
+        <table>
+          <tr><th>Instr.</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr>
+          <tr><td>I1</td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>I2</td><td></td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td><td></td><td></td><td></td></tr>
+          <tr><td>I3</td><td></td><td></td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td><td></td><td></td></tr>
+          <tr><td>I4</td><td></td><td></td><td></td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td><td></td></tr>
+          <tr><td>I5</td><td></td><td></td><td></td><td></td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td></tr>
+        </table>
+      </div>
+
+      <h3 class="sub">Structural hazards</h3>
+      <p>Two instructions need the <strong>same hardware resource</strong> in the same cycle — classic example: a single shared memory used for both instruction fetch (IF) and data memory access (MEM) by different instructions in the same cycle. <strong>Fix:</strong> duplicate the resource (e.g. separate I-cache/D-cache, as in Section 01's modified Harvard idea).</p>
+
+      <h3 class="sub">Data hazards</h3>
+      <p>An instruction needs a value that a previous, still-in-flight instruction hasn't produced yet.</p>
+      <table>
+        <tr><th>Hazard</th><th>Meaning</th><th>Dependency type</th><th>Usually relevant to</th></tr>
+        <tr><td>RAW</td><td>Read After Write — I2 reads what I1 writes</td><td>True dependency</td><td><strong>Every</strong> pipeline, including a classic in-order 5-stage design — this is the hazard forwarding/stalling in this section targets</td></tr>
+        <tr><td>WAR</td><td>Write After Read — I2 writes what I1 reads</td><td>Anti-dependency</td><td>Only arises when instructions can complete <strong>out of program order</strong> (e.g. out-of-order or superscalar execution) — I1 must finish reading the old value before I2's write can land</td></tr>
+        <tr><td>WAW</td><td>Write After Write — I2 writes what I1 also writes</td><td>Output dependency</td><td>Same as WAR — only arises with out-of-order completion, where the final value must still end up matching program order</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">Why a simple in-order 5-stage pipeline only worries about RAW</span>
+        <p>In the classic 5-stage pipeline (IF-ID-EX-MEM-WB) covered in this section, instructions enter and leave each stage strictly in program order — I1 always reaches WB before I2 does. Since I1's read of a register always happens (in ID) before I2 could possibly write it, and I1's write always happens before I2's write, WAR and WAW simply can't occur here — <strong>RAW is the only data hazard this pipeline needs to handle</strong>, which is exactly why the forwarding and stalling techniques below are described purely in RAW terms. WAR/WAW become real design concerns only once you allow instructions to execute or complete out of order.</p>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Fix 1: Stalling</h4>
+          <p>Insert bubbles (NOPs) into the pipeline until the needed value is ready — simple but wastes cycles.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Fix 2: Forwarding (bypassing)</h4>
+          <p>Route the ALU's result directly from EX/MEM (or MEM/WB) latches back into the EX stage input of a dependent instruction, skipping the need to wait for WB — eliminates most RAW stalls in a simple 5-stage pipeline.</p>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Forwarding <strong>cannot</strong> eliminate a <strong>load-use hazard</strong>: if the very next instruction needs a value that a LOAD is still fetching from memory (available only after MEM), even forwarding from MEM/WB isn't early enough — a <strong>one-cycle stall</strong> is unavoidable unless the compiler reorders code around it.</p>
+      </div>
+
+      <div class="card">
+        <h4 class="subsub">Timing diagram — load-use hazard with 1 stall</h4>
+        <p>I2 (e.g. <code>ADD R2, R1, R3</code>) needs R1, which I1 (<code>LOAD R1, 0(R4)</code>) doesn't produce until the end of its MEM stage — one cycle too late for I2's EX. The pipeline holds I2 (and everything behind it) for one extra cycle, shown as a bubble:</p>
+        <table>
+          <tr><th>Instr.</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr>
+          <tr><td>I1 (LOAD)</td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>I2 (ADD)</td><td></td><td>IF</td><td>ID</td><td>bubble</td><td>EX</td><td>MEM</td><td>WB</td><td></td><td></td><td></td></tr>
+          <tr><td>I3</td><td></td><td></td><td>IF</td><td>bubble</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td><td></td><td></td></tr>
+          <tr><td>I4</td><td></td><td></td><td></td><td></td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td><td></td></tr>
+          <tr><td>I5</td><td></td><td></td><td></td><td></td><td></td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td>WB</td></tr>
+        </table>
+        <p>I2 is held in ID for an extra cycle (its EX is pushed from cycle 4 to cycle 5) and I3's IF is likewise held one cycle, since it can't move into ID while I2 occupies it. Everything downstream shifts by exactly one cycle — total time goes from the ideal 9 cycles to 10.</p>
+      </div>
+
+      <h3 class="sub">Control hazards</h3>
+      <p>Caused by branches — the pipeline doesn't know which instruction to fetch next until the branch is resolved (often not until EX or later).</p>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Branch prediction</h4>
+          <p>Guess taken/not-taken (statically or dynamically) and speculatively fetch down that path; flush the pipeline and restart on a misprediction — the "misprediction penalty" equals the number of stages already speculatively executed.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Delayed branch</h4>
+          <p>Compiler fills the instruction slot(s) immediately after a branch with useful, always-executed instructions ("branch delay slots") so the pipeline has real work to do while the branch resolves.</p>
+        </div>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — the branch-penalty numerical framework</span>
+        <p>The standard formula for extra cycles per instruction lost to branches:</p>
+        <div class="eq">Stall cycles per instruction = (branch frequency) × (misprediction rate) × (branch penalty)
+
+Effective CPI = Base CPI + Stall cycles per instruction</div>
+        <p>Keep these four pieces distinct — GATE mixes them up deliberately:</p>
+        <ul>
+          <li><strong>Taken / not-taken prediction:</strong> the predictor's guess about which way the branch goes (e.g. "always predict not-taken," or a dynamic 2-bit counter) — this determines which path is speculatively fetched, not whether the guess turns out right.</li>
+          <li><strong>Prediction accuracy:</strong> how often that guess is correct across all branches — misprediction rate = 1 − accuracy. This is an empirical/given rate, not something derived from the prediction scheme's logic alone.</li>
+          <li><strong>Pipeline flush:</strong> the corrective action taken ONLY on a misprediction — the wrongly-fetched instructions already in earlier pipeline stages are discarded (turned into bubbles) and fetch restarts from the correct target.</li>
+          <li><strong>Branch penalty:</strong> the number of cycles lost to that flush — equal to the number of pipeline stages between fetch and branch resolution (e.g. if a branch resolves in EX in a 5-stage pipeline, 2 wrongly-fetched instructions, in IF and ID, must be flushed → penalty = 2 cycles). A correct prediction costs 0 extra cycles; only mispredictions pay the penalty.</li>
+        </ul>
+        <p><strong>Worked example:</strong> 20% of instructions are branches, the predictor is wrong 15% of the time, and a misprediction costs a 4-cycle flush. Stall cycles/instruction = 0.20 × 0.15 × 4 = 0.12. With a base CPI of 1, effective CPI = 1.12.</p>
+      </div>
+
+      <h3 class="sub">Amdahl's law &amp; pipeline speedup with stalls</h3>
+      <div class="card formula">
+        <span class="label">Amdahl's Law</span>
+        <div class="eq">Speedup(overall) = 1 / [ (1 − f) + f/S ]
+  f = fraction of execution time that is sped up
+  S = speedup obtained on that fraction</div>
+        <p>Even if a pipeline speeds up execution enormously, overall speedup is capped by the fraction of time that <em>cannot</em> be sped up — a recurring GATE numerical setup applied to pipelining, parallel processing, and cache improvements alike.</p>
+      </div>
+      <div class="card note">
+        <span class="label">Effective CPI with stalls</span>
+        <p>Pipelined CPI = Ideal CPI (≈1) + average stall cycles per instruction. If 20% of instructions are loads causing 1 stall cycle each, average stalls per instruction = 0.2 × 1 = 0.2, so pipelined CPI ≈ 1.2.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A 5-stage pipeline with a 2 ns clock period executes 100 instructions with no stalls. How much total time does it take?</summary>
+          <div class="ans">
+            <p>Total cycles = k + n − 1 = 5 + 100 − 1 = 104. Total time = 104 × 2 ns = 208 ns.</p>
+            <p class="final">Answer: 208 ns</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Instruction I2 (ADD R3, R1, R2) immediately follows I1 (SUB R1, R4, R5) in program order. What kind of hazard is this, and can forwarding resolve it in a standard 5-stage pipeline?</summary>
+          <div class="ans">
+            <p>I2 reads R1, which I1 is about to write — a true (RAW) data dependency. Since I1's ALU result is available at the end of its EX stage, it can be forwarded directly into I2's EX stage input without waiting for I1 to reach WB.</p>
+            <p class="final">Answer: RAW hazard; yes, EX-to-EX forwarding resolves it with no stall</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Why can't forwarding alone eliminate a load-use hazard, where the instruction right after a LOAD needs the loaded value?</summary>
+          <div class="ans">
+            <p>The loaded value isn't produced until the LOAD instruction's MEM stage completes, but the dependent instruction needs that value as an input to its own EX stage, which happens one cycle before the LOAD's MEM stage finishes — so the data simply doesn't exist yet at the moment it's needed, forwarding or not.</p>
+            <p class="final">Answer: The value isn't available until after MEM, but the next instruction needs it in EX — one cycle too early even with forwarding</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> An application spends 60% of its time in a portion sped up 4× by a new pipeline design, with the rest unaffected. What is the overall speedup by Amdahl's Law?</summary>
+          <div class="ans">
+            <p>Speedup = 1 / [(1 − 0.6) + 0.6/4] = 1 / [0.4 + 0.15] = 1 / 0.55 ≈ 1.818.</p>
+            <p class="final">Answer: ≈ 1.82×</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A pipeline has a base CPI of 1. 25% of instructions are branches with a 3-cycle misprediction penalty, and the branch predictor is wrong 20% of the time. What is the effective CPI?</summary>
+          <div class="ans">
+            <p>Stall cycles contributed per instruction = (fraction of branches) × (misprediction rate) × (penalty) = 0.25 × 0.2 × 3 = 0.15. Effective CPI = base CPI + stalls = 1 + 0.15 = 1.15.</p>
+            <p class="final">Answer: 1.15</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_PIPELINING -->
+    <section class="topic" id="revision">
+      <div class="topic-head"><span class="idx">09</span><h2>Revision Sheet</h2></div>
+      <div class="topic-kicker">EVERYTHING ON ONE SCREEN — LAST-MINUTE PASS</div>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Von Neumann vs Harvard</span>
+          <p>Von Neumann: shared instruction/data memory (one bottleneck bus). Harvard: separate — used inside modern CPUs at cache level.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Addressing modes: mem accesses</span>
+          <p>Immediate/Register: 0. Direct/Register-indirect: 1. Indirect: 2 (one per pointer hop).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">CISC vs RISC</span>
+          <p>Typical tendencies, not rules: CISC → variable length, memory-to-memory, microprogrammed. RISC → fixed length, load-store only, hardwired, easier to pipeline. Trust the question's stated facts over the label.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">RCA vs CLA delay</span>
+          <p>Ripple carry: O(n), simple. Carry look-ahead: O(log n), computes carries from G/P signals in parallel.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Booth's recoding (Qₙ Qₙ₋₁)</span>
+          <p>00/11 → no-op. 01 → A+M (end of 1-run). 10 → A−M (start of 1-run). Then arithmetic-shift-right.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">CPU time equation</span>
+          <p>CPU time = Instruction count × CPI × Cycle time = (IC × CPI)/Clock rate.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Single-cycle vs multi-cycle</span>
+          <p>Single-cycle: CPI=1 but period set by slowest instruction. Multi-cycle: variable CPI, shorter cycle, reuses hardware across steps.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Hardwired vs microprogrammed</span>
+          <p>Hardwired: fast, rigid, combinational (RISC). Microprogrammed: slower (control-store access), flexible, control words per micro-step (CISC).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Horizontal vs vertical microcode</span>
+          <p>Horizontal: 1 bit/signal, wide, no decode, max parallelism. Vertical: encoded field, narrow, needs decoder, less parallelism.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Memory chip interfacing</span>
+          <p>Chip address lines = log₂(words/chip). Chips per row (width exp.) = desired width / chip width. Rows (capacity exp.) = desired words / chip words. Extra high-order address bits → decoder → chip-select.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Cache address split (byte-addressable)</span>
+          <p>Offset = log₂(block size in bytes). Index = log₂(number of sets). Tag = address bits − index − offset. Assumes byte-addressable memory — for word-addressable systems, use block size in words instead.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Direct / set-assoc / fully-assoc</span>
+          <p>Direct: 1 line per block (conflict misses). Set-assoc: k lines per set. Fully-assoc: any line, needs LRU/FIFO + parallel tag compare.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">AAT (2-level)</span>
+          <p>AAT = Hit time + Miss rate × Miss penalty. Nests for multi-level hierarchies.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Write-through vs write-back (write-HIT axis) — separate from write-allocate</span>
+          <p>Write-through/write-back = what happens on a <strong>write hit</strong> (memory updated immediately vs. deferred to eviction). Write-allocate/no-write-allocate = a DIFFERENT axis: what happens on a <strong>write miss</strong> (fetch block into cache first, vs. write straight to memory). Common pairings: write-through+no-write-allocate, write-back+write-allocate — but these are typical design choices, not a required coupling.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Programmed I/O vs Interrupt vs DMA</span>
+          <p>Programmed: CPU busy-waits. Interrupt: CPU notified per transfer/word. DMA: block transfer with 1 interrupt at the end, CPU offloaded.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">DMA bus modes</span>
+          <p>Burst: locks CPU out until done. Cycle stealing: interleaves 1 word at a time. Transparent: uses only CPU-idle cycles.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Pipeline speedup (ideal)</span>
+          <p>Ideal k-stage pipeline, equal 1-cycle stages, no stalls: Time = (k + n − 1) × T for n instructions. Speedup → k as n → ∞. If stage delays are unequal, T = max stage delay (the bottleneck), not an average.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Hazard types</span>
+          <p>Structural: resource conflict (dup. hardware). Data — RAW (true dep., matters even in-order), WAR/WAW (anti-/output dep., only matter out-of-order): stall/forward. Control: branches (predict/delay slot).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Load-use hazard</span>
+          <p>Forwarding can't fix it — value ready after MEM, needed one cycle earlier in EX. Needs a 1-cycle stall.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Amdahl's Law</span>
+          <p>Speedup = 1 / [(1−f) + f/S]. Overall gain is capped by the un-sped-up fraction (1−f).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Effective CPI with stalls</span>
+          <p>Pipelined CPI = Ideal CPI + average stall cycles per instruction (sum stalls weighted by frequency of the causing instruction type).</p>
+        </div>
+      </div>
+
+      <div class="card pyq" style="margin-top:26px;">
+        <span class="label">Addressing modes — effective address, canonical table</span>
+        <table>
+          <tr><th>Addressing mode</th><th>Effective address (EA)</th></tr>
+          <tr><td>Immediate</td><td>operand itself</td></tr>
+          <tr><td>Direct</td><td>EA = A</td></tr>
+          <tr><td>Indirect</td><td>EA = M[A]</td></tr>
+          <tr><td>Register</td><td>register contents</td></tr>
+          <tr><td>Register indirect</td><td>EA = R</td></tr>
+          <tr><td>Indexed</td><td>EA = A + R</td></tr>
+          <tr><td>Base</td><td>EA = base + displacement</td></tr>
+        </table>
+        <p>Worked GATE-style calculations:</p>
+        <ul>
+          <li><strong>Direct:</strong> address field A = 2000. EA = 2000; operand = M[2000] — one memory access.</li>
+          <li><strong>Indirect:</strong> A = 2000, and M[2000] = 3000. EA = M[A] = M[2000] = 3000; operand = M[3000] — two memory accesses total (one to fetch the pointer at 2000, one to fetch the operand at 3000).</li>
+          <li><strong>Indexed:</strong> address field A = 2000 (array base), index register R = 20 (already holding the byte offset for the 5th element at 4 bytes/element). EA = A + R = 2000 + 20 = 2020; operand = M[2020].</li>
+        </ul>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">DMA transfer modes — CPU impact, side by side</span>
+        <table>
+          <tr><th>Mode</th><th>CPU impact</th></tr>
+          <tr><td>Burst / block transfer</td><td>CPU blocked for the whole burst</td></tr>
+          <tr><td>Cycle stealing</td><td>DMA takes individual bus cycles, one at a time</td></tr>
+          <tr><td>Transparent</td><td>Uses the bus only when the CPU isn't using it</td></tr>
+        </table>
+        <p>Same ranking every time: burst is fastest for the transfer but most disruptive to the CPU; transparent is slowest for the transfer but invisible to the CPU; cycle stealing sits in between, trading a little CPU slowdown for a faster-than-transparent transfer.</p>
+      </div>
+
+      <div class="card note" style="margin-top:26px;">
+        <span class="label">How to use this sheet</span>
+        <p>Read sections 01–08 once for understanding, then loop back to this page alone for every later revision pass — if any card doesn't immediately make sense, that's the section to reopen.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — rapid-fire mix (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A byte-addressable memory has a 20-bit address bus. What is its total addressable memory size?</summary>
+          <div class="ans">
+            <p>Address space = 2ⁿ locations for n address bits: 2²⁰ = 1,048,576 bytes.</p>
+            <p class="final">Answer: 1 MB</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A cache has an AAT of 5 ns, hit time 2 ns, and miss penalty 60 ns. What is the miss rate?</summary>
+          <div class="ans">
+            <p>AAT = Hit time + Miss rate × Miss penalty ⇒ 5 = 2 + MR × 60 ⇒ MR = 3/60 = 0.05.</p>
+            <p class="final">Answer: 5%</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Why does a load-store (RISC-style) architecture simplify hardwired control unit design compared to an ISA allowing memory-to-memory ALU operations?</summary>
+          <div class="ans">
+            <p>Restricting memory access to only LOAD/STORE means every ALU instruction has identical, predictable timing (register-to-register), so the combinational control logic driving the datapath doesn't need special-case timing paths for ALU instructions that also touch memory.</p>
+            <p class="final">Answer: Uniform instruction timing (only LOAD/STORE touch memory) keeps hardwired control logic simple and regular</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A pipeline processes 50 instructions through 4 stages with 1 ns per stage, but suffers 6 total stall cycles from hazards. What is the total execution time?</summary>
+          <div class="ans">
+            <p>Ideal cycles = k + n − 1 = 4 + 50 − 1 = 53. With 6 stall cycles added: 53 + 6 = 59 cycles. Total time = 59 × 1 ns = 59 ns.</p>
+            <p class="final">Answer: 59 ns</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Why is DMA preferred over interrupt-driven I/O for transferring a large disk block into memory?</summary>
+          <div class="ans">
+            <p>Interrupt-driven I/O would require the CPU to save/restore context and run an ISR for every unit of data transferred, which is enormous overhead for a large block; DMA lets a separate controller move the entire block and interrupts the CPU only once, at completion, keeping the CPU free for other work throughout the transfer.</p>
+            <p class="final">Answer: DMA avoids per-word CPU interrupt/context-switch overhead, needing only one interrupt for the whole block</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_REVISION -->
+
+    <footer>
+      Blueprint Notes — Computer Organization &amp; Architecture for GATE CSE · built for revision, not first-read · diagrams are schematic, not to scale.
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

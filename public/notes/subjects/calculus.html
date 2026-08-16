@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculus — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'calculus', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // Calculus</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">6 sheets · full syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#limits"><span class="num">01</span> Limits &amp; Continuity</a></div>
+      <div class="navgroup"><a class="navlink" href="#differentiability"><span class="num">02</span> Differentiability</a></div>
+      <div class="navgroup"><a class="navlink" href="#mvt"><span class="num">03</span> Mean Value Theorems</a></div>
+      <div class="navgroup"><a class="navlink" href="#maxima-minima"><span class="num">04</span> Maxima &amp; Minima</a></div>
+      <div class="navgroup"><a class="navlink" href="#integration"><span class="num">05</span> Integration</a></div>
+      <div class="navgroup"><a class="navlink" href="#revision"><span class="num">06</span> Revision Sheet</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Schematic notes · GATE CSE 2027</span>
+      <h1>Calculus, traced out <em>like a curve</em>, not memorized like a formula list.</h1>
+      <p>Six short sheets covering the complete GATE CSE Calculus syllabus — limits &amp; continuity, differentiability, mean value theorems, maxima/minima, and integration — with worked examples and the exact traps GATE likes to set. Tightly scoped: single-variable calculus only, no partial derivatives or multiple integrals in the current syllabus.</p>
+      <div class="chips">
+        <span class="chip">01 Limits &amp; Continuity</span>
+        <span class="chip">02 Differentiability</span>
+        <span class="chip">03 Mean Value Thms</span>
+        <span class="chip">04 Maxima/Minima</span>
+        <span class="chip">05 Integration</span>
+        <span class="chip">06 Revision</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g fill="none" stroke="#2a2b33" stroke-width="1.4">
+          <line x1="20" y1="190" x2="280" y2="190"/>
+          <line x1="40" y1="20" x2="40" y2="200"/>
+          <path d="M40 170 C 90 40, 160 40, 220 110 S 260 60, 280 70" stroke="#cba36b" stroke-width="1.8"/>
+        </g>
+        <g stroke="#d98a5f" stroke-width="1.4" stroke-dasharray="3,3">
+          <line x1="150" y1="70" x2="150" y2="190"/>
+          <line x1="105" y1="30" x2="215" y2="150"/>
+        </g>
+        <circle cx="150" cy="70" r="3" fill="#d98a5f" stroke="none"/>
+        <g font-family="JetBrains Mono" font-size="10" fill="#6f6a60">
+          <text x="255" y="205">x</text>
+          <text x="20" y="30">f(x)</text>
+          <text x="158" y="65" fill="#d98a5f">f'(c)</text>
+        </g>
+      </svg>
+    </section>
+
+    <section class="topic" id="limits">
+      <div class="topic-head"><span class="idx">01</span><h2>Limits &amp; Continuity</h2></div>
+      <div class="topic-kicker">EXISTENCE OF A LIMIT · STANDARD FORMS · L'HÔPITAL'S RULE · CONTINUITY CONDITIONS</div>
+
+      <h3 class="sub">When a limit exists</h3>
+      <p>lim<sub>x→a</sub> f(x) = L exists iff the left-hand limit and right-hand limit both exist and are equal:</p>
+      <div class="eq">lim(x→a⁻) f(x) = lim(x→a⁺) f(x) = L</div>
+      <p>This one-line check resolves almost every "does the limit exist" GATE question — especially for piecewise functions, |x|-type functions, and functions defined differently on either side of a point.</p>
+
+      <h3 class="sub">Standard limit results</h3>
+      <table>
+        <tr><th>Limit</th><th>Value</th></tr>
+        <tr><td>lim(x→0) sin(x)/x</td><td>1</td></tr>
+        <tr><td>lim(x→0) (1−cos x)/x²</td><td>1/2</td></tr>
+        <tr><td>lim(x→0) (eˣ−1)/x</td><td>1</td></tr>
+        <tr><td>lim(x→0) ln(1+x)/x</td><td>1</td></tr>
+        <tr><td>lim(x→∞) (1+1/x)ˣ</td><td>e</td></tr>
+        <tr><td>lim(x→0) (aˣ−1)/x</td><td>ln(a)</td></tr>
+      </table>
+
+      <div class="card formula">
+        <span class="label">L'Hôpital's rule</span>
+        <p>For indeterminate forms 0/0 or ∞/∞ only: lim f(x)/g(x) = lim f'(x)/g'(x), provided the latter limit exists. Can be applied repeatedly if the result is still indeterminate.</p>
+        <div class="eq">Other indeterminate forms (0·∞, ∞−∞, 1^∞, 0⁰, ∞⁰) must first be algebraically converted to 0/0 or ∞/∞ before applying L'Hôpital.</div>
+      </div>
+
+      <h3 class="sub">Continuity at a point</h3>
+      <p>f(x) is continuous at x = a iff all three conditions hold:</p>
+      <div class="eq">1. f(a) is defined
+2. lim(x→a) f(x) exists  (LHL = RHL)
+3. lim(x→a) f(x) = f(a)</div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>A function can have a limit at a point without being continuous there (removable discontinuity — limit exists but ≠ f(a), or f(a) undefined). Don't conflate "limit exists" with "continuous." These are exactly the two conditions GATE tests as separate MCQ statements.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Evaluate lim(x→0) sin(3x)/x.</summary>
+          <div class="ans">
+            <p>Rewrite as 3 · sin(3x)/(3x). As x→0, 3x→0, so sin(3x)/(3x) → 1 by the standard result.</p>
+            <p class="final">Answer: 3</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Evaluate lim(x→∞) (1 + 3/x)ˣ.</summary>
+          <div class="ans">
+            <p>This matches the standard form lim(x→∞)(1+k/x)ˣ = eᵏ, with k=3.</p>
+            <p class="final">Answer: e³</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Evaluate lim(x→0) (eˣ − 1 − x)/x² using L'Hôpital's rule.</summary>
+          <div class="ans">
+            <p>At x=0 this is 0/0. Differentiate top and bottom: lim (eˣ−1)/2x — still 0/0. Differentiate again: lim eˣ/2 = 1/2.</p>
+            <p class="final">Answer: 1/2</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> f(x) = x²  for x≠2, and f(2) = 5. Is f continuous at x=2?</summary>
+          <div class="ans">
+            <p>lim(x→2) f(x) = lim x² = 4. But f(2) = 5. Since the limit (4) ≠ f(2) (5), condition 3 for continuity fails even though the limit exists.</p>
+            <p class="final">Answer: Not continuous at x=2 (removable discontinuity)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Evaluate lim(x→0⁺) x·ln(x).</summary>
+          <div class="ans">
+            <p>This is a 0·(−∞) form. Rewrite as ln(x)/(1/x), now −∞/∞, apply L'Hôpital: (1/x)/(−1/x²) = −x → 0.</p>
+            <p class="final">Answer: 0</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="differentiability">
+      <div class="topic-head"><span class="idx">02</span><h2>Differentiability</h2></div>
+      <div class="topic-kicker">DERIVATIVE AS A LIMIT · DIFFERENTIABILITY ⟹ CONTINUITY · STANDARD DERIVATIVES</div>
+
+      <h3 class="sub">Definition — derivative as a limit</h3>
+      <div class="eq">f'(a) = lim(h→0) [f(a+h) − f(a)] / h</div>
+      <p>f is differentiable at x=a iff this limit exists — equivalently, iff the left-hand derivative and right-hand derivative both exist and are equal.</p>
+
+      <div class="card formula">
+        <span class="label">The one-way implication GATE builds MCQs around</span>
+        <div class="eq">Differentiable at a point  ⟹  Continuous at that point
+Continuous at a point      ⇏  Differentiable at that point</div>
+        <p>Classic counter-example: f(x) = |x| is continuous everywhere but not differentiable at x=0 (left derivative = −1, right derivative = +1, they disagree).</p>
+      </div>
+
+      <h3 class="sub">Standard derivatives</h3>
+      <table>
+        <tr><th>f(x)</th><th>f'(x)</th></tr>
+        <tr><td>xⁿ</td><td>n·xⁿ⁻¹</td></tr>
+        <tr><td>eˣ</td><td>eˣ</td></tr>
+        <tr><td>ln(x)</td><td>1/x</td></tr>
+        <tr><td>sin(x)</td><td>cos(x)</td></tr>
+        <tr><td>cos(x)</td><td>−sin(x)</td></tr>
+        <tr><td>tan(x)</td><td>sec²(x)</td></tr>
+        <tr><td>aˣ</td><td>aˣ·ln(a)</td></tr>
+      </table>
+
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Product &amp; quotient rules</h4>
+          <div class="eq">(uv)' = u'v + uv'
+(u/v)' = (u'v − uv') / v²</div>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Chain rule</h4>
+          <div class="eq">d/dx [f(g(x))] = f'(g(x)) · g'(x)</div>
+        </div>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>A function with a "corner" (like |x|) or a vertical tangent (like x^(1/3) at x=0) is continuous but not differentiable. GATE loves to give a piecewise function and ask you to check both continuity and differentiability at the joining point — always check continuity first, since it's a prerequisite (if it fails, differentiability automatically fails too).</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Is f(x) = |x−2| differentiable at x=2?</summary>
+          <div class="ans">
+            <p>Left derivative at x=2: for x&lt;2, f(x)=2−x, f'(x)=−1. Right derivative: for x&gt;2, f(x)=x−2, f'(x)=1. Since −1 ≠ 1, the derivative doesn't exist at the corner.</p>
+            <p class="final">Answer: Not differentiable at x=2 (continuous, but has a corner)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Find the derivative of f(x) = x²·sin(x) using the product rule.</summary>
+          <div class="ans">
+            <p>u=x², v=sin(x). u'=2x, v'=cos(x). (uv)' = u'v+uv' = 2x·sin(x) + x²·cos(x).</p>
+            <p class="final">Answer: f'(x) = 2x·sin(x) + x²·cos(x)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Find dy/dx for y = sin(3x²) using the chain rule.</summary>
+          <div class="ans">
+            <p>Outer function sin(u) with u=3x². d/dx[sin(u)] = cos(u)·u' = cos(3x²)·6x.</p>
+            <p class="final">Answer: dy/dx = 6x·cos(3x²)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> If f is differentiable at x=a, what can you conclude about continuity of f at x=a — and is the converse true?</summary>
+          <div class="ans">
+            <p>Differentiability always implies continuity at that point. The converse is false — a function can be continuous without being differentiable (e.g., |x| at x=0).</p>
+            <p class="final">Answer: f is continuous at a; converse does not hold in general</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Find the derivative of f(x) = eˣ/x² using the quotient rule.</summary>
+          <div class="ans">
+            <p>u=eˣ, v=x². u'=eˣ, v'=2x. (u/v)' = (u'v−uv')/v² = (eˣ·x² − eˣ·2x)/x⁴ = eˣ(x−2)/x³ after simplifying.</p>
+            <p class="final">Answer: f'(x) = eˣ(x−2)/x³</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="mvt">
+      <div class="topic-head"><span class="idx">03</span><h2>Mean Value Theorems</h2></div>
+      <div class="topic-kicker">ROLLE'S THEOREM · LAGRANGE'S MVT · GEOMETRIC INTERPRETATION</div>
+
+      <h3 class="sub">Rolle's theorem</h3>
+      <p>If f is continuous on [a,b], differentiable on (a,b), and f(a) = f(b), then there exists at least one c ∈ (a,b) such that:</p>
+      <div class="eq">f'(c) = 0</div>
+      <p><strong>Geometric meaning:</strong> if a curve starts and ends at the same height, somewhere in between it must have a horizontal tangent.</p>
+
+      <h3 class="sub">Lagrange's Mean Value Theorem (LMVT)</h3>
+      <p>If f is continuous on [a,b] and differentiable on (a,b), there exists at least one c ∈ (a,b) such that:</p>
+      <div class="eq">f'(c) = [f(b) − f(a)] / (b − a)</div>
+      <p><strong>Geometric meaning:</strong> somewhere on the curve, the instantaneous slope (tangent) equals the average slope (secant line from a to b). Rolle's theorem is the special case where f(a)=f(b), making the right side zero.</p>
+
+      <div class="card note">
+        <span class="label">The two hypotheses are both required</span>
+        <p>Continuity on the closed interval [a,b] AND differentiability on the open interval (a,b) — both are needed. If either fails anywhere in the interval, the theorem's conclusion is not guaranteed (though a value satisfying it might still coincidentally exist).</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>MVT guarantees existence of at least one c — it says nothing about how many such points exist, and gives no formula for finding c beyond solving f'(c) = (average slope) directly. GATE questions typically ask you to verify the hypotheses hold, then solve for c explicitly.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Verify Rolle's theorem for f(x) = x² − 4x + 3 on [1,3] and find c.</summary>
+          <div class="ans">
+            <p>f(1) = 1−4+3 = 0. f(3) = 9−12+3 = 0. f(1)=f(3), continuous &amp; differentiable everywhere (polynomial). f'(x) = 2x−4 = 0 ⇒ x = 2, which lies in (1,3).</p>
+            <p class="final">Answer: c = 2</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Find c satisfying LMVT for f(x) = x² on [1,4].</summary>
+          <div class="ans">
+            <p>Average slope = [f(4)−f(1)]/(4−1) = (16−1)/3 = 5. f'(x) = 2x. Set 2c = 5 ⇒ c = 2.5, which lies in (1,4).</p>
+            <p class="final">Answer: c = 2.5</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Does Rolle's theorem apply to f(x) = |x| on [−1,1]?</summary>
+          <div class="ans">
+            <p>f(−1)=1, f(1)=1, so f(a)=f(b) holds, and f is continuous on [−1,1]. But f is not differentiable at x=0, which lies inside (−1,1) — the differentiability hypothesis fails, so Rolle's theorem does not guarantee a valid c (and indeed f'(x)=0 has no solution here).</p>
+            <p class="final">Answer: No — differentiability fails at x=0 ∈ (−1,1)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> For f(x) = sin(x) on [0, π], does Rolle's theorem apply, and what is c?</summary>
+          <div class="ans">
+            <p>f(0)=0, f(π)=0, continuous and differentiable everywhere. f'(x)=cos(x)=0 ⇒ x=π/2, which lies in (0,π).</p>
+            <p class="final">Answer: Yes, c = π/2</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> f(x) = x³ on [−2, 2]. Find the value(s) of c guaranteed by LMVT.</summary>
+          <div class="ans">
+            <p>Average slope = [f(2)−f(−2)]/(2−(−2)) = (8−(−8))/4 = 4. f'(x) = 3x². Set 3c² = 4 ⇒ c² = 4/3 ⇒ c = ±2/√3 ≈ ±1.155. Both values lie within (−2,2), so both are valid.</p>
+            <p class="final">Answer: c = ±2/√3</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="maxima-minima">
+      <div class="topic-head"><span class="idx">04</span><h2>Maxima &amp; Minima</h2></div>
+      <div class="topic-kicker">FIRST &amp; SECOND DERIVATIVE TESTS · CRITICAL POINTS · CLOSED-INTERVAL EXTREMA</div>
+
+      <h3 class="sub">Critical points</h3>
+      <p>This is a statement about <strong>interior local extrema only</strong>. For an interior point c where f is differentiable, Fermat's theorem says: if f has a local max or min at c, then f'(c) = 0. Combined with points where f isn't differentiable at all, the full set of candidates for an interior local extremum is: where f'(x) = 0 (stationary point), or where f'(x) doesn't exist (non-smooth point). These candidates are called <strong>critical points</strong>.</p>
+      <p>Critical points alone are <em>not</em> the whole story for <strong>absolute</strong> extrema on a closed interval [a,b] — an absolute max/min can also occur at an endpoint a or b even where f'≠0 and f' is perfectly well-defined there, simply because the domain doesn't extend further in that direction for the "local" comparison to apply. See the closed-interval method below.</p>
+
+      <h3 class="sub">First derivative test</h3>
+      <p>Check the sign of f'(x) just before and just after a critical point c:</p>
+      <table>
+        <tr><th>f' before c</th><th>f' after c</th><th>Conclusion at c</th></tr>
+        <tr><td>+</td><td>−</td><td>Local maximum</td></tr>
+        <tr><td>−</td><td>+</td><td>Local minimum</td></tr>
+        <tr><td>Same sign both sides</td><td>—</td><td>Neither a local max nor a local min</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">"Same sign both sides" only rules out an extremum — it does NOT prove an inflection point</span>
+        <p>These are two separate questions answered by two different derivatives. "Is c a local extremum?" is answered by whether <strong>f'</strong> changes sign at c. "Is c an inflection point?" is answered by whether the <strong>concavity</strong> changes — i.e. whether f'' changes sign at c. These two questions aren't even always asked about the same points: inflection points don't require f'(c)=0 at all. Take <code>f(x) = x + x³</code>: f'(x) = 1 + 3x² &gt; 0 everywhere, so x=0 isn't even a critical point (there's no stationary point to apply the first-derivative table to), yet f''(x) = 6x changes sign at x=0 (concave down for x&lt;0, concave up for x&gt;0) — so x=0 <em>is</em> a genuine inflection point, despite never showing up as a critical point in the first place. Never infer "inflection" just from a critical point having same-sign f' on both sides; always check f'' separately.</p>
+      </div>
+
+      <h3 class="sub">Second derivative test — faster when it applies</h3>
+      <div class="eq">f'(c) = 0  and  f''(c) &lt; 0   ⟹  local maximum at c
+f'(c) = 0  and  f''(c) &gt; 0   ⟹  local minimum at c
+f'(c) = 0  and  f''(c) = 0   ⟹  test is inconclusive — fall back to first derivative test</div>
+
+      <div class="card note">
+        <span class="label">Global (absolute) extrema on a closed interval</span>
+        <p>On a closed interval [a,b], evaluate f at: (1) all critical points inside (a,b), and (2) the two endpoints a and b. The largest value found is the absolute maximum, the smallest is the absolute minimum — the endpoints must always be checked, since an extremum can occur there even where f'≠0.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>f'(c) = 0 is necessary but not sufficient for an extremum — f(x) = x³ has f'(0) = 0, but f'(x) = 3x² ≥ 0 on both sides (sign never changes), so x=0 is neither a max nor a min. Separately, x=0 also happens to be an inflection point here — but that's established by checking f''(x) = 6x, which changes sign from negative to positive at x=0 (concave down to concave up), not by the same-sign f' observation. The two facts (not-an-extremum, and inflection) need two separate checks even though they land on the same point in this example.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Find and classify the critical points of f(x) = x³ − 3x.</summary>
+          <div class="ans">
+            <p>f'(x) = 3x² − 3 = 0 ⇒ x = ±1. f''(x) = 6x. At x=1: f''=6&gt;0 ⇒ local min. At x=−1: f''=−6&lt;0 ⇒ local max.</p>
+            <p class="final">Answer: Local max at x=−1 (f=2), local min at x=1 (f=−2)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Find the absolute maximum and minimum of f(x) = x² on [−2, 3].</summary>
+          <div class="ans">
+            <p>f'(x)=2x=0 ⇒ x=0 (critical point, f(0)=0). Check endpoints: f(−2)=4, f(3)=9. Comparing {0, 4, 9}: max=9 at x=3, min=0 at x=0.</p>
+            <p class="final">Answer: Absolute max = 9 (at x=3), absolute min = 0 (at x=0)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> For f(x) = x⁴, show why the second derivative test fails at x=0 and determine the nature of that point another way.</summary>
+          <div class="ans">
+            <p>f'(x)=4x³=0 ⇒ x=0. f''(x)=12x², so f''(0)=0 — the test is inconclusive. Using the first derivative test instead: f'(x)=4x³ is negative for x&lt;0 and positive for x&gt;0, so it's a local minimum.</p>
+            <p class="final">Answer: x=0 is a local minimum (found via first derivative test)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> f(x) = x³ has f'(0) = 0. Is x=0 a local extremum?</summary>
+          <div class="ans">
+            <p>f'(x) = 3x² ≥ 0 for all x — it doesn't change sign around x=0 (positive on both sides), so there's no local max or min there. That sign test alone doesn't tell us whether x=0 is an inflection point, though — for that, check f''(x) = 6x separately: it's negative for x&lt;0 and positive for x&gt;0, a genuine sign change, so x=0 is confirmed as an inflection point by the concavity test (f''(0)=0 on its own would only be inconclusive, not sufficient — the sign change either side of it is what actually matters).</p>
+            <p class="final">Answer: No, x=0 is an inflection point, not an extremum</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Find the maximum value of f(x) = 12x − x³ on the interval [0, 4].</summary>
+          <div class="ans">
+            <p>f'(x) = 12 − 3x² = 0 ⇒ x² = 4 ⇒ x = ±2. Only x=2 lies in [0,4]. f''(x) = −6x, f''(2) = −12 &lt; 0 ⇒ local max. Compare f(2)=24−8=16 against endpoints f(0)=0, f(4)=48−64=−16.</p>
+            <p class="final">Answer: Maximum value = 16 at x = 2</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="integration">
+      <div class="topic-head"><span class="idx">05</span><h2>Integration</h2></div>
+      <div class="topic-kicker">STANDARD INTEGRALS · SUBSTITUTION &amp; BY-PARTS · DEFINITE INTEGRAL PROPERTIES</div>
+
+      <h3 class="sub">Standard integrals</h3>
+      <table>
+        <tr><th>f(x)</th><th>∫f(x)dx</th></tr>
+        <tr><td>xⁿ (n≠−1)</td><td>xⁿ⁺¹/(n+1) + C</td></tr>
+        <tr><td>1/x</td><td>ln|x| + C</td></tr>
+        <tr><td>eˣ</td><td>eˣ + C</td></tr>
+        <tr><td>sin(x)</td><td>−cos(x) + C</td></tr>
+        <tr><td>cos(x)</td><td>sin(x) + C</td></tr>
+        <tr><td>sec²(x)</td><td>tan(x) + C</td></tr>
+      </table>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Integration by substitution</span>
+          <p>When the integrand contains g(x) and g'(x) together, set u = g(x), du = g'(x)dx, and rewrite the integral entirely in terms of u.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Integration by parts</span>
+          <div class="eq">∫u dv = uv − ∫v du</div>
+          <p>Choose u using LIATE priority (Log, Inverse trig, Algebraic, Trig, Exponential) — pick u as the type earliest in this list.</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Definite integral properties</h3>
+      <div class="eq">∫ₐᵇ f(x)dx = −∫ᵦᵃ f(x)dx
+∫ₐᵃ f(x)dx = 0
+∫₀ᵃ f(x)dx = ∫₀ᵃ f(a−x)dx     (the "King's property" — extremely common GATE shortcut)</div>
+      <div class="card note">
+        <span class="label">Even/odd function shortcut</span>
+        <p>∫₋ₐᵃ f(x)dx = 2∫₀ᵃ f(x)dx if f is even (f(−x)=f(x)); = 0 if f is odd (f(−x)=−f(x)). Recognizing symmetry instantly can skip the entire computation.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Improper integrals (infinite limits, or an integrand blowing up inside the interval) must be evaluated as a limit — e.g. ∫₁^∞ f(x)dx = lim(t→∞) ∫₁ᵗ f(x)dx. The integral converges only if this limit exists (is finite); otherwise it diverges. GATE often tests convergence/divergence of ∫ 1/xᵖ style integrals — converges for p&gt;1, diverges for p≤1 (on [1,∞)).</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Evaluate ∫ x·eˣ dx using integration by parts.</summary>
+          <div class="ans">
+            <p>By LIATE, u=x (algebraic), dv=eˣdx. du=dx, v=eˣ. ∫u dv = uv−∫v du = x·eˣ − ∫eˣdx = x·eˣ − eˣ + C.</p>
+            <p class="final">Answer: (x−1)eˣ + C</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Evaluate ∫₀^(π/2) sin(x)/(sin x + cos x) dx using the King's property.</summary>
+          <div class="ans">
+            <p>Let I = ∫₀^(π/2) sin(x)/(sinx+cosx)dx. By King's property (a=π/2), I = ∫₀^(π/2) cos(x)/(sinx+cosx)dx also. Adding both expressions of I: 2I = ∫₀^(π/2) 1 dx = π/2.</p>
+            <p class="final">Answer: I = π/4</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Evaluate ∫₋₂² x³ dx without computing the antiderivative, using symmetry.</summary>
+          <div class="ans">
+            <p>f(x)=x³ is odd (f(−x) = −x³ = −f(x)). The integral of an odd function over a symmetric interval [−a,a] is always 0.</p>
+            <p class="final">Answer: 0</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Evaluate ∫ 2x·cos(x²) dx using substitution.</summary>
+          <div class="ans">
+            <p>Let u = x², du = 2x dx. The integral becomes ∫cos(u)du = sin(u) + C = sin(x²) + C.</p>
+            <p class="final">Answer: sin(x²) + C</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Does ∫₁^∞ 1/x² dx converge or diverge? Find its value if it converges.</summary>
+          <div class="ans">
+            <p>This is the 1/xᵖ form with p=2 &gt; 1, so it converges. Compute: lim(t→∞) ∫₁ᵗ x⁻²dx = lim(t→∞) [−1/x]₁ᵗ = lim(t→∞) (−1/t + 1) = 1.</p>
+            <p class="final">Answer: Converges, value = 1</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="revision">
+      <div class="topic-head"><span class="idx">06</span><h2>Revision Sheet</h2></div>
+      <div class="topic-kicker">EVERYTHING ON ONE SCREEN — LAST-MINUTE PASS</div>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Limit existence</span>
+          <p>lim exists iff LHL = RHL. Standard: sinx/x→1, (1−cosx)/x²→1/2, (eˣ−1)/x→1, (1+1/x)ˣ→e.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">L'Hôpital's rule</span>
+          <p>Only for 0/0 or ∞/∞: lim f/g = lim f'/g'. Convert other indeterminate forms first.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Continuity (3 conditions)</span>
+          <p>f(a) defined, lim(x→a)f(x) exists, and lim = f(a). All three required.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Differentiability</span>
+          <p>Differentiable ⟹ continuous (one-way only). |x| at 0: continuous, not differentiable.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Rolle's theorem</span>
+          <p>f(a)=f(b), continuous [a,b], differentiable (a,b) ⟹ ∃c: f'(c)=0.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">LMVT</span>
+          <p>∃c ∈(a,b): f'(c) = [f(b)−f(a)]/(b−a). Rolle's is the special case f(a)=f(b).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Extremum tests</span>
+          <p>f'(c)=0 necessary, not sufficient. 2nd derivative test: f''&lt;0 ⇒ max, f''&gt;0 ⇒ min, f''=0 ⇒ inconclusive (use 1st derivative test).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Closed-interval extrema</span>
+          <p>Check all interior critical points AND both endpoints — largest/smallest value found wins.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Integration by parts</span>
+          <p>∫u dv = uv − ∫v du. Choose u by LIATE: Log, Inverse trig, Algebraic, Trig, Exponential.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">King's property</span>
+          <p>∫₀ᵃ f(x)dx = ∫₀ᵃ f(a−x)dx. Very common trick for definite trig integrals.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Even/odd shortcut</span>
+          <p>∫₋ₐᵃ f dx = 2∫₀ᵃ f dx if even; = 0 if odd. Check symmetry before integrating directly.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Improper integral convergence</span>
+          <p>∫₁^∞ 1/xᵖ dx converges iff p &gt; 1. Evaluate as a limit of a proper integral.</p>
+        </div>
+      </div>
+
+      <div class="card note" style="margin-top:26px;">
+        <span class="label">How to use this sheet</span>
+        <p>Read sections 01–05 once for understanding, then loop back to this page alone for every later revision pass — if any card doesn't immediately make sense, that's the section to reopen. GATE CS Calculus is now tightly scoped (no partial derivatives, multiple integrals, or vector calculus) — don't over-study beyond limits, MVT, maxima/minima, and integration.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — rapid-fire mix (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Evaluate lim(x→0) (tan x − x)/x³.</summary>
+          <div class="ans">
+            <p>0/0 form. Apply L'Hôpital: lim (sec²x − 1)/3x² = lim tan²x/3x² (since sec²x−1=tan²x) = lim (tanx/x)² / 3 = 1/3.</p>
+            <p class="final">Answer: 1/3</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A function is differentiable everywhere on (a,b) and continuous on [a,b] with f(a)=f(b)=5. What must exist somewhere in (a,b)?</summary>
+          <div class="ans">
+            <p>Rolle's theorem hypotheses are satisfied (continuity on closed interval, differentiability on open interval, equal endpoint values), so there must exist at least one c ∈ (a,b) with f'(c) = 0.</p>
+            <p class="final">Answer: A point c where f'(c) = 0</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> f(x) = x² − 6x + 5. Find its minimum value and where it occurs.</summary>
+          <div class="ans">
+            <p>f'(x) = 2x − 6 = 0 ⇒ x = 3. f''(x) = 2 &gt; 0 ⇒ local min. f(3) = 9 − 18 + 5 = −4.</p>
+            <p class="final">Answer: Minimum value = −4 at x = 3</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Evaluate ∫₀^π sin(x) dx.</summary>
+          <div class="ans">
+            <p>∫sin(x)dx = −cos(x). Evaluate from 0 to π: [−cos(π)] − [−cos(0)] = −(−1) − (−1) = 1 + 1.</p>
+            <p class="final">Answer: 2</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Is f(x) = x^(1/3) continuous and differentiable at x = 0?</summary>
+          <div class="ans">
+            <p>f is continuous at x=0 (lim x^(1/3) = 0 = f(0)). But f'(x) = (1/3)x^(−2/3), which → ∞ as x→0 — the tangent becomes vertical, so the derivative does not exist (finitely) at x=0.</p>
+            <p class="final">Answer: Continuous but not differentiable at x=0 (vertical tangent)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      Blueprint Notes — Calculus for GATE CSE · built for revision, not first-read · official syllabus: limits, continuity and differentiability, maxima and minima, mean value theorem, integration.
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

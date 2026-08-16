@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discrete Mathematics — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'discrete-mathematics', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // Discrete Mathematics</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">7 sheets · full syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#logic"><span class="num">01</span> Propositional &amp; First-Order Logic</a></div>
+      <div class="navgroup"><a class="navlink" href="#sets-relations"><span class="num">02</span> Sets, Relations &amp; Functions</a></div>
+      <div class="navgroup"><a class="navlink" href="#orders-lattices"><span class="num">03</span> Partial Orders &amp; Lattices</a></div>
+      <div class="navgroup"><a class="navlink" href="#groups"><span class="num">04</span> Monoids &amp; Groups</a></div>
+      <div class="navgroup"><a class="navlink" href="#graphs"><span class="num">05</span> Graph Theory</a></div>
+      <div class="navgroup"><a class="navlink" href="#combinatorics"><span class="num">06</span> Combinatorics</a></div>
+      <div class="navgroup"><a class="navlink" href="#revision"><span class="num">07</span> Revision Sheet</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Schematic notes · GATE CSE 2027</span>
+      <h1>Discrete structures, wired <em>like a proof</em>, not memorized like trivia.</h1>
+      <p>Seven short sheets covering the complete GATE CSE Discrete Mathematics syllabus — logic, sets/relations/functions, partial orders &amp; lattices, monoids &amp; groups, graph theory, and combinatorics — with worked examples and the exact traps GATE likes to set. High-weightage (4–6 marks) and foundational to Algorithms, TOC, and DBMS.</p>
+      <div class="chips">
+        <span class="chip">01 Logic</span>
+        <span class="chip">02 Sets/Relations</span>
+        <span class="chip">03 Orders &amp; Lattices</span>
+        <span class="chip">04 Groups</span>
+        <span class="chip">05 Graph Theory</span>
+        <span class="chip">06 Combinatorics</span>
+        <span class="chip">07 Revision</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g fill="none" stroke="#2a2b33" stroke-width="1.4">
+          <circle cx="90" cy="90" r="55"/>
+          <circle cx="150" cy="90" r="55"/>
+        </g>
+        <g stroke="#cba36b" stroke-width="1.6" fill="none">
+          <circle cx="230" cy="60" r="8"/>
+          <circle cx="230" cy="120" r="8"/>
+          <circle cx="270" cy="90" r="8"/>
+          <line x1="230" y1="60" x2="230" y2="120"/>
+          <line x1="230" y1="60" x2="270" y2="90"/>
+          <line x1="230" y1="120" x2="270" y2="90"/>
+        </g>
+        <g font-family="JetBrains Mono" font-size="10" fill="#6f6a60">
+          <text x="70" y="35">A</text>
+          <text x="165" y="35">B</text>
+          <text x="235" y="145" fill="#d98a5f">G</text>
+        </g>
+      </svg>
+    </section>
+
+    <section class="topic" id="logic">
+      <div class="topic-head"><span class="idx">01</span><h2>Propositional &amp; First-Order Logic</h2></div>
+      <div class="topic-kicker">TRUTH TABLES · LOGICAL EQUIVALENCE · QUANTIFIERS · VALID INFERENCE</div>
+
+      <h3 class="sub">Propositional connectives</h3>
+      <table>
+        <tr><th>Connective</th><th>Symbol</th><th>True when</th></tr>
+        <tr><td>AND (conjunction)</td><td>p ∧ q</td><td>Both p and q true</td></tr>
+        <tr><td>OR (disjunction)</td><td>p ∨ q</td><td>At least one true</td></tr>
+        <tr><td>NOT (negation)</td><td>¬p</td><td>p is false</td></tr>
+        <tr><td>Implication</td><td>p → q</td><td>False only when p=T, q=F</td></tr>
+        <tr><td>Biconditional</td><td>p ↔ q</td><td>p and q have the same truth value</td></tr>
+      </table>
+
+      <div class="card note">
+        <span class="label">Implication — the one everyone misreads</span>
+        <p>p → q is TRUE whenever p is false, regardless of q ("vacuously true"). It's only FALSE in the single case p=T, q=F. This single row is responsible for most GATE logic errors — always build the full truth table rather than reasoning informally about "if...then."</p>
+      </div>
+
+      <h3 class="sub">Key logical equivalences</h3>
+      <div class="eq">De Morgan's: ¬(p∧q) ≡ ¬p∨¬q          ¬(p∨q) ≡ ¬p∧¬q
+Contrapositive: p→q ≡ ¬q→¬p          (equivalent; NOT the same as the converse q→p)
+Implication rewrite: p→q ≡ ¬p∨q
+Distributive: p∧(q∨r) ≡ (p∧q)∨(p∧r)</div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Converse (q→p), inverse (¬p→¬q), and contrapositive (¬q→¬p) of p→q are NOT all equivalent. Only the contrapositive is logically equivalent to the original. The converse and inverse are equivalent to each other, but not to the original statement.</p>
+      </div>
+
+      <h3 class="sub">First-order logic — quantifiers</h3>
+      <div class="eq">∀x P(x)   "for all x, P(x) holds"          ∃x P(x)   "there exists an x such that P(x) holds"
+
+Negating a quantifier flips it and negates inside:
+¬(∀x P(x)) ≡ ∃x ¬P(x)          ¬(∃x P(x)) ≡ ∀x ¬P(x)</div>
+      <div class="card formula">
+        <span class="label">Quantifier order matters</span>
+        <p>∀x ∃y P(x,y) and ∃y ∀x P(x,y) are generally NOT the same statement. The first says "for every x, some y works (possibly different for each x)." The second says "one single y works for every x." GATE frequently tests exactly this distinction with a concrete example.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Is p → q logically equivalent to its converse q → p? Justify with a truth-value case.</summary>
+          <div class="ans">
+            <p>No. Take p=F, q=T: p→q is T (vacuously), but q→p is F (T doesn't imply F). They disagree, so they are not equivalent in general.</p>
+            <p class="final">Answer: Not equivalent</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Simplify ¬(p ∧ ¬q) using De Morgan's law.</summary>
+          <div class="ans">
+            <p>¬(p ∧ ¬q) = ¬p ∨ ¬(¬q) = ¬p ∨ q.</p>
+            <p class="final">Answer: ¬p ∨ q</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Negate the statement: ∀x ∃y (x + y = 0).</summary>
+          <div class="ans">
+            <p>Flip both quantifiers and negate the inner statement: ¬(∀x ∃y (x+y=0)) = ∃x ∀y ¬(x+y=0) = ∃x ∀y (x+y≠0).</p>
+            <p class="final">Answer: ∃x ∀y (x + y ≠ 0)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Is "∀x ∃y (y &gt; x)" the same as "∃y ∀x (y &gt; x)" over the real numbers?</summary>
+          <div class="ans">
+            <p>No. The first ("for every x, some larger y exists") is TRUE over the reals. The second ("one y is larger than every x") is FALSE, since no real number exceeds all others. Order of quantifiers changes meaning and truth value.</p>
+            <p class="final">Answer: Different statements, different truth values</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Write the contrapositive of "If it rains, the ground is wet," and state whether it's logically equivalent to the original.</summary>
+          <div class="ans">
+            <p>Contrapositive: "If the ground is not wet, it did not rain." The contrapositive is always logically equivalent to the original implication.</p>
+            <p class="final">Answer: "If the ground is not wet, then it did not rain" — equivalent</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="sets-relations">
+      <div class="topic-head"><span class="idx">02</span><h2>Sets, Relations &amp; Functions</h2></div>
+      <div class="topic-kicker">RELATION PROPERTIES · EQUIVALENCE RELATIONS · FUNCTION TYPES</div>
+
+      <h3 class="sub">Properties of relations on a set A</h3>
+      <table>
+        <tr><th>Property</th><th>Condition</th></tr>
+        <tr><td>Reflexive</td><td>(a,a) ∈ R for every a ∈ A</td></tr>
+        <tr><td>Symmetric</td><td>(a,b) ∈ R ⟹ (b,a) ∈ R</td></tr>
+        <tr><td>Antisymmetric</td><td>(a,b)∈R and (b,a)∈R ⟹ a=b</td></tr>
+        <tr><td>Transitive</td><td>(a,b)∈R and (b,c)∈R ⟹ (a,c)∈R</td></tr>
+      </table>
+
+      <div class="two-col">
+        <div class="card note">
+          <span class="label">Equivalence relation</span>
+          <p>Reflexive + Symmetric + Transitive. Partitions the set into disjoint equivalence classes — every element belongs to exactly one class.</p>
+        </div>
+        <div class="card pyq">
+          <span class="label">GATE trap</span>
+          <p>Symmetric and antisymmetric are NOT opposites — a relation can be both (e.g. equality) or neither. Don't assume "not symmetric" means "antisymmetric."</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Function types</h3>
+      <table>
+        <tr><th>Type</th><th>Condition</th></tr>
+        <tr><td>Injective (one-one)</td><td>f(a)=f(b) ⟹ a=b (distinct inputs → distinct outputs)</td></tr>
+        <tr><td>Surjective (onto)</td><td>Every element of codomain has a preimage</td></tr>
+        <tr><td>Bijective</td><td>Both injective and surjective — has a well-defined inverse</td></tr>
+      </table>
+
+      <div class="card formula">
+        <span class="label">Counting functions between finite sets</span>
+        <div class="eq">|A|=m, |B|=n:
+Total functions A→B: nᵐ
+Injective functions (needs m≤n): n·(n−1)·...·(n−m+1) = nPm
+Bijective functions (needs m=n): n!</div>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> R = {(a,a),(b,b),(c,c),(a,b),(b,a)} on {a,b,c}. Is R an equivalence relation?</summary>
+          <div class="ans">
+            <p>Reflexive: all (x,x) present ✓. Symmetric: (a,b) and (b,a) both present ✓. Transitive: (a,b),(b,a)⟹ need (a,a) — present ✓. All three hold.</p>
+            <p class="final">Answer: Yes, it's an equivalence relation (classes: {a,b}, {c})</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> How many functions exist from a set of size 3 to a set of size 5?</summary>
+          <div class="ans">
+            <p>Total functions = nᵐ where m=3 (domain size), n=5 (codomain size): 5³.</p>
+            <p class="final">Answer: 125</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> How many bijective functions exist from a set of size 4 to another set of size 4?</summary>
+          <div class="ans">
+            <p>Bijections between equal-size finite sets = n! = 4! = 24.</p>
+            <p class="final">Answer: 24</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Is the "≤" relation on integers antisymmetric? Is it symmetric?</summary>
+          <div class="ans">
+            <p>Antisymmetric: a≤b and b≤a ⟹ a=b — true. Symmetric: a≤b does NOT generally imply b≤a (e.g. 2≤3 but 3≰2) — false.</p>
+            <p class="final">Answer: Antisymmetric, not symmetric</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> f: ℤ→ℤ defined by f(x) = 2x. Is f injective? Is f surjective onto ℤ?</summary>
+          <div class="ans">
+            <p>Injective: f(a)=f(b) ⟹ 2a=2b ⟹ a=b — yes. Surjective onto ℤ: odd integers (like 3) have no preimage since 2x=3 has no integer solution — no.</p>
+            <p class="final">Answer: Injective but not surjective</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="orders-lattices">
+      <div class="topic-head"><span class="idx">03</span><h2>Partial Orders &amp; Lattices</h2></div>
+      <div class="topic-kicker">POSETS · HASSE DIAGRAMS · UPPER/LOWER BOUNDS · LATTICE STRUCTURE</div>
+
+      <h3 class="sub">Partially ordered set (poset)</h3>
+      <p>A relation that is reflexive, antisymmetric, and transitive. Unlike a total order, not every pair of elements needs to be comparable — that's exactly what "partial" means.</p>
+      <div class="card note">
+        <span class="label">Hasse diagram — reading it correctly</span>
+        <p>Draws only the "covering" relations (direct, non-redundant edges), with higher elements drawn above lower ones — reflexive loops and transitive edges are omitted by convention, not because they don't exist.</p>
+      </div>
+
+      <h3 class="sub">Bounds within a poset</h3>
+      <table>
+        <tr><th>Term</th><th>Definition</th></tr>
+        <tr><td>Upper bound of S</td><td>An element ≥ every element of S (need not be in S)</td></tr>
+        <tr><td>Least Upper Bound (LUB / join, ∨)</td><td>The smallest of all upper bounds</td></tr>
+        <tr><td>Lower bound of S</td><td>An element ≤ every element of S</td></tr>
+        <tr><td>Greatest Lower Bound (GLB / meet, ∧)</td><td>The largest of all lower bounds</td></tr>
+      </table>
+
+      <h3 class="sub">Lattice</h3>
+      <p>A poset in which every pair of elements has both a unique LUB (join) and a unique GLB (meet). This is stronger than being a poset — not every poset is a lattice.</p>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>A poset can have upper bounds for a subset without having a LUB, if multiple minimal upper bounds exist with none smaller than the others (they're incomparable to each other). This is exactly the failure mode GATE uses to construct "is this a lattice?" counter-examples — always check every pair, not just an obvious few.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> For the divisibility relation on {1,2,3,4,6,12}, find the LUB and GLB of {2,3}.</summary>
+          <div class="ans">
+            <p>Upper bounds of {2,3} (divisible by both 2 and 3): 6, 12. Smallest is 6, so LUB=6. Lower bounds (divide both 2 and 3): only 1, so GLB=1.</p>
+            <p class="final">Answer: LUB = 6, GLB = 1</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Is the divisibility relation on positive integers a partial order? Justify briefly.</summary>
+          <div class="ans">
+            <p>Reflexive: a|a always ✓. Antisymmetric: a|b and b|a ⟹ a=b (for positive integers) ✓. Transitive: a|b, b|c ⟹ a|c ✓. All three hold.</p>
+            <p class="final">Answer: Yes, it's a partial order</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> In the power set of {a,b} ordered by ⊆, what is the LUB of {a} and {b}?</summary>
+          <div class="ans">
+            <p>Upper bounds of {{a},{b}} under ⊆ must contain both {a} and {b} as subsets — the smallest such set is {a,b} itself.</p>
+            <p class="final">Answer: LUB = {a,b}</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Is (ℤ, ≤) — the integers under the usual ≤ order — a lattice?</summary>
+          <div class="ans">
+            <p>Since ≤ is a total order (every pair is comparable), for any two integers a,b the LUB is simply max(a,b) and the GLB is min(a,b) — both always exist and are unique. Every total order is automatically a lattice.</p>
+            <p class="final">Answer: Yes, it's a lattice (in fact a total order)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A poset has two incomparable minimal upper bounds for a subset S, and neither is smaller than the other. Does LUB(S) exist?</summary>
+          <div class="ans">
+            <p>No — LUB requires a unique smallest upper bound. If two minimal upper bounds are incomparable (neither ≤ the other), there is no single smallest one, so LUB(S) does not exist even though upper bounds exist.</p>
+            <p class="final">Answer: No, LUB does not exist in this case</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="groups">
+      <div class="topic-head"><span class="idx">04</span><h2>Monoids &amp; Groups</h2></div>
+      <div class="topic-kicker">ALGEBRAIC STRUCTURE HIERARCHY · GROUP AXIOMS · ORDER OF AN ELEMENT</div>
+
+      <h3 class="sub">The structure hierarchy</h3>
+      <table>
+        <tr><th>Structure</th><th>Requires</th></tr>
+        <tr><td>Semigroup</td><td>Closure + Associativity</td></tr>
+        <tr><td>Monoid</td><td>Semigroup + Identity element</td></tr>
+        <tr><td>Group</td><td>Monoid + every element has an Inverse</td></tr>
+        <tr><td>Abelian group</td><td>Group + Commutativity</td></tr>
+      </table>
+      <p>Each structure adds exactly one requirement on top of the previous — a group is automatically a monoid, semigroup, and closed binary structure, but not necessarily abelian.</p>
+
+      <h3 class="sub">Group axioms — checklist</h3>
+      <div class="eq">1. Closure:       a,b ∈ G ⟹ a*b ∈ G
+2. Associativity: (a*b)*c = a*(b*c)
+3. Identity:      ∃e ∈ G such that a*e = e*a = a for all a
+4. Inverse:       ∀a ∈ G, ∃a⁻¹ ∈ G such that a*a⁻¹ = a⁻¹*a = e</div>
+
+      <div class="card note">
+        <span class="label">Order of a group / order of an element</span>
+        <p>Order of the group = number of elements in it. Order of an element a = smallest positive integer n such that aⁿ = e (identity). In a finite group, the order of every element divides the order of the group (Lagrange's theorem) — a fast filter for what element orders are even possible. Note this is a necessary condition only: Lagrange's theorem doesn't by itself guarantee that every divisor of the group's order is actually realized as some element's order — that requires additional, group-specific structural facts (e.g. cyclicity).</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>(ℕ, +) — natural numbers under addition — is a monoid (has identity 0) but NOT a group, since no positive integer has an additive inverse within ℕ. Always check the inverse requirement explicitly; closure, associativity, and even identity being present is not enough.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Is (ℤ, +) a group? Identify the identity and the inverse of an element a.</summary>
+          <div class="ans">
+            <p>Closure ✓ (sum of integers is an integer), associativity ✓, identity = 0 (a+0=a) ✓, inverse of a is −a (a+(−a)=0) ✓, and it's abelian too.</p>
+            <p class="final">Answer: Yes, (ℤ,+) is an abelian group; identity=0, inverse of a is −a</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Is (ℤ, ×) — integers under multiplication — a group?</summary>
+          <div class="ans">
+            <p>Closure ✓, associativity ✓, identity = 1 ✓. But inverse fails: e.g. 2 has no integer x with 2×x=1. Not every element has a multiplicative inverse in ℤ.</p>
+            <p class="final">Answer: No — it's a monoid, not a group (inverse fails)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> In a group of order 15, which element orders are permitted by Lagrange's theorem?</summary>
+          <div class="ans">
+            <p>By Lagrange's theorem, every element's order must divide the group's order — this gives a necessary condition (a fast filter for what's possible), not a guarantee that every divisor is actually realized by some element. Divisors of 15: 1, 3, 5, 15.</p>
+            <p>(As a separate, deeper fact beyond Lagrange alone: since 15 = 3×5 with 3 and 5 prime and 3∤(5−1), every group of order 15 is in fact cyclic — and a cyclic group of order n does have an element of every order dividing n, so for this specific order all four permitted values 1, 3, 5, 15 do actually occur. That conclusion needs more than Lagrange's theorem by itself, though.)</p>
+            <p class="final">Answer: Orders permitted by Lagrange's theorem: 1, 3, 5, 15 (and for order 15 specifically, all four are also known to actually occur, though that requires more than Lagrange's theorem alone)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Find the order of the element 2 in the group (ℤ₆, +) [integers mod 6 under addition, identity=0].</summary>
+          <div class="ans">
+            <p>Compute multiples of 2 mod 6 until reaching 0: 2, 4, 6≡0. It took 3 additions to reach identity.</p>
+            <p class="final">Answer: Order of 2 is 3</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Is every group abelian? Give a structural reason why not, referencing the axioms.</summary>
+          <div class="ans">
+            <p>No — commutativity (a*b=b*a) is not one of the four group axioms (closure, associativity, identity, inverse), so it's an extra property some groups have and others don't. Matrix multiplication groups are a standard example of non-abelian groups.</p>
+            <p class="final">Answer: No — commutativity is not a required group axiom</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="graphs">
+      <div class="topic-head"><span class="idx">05</span><h2>Graph Theory</h2></div>
+      <div class="topic-kicker">CONNECTIVITY · MATCHING · COLOURING · HANDSHAKE LEMMA</div>
+
+      <h3 class="sub">Handshake lemma — the fastest sanity check</h3>
+      <div class="eq">Σ (degree of all vertices) = 2 × (number of edges)</div>
+      <p>A direct consequence: the number of vertices with odd degree is always even. GATE frequently gives a degree sequence and asks whether such a graph can exist — this lemma is the first check.</p>
+
+      <h3 class="sub">Connectivity</h3>
+      <table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td>Connected graph</td><td>A path exists between every pair of vertices</td></tr>
+        <tr><td>Cut vertex / cut edge</td><td>Removing it disconnects the graph</td></tr>
+        <tr><td>k-connected</td><td>Remains connected after removing any k−1 vertices</td></tr>
+      </table>
+
+      <h3 class="sub">Matching</h3>
+      <p>A matching is a set of edges with no shared vertices. A <strong>maximum matching</strong> has the most edges possible; a <strong>perfect matching</strong> covers every vertex exactly once (requires an even number of vertices).</p>
+      <div class="card formula">
+        <span class="label">Bipartite matching — Hall's theorem</span>
+        <p>A bipartite graph (X,Y) has a matching saturating every vertex of X iff for every subset S⊆X, |N(S)| ≥ |S| (the neighborhood of S is at least as large as S) — this is Hall's Marriage Theorem, a common GATE-adjacent proof technique.</p>
+      </div>
+
+      <h3 class="sub">Graph colouring</h3>
+      <p>Chromatic number χ(G) = minimum colours needed so no two adjacent vertices share a colour.</p>
+      <table>
+        <tr><th>Graph type</th><th>Chromatic number</th></tr>
+        <tr><td>Complete graph Kₙ</td><td>n</td></tr>
+        <tr><td>Bipartite graph (with ≥1 edge)</td><td>2</td></tr>
+        <tr><td>Cycle with even length</td><td>2</td></tr>
+        <tr><td>Cycle with odd length</td><td>3</td></tr>
+        <tr><td>Tree (any, with ≥1 edge)</td><td>2</td></tr>
+      </table>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>χ(G) ≥ ω(G) always (chromatic number is at least the size of the largest clique), but they are NOT always equal — some graphs need strictly more colours than their largest clique size (e.g. odd cycles: clique number 2, chromatic number 3). Don't assume clique number gives the exact chromatic number.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A graph has 6 edges. What is the sum of degrees of all vertices?</summary>
+          <div class="ans">
+            <p>By the handshake lemma, sum of degrees = 2 × edges = 2 × 6.</p>
+            <p class="final">Answer: 12</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Can a simple graph exist with degree sequence (3,3,3,1)?</summary>
+          <div class="ans">
+            <p>Sum = 3+3+3+1 = 10 (even) and the odd-degree vertex count is 4 (even), so it passes both parity checks — but passing parity is necessary, not sufficient. Applying Havel–Hakimi: remove the first 3, subtract 1 from the next three degrees: (3,3,1) → (2,2,0). Remove the new first term (2), subtract 1 from the next two: (2,0) → (1,−1). A negative degree is impossible, so the sequence is not graphical. (Intuitively: on 4 vertices, three vertices of degree 3 must each connect to all other 3 vertices, forcing the 4th vertex to degree 3 as well — degree 1 is unreachable.)</p>
+            <p class="final">Answer: No — despite passing the parity checks, Havel–Hakimi reduces (3,3,3,1) to an invalid (1,−1), so no simple graph exists with this degree sequence</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Find the chromatic number of the complete graph K₅.</summary>
+          <div class="ans">
+            <p>Every pair of vertices in a complete graph is adjacent, so all n vertices need distinct colours. χ(Kₙ)=n.</p>
+            <p class="final">Answer: χ(K₅) = 5</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Find the chromatic number of a 5-cycle (C₅).</summary>
+          <div class="ans">
+            <p>Odd-length cycles cannot be 2-coloured (you'd need to alternate colours around an odd loop, which forces two adjacent vertices to share a colour at the closing edge), but 3 colours always suffice for any cycle.</p>
+            <p class="final">Answer: χ(C₅) = 3</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A tree has 10 vertices. How many edges does it have, and what is its chromatic number?</summary>
+          <div class="ans">
+            <p>Every tree with n vertices has exactly n−1 edges: 10−1=9 edges. Trees are bipartite (no odd cycles, since they have no cycles at all), so χ=2 (for any tree with at least one edge).</p>
+            <p class="final">Answer: 9 edges, chromatic number = 2</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="combinatorics">
+      <div class="topic-head"><span class="idx">06</span><h2>Combinatorics</h2></div>
+      <div class="topic-kicker">COUNTING PRINCIPLES · RECURRENCE RELATIONS · GENERATING FUNCTIONS</div>
+
+      <h3 class="sub">Core counting principles</h3>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Pigeonhole principle</span>
+          <p>If n items are placed into k boxes and n &gt; k, at least one box has ≥2 items. GATE often disguises this as "prove some two things must share a property."</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Inclusion-Exclusion (2 sets)</span>
+          <div class="eq">|A∪B| = |A|+|B|−|A∩B|</div>
+          <p>Extends to 3 sets: |A∪B∪C| = |A|+|B|+|C|−|A∩B|−|B∩C|−|A∩C|+|A∩B∩C|.</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Solving linear recurrence relations</h3>
+      <p>For a homogeneous linear recurrence like aₙ = c₁aₙ₋₁ + c₂aₙ₋₂, write the characteristic equation and solve for its roots:</p>
+      <div class="eq">aₙ = c₁aₙ₋₁ + c₂aₙ₋₂  ⟹  x² − c₁x − c₂ = 0
+Distinct real roots r₁,r₂:  aₙ = A·r₁ⁿ + B·r₂ⁿ
+Repeated root r:            aₙ = (A + Bn)·rⁿ
+(constants A, B fixed using initial conditions a₀, a₁)</div>
+
+      <div class="card note">
+        <span class="label">Worked example — Fibonacci-style</span>
+        <p>aₙ = aₙ₋₁ + aₙ₋₂ ⟹ x²−x−1=0 ⟹ x = (1±√5)/2 (the golden ratio and its conjugate). This is exactly how the closed-form Fibonacci formula (Binet's formula) is derived.</p>
+      </div>
+
+      <h3 class="sub">Generating functions — the compact representation</h3>
+      <p>A generating function encodes a whole sequence a₀,a₁,a₂,... as coefficients of a power series:</p>
+      <div class="eq">G(x) = Σ aₙxⁿ = a₀ + a₁x + a₂x² + ...</div>
+      <p>Useful for solving recurrences algebraically and for counting problems where the answer is "coefficient of xᵏ in some product of series."</p>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>For a repeated root r in the characteristic equation, the general solution is (A + Bn)·rⁿ — NOT simply A·rⁿ. Forgetting the extra factor of n for repeated roots is one of the most common recurrence-solving mistakes.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> 25 pigeons occupy 24 pigeonholes. What can you conclude?</summary>
+          <div class="ans">
+            <p>By the pigeonhole principle, since 25 &gt; 24, at least one pigeonhole must contain at least 2 pigeons.</p>
+            <p class="final">Answer: At least one hole has ≥ 2 pigeons</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> In a class of 50, 30 like Maths, 25 like Physics, and 15 like both. How many like at least one subject?</summary>
+          <div class="ans">
+            <p>|M∪P| = |M|+|P|−|M∩P| = 30+25−15.</p>
+            <p class="final">Answer: 40 students</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Solve the recurrence aₙ = 5aₙ₋₁ − 6aₙ₋₂ with a₀=1, a₁=4.</summary>
+          <div class="ans">
+            <p>Characteristic equation: x²−5x+6=0 ⟹ (x−2)(x−3)=0 ⟹ roots 2,3. General solution aₙ=A·2ⁿ+B·3ⁿ. Using a₀=1: A+B=1. Using a₁=4: 2A+3B=4. Solve: from first, A=1−B; substitute: 2(1−B)+3B=4 ⟹ 2+B=4 ⟹ B=2, A=−1.</p>
+            <p class="final">Answer: aₙ = −2ⁿ + 2·3ⁿ</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Solve the recurrence aₙ = 4aₙ₋₁ − 4aₙ₋₂ with a₀=1, a₁=4 (note: repeated root case).</summary>
+          <div class="ans">
+            <p>Characteristic equation: x²−4x+4=0 ⟹ (x−2)²=0 ⟹ repeated root r=2. General solution: aₙ=(A+Bn)·2ⁿ. a₀=1: A=1. a₁=4: (A+B)·2=4 ⟹ A+B=2 ⟹ B=1.</p>
+            <p class="final">Answer: aₙ = (1 + n)·2ⁿ</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> In a group of 13 people, must at least two share a birth month? Justify.</summary>
+          <div class="ans">
+            <p>There are 12 possible birth months (pigeonholes) and 13 people (pigeons). Since 13 &gt; 12, by the pigeonhole principle at least two people must share a birth month.</p>
+            <p class="final">Answer: Yes, guaranteed by the pigeonhole principle</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="revision">
+      <div class="topic-head"><span class="idx">07</span><h2>Revision Sheet</h2></div>
+      <div class="topic-kicker">EVERYTHING ON ONE SCREEN — LAST-MINUTE PASS</div>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Implication truth table</span>
+          <p>p→q is false only when p=T, q=F. Contrapositive (¬q→¬p) is equivalent; converse and inverse are not.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">De Morgan's &amp; quantifier negation</span>
+          <p>¬(p∧q)≡¬p∨¬q. ¬(∀xP(x))≡∃x¬P(x). Quantifier order changes meaning: ∀x∃y ≠ ∃y∀x in general.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Relation properties</span>
+          <p>Equivalence = reflexive+symmetric+transitive (partitions the set). Symmetric ≠ opposite of antisymmetric.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Counting functions</span>
+          <p>|A|=m,|B|=n: total=nᵐ, injective (m≤n)=nPm, bijective (m=n)=n!.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Lattice</span>
+          <p>Poset where every pair has a unique LUB (join) and GLB (meet). Not every poset is a lattice — check for incomparable minimal upper bounds.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Group axioms</span>
+          <p>Closure, Associativity, Identity, Inverse. Monoid = first three only (no inverse required). Lagrange: element order divides group order (necessary, not sufficient — not every divisor is guaranteed to be realized).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Handshake lemma</span>
+          <p>Σdegrees = 2×edges. Number of odd-degree vertices is always even.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Chromatic number</span>
+          <p>χ(Kₙ)=n. χ(bipartite/tree/even cycle)=2. χ(odd cycle)=3. χ(G)≥ω(G) but not always equal.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Pigeonhole &amp; inclusion-exclusion</span>
+          <p>n items, k boxes, n&gt;k ⟹ some box has ≥2. |A∪B|=|A|+|B|−|A∩B|.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Linear recurrence — distinct roots</span>
+          <p>x²−c₁x−c₂=0, roots r₁≠r₂ ⟹ aₙ=A·r₁ⁿ+B·r₂ⁿ. Solve A,B using a₀,a₁.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Linear recurrence — repeated root</span>
+          <p>Repeated root r ⟹ aₙ=(A+Bn)·rⁿ — don't forget the extra n factor.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Generating functions</span>
+          <p>G(x)=Σaₙxⁿ encodes a whole sequence — coefficient extraction solves counting/recurrence problems algebraically.</p>
+        </div>
+      </div>
+
+      <div class="card note" style="margin-top:26px;">
+        <span class="label">How to use this sheet</span>
+        <p>Read sections 01–06 once for understanding, then loop back to this page alone for every later revision pass — if any card doesn't immediately make sense, that's the section to reopen. Discrete Mathematics is high-weightage and foundational to Algorithms, TOC, and DBMS — the logic and graph theory sections especially reward deep understanding over rote memorization.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — rapid-fire mix (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Is "∀x (P(x) → Q(x))" the same as "(∀x P(x)) → (∀x Q(x))"?</summary>
+          <div class="ans">
+            <p>No, not in general — the first requires the implication to hold individually for each x, while the second only requires that if P holds for ALL x, then Q holds for ALL x (a much weaker global statement). The first implies the second, but not conversely.</p>
+            <p class="final">Answer: Not equivalent (first is stronger)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A relation is symmetric and antisymmetric simultaneously. What must be true of it?</summary>
+          <div class="ans">
+            <p>Symmetric means (a,b)∈R ⟹ (b,a)∈R. Antisymmetric means (a,b)∈R and (b,a)∈R ⟹ a=b. Combined: whenever (a,b)∈R, we also get (b,a)∈R, forcing a=b. So R can only contain pairs of the form (a,a).</p>
+            <p class="final">Answer: R must be a subset of the identity relation (only (a,a) pairs)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A graph has 7 vertices each of degree 4. How many edges does it have?</summary>
+          <div class="ans">
+            <p>Sum of degrees = 7×4 = 28. Edges = sum/2 = 28/2.</p>
+            <p class="final">Answer: 14 edges</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Is (ℚ⁺, ×) — positive rationals under multiplication — a group?</summary>
+          <div class="ans">
+            <p>Closure ✓ (product of positive rationals is a positive rational), associativity ✓, identity=1 ✓, and every positive rational p/q has inverse q/p, also a positive rational ✓. All four axioms hold, and it's abelian too.</p>
+            <p class="final">Answer: Yes, (ℚ⁺,×) is an abelian group</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> How many ways can you select 3 books from 8 different books to give to 3 different friends (one each)?</summary>
+          <div class="ans">
+            <p>Order matters here since each friend gets a distinct book (different assignment = different outcome) — this is a permutation, not a combination. 8P3 = 8×7×6.</p>
+            <p class="final">Answer: 336 ways</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      Blueprint Notes — Discrete Mathematics for GATE CSE · built for revision, not first-read · official syllabus: propositional and first-order logic; sets, relations, functions, partial orders and lattices; monoids, groups; graphs (connectivity, matching, colouring); combinatorics (counting, recurrence relations, generating functions).
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

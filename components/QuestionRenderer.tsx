@@ -31,7 +31,7 @@ export function QuestionRenderer({ q, selected, onSelect, submitted }: { q: Ques
           {q.options.map(o => (
             <label key={o.label} className={`option ${selected.includes(o.label) ? 'selected' : ''}`}>
               <input type={q.type === 'msq' ? 'checkbox' : 'radio'} checked={selected.includes(o.label)} onChange={() => toggle(o.label)} disabled={submitted} />
-              <span><b>{o.label}.</b>&nbsp; <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(o.html) }} /></span>
+              <span><span className="option-letter">{o.label}</span><span dangerouslySetInnerHTML={{ __html: sanitizeHtml(o.html) }} /></span>
             </label>
           ))}
         </div>

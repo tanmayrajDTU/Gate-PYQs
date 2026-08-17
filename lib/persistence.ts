@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { nextReviewDate, advanceBox } from './spacedRepetition';
 
 export type UserState = { userId: string | null };
 
@@ -8,22 +9,41 @@ export async function getCurrentUserId() {
   return data.user?.id ?? null;
 }
 
-export async function loadFlags(userId: string): Promise<Record<string, { bookmarked: boolean; revision: boolean }>> {
-  if (!supabase) return {} as Record<string, { bookmarked: boolean; revision: boolean }>;
-  const { data, error } = await supabase.from('question_flags').select('question_id,bookmarked,revision').eq('user_id', userId);
+export type FlagRow = { bookmarked: boolean; revision: boolean; box: number; nextReviewAt: string | null };
+
+export async function loadFlags(userId: string): Promise<Record<string, FlagRow>> {
+  if (!supabase) return {} as Record<string, FlagRow>;
+  const { data, error } = await supabase.from('question_flags').select('question_id,bookmarked,revision,box,next_review_at').eq('user_id', userId);
   if (error) throw error;
-  return Object.fromEntries((data ?? []).map(row => [row.question_id, { bookmarked: !!row.bookmarked, revision: !!row.revision }]));
+  return Object.fromEntries((data ?? []).map(row => [row.question_id, { bookmarked: !!row.bookmarked, revision: !!row.revision, box: row.box ?? 1, nextReviewAt: row.next_review_at }]));
 }
 
-export async function setQuestionFlags(userId: string, questionId: string, bookmarked: boolean, revision: boolean) {
+export async function setQuestionFlags(userId: string, questionId: string, bookmarked: boolean, revision: boolean, priorRevision = false) {
   if (!supabase) return;
-  const { error } = await supabase.from('question_flags').upsert({
+  const payload: Record<string, unknown> = {
     user_id: userId,
     question_id: questionId,
     bookmarked,
     revision,
     updated_at: new Date().toISOString(),
-  }, { onConflict: 'user_id,question_id' });
+  };
+  // Starting a fresh revision cycle: put it in box 1, due tomorrow.
+  if (revision && !priorRevision) {
+    payload.box = 1;
+    payload.next_review_at = nextReviewDate(1).toISOString();
+  }
+  const { error } = await supabase.from('question_flags').upsert(payload, { onConflict: 'user_id,question_id' });
+  if (error) throw error;
+}
+
+export async function reviewRevisionCard(userId: string, questionId: string, currentBox: number, remembered: boolean) {
+  if (!supabase) return;
+  const box = advanceBox(currentBox, remembered);
+  const { error } = await supabase.from('question_flags').update({
+    box,
+    next_review_at: nextReviewDate(box).toISOString(),
+    updated_at: new Date().toISOString(),
+  }).eq('user_id', userId).eq('question_id', questionId);
   if (error) throw error;
 }
 

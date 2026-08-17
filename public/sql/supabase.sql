@@ -22,9 +22,15 @@ create table if not exists public.question_flags (
   question_id text not null,
   bookmarked boolean not null default false,
   revision boolean not null default false,
+  box smallint not null default 1,
+  next_review_at timestamptz,
   updated_at timestamptz not null default now(),
   primary key(user_id,question_id)
 );
+
+-- Spaced-repetition columns (safe to re-run on an existing table)
+alter table public.question_flags add column if not exists box smallint not null default 1;
+alter table public.question_flags add column if not exists next_review_at timestamptz;
 
 create table if not exists public.practice_sessions (
   id uuid primary key default gen_random_uuid(),

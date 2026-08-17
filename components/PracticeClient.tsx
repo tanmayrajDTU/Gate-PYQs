@@ -6,6 +6,7 @@ import Link from 'next/link';
 import type { Question } from '../lib/types';
 import { QuestionRenderer } from './QuestionRenderer';
 import { getCurrentUserId, loadFlags, setQuestionFlags, createPracticeSession, updatePracticeSession, recordAttempt } from '../lib/persistence';
+import { isNatAnswerCorrect } from '../lib/natAnswer';
 
 type Feedback = 'immediate' | 'end';
 
@@ -159,12 +160,13 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
   }
 
   async function toggleFlag(kind: 'bookmark' | 'revision') {
+    const priorRevision = !!revision[q.id];
     const nextBookmark = kind === 'bookmark' ? !bookmarks[q.id] : !!bookmarks[q.id];
     const nextRevision = kind === 'revision' ? !revision[q.id] : !!revision[q.id];
     if (kind === 'bookmark') setBookmarks(s => ({ ...s, [q.id]: nextBookmark }));
     else setRevision(s => ({ ...s, [q.id]: nextRevision }));
     if (userId) {
-      try { await setQuestionFlags(userId, q.id, nextBookmark, nextRevision); }
+      try { await setQuestionFlags(userId, q.id, nextBookmark, nextRevision, priorRevision); }
       catch (error) { console.error(error); setSyncMessage('Could not sync that saved state.'); }
     }
   }
@@ -249,9 +251,7 @@ function evaluateAnswer(q: Question, answer: string[]): boolean | null {
   if (!q.answer) return null;
   if (!answer.length) return false;
   if (q.type === 'nat') {
-    const expected = Number(q.answer);
-    const actual = Number(answer[0]);
-    return Number.isFinite(expected) && Number.isFinite(actual) && Math.abs(expected - actual) <= Math.max(1e-9, Math.abs(expected) * 1e-6);
+    return isNatAnswerCorrect(q.answer, answer[0]);
   }
   const expected = q.answer.split(/[{},\s,]+/).map(x => x.trim().toUpperCase()).filter(Boolean).sort();
   const actual = answer.map(x => x.trim().toUpperCase()).filter(Boolean).sort();

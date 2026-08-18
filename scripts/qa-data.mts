@@ -23,6 +23,9 @@ for (const q of questions) {
 const natQuestions = questions.filter((q: any) => q.type === 'nat');
 let natSingle = 0, natRange = 0, natMultiSegment = 0;
 for (const q of natQuestions) {
+  // "ALL" is a valid sentinel (not a numeric answer) for GATE questions
+  // officially declared wrong, where marks were given to every candidate.
+  if (String(q.answer).trim().toUpperCase() === 'ALL') continue;
   const parsed = parseNatAnswer(q.answer);
   if (parsed.type === 'invalid') {
     errors.push(`${q.id}: NAT answer "${q.answer}" could not be parsed (not a single value, range, or ';'-separated set of either)`);

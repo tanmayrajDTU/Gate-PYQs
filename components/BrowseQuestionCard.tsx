@@ -14,11 +14,20 @@ export function BrowseQuestionCard({ q, index }: { q: Question; index: number })
     if (cardRef.current) void typesetMath([cardRef.current]);
   }, [q.id]);
 
+  // "ALL" marks a question that GATE officially declared wrong/out-of-
+  // syllabus, where marks were awarded to every candidate regardless of
+  // choice — there is no single correct option to highlight. Only
+  // meaningful for scored types (mcq/msq/nat); descriptive questions never
+  // use their answer field for grading or display.
+  const markedToAll = q.type !== 'descriptive' && (q.answer || '').trim().toUpperCase() === 'ALL';
+
   const correctLabels = new Set(
-    (q.answer || '')
-      .split(/[{},;\s]+/)
-      .map(x => x.trim().toUpperCase())
-      .filter(Boolean)
+    markedToAll
+      ? []
+      : (q.answer || '')
+          .split(/[{},;\s]+/)
+          .map(x => x.trim().toUpperCase())
+          .filter(Boolean)
   );
 
   return (
@@ -45,9 +54,10 @@ export function BrowseQuestionCard({ q, index }: { q: Question; index: number })
 
       <div style={{ marginTop: 18, display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
         <button className="btn btn-soft" onClick={() => setShowAnswer(s => !s)}>{showAnswer ? 'Hide answer' : 'Show answer'}</button>
-        {showAnswer && q.type === 'nat' && <span className="pill">Answer: {q.answer ?? '—'}</span>}
-        {showAnswer && q.type === 'descriptive' && <span className="muted" style={{ fontSize: 13 }}>No fixed answer is stored for this question — use the GateOverflow discussion for the solution.</span>}
-        {showAnswer && (q.type === 'mcq' || q.type === 'msq') && !q.answer && <span className="muted" style={{ fontSize: 13 }}>No answer key is stored for this question.</span>}
+        {showAnswer && markedToAll && <span className="muted" style={{ fontSize: 13 }}>Marks awarded to all candidates — GATE declared this question wrong/out of syllabus.</span>}
+        {showAnswer && !markedToAll && q.type === 'nat' && <span className="pill">Answer: {q.answer ?? '—'}</span>}
+        {showAnswer && !markedToAll && q.type === 'descriptive' && <span className="muted" style={{ fontSize: 13 }}>No fixed answer is stored for this question — use the GateOverflow discussion for the solution.</span>}
+        {showAnswer && !markedToAll && (q.type === 'mcq' || q.type === 'msq') && !q.answer && <span className="muted" style={{ fontSize: 13 }}>No answer key is stored for this question.</span>}
         {showAnswer && q.gateOverflowUrl && <a className="btn btn-soft" href={q.gateOverflowUrl} target="_blank" rel="noreferrer">Open GateOverflow <ExternalLink size={15} /></a>}
       </div>
     </div>

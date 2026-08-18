@@ -261,6 +261,11 @@ function evaluateAnswer(q: Question, answer: string[]): boolean | null {
   if (q.type === 'descriptive') return true;
   if (!q.answer) return null;
   if (!answer.length) return false;
+  // "ALL" is a special sentinel (not a real option/value) for GATE questions
+  // that were officially declared wrong/out-of-syllabus, where the exam
+  // authority awarded marks to every candidate regardless of what they
+  // chose. Once the candidate submits any answer, mark it correct.
+  if (q.answer.trim().toUpperCase() === 'ALL') return true;
   if (q.type === 'nat') {
     return isNatAnswerCorrect(q.answer, answer[0]);
   }

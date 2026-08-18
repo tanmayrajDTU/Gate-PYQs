@@ -9,6 +9,14 @@ export async function getCurrentUserId() {
   return data.user?.id ?? null;
 }
 
+/** Question ids this user has ever answered correctly — used to award first-time points exactly once. */
+export async function loadCorrectQuestionIds(userId: string): Promise<Set<string>> {
+  if (!supabase) return new Set();
+  const { data, error } = await supabase.from('question_attempts').select('question_id').eq('user_id', userId).eq('result', 'correct');
+  if (error) throw error;
+  return new Set((data ?? []).map(r => r.question_id));
+}
+
 export type FlagRow = { bookmarked: boolean; revision: boolean; box: number; nextReviewAt: string | null };
 
 export async function loadFlags(userId: string): Promise<Record<string, FlagRow>> {

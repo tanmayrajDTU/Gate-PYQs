@@ -16,7 +16,7 @@ export function BrowseQuestionCard({ q, index }: { q: Question; index: number })
 
   const correctLabels = new Set(
     (q.answer || '')
-      .split(/[{},\s,]+/)
+      .split(/[{},;\s]+/)
       .map(x => x.trim().toUpperCase())
       .filter(Boolean)
   );

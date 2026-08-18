@@ -264,7 +264,7 @@ function evaluateAnswer(q: Question, answer: string[]): boolean | null {
   if (q.type === 'nat') {
     return isNatAnswerCorrect(q.answer, answer[0]);
   }
-  const expected = q.answer.split(/[{},\s,]+/).map(x => x.trim().toUpperCase()).filter(Boolean).sort();
+  const expected = q.answer.split(/[{},;\s]+/).map(x => x.trim().toUpperCase()).filter(Boolean).sort();
   const actual = answer.map(x => x.trim().toUpperCase()).filter(Boolean).sort();
   return expected.length === actual.length && expected.every((value, i) => value === actual[i]);
 }

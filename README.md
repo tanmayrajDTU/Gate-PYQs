@@ -18,7 +18,7 @@ A new Next.js practice website built around the fixed Volume 1–3 GATE PYQ data
 - SQL schema for attempts, flags and practice sessions
 
 ## Dataset
-The source archive is normalized into `public/data/questions.json` and `catalog.json`. The current source contains **3,822 unique question records** after deduplication (2,610 MCQ / 241 MSQ / 508 NAT / 463 descriptive — verified against `data/stats.json` and re-derived independently from the raw dataset).
+The source archive is normalized into `data/questions.json` and `catalog.json`, imported directly at build time (see `lib/data.ts`). The current source contains **3,822 unique question records** after deduplication (2,610 MCQ / 241 MSQ / 508 NAT / 463 descriptive — verified against `data/stats.json` and re-derived independently from the raw dataset).
 
 ## Run
 ```bash

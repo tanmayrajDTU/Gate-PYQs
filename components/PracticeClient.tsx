@@ -5,8 +5,9 @@ import { Bookmark, ChevronLeft, ChevronRight, Clock3, ExternalLink, Flag, Rotate
 import Link from 'next/link';
 import type { Question } from '../lib/types';
 import { QuestionRenderer } from './QuestionRenderer';
-import { getCurrentUserId, loadFlags, setQuestionFlags, createPracticeSession, updatePracticeSession, recordAttempt } from '../lib/persistence';
+import { getCurrentUserId, loadFlags, setQuestionFlags, createPracticeSession, updatePracticeSession, recordAttempt, loadCorrectQuestionIds } from '../lib/persistence';
 import { isNatAnswerCorrect } from '../lib/natAnswer';
+import { POINTS_BY_TYPE } from '../lib/gamification';
 
 type Feedback = 'immediate' | 'end';
 
@@ -43,6 +44,8 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [syncMessage, setSyncMessage] = useState('');
   const [syncing, setSyncing] = useState(false);
+  const [earnedIds, setEarnedIds] = useState<Set<string>>(new Set());
+  const [pointsAwarded, setPointsAwarded] = useState<Record<string, number>>({});
   const lastPersistedRuntime = useRef('');
 
   const q = items[idx];
@@ -58,10 +61,11 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
         return;
       }
       try {
-        const flags = await loadFlags(uid);
+        const [flags, correctIds] = await Promise.all([loadFlags(uid), loadCorrectQuestionIds(uid)]);
         if (!active) return;
         setBookmarks(Object.fromEntries(Object.entries(flags).filter(([, v]) => v.bookmarked).map(([id]) => [id, true])));
         setRevision(Object.fromEntries(Object.entries(flags).filter(([, v]) => v.revision).map(([id]) => [id, true])));
+        setEarnedIds(correctIds);
         const id = await createPracticeSession(uid, {
           feedback,
           timerMinutes,
@@ -149,6 +153,10 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
     if (submitted[q.id]) return;
     const nextResult = evaluateAnswer(q, answers[q.id] || []);
     setSubmitted(s => ({ ...s, [q.id]: true }));
+    if (nextResult === true && !earnedIds.has(q.id)) {
+      setEarnedIds(s => new Set(s).add(q.id));
+      setPointsAwarded(p => ({ ...p, [q.id]: POINTS_BY_TYPE[q.type] ?? 0 }));
+    }
     if (userId) {
       try {
         await recordAttempt(userId, q.id, sessionId, answers[q.id] || [], nextResult === true ? 'correct' : nextResult === false ? 'incorrect' : 'recorded');
@@ -214,7 +222,10 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
 
           {isSubmitted && feedback === 'immediate' && (
             <div className="card" style={{ padding: 18, marginTop: 14 }}>
-              <b className={correct === true ? 'success' : correct === false ? 'danger' : ''}>{correct === true ? 'Correct' : correct === false ? 'Incorrect' : 'Answer recorded'}</b>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <b className={correct === true ? 'success' : correct === false ? 'danger' : ''}>{correct === true ? 'Correct' : correct === false ? 'Incorrect' : 'Answer recorded'}</b>
+                {pointsAwarded[q.id] > 0 && <span className="pill" style={{ background: 'var(--accent-soft)', color: 'var(--accent-strong)' }}>+{pointsAwarded[q.id]} pts</span>}
+              </div>
               {q.answer && <div className="muted" style={{ marginTop: 6 }}>Correct answer: {q.answer}</div>}
               {q.type === 'descriptive' && <div className="muted" style={{ marginTop: 6 }}>Descriptive questions have no stored answer key, so they're marked correct automatically on submit. Use GateOverflow to check your working.</div>}
               {q.gateOverflowUrl && <a className="btn btn-soft" style={{ marginTop: 12 }} href={q.gateOverflowUrl} target="_blank" rel="noreferrer">Open GateOverflow <ExternalLink size={15} /></a>}

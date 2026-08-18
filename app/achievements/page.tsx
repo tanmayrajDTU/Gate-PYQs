@@ -1,10 +1,28 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
-import { CheckCircle2, Lock, Trophy } from 'lucide-react';
+import {
+  CheckCircle2, Trophy, Sparkles, Medal, Award, Gem, Crown,
+  Sunrise, Flame, Rocket, Target, Hash, Compass, Globe2, LucideIcon,
+} from 'lucide-react';
 import { allQuestions } from '../../lib/data';
 import { getCurrentUserId, loadAttempts } from '../../lib/persistence';
 import { computePoints, computeLevel, computeBadges, POINTS_BY_TYPE } from '../../lib/gamification';
 import { computeStreak } from '../../lib/spacedRepetition';
+
+const BADGE_ICONS: Record<string, LucideIcon> = {
+  'first-blood': Sparkles,
+  'half-century': Medal,
+  'century': Award,
+  'quarter-k': Gem,
+  'half-k': Crown,
+  'streak-3': Sunrise,
+  'streak-7': Flame,
+  'streak-30': Rocket,
+  'subject-master': Target,
+  'nat-ace': Hash,
+  'explorer': Compass,
+  'well-rounded': Globe2,
+};
 
 export default function Achievements() {
   const [attempts, setAttempts] = useState<any[]>([]);
@@ -94,22 +112,58 @@ export default function Achievements() {
           <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--warning)', display: 'inline-block' }} />Streak</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--success)', display: 'inline-block' }} />Mastery</span>
         </div>
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(2,1fr)', gap: 10 }}>
+        <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(148px, 1fr))', gap: 12 }}>
           {badges.map(({ badge, unlocked, progress }) => {
             const tone = badge.category === 'streak' ? 'warning' : badge.category === 'mastery' ? 'success' : 'accent';
-            const color = `var(--${tone === 'accent' ? 'accent' : tone})`;
-            const soft = `var(--${tone === 'accent' ? 'accent' : tone}-soft)`;
+            const color = `var(--${tone})`;
+            const soft = `var(--${tone}-soft)`;
+            const Icon = BADGE_ICONS[badge.id] ?? Trophy;
             return (
-              <div key={badge.id} className="card" style={{ padding: 16, opacity: unlocked ? 1 : 0.55, borderColor: unlocked ? color : undefined, background: unlocked ? soft : undefined }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  {unlocked ? <CheckCircle2 size={18} style={{ color }} /> : <Lock size={16} style={{ color: 'var(--faint)' }} />}
-                  <b style={{ fontSize: 13.5 }}>{badge.title}</b>
+              <div
+                key={badge.id}
+                className="card"
+                title={badge.description}
+                style={{
+                  padding: '18px 12px 14px',
+                  textAlign: 'center',
+                  position: 'relative',
+                  borderColor: unlocked ? color : undefined,
+                  background: unlocked ? soft : undefined,
+                  transition: 'background .2s, border-color .2s',
+                }}
+              >
+                {unlocked && (
+                  <CheckCircle2
+                    size={16}
+                    style={{ position: 'absolute', top: 8, right: 8, color, background: 'var(--bg)', borderRadius: '50%' }}
+                  />
+                )}
+                <div
+                  style={{
+                    width: 64,
+                    height: 64,
+                    borderRadius: '50%',
+                    margin: '0 auto 10px',
+                    display: 'grid',
+                    placeItems: 'center',
+                    background: unlocked ? color : 'var(--surface2)',
+                    boxShadow: unlocked ? `0 6px 16px -6px ${color}` : 'none',
+                    transition: 'background .2s, box-shadow .2s',
+                  }}
+                >
+                  <Icon
+                    size={30}
+                    strokeWidth={unlocked ? 2.25 : 1.6}
+                    style={{ color: unlocked ? '#fff' : 'var(--faint)', opacity: unlocked ? 1 : 0.55 }}
+                  />
                 </div>
-                <p className="muted" style={{ fontSize: 12, margin: '6px 0 10px' }}>{badge.description}</p>
-                {!unlocked && (
+                <b style={{ fontSize: 12.5, display: 'block', lineHeight: 1.25 }}>{badge.title}</b>
+                {unlocked ? (
+                  <div style={{ fontSize: 10.5, marginTop: 6, color, fontWeight: 600, letterSpacing: '.02em' }}>UNLOCKED</div>
+                ) : (
                   <>
-                    <div className="progress"><span style={{ width: `${Math.min(100, progress.current / progress.target * 100)}%`, background: color }} /></div>
-                    <div className="muted" style={{ fontSize: 11, marginTop: 5, fontFamily: 'var(--font-mono)' }}>{progress.current}/{progress.target}</div>
+                    <div className="progress" style={{ marginTop: 9 }}><span style={{ width: `${Math.min(100, progress.current / progress.target * 100)}%`, background: color }} /></div>
+                    <div className="muted" style={{ fontSize: 10.5, marginTop: 4, fontFamily: 'var(--font-mono)' }}>{progress.current}/{progress.target}</div>
                   </>
                 )}
               </div>

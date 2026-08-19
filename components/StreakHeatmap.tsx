@@ -5,13 +5,29 @@ import { formatShortDate } from '../lib/format';
 
 type AttemptLike = { attempted_at: string };
 
-export function StreakHeatmap({ attempts, weeks = 18 }: { attempts: AttemptLike[]; weeks?: number }) {
-  // This grid depends on "today" and on toLocaleDateString's default
-  // locale — both of which can legitimately differ between the server
-  // that pre-rendered this (static) page at build time and the browser
-  // that hydrates it later. Rendering a fixed placeholder on the server
-  // and computing the real grid only after mount avoids a hydration
-  // mismatch instead of fighting the server/client date skew.
+// Fixed GATE prep window for the activity grid — this is a calendar range,
+// not a rolling "last N weeks ending today" window. Update these two dates
+// if the prep window ever shifts.
+const RANGE_START = new Date(2026, 7, 1);  // Aug 1, 2026
+const RANGE_END = new Date(2027, 1, 10);   // Feb 10, 2027
+
+// Pad the range out to full weeks (Sun-Sat columns), GitHub-heatmap style,
+// so the requested start/end dates land inside a complete week rather than
+// a partial one. This only depends on the two fixed dates above, so it's
+// safe to compute at module scope — no "today" involved, nothing that can
+// differ between server and client.
+const GRID_START = new Date(RANGE_START);
+GRID_START.setDate(GRID_START.getDate() - GRID_START.getDay());
+const GRID_END = new Date(RANGE_END);
+GRID_END.setDate(GRID_END.getDate() + (6 - GRID_END.getDay()));
+const GRID_WEEKS = Math.round((GRID_END.getTime() - GRID_START.getTime()) / 86400000 / 7) + 1;
+
+export function StreakHeatmap({ attempts }: { attempts: AttemptLike[] }) {
+  // This grid depends on toLocaleDateString's default locale, which can
+  // legitimately differ between the server that pre-rendered this (static)
+  // page at build time and the browser that hydrates it later. Rendering a
+  // fixed placeholder on the server and computing the real grid only after
+  // mount avoids a hydration mismatch instead of fighting that skew.
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
 
@@ -19,7 +35,7 @@ export function StreakHeatmap({ attempts, weeks = 18 }: { attempts: AttemptLike[
     return (
       <div style={{ overflowX: 'auto' }}>
         <div style={{ display: 'flex', gap: 3 }}>
-          {Array.from({ length: weeks }).map((_, ci) => (
+          {Array.from({ length: GRID_WEEKS }).map((_, ci) => (
             <div key={ci} style={{ display: 'grid', gridTemplateRows: 'repeat(7,1fr)', gap: 3 }}>
               {Array.from({ length: 7 }).map((_, di) => (
                 <div key={di} style={{ width: 11, height: 11, borderRadius: 3, background: 'var(--track-bg)', border: '1px solid var(--line)' }} />
@@ -44,18 +60,9 @@ export function StreakHeatmap({ attempts, weeks = 18 }: { attempts: AttemptLike[
     counts.set(k, (counts.get(k) ?? 0) + 1);
   }
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  // Align the grid so the last column ends on the current week.
-  const end = new Date(today);
-  const endDow = end.getDay(); // 0=Sun
-  end.setDate(end.getDate() + (6 - endDow));
-  const start = new Date(end);
-  start.setDate(start.getDate() - weeks * 7 + 1);
-
   const cols: Date[][] = [];
-  const cursor = new Date(start);
-  for (let w = 0; w < weeks; w++) {
+  const cursor = new Date(GRID_START);
+  for (let w = 0; w < GRID_WEEKS; w++) {
     const col: Date[] = [];
     for (let d = 0; d < 7; d++) { col.push(new Date(cursor)); cursor.setDate(cursor.getDate() + 1); }
     cols.push(col);
@@ -77,19 +84,23 @@ export function StreakHeatmap({ attempts, weeks = 18 }: { attempts: AttemptLike[
         {cols.map((col, ci) => (
           <div key={ci} style={{ display: 'grid', gridTemplateRows: 'repeat(7,1fr)', gap: 3 }}>
             {col.map((d, di) => {
-              const future = d > today;
+              // Padding cells that fall outside the fixed Aug 1 - Feb 10
+              // window (added only to complete the first/last week) render
+              // blank rather than as data — same treatment as "future"
+              // days got in the old rolling-window version.
+              const outOfRange = d < RANGE_START || d > RANGE_END;
               const k = dayKey(d);
               const n = counts.get(k) ?? 0;
               const lvl = level(n);
               return (
                 <div
                   key={di}
-                  title={future ? '' : `${formatShortDate(d)}: ${n} question${n === 1 ? '' : 's'}`}
+                  title={outOfRange ? '' : `${formatShortDate(d)}: ${n} question${n === 1 ? '' : 's'}`}
                   style={{
                     width: 11, height: 11, borderRadius: 3,
-                    background: future ? 'transparent' : shades[lvl],
-                    opacity: future ? 0 : opacities[lvl],
-                    border: future ? 'none' : lvl === 0 ? '1px solid var(--line)' : 'none',
+                    background: outOfRange ? 'transparent' : shades[lvl],
+                    opacity: outOfRange ? 0 : opacities[lvl],
+                    border: outOfRange ? 'none' : lvl === 0 ? '1px solid var(--line)' : 'none',
                   }}
                 />
               );

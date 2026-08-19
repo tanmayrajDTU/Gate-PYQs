@@ -257,6 +257,8 @@ a.card:hover,button.card:hover{border-color:var(--card-hover-border);box-shadow:
 .option{border:1px solid var(--line);border-radius:var(--radius-md);padding:13px 15px;display:flex;gap:13px;align-items:flex-start;cursor:pointer;transition:border-color .12s ease,background .12s ease,transform .12s ease}
 .option:hover{border-color:var(--line-strong);transform:translateX(2px)}
 .option.selected{border-color:var(--selected-border);background:var(--selected-bg)}
+.option.correct-answer{border-color:var(--answered-border);background:var(--answered-bg)}
+.option.correct-answer::after{content:"✓ Correct";margin-left:auto;padding-left:10px;flex-shrink:0;font-size:12px;font-weight:700;color:var(--success);white-space:nowrap}
 .option input{appearance:none;-webkit-appearance:none;width:17px;height:17px;border:1.5px solid var(--line-strong);border-radius:50%;margin-top:2px;flex-shrink:0;display:grid;place-items:center;cursor:pointer;transition:border-color .12s ease}
 .option input[type="checkbox"]{border-radius:5px}
 .option input:checked{border-color:var(--accent)}

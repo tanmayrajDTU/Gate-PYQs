@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import { nextReviewDate, advanceBox } from './spacedRepetition';
+import { sm2Review, sm2StateFromLegacyBox, DEFAULT_SM2_STATE, type Sm2State, type Grade } from './spacedRepetition';
 
 export type UserState = { userId: string | null };
 
@@ -17,13 +17,23 @@ export async function loadCorrectQuestionIds(userId: string): Promise<Set<string
   return new Set((data ?? []).map(r => r.question_id));
 }
 
-export type FlagRow = { bookmarked: boolean; revision: boolean; box: number; nextReviewAt: string | null };
+export type FlagRow = { bookmarked: boolean; revision: boolean; sm2: Sm2State; nextReviewAt: string | null };
 
 export async function loadFlags(userId: string): Promise<Record<string, FlagRow>> {
   if (!supabase) return {} as Record<string, FlagRow>;
-  const { data, error } = await supabase.from('question_flags').select('question_id,bookmarked,revision,box,next_review_at').eq('user_id', userId);
+  const { data, error } = await supabase
+    .from('question_flags')
+    .select('question_id,bookmarked,revision,box,next_review_at,ease_factor,interval_days,repetitions')
+    .eq('user_id', userId);
   if (error) throw error;
-  return Object.fromEntries((data ?? []).map(row => [row.question_id, { bookmarked: !!row.bookmarked, revision: !!row.revision, box: row.box ?? 1, nextReviewAt: row.next_review_at }]));
+  return Object.fromEntries((data ?? []).map(row => {
+    // Rows created before the SM-2 migration only have the old `box` value —
+    // convert those on the fly rather than requiring a separate backfill pass.
+    const sm2: Sm2State = row.ease_factor != null
+      ? { easeFactor: row.ease_factor, intervalDays: row.interval_days ?? 0, repetitions: row.repetitions ?? 0 }
+      : sm2StateFromLegacyBox(row.box ?? 1);
+    return [row.question_id, { bookmarked: !!row.bookmarked, revision: !!row.revision, sm2, nextReviewAt: row.next_review_at }];
+  }));
 }
 
 export async function setQuestionFlags(userId: string, questionId: string, bookmarked: boolean, revision: boolean, priorRevision = false) {
@@ -35,21 +45,25 @@ export async function setQuestionFlags(userId: string, questionId: string, bookm
     revision,
     updated_at: new Date().toISOString(),
   };
-  // Starting a fresh revision cycle: put it in box 1, due tomorrow.
+  // Starting a fresh revision cycle: reset SM-2 state and make it due right away.
   if (revision && !priorRevision) {
-    payload.box = 1;
-    payload.next_review_at = nextReviewDate(1).toISOString();
+    payload.ease_factor = DEFAULT_SM2_STATE.easeFactor;
+    payload.interval_days = DEFAULT_SM2_STATE.intervalDays;
+    payload.repetitions = DEFAULT_SM2_STATE.repetitions;
+    payload.next_review_at = new Date().toISOString();
   }
   const { error } = await supabase.from('question_flags').upsert(payload, { onConflict: 'user_id,question_id' });
   if (error) throw error;
 }
 
-export async function reviewRevisionCard(userId: string, questionId: string, currentBox: number, remembered: boolean) {
+export async function reviewRevisionCard(userId: string, questionId: string, currentState: Sm2State, grade: Grade) {
   if (!supabase) return;
-  const box = advanceBox(currentBox, remembered);
+  const { state, nextReviewAt } = sm2Review(currentState, grade);
   const { error } = await supabase.from('question_flags').update({
-    box,
-    next_review_at: nextReviewDate(box).toISOString(),
+    ease_factor: state.easeFactor,
+    interval_days: state.intervalDays,
+    repetitions: state.repetitions,
+    next_review_at: nextReviewAt.toISOString(),
     updated_at: new Date().toISOString(),
   }).eq('user_id', userId).eq('question_id', questionId);
   if (error) throw error;

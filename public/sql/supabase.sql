@@ -32,6 +32,35 @@ create table if not exists public.question_flags (
 alter table public.question_flags add column if not exists box smallint not null default 1;
 alter table public.question_flags add column if not exists next_review_at timestamptz;
 
+-- SM-2 scheduler columns (replaces the old fixed-box Leitner scheduler
+-- above; `box`/`next_review_at` are kept as-is for backward compatibility
+-- and because next_review_at is still the source of truth for what's due).
+-- Safe to re-run.
+alter table public.question_flags add column if not exists ease_factor real not null default 2.5;
+alter table public.question_flags add column if not exists interval_days integer not null default 0;
+alter table public.question_flags add column if not exists repetitions integer not null default 0;
+
+-- One-time backfill: any row created before this migration has ease_factor
+-- sitting at the just-added default (2.5) with repetitions=0, which the app
+-- would otherwise mistake for "review it fresh" even though `box` shows it
+-- already progressed under the old scheduler. Carry that progress forward
+-- into an equivalent SM-2 starting point instead of losing it. Safe to
+-- re-run — it only touches rows that still look untouched by SM-2.
+update public.question_flags
+set
+  interval_days = case box
+    when 1 then 1
+    when 2 then 3
+    when 3 then 7
+    when 4 then 14
+    else 30
+  end,
+  repetitions = greatest(box - 1, 0)
+where revision = true
+  and repetitions = 0
+  and ease_factor = 2.5
+  and box > 1;
+
 create table if not exists public.practice_sessions (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,

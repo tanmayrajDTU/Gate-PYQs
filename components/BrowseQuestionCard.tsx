@@ -5,6 +5,7 @@ import { ExternalLink } from 'lucide-react';
 import type { Question } from '../lib/types';
 import { sanitizeHtml } from '../lib/sanitizeHtml';
 import { typesetMath } from '../lib/mathjax';
+import { attachImageFallback } from '../lib/imageFallback';
 
 export function BrowseQuestionCard({ q, index }: { q: Question; index: number }) {
   const [showAnswer, setShowAnswer] = useState(false);
@@ -12,6 +13,7 @@ export function BrowseQuestionCard({ q, index }: { q: Question; index: number })
 
   useEffect(() => {
     if (cardRef.current) void typesetMath([cardRef.current]);
+    attachImageFallback(cardRef.current, q.gateOverflowUrl);
   }, [q.id]);
 
   // "ALL" marks a question that GATE officially declared wrong/out-of-

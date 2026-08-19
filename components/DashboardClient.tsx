@@ -7,6 +7,7 @@ import { getCurrentUserId, loadAttempts, loadFlags, type FlagRow } from '../lib/
 import { computeStreak, daysUntil, dayKey } from '../lib/spacedRepetition';
 import { computePoints, computeLevel, computeBadges, BadgeContext } from '../lib/gamification';
 import { StreakHeatmap } from './StreakHeatmap';
+import { formatNumber } from '../lib/format';
 
 const GATE_DATE = new Date('2027-02-07T00:00:00');
 const DAILY_GOAL_KEY = 'dailyGoal';
@@ -61,7 +62,12 @@ export function DashboardClient(){
     const today = dayKey(new Date());
     return attempts.filter(a => dayKey(new Date(a.attempted_at)) === today).length;
   }, [attempts]);
-  const gateDaysLeft = daysUntil(GATE_DATE);
+  // Computed from Date.now() and rendered as text directly — must not run
+  // during the server prerender of this static page, or the number gets
+  // frozen at build time and mismatches the real value on hydration (the
+  // same class of bug as StreakHeatmap). Compute it client-side only.
+  const [gateDaysLeft, setGateDaysLeft] = useState<number | null>(null);
+  useEffect(() => { setGateDaysLeft(daysUntil(GATE_DATE)); }, []);
   const overallPct = Math.round(Math.min(100, metrics.attempted / allQuestions.length * 100));
 
   const typeMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.type])), []);
@@ -114,7 +120,7 @@ export function DashboardClient(){
     </div>
     <div className="card stat">
       <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}><div className="icon-box tone-danger" style={{width:30,height:30}}><CalendarClock size={15}/></div><div className="label" style={{marginBottom:0}}>GATE CSE 2027</div></div>
-      <div className="value">{gateDaysLeft}<span style={{fontSize:13,fontWeight:500,color:'var(--muted)'}}> days left</span></div>
+      <div className="value">{gateDaysLeft ?? '—'}<span style={{fontSize:13,fontWeight:500,color:'var(--muted)'}}> days left</span></div>
       <div className="sub">Feb 7, 2027</div>
     </div>
   </div>
@@ -122,7 +128,7 @@ export function DashboardClient(){
   <Link href="/achievements" className="card section" style={{marginTop:14,display:'flex',alignItems:'center',gap:20,flexWrap:'wrap'}}>
     <div className="icon-box" style={{width:44,height:44}}><Trophy size={20}/></div>
     <div style={{flex:1,minWidth:200}}>
-      <div style={{display:'flex',alignItems:'baseline',gap:8}}><b style={{fontSize:15}}>{levelInfo.level.name}</b><span className="muted" style={{fontSize:12,fontFamily:'var(--font-mono)'}}>{points.toLocaleString()} pts</span></div>
+      <div style={{display:'flex',alignItems:'baseline',gap:8}}><b style={{fontSize:15}}>{levelInfo.level.name}</b><span className="muted" style={{fontSize:12,fontFamily:'var(--font-mono)'}}>{formatNumber(points)} pts</span></div>
       <div className="progress" style={{marginTop:8,maxWidth:360}}><span style={{width:`${levelInfo.progressPct}%`}}/></div>
     </div>
     {nextBadge && <div className="muted" style={{fontSize:12}}>Next: <b style={{color:'var(--text)'}}>{nextBadge.badge.title}</b> ({nextBadge.progress.current}/{nextBadge.progress.target})</div>}
@@ -137,7 +143,7 @@ export function DashboardClient(){
   <div className="section-head" style={{marginTop:20,marginBottom:2}}><h3 style={{fontSize:13,textTransform:'uppercase',letterSpacing:'.04em',color:'var(--muted)',fontWeight:600}}>Jump to</h3></div>
   <div className="grid launch-grid">
     <Quick href="/practice" icon={<BookOpenCheck/>} title="Practice" text="Build a targeted question set."/>
-    <Quick href="/subjects" icon={<Layers/>} title="Subjects" text={`${SUBJECT_COUNT} subjects · ${allQuestions.length.toLocaleString()} questions`}/>
+    <Quick href="/subjects" icon={<Layers/>} title="Subjects" text={`${SUBJECT_COUNT} subjects · ${formatNumber(allQuestions.length)} questions`}/>
     <Quick href="/statistics" icon={<BarChart3/>} title="Statistics" text={metrics.evaluable?`${metrics.accuracy}% accuracy overall`:'Full performance breakdown'}/>
     <Quick href="/bookmarks" icon={<Bookmark/>} title="Bookmarks" text={`${metrics.bookmarks} saved question${metrics.bookmarks===1?'':'s'}`} tone="warning"/>
     <Quick href="/incorrect" icon={<XCircle/>} title="Incorrect" text={`${metrics.incorrect} to review`} tone="danger"/>

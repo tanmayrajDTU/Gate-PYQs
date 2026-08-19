@@ -4,12 +4,14 @@ import { useEffect, useRef } from 'react';
 import type { Question } from '../lib/types';
 import { sanitizeHtml } from '../lib/sanitizeHtml';
 import { typesetMath } from '../lib/mathjax';
+import { attachImageFallback } from '../lib/imageFallback';
 
 export function QuestionRenderer({ q, selected, onSelect, submitted }: { q: Question; selected: string[]; onSelect: (v: string[]) => void; submitted: boolean }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (cardRef.current) void typesetMath([cardRef.current]);
+    attachImageFallback(cardRef.current, q.gateOverflowUrl);
   }, [q.id, submitted]);
 
   const toggle = (label: string) => {

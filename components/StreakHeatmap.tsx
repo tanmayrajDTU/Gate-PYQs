@@ -1,9 +1,43 @@
 'use client';
+import { useEffect, useState } from 'react';
 import { dayKey } from '../lib/spacedRepetition';
+import { formatShortDate } from '../lib/format';
 
 type AttemptLike = { attempted_at: string };
 
 export function StreakHeatmap({ attempts, weeks = 18 }: { attempts: AttemptLike[]; weeks?: number }) {
+  // This grid depends on "today" and on toLocaleDateString's default
+  // locale — both of which can legitimately differ between the server
+  // that pre-rendered this (static) page at build time and the browser
+  // that hydrates it later. Rendering a fixed placeholder on the server
+  // and computing the real grid only after mount avoids a hydration
+  // mismatch instead of fighting the server/client date skew.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  if (!mounted) {
+    return (
+      <div style={{ overflowX: 'auto' }}>
+        <div style={{ display: 'flex', gap: 3 }}>
+          {Array.from({ length: weeks }).map((_, ci) => (
+            <div key={ci} style={{ display: 'grid', gridTemplateRows: 'repeat(7,1fr)', gap: 3 }}>
+              {Array.from({ length: 7 }).map((_, di) => (
+                <div key={di} style={{ width: 11, height: 11, borderRadius: 3, background: 'var(--track-bg)', border: '1px solid var(--line)' }} />
+              ))}
+            </div>
+          ))}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, fontSize: 11, color: 'var(--faint)' }}>
+          <span>Less</span>
+          {[0, 1, 2, 3, 4].map(l => (
+            <span key={l} style={{ width: 11, height: 11, borderRadius: 3, background: 'var(--track-bg)', border: '1px solid var(--line)', display: 'inline-block' }} />
+          ))}
+          <span>More</span>
+        </div>
+      </div>
+    );
+  }
+
   const counts = new Map<string, number>();
   for (const a of attempts) {
     const k = dayKey(new Date(a.attempted_at));
@@ -50,7 +84,7 @@ export function StreakHeatmap({ attempts, weeks = 18 }: { attempts: AttemptLike[
               return (
                 <div
                   key={di}
-                  title={future ? '' : `${d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}: ${n} question${n === 1 ? '' : 's'}`}
+                  title={future ? '' : `${formatShortDate(d)}: ${n} question${n === 1 ? '' : 's'}`}
                   style={{
                     width: 11, height: 11, borderRadius: 3,
                     background: future ? 'transparent' : shades[lvl],

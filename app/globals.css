@@ -307,3 +307,19 @@ a.card:hover,button.card:hover{border-color:var(--card-hover-border);box-shadow:
   .subject-row .progress{grid-column:1/-1}
   .main main{padding:14px}
 }
+
+/* Fallback shown when a hotlinked question/option image fails to load */
+.img-fallback-notice{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin:6px 0;
+  padding:6px 10px;
+  border-radius:8px;
+  background:var(--danger-soft);
+  border:1px solid var(--danger-border);
+  color:var(--danger);
+  font-size:13px;
+  text-decoration:none;
+}
+a.img-fallback-notice:hover{ text-decoration:underline; }

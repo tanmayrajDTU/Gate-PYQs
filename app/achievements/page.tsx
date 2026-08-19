@@ -7,6 +7,7 @@ import {
 import { allQuestions } from '../../lib/data';
 import { getCurrentUserId, loadAttempts } from '../../lib/persistence';
 import { computePoints, computeLevel, computeBadges, POINTS_BY_TYPE } from '../../lib/gamification';
+import { formatNumber } from '../../lib/format';
 import { computeStreak } from '../../lib/spacedRepetition';
 
 const BADGE_ICONS: Record<string, LucideIcon> = {
@@ -80,7 +81,7 @@ export default function Achievements() {
         <div className="icon-box" style={{ width: 52, height: 52 }}><Trophy size={24} /></div>
         <div style={{ flex: 1, minWidth: 220 }}>
           <div className="eyebrow">{levelInfo.level.name}</div>
-          <div style={{ fontSize: 30, fontWeight: 700, fontFamily: 'var(--font-mono)', letterSpacing: '-.02em', color: 'var(--accent-strong)' }}>{points.toLocaleString()} <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--muted)' }}>points</span></div>
+          <div style={{ fontSize: 30, fontWeight: 700, fontFamily: 'var(--font-mono)', letterSpacing: '-.02em', color: 'var(--accent-strong)' }}>{formatNumber(points)} <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--muted)' }}>points</span></div>
           <div className="progress" style={{ marginTop: 12, maxWidth: 420 }}><span style={{ width: `${levelInfo.progressPct}%` }} /></div>
           <div className="muted" style={{ fontSize: 12, marginTop: 6 }}>
             {levelInfo.next ? `${levelInfo.pointsToNext} points to ${levelInfo.next.name}` : 'Maximum level reached'}

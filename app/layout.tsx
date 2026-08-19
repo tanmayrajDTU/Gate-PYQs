@@ -15,7 +15,20 @@ const mathJaxConfigScript = `window.MathJax={tex:{inlineMath:[['$','$'],['\\\\('
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" data-theme="dark" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html
+      lang="en"
+      data-theme="dark"
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
+      // themeInitScript below reads the persisted theme from localStorage
+      // and sets data-theme on this element before React hydrates, to
+      // avoid a flash of the wrong theme. That intentionally makes the
+      // real DOM differ from this server-rendered "dark" default whenever
+      // the visitor has previously chosen light mode — suppress the
+      // hydration warning for just this attribute rather than "fixing" a
+      // mismatch that's working as designed (SSR has no way to know a
+      // client's localStorage value without cookies).
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <script dangerouslySetInnerHTML={{ __html: mathJaxConfigScript }} />

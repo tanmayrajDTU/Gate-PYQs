@@ -1,50 +1,52 @@
 :root{
-  /* ---- light theme (default token values) ---- */
-  --bg:#fafafa;
+  /* ---- light theme: Obsidian + Electric Indigo ---- */
+  --bg:#f7f8fc;
   --surface:#ffffff;
-  --surface2:#f4f4f5;
-  --surface3:#ececee;
-  --text:#131417;
-  --muted:#6b7078;
-  --faint:#9a9ea5;
-  --line:#e6e6e8;
-  --line-strong:#d7d7da;
-  --accent:#a9762a;
-  --accent-strong:#8b5e1d;
-  --accent-soft:#f8efdd;
-  --accent-glow:rgba(169,118,42,.18);
+  --surface2:#f1f2f8;
+  --surface3:#e9ebf4;
+  --text:#161827;
+  --muted:#596174;
+  --faint:#8991a3;
+  --line:#e3e6ef;
+  --line-strong:#cdd2e2;
+  --accent:#5b4fe0;
+  --accent-strong:#493dc8;
+  --accent-soft:#efedff;
+  --accent-glow:rgba(91,79,224,.18);
   --success:#128a57;
   --success-soft:#d9f2e6;
   --success-border:#a3ddc0;
   --danger:#c13f49;
   --danger-soft:#fbdfe0;
   --danger-border:#eeb3b7;
-  --warning:#7d5aa3;
-  --warning-soft:#ede3f7;
-  --warning-border:#d3bbe8;
-  --shadow:0 1px 2px rgba(15,15,17,.03),0 1px 1px rgba(15,15,17,.02);
-  --shadow-md:0 2px 8px rgba(15,15,17,.04),0 10px 28px rgba(15,15,17,.05);
-  --shadow-lg:0 4px 16px rgba(15,15,17,.05),0 20px 48px rgba(15,15,17,.08);
-  --card-hover-border:#cfcfd3;
+  /* Kept distinct from the new indigo primary (the old violet warning hue
+     was too close to it) — reuses the previous gold accent instead. */
+  --warning:#a9762a;
+  --warning-soft:#f8efdd;
+  --warning-border:#e3c68f;
+  --shadow:0 1px 2px rgba(11,15,23,.03),0 1px 1px rgba(11,15,23,.02);
+  --shadow-md:0 2px 8px rgba(11,15,23,.04),0 10px 28px rgba(11,15,23,.05);
+  --shadow-lg:0 4px 16px rgba(11,15,23,.05),0 20px 48px rgba(11,15,23,.08);
+  --card-hover-border:#c7ccdd;
   --grain-opacity:.018;
   --sidebar-bg:#ffffff;
-  --topbar-bg-rgb:250,250,250;
-  --nav-hover-bg:#f2f2f3;
-  --btn-primary-bg:#131417;
-  --btn-primary-bg-hover:#000000;
+  --topbar-bg-rgb:247,248,252;
+  --nav-hover-bg:#f1f1fa;
+  --btn-primary-bg:#5b4fe0;
+  --btn-primary-bg-hover:#493dc8;
   --btn-primary-text:#ffffff;
   --btn-soft-bg:var(--accent-soft);
   --btn-soft-text:var(--accent-strong);
   --input-bg:#ffffff;
-  --focus-ring:#a9762a;
-  --track-bg:#ececee;
-  --selected-border:#a9762a;
+  --focus-ring:#5b4fe0;
+  --track-bg:#e9ebf4;
+  --selected-border:#5b4fe0;
   --selected-bg:var(--accent-soft);
   --answered-bg:var(--success-soft);
   --answered-border:var(--success-border);
   --review-bg:var(--warning-soft);
   --review-border:var(--warning-border);
-  --brand-mark-bg:#131417;
+  --brand-mark-bg:#5b4fe0;
   --brand-mark-text:#ffffff;
   --radius-sm:6px;
   --radius-md:10px;
@@ -55,59 +57,62 @@
   color-scheme:light;
 }
 html[data-theme="dark"]{
-  --bg:#0a0b0d;
-  --surface:#111214;
-  --surface2:#17181b;
-  --surface3:#1e2023;
-  --text:#edeef0;
-  --muted:#8a8f96;
-  --faint:#5c6066;
-  --line:#212327;
-  --line-strong:#2b2e33;
-  --accent:#d9a94c;
-  --accent-strong:#edc172;
-  --accent-soft:rgba(217,169,76,.16);
-  --accent-glow:rgba(217,169,76,.28);
+  /* ---- dark theme: Obsidian + Electric Indigo ---- */
+  --bg:#080b12;
+  --surface:#111624;
+  --surface2:#161c2c;
+  --surface3:#1b2233;
+  --text:#f5f7fb;
+  --muted:#a5aec0;
+  --faint:#707a8d;
+  --line:#222a3a;
+  --line-strong:#2c3548;
+  --accent:#7c6cff;
+  --accent-strong:#9183ff;
+  --accent-soft:#211e3a;
+  --accent-glow:rgba(124,108,255,.28);
   --success:#3fb97a;
   --success-soft:rgba(63,185,122,.16);
   --success-border:rgba(63,185,122,.4);
   --danger:#e2818a;
   --danger-soft:rgba(226,129,138,.16);
   --danger-border:rgba(226,129,138,.4);
-  --warning:#bd97e0;
-  --warning-soft:rgba(189,151,224,.16);
-  --warning-border:rgba(189,151,224,.4);
-  --shadow:0 1px 2px rgba(0,0,0,.35);
-  --shadow-md:0 4px 20px rgba(0,0,0,.4),0 1px 0 rgba(255,255,255,.03) inset;
-  --shadow-lg:0 16px 48px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.04) inset;
-  --card-hover-border:#33363c;
+  /* Kept distinct from the new indigo primary (the old violet warning hue
+     was too close to it) — reuses the previous gold accent instead. */
+  --warning:#d9a94c;
+  --warning-soft:rgba(217,169,76,.16);
+  --warning-border:rgba(217,169,76,.4);
+  --shadow:0 1px 2px rgba(3,4,8,.5);
+  --shadow-md:0 4px 20px rgba(3,4,8,.55),0 1px 0 rgba(255,255,255,.03) inset;
+  --shadow-lg:0 16px 48px rgba(3,4,8,.65),0 1px 0 rgba(255,255,255,.04) inset;
+  --card-hover-border:#333f58;
   --grain-opacity:.035;
-  --sidebar-bg:#0d0e10;
-  --topbar-bg-rgb:10,11,13;
-  --nav-hover-bg:#18191c;
-  --btn-primary-bg:#d9a94c;
-  --btn-primary-bg-hover:#edc172;
-  --btn-primary-text:#1a1206;
+  --sidebar-bg:#0b0f17;
+  --topbar-bg-rgb:8,11,18;
+  --nav-hover-bg:#141a29;
+  --btn-primary-bg:#7c6cff;
+  --btn-primary-bg-hover:#9183ff;
+  --btn-primary-text:#0b0f17;
   --btn-soft-bg:var(--accent-soft);
   --btn-soft-text:var(--accent-strong);
-  --input-bg:#111214;
-  --focus-ring:#d9a94c;
-  --track-bg:#1e2023;
-  --selected-border:#d9a94c;
+  --input-bg:#111624;
+  --focus-ring:#7c6cff;
+  --track-bg:#1b2233;
+  --selected-border:#7c6cff;
   --selected-bg:var(--accent-soft);
   --answered-bg:var(--success-soft);
   --answered-border:var(--success-border);
   --review-bg:var(--warning-soft);
   --review-border:var(--warning-border);
-  --brand-mark-bg:#d9a94c;
-  --brand-mark-text:#1a1206;
+  --brand-mark-bg:#7c6cff;
+  --brand-mark-text:#0b0f17;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);transition:background .15s ease,color .15s ease;letter-spacing:-.01em;position:relative}
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:var(--grain-opacity);mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-html[data-theme="dark"] body{background-image:radial-gradient(ellipse 900px 500px at 50% -10%,rgba(217,169,76,.05),transparent 60%)}
+html[data-theme="dark"] body{background-image:radial-gradient(ellipse 900px 500px at 50% -10%,rgba(124,108,255,.06),transparent 60%)}
 a{color:inherit;text-decoration:none}
 button,input,select{font:inherit;color:inherit}
 ::selection{background:var(--accent);color:var(--btn-primary-text)}

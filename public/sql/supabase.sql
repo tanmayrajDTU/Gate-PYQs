@@ -96,3 +96,9 @@ end; $$;
 
 drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created after insert on auth.users for each row execute procedure public.handle_new_user();
+
+-- Confidence self-rating per attempt ("knew it" / "guessed" / "didn't
+-- know"), captured right after submitting an answer. Nullable — historical
+-- attempts and anything the person skips rating simply have no value here.
+-- Safe to re-run.
+alter table public.question_attempts add column if not exists confidence text check (confidence in ('knew','guessed','unknown'));

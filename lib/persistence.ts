@@ -69,6 +69,33 @@ export async function reviewRevisionCard(userId: string, questionId: string, cur
   if (error) throw error;
 }
 
+/**
+ * Grades a question straight into the SM-2 scheduler from outside the
+ * Revision page — used right after a practice session, on questions that
+ * may never have had a question_flags row before. Unlike reviewRevisionCard
+ * (an UPDATE, which assumes the row already exists because a card can only
+ * be "due" if it's already flagged), this upserts: it creates the row and
+ * turns revision on if this is the first time the question is graded, or
+ * continues the question's existing ease factor/interval if it already has
+ * one, rather than resetting its progress.
+ */
+export async function scheduleRevisionFromGrade(userId: string, questionId: string, currentState: Sm2State, grade: Grade) {
+  if (!supabase) return null;
+  const { state, nextReviewAt } = sm2Review(currentState, grade);
+  const { error } = await supabase.from('question_flags').upsert({
+    user_id: userId,
+    question_id: questionId,
+    revision: true,
+    ease_factor: state.easeFactor,
+    interval_days: state.intervalDays,
+    repetitions: state.repetitions,
+    next_review_at: nextReviewAt.toISOString(),
+    updated_at: new Date().toISOString(),
+  }, { onConflict: 'user_id,question_id' });
+  if (error) throw error;
+  return { state, nextReviewAt };
+}
+
 export async function createPracticeSession(userId: string, config: Record<string, unknown>, questionIds: string[]) {
   if (!supabase) return null;
   const { data, error } = await supabase.from('practice_sessions').insert({
@@ -89,20 +116,48 @@ export async function updatePracticeSession(userId: string, sessionId: string, c
 }
 
 export async function recordAttempt(userId: string, questionId: string, sessionId: string | null, answer: string[], result: 'correct' | 'incorrect' | 'unanswered' | 'recorded') {
-  if (!supabase) return;
-  const { error } = await supabase.from('question_attempts').insert({
+  if (!supabase) return null;
+  const { data, error } = await supabase.from('question_attempts').insert({
     user_id: userId,
     question_id: questionId,
     session_id: sessionId,
     answer,
     result,
-  });
+  }).select('id').single();
+  if (error) throw error;
+  return data.id as number;
+}
+
+/** Self-reported confidence on an already-recorded attempt — set separately from recordAttempt since it's captured post-hoc (right after submitting, alongside/instead of the correctness reveal), not at submit time. */
+export async function updateAttemptConfidence(userId: string, attemptId: number, confidence: 'knew' | 'guessed' | 'unknown') {
+  if (!supabase) return;
+  const { error } = await supabase.from('question_attempts').update({ confidence }).eq('id', attemptId).eq('user_id', userId);
   if (error) throw error;
 }
 
 export async function loadAttempts(userId: string) {
   if (!supabase) return [];
-  const { data, error } = await supabase.from('question_attempts').select('id,question_id,session_id,answer,result,attempted_at').eq('user_id', userId).order('attempted_at', { ascending: false });
+  const { data, error } = await supabase.from('question_attempts').select('id,question_id,session_id,answer,result,confidence,attempted_at').eq('user_id', userId).order('attempted_at', { ascending: false });
   if (error) throw error;
   return data ?? [];
+}
+
+/** Full raw export of everything this user has stored, for the Settings page "export my data" button — a backup/portability safety net, not the shaped data the rest of the app reads. */
+export async function exportAllUserData(userId: string) {
+  if (!supabase) return null;
+  const [attempts, flags, sessions] = await Promise.all([
+    supabase.from('question_attempts').select('*').eq('user_id', userId).order('attempted_at', { ascending: true }),
+    supabase.from('question_flags').select('*').eq('user_id', userId),
+    supabase.from('practice_sessions').select('*').eq('user_id', userId).order('started_at', { ascending: true }),
+  ]);
+  if (attempts.error) throw attempts.error;
+  if (flags.error) throw flags.error;
+  if (sessions.error) throw sessions.error;
+  return {
+    exportedAt: new Date().toISOString(),
+    userId,
+    questionAttempts: attempts.data ?? [],
+    questionFlags: flags.data ?? [],
+    practiceSessions: sessions.data ?? [],
+  };
 }

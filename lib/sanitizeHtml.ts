@@ -1,51 +1,42 @@
-// Lightweight allowlist-based HTML sanitizer.
+// HTML sanitizer for question bodies/options rendered via
+// dangerouslySetInnerHTML. This content is sourced from a GateOverflow
+// scrape into data/questions.json, so it isn't arbitrary public
+// user-generated input, but it's still untrusted third-party HTML — if the
+// scrape ever picks up a compromised/malicious page, or the pipeline has a
+// bug, this is the only thing standing between that and script execution
+// in the browser.
 //
-// This project cannot currently install packages (no registry access in this
-// environment), so this is a hand-rolled sanitizer rather than a battle-tested
-// library like DOMPurify. It strips the primary XSS vectors relevant to our
-// dataset (script/style/iframe/object/embed/form tags, all `on*` event
-// handlers, and javascript:/vbscript:/data:text-html URLs) and only allows a
-// small set of formatting/table/link/image attributes through.
-//
-// TODO: once package installation works again, replace this with
-// `isomorphic-dompurify` (or equivalent) for stronger, spec-correct coverage.
-// Treat this as a stopgap, not a long-term substitute.
+// Previously this was a hand-rolled regex-based stripper. Regex-based HTML
+// sanitization is a well-known weak spot (nested/malformed tags,
+// attribute-value quote-breaking, multi-pass mutation tricks can all slip
+// past single-pass regex matching) — replaced with DOMPurify, a real HTML
+// parser with a security track record, via isomorphic-dompurify so it also
+// works during the static build (Next prerenders /browse and /practice at
+// build time in Node, not just in the browser).
+import DOMPurify from 'isomorphic-dompurify';
 
-const DANGEROUS_TAGS = [
-  'script', 'style', 'iframe', 'object', 'embed', 'link', 'meta', 'base',
-  'form', 'input', 'button', 'svg', 'math', 'textarea', 'select', 'option',
-  'audio', 'video', 'source', 'track', 'applet', 'frame', 'frameset', 'noscript',
+// Force rel="noopener noreferrer" on any link that opens in a new tab, so a
+// malicious or compromised linked page can't use window.opener to tamper
+// with this tab (reverse tabnabbing). Cheap to add now even though the
+// current dataset has no target="_blank" links — protects future scrapes.
+DOMPurify.addHook('afterSanitizeAttributes', node => {
+  if (node.tagName === 'A' && node.getAttribute('target') === '_blank') {
+    node.setAttribute('rel', 'noopener noreferrer');
+  }
+});
+
+const ALLOWED_TAGS = [
+  'a', 'b', 'strong', 'i', 'em', 'u', 's', 'sub', 'sup', 'br', 'p', 'div', 'span',
+  'ul', 'ol', 'li', 'table', 'thead', 'tbody', 'tr', 'td', 'th', 'img',
+  'code', 'pre', 'blockquote', 'hr',
 ];
 
-const ALLOWED_ATTRS = new Set(['href', 'src', 'alt', 'title', 'colspan', 'rowspan', 'class', 'target', 'rel']);
-
-const UNSAFE_URL = /^\s*(javascript:|vbscript:|data:text\/html)/i;
+const ALLOWED_ATTR = ['href', 'src', 'alt', 'title', 'colspan', 'rowspan', 'class', 'target', 'rel'];
 
 export function sanitizeHtml(html: string | null | undefined): string {
   if (!html) return '';
-  let out = html;
-
-  // Remove dangerous tags and everything inside them.
-  for (const tag of DANGEROUS_TAGS) {
-    out = out.replace(new RegExp(`<${tag}[^>]*>[\\s\\S]*?<\\/${tag}>`, 'gi'), '');
-    out = out.replace(new RegExp(`<${tag}[^>]*/?>`, 'gi'), '');
-  }
-
-  // Strip disallowed attributes (including all on* event handlers) from remaining tags.
-  out = out.replace(/<([a-zA-Z][a-zA-Z0-9]*)((?:\s+[^<>]*)?)>/g, (_match, tagName: string, attrsStr: string) => {
-    let cleaned = '';
-    const attrRegex = /([a-zA-Z-:]+)\s*=\s*("([^"]*)"|'([^']*)'|[^\s>]+)/g;
-    let m: RegExpExecArray | null;
-    while ((m = attrRegex.exec(attrsStr))) {
-      const attrName = m[1].toLowerCase();
-      const attrValue = m[3] ?? m[4] ?? m[2] ?? '';
-      if (attrName.startsWith('on')) continue;
-      if (!ALLOWED_ATTRS.has(attrName)) continue;
-      if ((attrName === 'href' || attrName === 'src') && UNSAFE_URL.test(attrValue)) continue;
-      cleaned += ` ${attrName}="${attrValue.replace(/"/g, '&quot;')}"`;
-    }
-    return `<${tagName}${cleaned}>`;
-  });
-
-  return out;
+  // Deliberately not overriding ALLOWED_URI_REGEXP — DOMPurify's own
+  // default is already vetted for this; a hand-rolled regex here would
+  // just reintroduce the class of bug this whole swap exists to remove.
+  return DOMPurify.sanitize(html, { ALLOWED_TAGS, ALLOWED_ATTR });
 }

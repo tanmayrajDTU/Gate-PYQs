@@ -5,9 +5,11 @@ import { Bookmark, ChevronLeft, ChevronRight, Clock3, ExternalLink, Flag, Rotate
 import Link from 'next/link';
 import type { Question } from '../lib/types';
 import { QuestionRenderer } from './QuestionRenderer';
-import { getCurrentUserId, loadFlags, setQuestionFlags, createPracticeSession, updatePracticeSession, recordAttempt, loadCorrectQuestionIds } from '../lib/persistence';
+import { getCurrentUserId, loadFlags, setQuestionFlags, createPracticeSession, updatePracticeSession, recordAttempt, updateAttemptConfidence, scheduleRevisionFromGrade, loadCorrectQuestionIds } from '../lib/persistence';
 import { isNatAnswerCorrect } from '../lib/natAnswer';
 import { POINTS_BY_TYPE } from '../lib/gamification';
+import { DEFAULT_SM2_STATE, GRADE_LABELS, maturityLabel, type Sm2State, type Grade } from '../lib/spacedRepetition';
+import { formatShortDate } from '../lib/format';
 
 type Feedback = 'immediate' | 'end';
 
@@ -46,6 +48,8 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
   const [syncing, setSyncing] = useState(false);
   const [earnedIds, setEarnedIds] = useState<Set<string>>(new Set());
   const [pointsAwarded, setPointsAwarded] = useState<Record<string, number>>({});
+  const [attemptIds, setAttemptIds] = useState<Record<string, number>>({});
+  const [sm2States, setSm2States] = useState<Record<string, Sm2State>>({});
   const lastPersistedRuntime = useRef('');
 
   const q = items[idx];
@@ -65,6 +69,7 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
         if (!active) return;
         setBookmarks(Object.fromEntries(Object.entries(flags).filter(([, v]) => v.bookmarked).map(([id]) => [id, true])));
         setRevision(Object.fromEntries(Object.entries(flags).filter(([, v]) => v.revision).map(([id]) => [id, true])));
+        setSm2States(Object.fromEntries(Object.entries(flags).map(([id, v]) => [id, v.sm2])));
         setEarnedIds(correctIds);
         const id = await createPracticeSession(uid, {
           feedback,
@@ -159,7 +164,8 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
     }
     if (userId) {
       try {
-        await recordAttempt(userId, q.id, sessionId, answers[q.id] || [], nextResult === true ? 'correct' : nextResult === false ? 'incorrect' : 'recorded');
+        const attemptId = await recordAttempt(userId, q.id, sessionId, answers[q.id] || [], nextResult === true ? 'correct' : nextResult === false ? 'incorrect' : 'recorded');
+        if (attemptId != null) setAttemptIds(a => ({ ...a, [q.id]: attemptId }));
       } catch (error) {
         console.error(error);
         setSyncMessage('Answer saved locally, but could not sync this attempt.');
@@ -197,7 +203,7 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
   const ss = String(seconds % 60).padStart(2, '0');
 
   if (done) {
-    return <PracticeResults items={items} answers={answers} submitted={submitted} elapsed={elapsed} bookmarks={bookmarks} revision={revision} review={review} syncMessage={syncMessage} />;
+    return <PracticeResults items={items} answers={answers} submitted={submitted} elapsed={elapsed} bookmarks={bookmarks} revision={revision} review={review} syncMessage={syncMessage} userId={userId} attemptIds={attemptIds} sm2States={sm2States} />;
   }
 
   return (
@@ -274,7 +280,17 @@ function evaluateAnswer(q: Question, answer: string[]): boolean | null {
   return expected.length === actual.length && expected.every((value, i) => value === actual[i]);
 }
 
-function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revision, review, syncMessage }: { items: Question[]; answers: Record<string, string[]>; submitted: Record<string, boolean>; elapsed: number; bookmarks: Record<string, boolean>; revision: Record<string, boolean>; review: Record<string, boolean>; syncMessage: string }) {
+// Confidence isn't asked separately anymore — grading a question into the
+// SM-2 scheduler right after the session *is* the self-report. This maps
+// each grade onto the same 3-value confidence scale Statistics reads.
+const GRADE_TO_CONFIDENCE: Record<Grade, 'knew' | 'guessed' | 'unknown'> = {
+  again: 'unknown',
+  hard: 'guessed',
+  good: 'knew',
+  easy: 'knew',
+};
+
+function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revision, review, syncMessage, userId, attemptIds, sm2States }: { items: Question[]; answers: Record<string, string[]>; submitted: Record<string, boolean>; elapsed: number; bookmarks: Record<string, boolean>; revision: Record<string, boolean>; review: Record<string, boolean>; syncMessage: string; userId: string | null; attemptIds: Record<string, number>; sm2States: Record<string, Sm2State> }) {
   const attempted = items.filter(q => submitted[q.id]).length;
   const scored = items.filter(q => submitted[q.id] && evaluateAnswer(q, answers[q.id] || []) === true).length;
   // Descriptive questions are always evaluable (auto-correct on submit) even
@@ -285,11 +301,60 @@ function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revisi
   const average = items.length ? Math.round(elapsed / items.length) : 0;
   const accuracy = evaluableAttempted ? Math.round(scored / evaluableAttempted * 100) : 0;
 
+  const [graded, setGraded] = useState<Record<string, { grade: Grade; nextReviewAt: string }>>({});
+  const [gradeMessage, setGradeMessage] = useState('');
+
+  async function gradeQuestion(questionId: string, grade: Grade) {
+    if (!userId) { setGradeMessage('Sign in to save these to your revision schedule.'); return; }
+    const currentState = sm2States[questionId] ?? DEFAULT_SM2_STATE;
+    try {
+      const result = await scheduleRevisionFromGrade(userId, questionId, currentState, grade);
+      const attemptId = attemptIds[questionId];
+      if (attemptId != null) {
+        // Best-effort: the SM-2 schedule is the primary outcome of grading;
+        // don't fail the whole action if only the confidence backfill errors.
+        try { await updateAttemptConfidence(userId, attemptId, GRADE_TO_CONFIDENCE[grade]); }
+        catch (error) { console.error(error); }
+      }
+      if (result) setGraded(g => ({ ...g, [questionId]: { grade, nextReviewAt: result.nextReviewAt.toISOString() } }));
+    } catch (error) {
+      console.error(error);
+      setGradeMessage('Could not save that to your revision schedule — check your connection and try again.');
+    }
+  }
+
+  const attemptedItems = items.filter(q => submitted[q.id]);
+
   return <div className="setup">
     <div className="page-title"><div><div className="eyebrow">Session complete</div><h1>Practice results</h1><p>Review your responses and use GateOverflow where a full explanation is not embedded in the dataset.</p></div><Link className="btn btn-primary" href="/practice">Practice again</Link></div>
     {syncMessage && <div className="card" style={{ padding: 12, marginBottom: 14 }}><span className="muted">{syncMessage}</span></div>}
     <div className="grid result-grid"><Stat label="Questions" value={items.length} /><Stat label="Attempted" value={attempted} /><Stat label="Unanswered" value={unanswered} /><Stat label="Correct" value={scored} /><Stat label="Accuracy" value={`${accuracy}%`} /><Stat label="Time" value={formatDuration(elapsed)} /><Stat label="Avg / question" value={formatDuration(average)} /><Stat label="Evaluable" value={evaluable} /></div>
-    <div className="card section" style={{ marginTop: 18 }}><div className="section-head"><h3>Question review</h3><span className="pill">{items.length} questions</span></div><div className="table-like"><div className="table-row header"><span>Question</span><span>Type</span><span>Result</span><span>Saved</span><span>Source</span></div>{items.map((q, i) => { const result = !submitted[q.id] ? 'Unanswered' : evaluateAnswer(q, answers[q.id] || []) === true ? 'Correct' : evaluateAnswer(q, answers[q.id] || []) === false ? 'Incorrect' : 'Recorded'; return <div className="table-row" key={q.id}><span><b>{i + 1}. {q.title}</b><div className="muted">{q.subject} · {q.topic}{review[q.id] ? ' · Marked for review' : ''}{revision[q.id] ? ' · Revision' : ''}</div></span><span>{q.type.toUpperCase()}</span><span className={result === 'Correct' ? 'success' : result === 'Incorrect' ? 'danger' : ''}>{result}</span><span>{bookmarks[q.id] ? '⭐' : '—'}</span><span>{q.gateOverflowUrl && <a href={q.gateOverflowUrl} target="_blank" rel="noreferrer" className="btn btn-soft"><ExternalLink size={14} /> GateOverflow</a>}</span></div>; })}</div></div>
+
+    {attemptedItems.length > 0 && (
+      <div className="card section" style={{ marginTop: 18 }}>
+        <div className="section-head"><h3>Schedule for revision</h3><span className="pill">SM-2</span></div>
+        <p className="muted" style={{ marginTop: -4, marginBottom: 12 }}>Grade how well you knew each question — this schedules it into your spaced-repetition queue (and continues its existing schedule if it's already there, rather than resetting it).</p>
+        {gradeMessage && <div className="muted" style={{ marginBottom: 10, fontSize: 13 }}>{gradeMessage}</div>}
+        <div className="table-like">
+          {attemptedItems.map((q, i) => (
+            <div className="table-row" key={q.id} style={{ gridTemplateColumns: '1.6fr 1fr' }}>
+              <span><b>{i + 1}. {q.title}</b><div className="muted">{q.subject} · {q.topic}</div></span>
+              <span style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                {graded[q.id] ? (
+                  <span className="pill">{GRADE_LABELS[graded[q.id].grade]} · next {formatShortDate(new Date(graded[q.id].nextReviewAt))}</span>
+                ) : (
+                  (['again', 'hard', 'good', 'easy'] as Grade[]).map(g => (
+                    <button key={g} className="btn btn-soft" onClick={() => void gradeQuestion(q.id, g)}>{GRADE_LABELS[g]}</button>
+                  ))
+                )}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <div className="card section" style={{ marginTop: 18 }}><div className="section-head"><h3>Question review</h3><span className="pill">{items.length} questions</span></div><div className="table-like"><div className="table-row header"><span>Question</span><span>Type</span><span>Result</span><span>Saved</span><span>Source</span></div>{items.map((q, i) => { const result = !submitted[q.id] ? 'Unanswered' : evaluateAnswer(q, answers[q.id] || []) === true ? 'Correct' : evaluateAnswer(q, answers[q.id] || []) === false ? 'Incorrect' : 'Recorded'; return <div className="table-row" key={q.id}><span><b>{i + 1}. {q.title}</b><div className="muted">{q.subject} · {q.topic}{review[q.id] ? ' · Marked for review' : ''}{revision[q.id] || graded[q.id] ? ' · Revision' : ''}</div></span><span>{q.type.toUpperCase()}</span><span className={result === 'Correct' ? 'success' : result === 'Incorrect' ? 'danger' : ''}>{result}</span><span>{bookmarks[q.id] ? '⭐' : '—'}</span><span>{q.gateOverflowUrl && <a href={q.gateOverflowUrl} target="_blank" rel="noreferrer" className="btn btn-soft"><ExternalLink size={14} /> GateOverflow</a>}</span></div>; })}</div></div>
   </div>;
 }
 

@@ -17,13 +17,13 @@ export async function loadCorrectQuestionIds(userId: string): Promise<Set<string
   return new Set((data ?? []).map(r => r.question_id));
 }
 
-export type FlagRow = { bookmarked: boolean; revision: boolean; sm2: Sm2State; nextReviewAt: string | null };
+export type FlagRow = { bookmarked: boolean; revision: boolean; sm2: Sm2State; nextReviewAt: string | null; reviewCount: number; lastReviewedAt: string | null };
 
 export async function loadFlags(userId: string): Promise<Record<string, FlagRow>> {
   if (!supabase) return {} as Record<string, FlagRow>;
   const { data, error } = await supabase
     .from('question_flags')
-    .select('question_id,bookmarked,revision,box,next_review_at,ease_factor,interval_days,repetitions')
+    .select('question_id,bookmarked,revision,box,next_review_at,ease_factor,interval_days,repetitions,review_count,last_reviewed_at')
     .eq('user_id', userId);
   if (error) throw error;
   return Object.fromEntries((data ?? []).map(row => {
@@ -32,7 +32,10 @@ export async function loadFlags(userId: string): Promise<Record<string, FlagRow>
     const sm2: Sm2State = row.ease_factor != null
       ? { easeFactor: row.ease_factor, intervalDays: row.interval_days ?? 0, repetitions: row.repetitions ?? 0 }
       : sm2StateFromLegacyBox(row.box ?? 1);
-    return [row.question_id, { bookmarked: !!row.bookmarked, revision: !!row.revision, sm2, nextReviewAt: row.next_review_at }];
+    return [row.question_id, {
+      bookmarked: !!row.bookmarked, revision: !!row.revision, sm2, nextReviewAt: row.next_review_at,
+      reviewCount: row.review_count ?? 0, lastReviewedAt: row.last_reviewed_at ?? null,
+    }];
   }));
 }
 
@@ -46,6 +49,9 @@ export async function setQuestionFlags(userId: string, questionId: string, bookm
     updated_at: new Date().toISOString(),
   };
   // Starting a fresh revision cycle: reset SM-2 state and make it due right away.
+  // Deliberately not touching review_count/last_reviewed_at here — this is
+  // just flagging intent to revise, not a graded review, so it must not
+  // count toward review points or the revision-activity streak.
   if (revision && !priorRevision) {
     payload.ease_factor = DEFAULT_SM2_STATE.easeFactor;
     payload.interval_days = DEFAULT_SM2_STATE.intervalDays;
@@ -56,15 +62,18 @@ export async function setQuestionFlags(userId: string, questionId: string, bookm
   if (error) throw error;
 }
 
-export async function reviewRevisionCard(userId: string, questionId: string, currentState: Sm2State, grade: Grade) {
+export async function reviewRevisionCard(userId: string, questionId: string, currentState: Sm2State, grade: Grade, currentReviewCount: number) {
   if (!supabase) return;
   const { state, nextReviewAt } = sm2Review(currentState, grade);
+  const now = new Date().toISOString();
   const { error } = await supabase.from('question_flags').update({
     ease_factor: state.easeFactor,
     interval_days: state.intervalDays,
     repetitions: state.repetitions,
     next_review_at: nextReviewAt.toISOString(),
-    updated_at: new Date().toISOString(),
+    review_count: currentReviewCount + 1,
+    last_reviewed_at: now,
+    updated_at: now,
   }).eq('user_id', userId).eq('question_id', questionId);
   if (error) throw error;
 }
@@ -79,9 +88,10 @@ export async function reviewRevisionCard(userId: string, questionId: string, cur
  * continues the question's existing ease factor/interval if it already has
  * one, rather than resetting its progress.
  */
-export async function scheduleRevisionFromGrade(userId: string, questionId: string, currentState: Sm2State, grade: Grade) {
+export async function scheduleRevisionFromGrade(userId: string, questionId: string, currentState: Sm2State, grade: Grade, currentReviewCount: number) {
   if (!supabase) return null;
   const { state, nextReviewAt } = sm2Review(currentState, grade);
+  const now = new Date().toISOString();
   const { error } = await supabase.from('question_flags').upsert({
     user_id: userId,
     question_id: questionId,
@@ -90,10 +100,12 @@ export async function scheduleRevisionFromGrade(userId: string, questionId: stri
     interval_days: state.intervalDays,
     repetitions: state.repetitions,
     next_review_at: nextReviewAt.toISOString(),
-    updated_at: new Date().toISOString(),
+    review_count: currentReviewCount + 1,
+    last_reviewed_at: now,
+    updated_at: now,
   }, { onConflict: 'user_id,question_id' });
   if (error) throw error;
-  return { state, nextReviewAt };
+  return { state, nextReviewAt, reviewCount: currentReviewCount + 1 };
 }
 
 export async function createPracticeSession(userId: string, config: Record<string, unknown>, questionIds: string[]) {

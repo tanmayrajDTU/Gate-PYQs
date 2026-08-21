@@ -102,3 +102,13 @@ create trigger on_auth_user_created after insert on auth.users for each row exec
 -- attempts and anything the person skips rating simply have no value here.
 -- Safe to re-run.
 alter table public.question_attempts add column if not exists confidence text check (confidence in ('knew','guessed','unknown'));
+
+-- Revision-reward columns: a durable, monotonic count of how many times a
+-- card has actually been graded (unlike `repetitions`, which resets to 0 on
+-- an "again" and therefore can't be used to compute lifetime points/badges),
+-- plus a dedicated timestamp for "was a genuine review done today" that's
+-- only touched by grading — never by the bookmark/revision toggle, so a
+-- bare bookmark click can't masquerade as revision activity for streak or
+-- point purposes. Safe to re-run.
+alter table public.question_flags add column if not exists review_count integer not null default 0;
+alter table public.question_flags add column if not exists last_reviewed_at timestamptz;

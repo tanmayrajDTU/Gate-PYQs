@@ -43,16 +43,16 @@ export default function Revision() {
       .map(([id, v]) => {
         const q = allQuestions.find(x => x.id === id);
         const due = v.nextReviewAt ? new Date(v.nextReviewAt).getTime() <= now : true;
-        return q ? { q, sm2: v.sm2, nextReviewAt: v.nextReviewAt, due } : null;
+        return q ? { q, sm2: v.sm2, nextReviewAt: v.nextReviewAt, due, reviewCount: v.reviewCount } : null;
       })
-      .filter((x): x is { q: typeof allQuestions[number]; sm2: Sm2State; nextReviewAt: string | null; due: boolean } => !!x)
+      .filter((x): x is { q: typeof allQuestions[number]; sm2: Sm2State; nextReviewAt: string | null; due: boolean; reviewCount: number } => !!x)
       .sort((a, b) => (a.nextReviewAt ?? '').localeCompare(b.nextReviewAt ?? ''));
   }, [flags]);
 
   const due = entries.filter(e => e.due);
   const upcoming = entries.filter(e => !e.due);
 
-  async function review(questionId: string, currentState: Sm2State, grade: Grade) {
+  async function review(questionId: string, currentState: Sm2State, grade: Grade, currentReviewCount: number) {
     if (!userId) return;
     setFlags(f => {
       const cur = f[questionId];
@@ -70,9 +70,9 @@ export default function Revision() {
       }
       easeFactor = Math.max(1.3, easeFactor + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02)));
       const next = new Date(); next.setDate(next.getDate() + intervalDays);
-      return { ...f, [questionId]: { ...cur, sm2: { easeFactor, intervalDays, repetitions }, nextReviewAt: next.toISOString() } };
+      return { ...f, [questionId]: { ...cur, sm2: { easeFactor, intervalDays, repetitions }, nextReviewAt: next.toISOString(), reviewCount: currentReviewCount + 1, lastReviewedAt: new Date().toISOString() } };
     });
-    try { await reviewRevisionCard(userId, questionId, currentState, grade); }
+    try { await reviewRevisionCard(userId, questionId, currentState, grade, currentReviewCount); }
     catch { setStatus('Could not sync that review — it will retry next visit.'); }
   }
 
@@ -93,14 +93,14 @@ export default function Revision() {
         <div className="card section" style={{ marginBottom: 16 }}>
           <div className="section-head"><h3>Due now ({due.length})</h3></div>
           <div className="table-like">
-            {due.map(({ q, sm2 }) => (
+            {due.map(({ q, sm2, reviewCount }) => (
               <div className="table-row" key={q.id} style={{ gridTemplateColumns: '1.4fr .55fr .45fr 1fr' }}>
                 <span><b>{q.number} · {q.title}</b><div className="muted">{q.subject} · {q.topic}</div></span>
                 <span><span className="pill">{maturityLabel(sm2)}</span></span>
                 <span>{q.year ?? '—'}</span>
                 <span style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                   {(['again', 'hard', 'good', 'easy'] as Grade[]).map(g => (
-                    <button key={g} className="btn" style={GRADE_STYLES[g]} onClick={() => review(q.id, sm2, g)}>
+                    <button key={g} className="btn" style={GRADE_STYLES[g]} onClick={() => review(q.id, sm2, g, reviewCount)}>
                       {GRADE_ICONS[g]}{GRADE_LABELS[g]}
                     </button>
                   ))}

@@ -2,10 +2,10 @@
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, BarChart3, BookOpenCheck, Bookmark, CalendarClock, Flame, Layers, Minus, Plus, RotateCcw, Target, Trophy, XCircle } from 'lucide-react';
-import { allQuestions } from '../lib/data';
+import { allQuestions, getSubjects } from '../lib/data';
 import { getCurrentUserId, loadAttempts, loadFlags, type FlagRow } from '../lib/persistence';
 import { computeStreak, daysUntil, dayKey } from '../lib/spacedRepetition';
-import { computePoints, computeLevel, computeBadges, BadgeContext } from '../lib/gamification';
+import { computePoints, computeLevel, computeBadges, computeRedemptionCount, hasPerfectWeek, computeReviewPoints, mergeActivityDates, BadgeContext } from '../lib/gamification';
 import { StreakHeatmap } from './StreakHeatmap';
 import { formatNumber } from '../lib/format';
 
@@ -57,7 +57,11 @@ export function DashboardClient(){
     return {attempted,correct,incorrect,evaluable,accuracy:evaluable?Math.round(correct/evaluable*100):0,bookmarks:Object.values(flags).filter(v=>v.bookmarked).length,revision:Object.values(flags).filter(v=>v.revision).length,revisionDue,latest}
   }, [attempts,flags]);
 
-  const streak = useMemo(() => computeStreak(attempts), [attempts]);
+  // Streak/heatmap should reflect revision-review days too, not just fresh
+  // practice attempts — see mergeActivityDates for why lastReviewedAt
+  // specifically (not question_flags.updated_at) is the source for this.
+  const activityDates = useMemo(() => mergeActivityDates(attempts, flags), [attempts, flags]);
+  const streak = useMemo(() => computeStreak(activityDates), [activityDates]);
   const todayCount = useMemo(() => {
     const today = dayKey(new Date());
     return attempts.filter(a => dayKey(new Date(a.attempted_at)) === today).length;
@@ -72,7 +76,12 @@ export function DashboardClient(){
 
   const typeMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.type])), []);
   const subjectMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.subjectId])), []);
-  const { total: points, solvedIds } = useMemo(() => computePoints(attempts, typeMap), [attempts, typeMap]);
+  const topicMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.topicId])), []);
+  const yearMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.year])), []);
+  const subjectsTotalCount = useMemo(() => getSubjects().length, []);
+  const { total: solvePoints, solvedIds } = useMemo(() => computePoints(attempts, typeMap), [attempts, typeMap]);
+  const reviewPoints = useMemo(() => computeReviewPoints(flags), [flags]);
+  const points = solvePoints + reviewPoints;
   const levelInfo = useMemo(() => computeLevel(points), [points]);
   const badgeCtx: BadgeContext = useMemo(() => {
     const scoredBySubject = new Map<string, { correct: number; scored: number; name: string }>();
@@ -91,8 +100,23 @@ export function DashboardClient(){
     const subjectStats = [...scoredBySubject.entries()].map(([id, s]) => ({ id, name: s.name, scored: s.scored, accuracy: s.scored ? Math.round(s.correct / s.scored * 100) : 0 }));
     const subjectsAttemptedCount = new Set(attempts.map(a => subjectMap.get(a.question_id)).filter(Boolean)).size;
     const natCorrectCount = [...solvedIds].filter(id => typeMap.get(id) === 'nat').length;
-    return { correctCount: solvedIds.size, longestStreak: streak.longest, subjectStats, natCorrectCount, subjectsAttemptedCount };
-  }, [attempts, subjectMap, solvedIds, streak.longest, typeMap]);
+    const msqCorrectCount = [...solvedIds].filter(id => typeMap.get(id) === 'msq').length;
+    const mcqCorrectCount = [...solvedIds].filter(id => typeMap.get(id) === 'mcq').length;
+    const descriptiveCorrectCount = [...solvedIds].filter(id => typeMap.get(id) === 'descriptive').length;
+    const totalAttemptedCount = new Set(attempts.map(a => a.question_id)).size;
+    const topicsAttemptedCount = new Set(attempts.map(a => topicMap.get(a.question_id)).filter(Boolean)).size;
+    const attemptedTypesCount = new Set(attempts.map(a => typeMap.get(a.question_id)).filter(Boolean)).size;
+    const yearsAttemptedCount = new Set(attempts.map(a => yearMap.get(a.question_id)).filter(Boolean)).size;
+    const redemptionCount = computeRedemptionCount(attempts);
+    const totalReviewCount = Object.values(flags).reduce((sum, f) => sum + (f.reviewCount ?? 0), 0);
+    const activeRevisionCount = Object.values(flags).filter(f => f.revision).length;
+    return {
+      correctCount: solvedIds.size, longestStreak: streak.longest, subjectStats, natCorrectCount, subjectsAttemptedCount,
+      msqCorrectCount, mcqCorrectCount, descriptiveCorrectCount, totalAttemptedCount, topicsAttemptedCount,
+      subjectsTotalCount, attemptedTypesCount, yearsAttemptedCount, redemptionCount, hasPerfectWeek: hasPerfectWeek(activityDates),
+      totalReviewCount, activeRevisionCount,
+    };
+  }, [attempts, flags, subjectMap, topicMap, yearMap, subjectsTotalCount, solvedIds, streak.longest, typeMap, activityDates]);
   const badges = useMemo(() => computeBadges(badgeCtx), [badgeCtx]);
   const nextBadge = badges.filter(b => !b.unlocked).sort((a, b) => (b.progress.current / b.progress.target) - (a.progress.current / a.progress.target))[0];
 
@@ -137,7 +161,7 @@ export function DashboardClient(){
 
   <div className="card section" style={{marginTop:14}}>
     <div className="section-head"><h3>Practice activity</h3></div>
-    <StreakHeatmap attempts={attempts} />
+    <StreakHeatmap attempts={activityDates} />
   </div>
 
   <div className="section-head" style={{marginTop:20,marginBottom:2}}><h3 style={{fontSize:13,textTransform:'uppercase',letterSpacing:'.04em',color:'var(--muted)',fontWeight:600}}>Jump to</h3></div>

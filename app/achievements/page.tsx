@@ -3,10 +3,13 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   CheckCircle2, Trophy, Sparkles, Medal, Award, Gem, Crown,
   Sunrise, Flame, Rocket, Target, Hash, Compass, Globe2, LucideIcon,
+  ListChecks, ListOrdered, PenLine, Star, Dumbbell, LayoutGrid, Route,
+  Layers, Diamond, History, Moon, Shield, Undo2, CalendarCheck,
+  BookOpenCheck, ListPlus,
 } from 'lucide-react';
-import { allQuestions } from '../../lib/data';
-import { getCurrentUserId, loadAttempts } from '../../lib/persistence';
-import { computePoints, computeLevel, computeBadges, POINTS_BY_TYPE } from '../../lib/gamification';
+import { allQuestions, getSubjects } from '../../lib/data';
+import { getCurrentUserId, loadAttempts, loadFlags, type FlagRow } from '../../lib/persistence';
+import { computePoints, computeLevel, computeBadges, computeRedemptionCount, hasPerfectWeek, computeReviewPoints, mergeActivityDates, POINTS_BY_TYPE, REVIEW_POINTS } from '../../lib/gamification';
 import { formatNumber } from '../../lib/format';
 import { computeStreak } from '../../lib/spacedRepetition';
 
@@ -16,34 +19,63 @@ const BADGE_ICONS: Record<string, LucideIcon> = {
   'century': Award,
   'quarter-k': Gem,
   'half-k': Crown,
+  'grandmaster-recall': Star,
+  'grinder': Dumbbell,
+  'msq-ace': ListChecks,
+  'mcq-specialist': ListOrdered,
+  'descriptive-scholar': PenLine,
+  'redemption': Undo2,
   'streak-3': Sunrise,
   'streak-7': Flame,
+  'streak-14': Moon,
   'streak-30': Rocket,
+  'streak-100': Shield,
+  'perfect-week': CalendarCheck,
   'subject-master': Target,
+  'perfectionist': Diamond,
   'nat-ace': Hash,
   'explorer': Compass,
   'well-rounded': Globe2,
+  'full-house': LayoutGrid,
+  'topic-hopper': Route,
+  'well-versed': Layers,
+  'time-traveler': History,
+  'reviewer': BookOpenCheck,
+  'revision-queue-builder': ListPlus,
 };
 
 export default function Achievements() {
   const [attempts, setAttempts] = useState<any[]>([]);
+  const [flags, setFlags] = useState<Record<string, FlagRow>>({});
   const [status, setStatus] = useState('');
 
   useEffect(() => {
     (async () => {
       const uid = await getCurrentUserId();
       if (!uid) { setStatus('Sign in to track points, levels and badges across devices.'); return; }
-      try { setAttempts(await loadAttempts(uid)); }
+      try {
+        const [a, f] = await Promise.all([loadAttempts(uid), loadFlags(uid)]);
+        setAttempts(a); setFlags(f);
+      }
       catch { setStatus('Could not load synchronized attempt history.'); }
     })();
   }, []);
 
   const typeMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.type])), []);
   const subjectMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.subjectId])), []);
+  const topicMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.topicId])), []);
+  const yearMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.year])), []);
+  const subjectsTotalCount = useMemo(() => getSubjects().length, []);
 
-  const { total: points, byType, solvedIds } = useMemo(() => computePoints(attempts, typeMap), [attempts, typeMap]);
+  const { total: solvePoints, byType, solvedIds } = useMemo(() => computePoints(attempts, typeMap), [attempts, typeMap]);
+  const reviewPoints = useMemo(() => computeReviewPoints(flags), [flags]);
+  const points = solvePoints + reviewPoints;
   const levelInfo = useMemo(() => computeLevel(points), [points]);
-  const streak = useMemo(() => computeStreak(attempts), [attempts]);
+  // Streak reflects revision-review days too, not just fresh practice — see
+  // mergeActivityDates for why lastReviewedAt (not question_flags.updated_at)
+  // is the source of truth for that.
+  const activityDates = useMemo(() => mergeActivityDates(attempts, flags), [attempts, flags]);
+  const streak = useMemo(() => computeStreak(activityDates), [activityDates]);
 
   const subjectStats = useMemo(() => {
     const scoredBySubject = new Map<string, { correct: number; scored: number; name: string }>();
@@ -64,9 +96,30 @@ export default function Achievements() {
 
   const subjectsAttemptedCount = useMemo(() => new Set(attempts.map(a => subjectMap.get(a.question_id)).filter(Boolean)).size, [attempts, subjectMap]);
   const natCorrectCount = useMemo(() => [...solvedIds].filter(id => typeMap.get(id) === 'nat').length, [solvedIds, typeMap]);
+  const msqCorrectCount = useMemo(() => [...solvedIds].filter(id => typeMap.get(id) === 'msq').length, [solvedIds, typeMap]);
+  const mcqCorrectCount = useMemo(() => [...solvedIds].filter(id => typeMap.get(id) === 'mcq').length, [solvedIds, typeMap]);
+  const descriptiveCorrectCount = useMemo(() => [...solvedIds].filter(id => typeMap.get(id) === 'descriptive').length, [solvedIds, typeMap]);
+  const totalAttemptedCount = useMemo(() => new Set(attempts.map(a => a.question_id)).size, [attempts]);
+  const topicsAttemptedCount = useMemo(() => new Set(attempts.map(a => topicMap.get(a.question_id)).filter(Boolean)).size, [attempts, topicMap]);
+  const attemptedTypesCount = useMemo(() => new Set(attempts.map(a => typeMap.get(a.question_id)).filter(Boolean)).size, [attempts, typeMap]);
+  const yearsAttemptedCount = useMemo(() => new Set(attempts.map(a => yearMap.get(a.question_id)).filter(Boolean)).size, [attempts, yearMap]);
+  const redemptionCount = useMemo(() => computeRedemptionCount(attempts), [attempts]);
+  const perfectWeek = useMemo(() => hasPerfectWeek(activityDates), [activityDates]);
+  const totalReviewCount = useMemo(() => Object.values(flags).reduce((sum, f) => sum + (f.reviewCount ?? 0), 0), [flags]);
+  const activeRevisionCount = useMemo(() => Object.values(flags).filter(f => f.revision).length, [flags]);
 
-  const badgeCtx = { correctCount: solvedIds.size, longestStreak: streak.longest, subjectStats, natCorrectCount, subjectsAttemptedCount };
-  const badges = useMemo(() => computeBadges(badgeCtx), [solvedIds, streak.longest, subjectStats, natCorrectCount, subjectsAttemptedCount]);
+  const badgeCtx = {
+    correctCount: solvedIds.size, longestStreak: streak.longest, subjectStats, natCorrectCount, subjectsAttemptedCount,
+    msqCorrectCount, mcqCorrectCount, descriptiveCorrectCount, totalAttemptedCount, topicsAttemptedCount,
+    subjectsTotalCount, attemptedTypesCount, yearsAttemptedCount, redemptionCount, hasPerfectWeek: perfectWeek,
+    totalReviewCount, activeRevisionCount,
+  };
+  const badges = useMemo(() => computeBadges(badgeCtx), [
+    solvedIds, streak.longest, subjectStats, natCorrectCount, subjectsAttemptedCount,
+    msqCorrectCount, mcqCorrectCount, descriptiveCorrectCount, totalAttemptedCount, topicsAttemptedCount,
+    subjectsTotalCount, attemptedTypesCount, yearsAttemptedCount, redemptionCount, perfectWeek,
+    totalReviewCount, activeRevisionCount,
+  ]);
   const unlockedCount = badges.filter(b => b.unlocked).length;
 
   return (
@@ -95,7 +148,7 @@ export default function Achievements() {
 
       <div className="card section" style={{ marginTop: 14 }}>
         <div className="section-head"><h3>Points by question type</h3></div>
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(4,1fr)', gap: 10 }}>
+        <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10 }}>
           {(['mcq', 'msq', 'nat', 'descriptive'] as const).map(type => (
             <div key={type} className="card stat">
               <div className="label">{type.toUpperCase()}</div>
@@ -103,6 +156,11 @@ export default function Achievements() {
               <div className="sub">{POINTS_BY_TYPE[type]} pts each</div>
             </div>
           ))}
+          <div className="card stat">
+            <div className="label">Revision</div>
+            <div className="value">{totalReviewCount}</div>
+            <div className="sub">{REVIEW_POINTS} pts each</div>
+          </div>
         </div>
       </div>
 

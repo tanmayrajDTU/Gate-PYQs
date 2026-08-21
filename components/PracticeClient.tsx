@@ -7,7 +7,7 @@ import type { Question } from '../lib/types';
 import { QuestionRenderer } from './QuestionRenderer';
 import { getCurrentUserId, loadFlags, setQuestionFlags, createPracticeSession, updatePracticeSession, recordAttempt, updateAttemptConfidence, scheduleRevisionFromGrade, loadCorrectQuestionIds } from '../lib/persistence';
 import { isNatAnswerCorrect } from '../lib/natAnswer';
-import { POINTS_BY_TYPE } from '../lib/gamification';
+import { POINTS_BY_TYPE, REVIEW_POINTS } from '../lib/gamification';
 import { DEFAULT_SM2_STATE, GRADE_LABELS, maturityLabel, type Sm2State, type Grade } from '../lib/spacedRepetition';
 import { formatShortDate } from '../lib/format';
 
@@ -50,6 +50,7 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
   const [pointsAwarded, setPointsAwarded] = useState<Record<string, number>>({});
   const [attemptIds, setAttemptIds] = useState<Record<string, number>>({});
   const [sm2States, setSm2States] = useState<Record<string, Sm2State>>({});
+  const [reviewCounts, setReviewCounts] = useState<Record<string, number>>({});
   const lastPersistedRuntime = useRef('');
 
   const q = items[idx];
@@ -70,6 +71,7 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
         setBookmarks(Object.fromEntries(Object.entries(flags).filter(([, v]) => v.bookmarked).map(([id]) => [id, true])));
         setRevision(Object.fromEntries(Object.entries(flags).filter(([, v]) => v.revision).map(([id]) => [id, true])));
         setSm2States(Object.fromEntries(Object.entries(flags).map(([id, v]) => [id, v.sm2])));
+        setReviewCounts(Object.fromEntries(Object.entries(flags).map(([id, v]) => [id, v.reviewCount])));
         setEarnedIds(correctIds);
         const id = await createPracticeSession(uid, {
           feedback,
@@ -203,7 +205,7 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
   const ss = String(seconds % 60).padStart(2, '0');
 
   if (done) {
-    return <PracticeResults items={items} answers={answers} submitted={submitted} elapsed={elapsed} bookmarks={bookmarks} revision={revision} review={review} syncMessage={syncMessage} userId={userId} attemptIds={attemptIds} sm2States={sm2States} />;
+    return <PracticeResults items={items} answers={answers} submitted={submitted} elapsed={elapsed} bookmarks={bookmarks} revision={revision} review={review} syncMessage={syncMessage} userId={userId} attemptIds={attemptIds} sm2States={sm2States} reviewCounts={reviewCounts} />;
   }
 
   return (
@@ -290,7 +292,7 @@ const GRADE_TO_CONFIDENCE: Record<Grade, 'knew' | 'guessed' | 'unknown'> = {
   easy: 'knew',
 };
 
-function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revision, review, syncMessage, userId, attemptIds, sm2States }: { items: Question[]; answers: Record<string, string[]>; submitted: Record<string, boolean>; elapsed: number; bookmarks: Record<string, boolean>; revision: Record<string, boolean>; review: Record<string, boolean>; syncMessage: string; userId: string | null; attemptIds: Record<string, number>; sm2States: Record<string, Sm2State> }) {
+function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revision, review, syncMessage, userId, attemptIds, sm2States, reviewCounts }: { items: Question[]; answers: Record<string, string[]>; submitted: Record<string, boolean>; elapsed: number; bookmarks: Record<string, boolean>; revision: Record<string, boolean>; review: Record<string, boolean>; syncMessage: string; userId: string | null; attemptIds: Record<string, number>; sm2States: Record<string, Sm2State>; reviewCounts: Record<string, number> }) {
   const attempted = items.filter(q => submitted[q.id]).length;
   const scored = items.filter(q => submitted[q.id] && evaluateAnswer(q, answers[q.id] || []) === true).length;
   // Descriptive questions are always evaluable (auto-correct on submit) even
@@ -307,8 +309,9 @@ function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revisi
   async function gradeQuestion(questionId: string, grade: Grade) {
     if (!userId) { setGradeMessage('Sign in to save these to your revision schedule.'); return; }
     const currentState = sm2States[questionId] ?? DEFAULT_SM2_STATE;
+    const currentReviewCount = reviewCounts[questionId] ?? 0;
     try {
-      const result = await scheduleRevisionFromGrade(userId, questionId, currentState, grade);
+      const result = await scheduleRevisionFromGrade(userId, questionId, currentState, grade, currentReviewCount);
       const attemptId = attemptIds[questionId];
       if (attemptId != null) {
         // Best-effort: the SM-2 schedule is the primary outcome of grading;
@@ -333,7 +336,7 @@ function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revisi
     {attemptedItems.length > 0 && (
       <div className="card section" style={{ marginTop: 18 }}>
         <div className="section-head"><h3>Schedule for revision</h3><span className="pill">SM-2</span></div>
-        <p className="muted" style={{ marginTop: -4, marginBottom: 12 }}>Grade how well you knew each question — this schedules it into your spaced-repetition queue (and continues its existing schedule if it's already there, rather than resetting it).</p>
+        <p className="muted" style={{ marginTop: -4, marginBottom: 12 }}>Grade how well you knew each question — this schedules it into your spaced-repetition queue (and continues its existing schedule if it's already there, rather than resetting it). Earns {REVIEW_POINTS} points per review.</p>
         {gradeMessage && <div className="muted" style={{ marginBottom: 10, fontSize: 13 }}>{gradeMessage}</div>}
         <div className="table-like">
           {attemptedItems.map((q, i) => (

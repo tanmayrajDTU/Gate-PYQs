@@ -2,7 +2,7 @@
 
 A new Next.js practice website built around the fixed Volume 1–3 GATE PYQ dataset supplied in `html files.zip`.
 
-## Included in this first build
+## Included in this build
 - Premium academic responsive UI
 - Full dashboard shell
 - Volume / subject / topic / year / type filters

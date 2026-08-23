@@ -1,4 +1,4 @@
-# GATE PYQ Complete Preparation website 
+# GATE PYQ Complete Preparation Website 
 
 A new Next.js practice website built around the fixed Volume 1–3 GATE PYQ dataset supplied in `html files.zip`.
 

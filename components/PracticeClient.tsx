@@ -54,7 +54,6 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
   const lastPersistedRuntime = useRef('');
 
   const q = items[idx];
-
   useEffect(() => {
     let active = true;
     (async () => {
@@ -114,7 +113,24 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
-      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) return;
+      const target = event.target;
+      const isRadioOrCheckbox = target instanceof HTMLInputElement && (target.type === 'radio' || target.type === 'checkbox');
+      // Option inputs are radio/checkbox elements and legitimately hold
+      // focus after a click — only text-entry-style fields (the NAT input,
+      // any textarea/select) should suppress the shortcuts below.
+      const isTypingField = (target instanceof HTMLInputElement && !isRadioOrCheckbox) || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement;
+      if (isTypingField) {
+        // Still allow Enter to submit/advance even while focused on the NAT
+        // input — a natural "submit" gesture that doesn't interfere with
+        // typing digits into the field.
+        if (event.key === 'Enter' && q) {
+          event.preventDefault();
+          if (!submitted[q.id]) void submitAnswer();
+          else if (idx < items.length - 1) setIdx(i => Math.min(items.length - 1, i + 1));
+          else void finish();
+        }
+        return;
+      }
       if (!q) return;
       if (event.key === 'ArrowLeft') setIdx(i => Math.max(0, i - 1));
       if (event.key === 'ArrowRight') setIdx(i => Math.min(items.length - 1, i + 1));
@@ -122,6 +138,22 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
       if (event.key.toLowerCase() === 'b') void toggleFlag('bookmark');
       if (event.key.toLowerCase() === 'v') void toggleFlag('revision');
       if (event.key.toLowerCase() === 's' && !submitted[q.id]) void submitAnswer();
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        if (!submitted[q.id]) void submitAnswer();
+        else if (idx < items.length - 1) setIdx(i => Math.min(items.length - 1, i + 1));
+        else void finish();
+      }
+      // Digit keys 1-9 select that option (mcq: single-select, msq: toggle).
+      // Deliberately digits only, not letters — A-D would collide with the
+      // r/b/v/s shortcuts above (e.g. "B" is both "bookmark" and "option B").
+      if (!submitted[q.id] && (q.type === 'mcq' || q.type === 'msq') && /^[1-9]$/.test(event.key)) {
+        const option = q.options[Number(event.key) - 1];
+        if (option) {
+          if (q.type === 'mcq') setAnswers(a => ({ ...a, [q.id]: [option.label] }));
+          else setAnswers(a => { const cur = a[q.id] || []; return { ...a, [q.id]: cur.includes(option.label) ? cur.filter(x => x !== option.label) : [...cur, option.label] }; });
+        }
+      }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
@@ -221,6 +253,7 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
           {userId && <span className="pill">{syncing ? 'Saving…' : 'Synced'}</span>}
         </div>
       </div>
+      <div className="muted" style={{ fontSize: 12, marginTop: -8, marginBottom: 10 }}>Keyboard: 1-9 to select an option · Enter to submit/next · ← → to navigate · R review · B save · V revise</div>
 
       {syncMessage && <div className="card" style={{ padding: 12, marginBottom: 14 }}><span className="muted">{syncMessage}</span>{!userId && <Link href="/login" className="btn btn-soft" style={{ marginLeft: 10 }}>Login</Link>}</div>}
 

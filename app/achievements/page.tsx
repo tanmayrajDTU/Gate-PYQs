@@ -5,7 +5,7 @@ import {
   Sunrise, Flame, Rocket, Target, Hash, Compass, Globe2, LucideIcon,
   ListChecks, ListOrdered, PenLine, Star, Dumbbell, LayoutGrid, Route,
   Layers, Diamond, History, Moon, Shield, Undo2, CalendarCheck,
-  BookOpenCheck, ListPlus,
+  BookOpenCheck, ListPlus, Info,
 } from 'lucide-react';
 import { allQuestions, getSubjects } from '../../lib/data';
 import { getCurrentUserId, loadAttempts, loadFlags, type FlagRow } from '../../lib/persistence';
@@ -48,6 +48,14 @@ export default function Achievements() {
   const [attempts, setAttempts] = useState<any[]>([]);
   const [flags, setFlags] = useState<Record<string, FlagRow>>({});
   const [status, setStatus] = useState('');
+  // Native `title` tooltips (used below as a desktop-hover freebie) don't
+  // show on tap for touch devices — iPad/mobile users had no way to see
+  // how to unlock a badge at all. Tapping the card toggles the description
+  // inline instead, which works identically on every input method.
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  function toggleExpanded(id: string) {
+    setExpanded(s => { const next = new Set(s); if (next.has(id)) next.delete(id); else next.add(id); return next; });
+  }
 
   useEffect(() => {
     (async () => {
@@ -166,6 +174,7 @@ export default function Achievements() {
 
       <div className="card section" style={{ marginTop: 14 }}>
         <div className="section-head"><h3>Badges</h3><span className="muted" style={{ fontSize: 12 }}>{unlockedCount} of {badges.length} unlocked</span></div>
+        <div className="muted" style={{ fontSize: 12, marginTop: -6, marginBottom: 12 }}>Tap a badge to see how to unlock it.</div>
         <div style={{ display: 'flex', gap: 14, marginBottom: 16, fontSize: 11.5 }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--accent)', display: 'inline-block' }} />Milestone</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--warning)', display: 'inline-block' }} />Streak</span>
@@ -182,6 +191,10 @@ export default function Achievements() {
                 key={badge.id}
                 className="card"
                 title={badge.description}
+                onClick={() => toggleExpanded(badge.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleExpanded(badge.id); } }}
                 style={{
                   padding: '18px 12px 14px',
                   textAlign: 'center',
@@ -189,8 +202,13 @@ export default function Achievements() {
                   borderColor: unlocked ? color : undefined,
                   background: unlocked ? soft : undefined,
                   transition: 'background .2s, border-color .2s',
+                  cursor: 'pointer',
                 }}
               >
+                <Info
+                  size={13}
+                  style={{ position: 'absolute', top: 8, left: 8, color: 'var(--faint)' }}
+                />
                 {unlocked && (
                   <CheckCircle2
                     size={16}
@@ -224,6 +242,9 @@ export default function Achievements() {
                     <div className="progress" style={{ marginTop: 9 }}><span style={{ width: `${Math.min(100, progress.current / progress.target * 100)}%`, background: color }} /></div>
                     <div className="muted" style={{ fontSize: 10.5, marginTop: 4, fontFamily: 'var(--font-mono)' }}>{progress.current}/{progress.target}</div>
                   </>
+                )}
+                {expanded.has(badge.id) && (
+                  <div className="muted" style={{ fontSize: 11, marginTop: 8, lineHeight: 1.35, overflowWrap: 'break-word' }}>{badge.description}</div>
                 )}
               </div>
             );

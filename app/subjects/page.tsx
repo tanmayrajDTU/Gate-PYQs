@@ -35,6 +35,22 @@ export default function Subjects() {
     return new Map([...bySubject.entries()].map(([id, s]) => [id, { scored: s.scored, accuracy: Math.round(s.correct / s.scored * 100) }]));
   }, [attempts]);
 
+  const accuracyByTopic = useMemo(() => {
+    const latestPerQuestion = new Map<string, string>();
+    for (const a of attempts) if (!latestPerQuestion.has(a.question_id)) latestPerQuestion.set(a.question_id, a.result);
+    const byTopic = new Map<string, { correct: number; scored: number }>();
+    for (const [qid, result] of latestPerQuestion) {
+      if (result !== 'correct' && result !== 'incorrect') continue;
+      const q = allQuestions.find(x => x.id === qid);
+      if (!q) continue;
+      if (!byTopic.has(q.topicId)) byTopic.set(q.topicId, { correct: 0, scored: 0 });
+      const t = byTopic.get(q.topicId)!;
+      t.scored++;
+      if (result === 'correct') t.correct++;
+    }
+    return new Map([...byTopic.entries()].map(([id, t]) => [id, { scored: t.scored, accuracy: Math.round(t.correct / t.scored * 100) }]));
+  }, [attempts]);
+
   const groups = useMemo(() => [...new Map(allQuestions.map(q => [q.subjectId, { id: q.subjectId, name: q.subject, volume: q.volume }])).values()].sort((a, b) => a.name.localeCompare(b.name)), []);
 
   const filtered = useMemo(() => {
@@ -66,7 +82,7 @@ export default function Subjects() {
       <div className="accordion">
         {filtered.map(s => {
           const qs = allQuestions.filter(q => q.subjectId === s.id);
-          const topics = [...new Map(qs.map(q => [q.topic, q.topic])).values()];
+          const topics = [...new Map(qs.map(q => [q.topicId, { topicId: q.topicId, topic: q.topic }])).values()];
           const isOpen = !!open[s.id];
           const acc = accuracyBySubject.get(s.id);
           return (
@@ -81,9 +97,18 @@ export default function Subjects() {
               {isOpen && (
                 <div className="accordion-body">
                   <div className="mini-bars">
-                    {topics.map(t => (
-                      <div className="mini" key={t}><span>{t}</span><span className="pill">{qs.filter(q => q.topic === t).length}</span></div>
-                    ))}
+                    {topics.map(t => {
+                      const tacc = accuracyByTopic.get(t.topicId);
+                      return (
+                        <div className="mini" key={t.topicId}>
+                          <span>{t.topic}</span>
+                          <span style={{ display: 'flex', gap: 6 }}>
+                            {tacc && <span className="pill" style={{ background: accuracyTint(tacc.accuracy), color: accuracyColor(tacc.accuracy) }}>{tacc.accuracy}%</span>}
+                            <span className="pill">{qs.filter(q => q.topicId === t.topicId).length}</span>
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                   <div style={{ display: 'flex', gap: 10, marginTop: 16, flexWrap: 'wrap' }}>
                     <Link href={'/practice?subject=' + encodeURIComponent(s.id)} className="btn btn-primary">Practice subject</Link>

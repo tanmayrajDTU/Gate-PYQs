@@ -1,0 +1,187 @@
+{
+  "converted": [
+    {
+      "id": "question441",
+      "number": "3.1.10",
+      "year": 2008,
+      "type": "mcq",
+      "optionCount": 4,
+      "answer": "ALL",
+      "source": "scraped"
+    },
+    {
+      "id": "question80",
+      "number": "3.1.17",
+      "year": 2013,
+      "type": "mcq",
+      "optionCount": 4,
+      "answer": "ALL",
+      "source": "scraped"
+    },
+    {
+      "id": "question40307",
+      "number": "8.8.18",
+      "year": 2014,
+      "type": "mcq",
+      "optionCount": 4,
+      "answer": "B",
+      "source": "scraped"
+    },
+    {
+      "id": "question786",
+      "number": "1.31.18",
+      "year": 2012,
+      "type": "mcq",
+      "optionCount": 4,
+      "answer": "ALL",
+      "source": "scraped"
+    },
+    {
+      "id": "question333224",
+      "number": "6.18.18",
+      "year": 2020,
+      "type": "mcq",
+      "optionCount": 4,
+      "answer": "ALL",
+      "source": "scraped"
+    },
+    {
+      "id": "question3346",
+      "number": "6.7.42",
+      "year": 2008,
+      "type": "mcq",
+      "optionCount": 4,
+      "answer": "ALL",
+      "source": "scraped"
+    },
+    {
+      "id": "question703",
+      "number": "1.25.1",
+      "year": 2001,
+      "type": "mcq",
+      "optionCount": 4,
+      "answer": "ALL",
+      "source": "scraped"
+    },
+    {
+      "id": "question1339",
+      "number": "3.21.24",
+      "year": 2009,
+      "type": "mcq",
+      "optionCount": 4,
+      "answer": "ALL",
+      "source": "scraped"
+    },
+    {
+      "id": "question3721",
+      "number": "3.25.23",
+      "year": 2004,
+      "type": "mcq",
+      "optionCount": 4,
+      "answer": "ALL",
+      "source": "scraped"
+    },
+    {
+      "id": "question413601",
+      "number": "3.6.49",
+      "year": 2024,
+      "type": "mcq",
+      "optionCount": 4,
+      "answer": "TBA",
+      "source": "scraped"
+    },
+    {
+      "id": "question2113",
+      "number": "5.15.6",
+      "year": 2011,
+      "type": "mcq",
+      "optionCount": 4,
+      "answer": "D",
+      "source": "body-extracted"
+    },
+    {
+      "id": "question488084",
+      "number": "6.11.1",
+      "year": 2023,
+      "type": "mcq",
+      "optionCount": 4,
+      "answer": "TBA",
+      "source": "scraped"
+    },
+    {
+      "id": "question595",
+      "number": "6.1.2",
+      "year": 1992,
+      "type": "msq",
+      "optionCount": 3,
+      "answer": "A;B",
+      "source": "roman-numeral-extracted"
+    }
+  ],
+  "partiallyFixed": [
+    {
+      "id": "question83991",
+      "number": "1.2.2",
+      "year": 1990,
+      "type": "mcq",
+      "answer": "B",
+      "issue": "no options available"
+    },
+    {
+      "id": "question2739",
+      "number": "2.12.13",
+      "year": 1996,
+      "type": "mcq",
+      "answer": "D",
+      "issue": "no options available"
+    },
+    {
+      "id": "question1758",
+      "number": "2.24.18",
+      "year": 2012,
+      "type": "mcq",
+      "answer": "D",
+      "issue": "no options available"
+    }
+  ],
+  "keptDescriptive": [
+    {
+      "id": "question87129",
+      "number": "2.8.2",
+      "year": 1989,
+      "answer": null
+    },
+    {
+      "id": "question2756",
+      "number": "3.5.2",
+      "year": 1996,
+      "answer": null
+    },
+    {
+      "id": "question578",
+      "number": "2.3.3",
+      "year": 1992,
+      "answer": null
+    },
+    {
+      "id": "question2515",
+      "number": "6.9.4",
+      "year": 1994,
+      "answer": null
+    }
+  ],
+  "skipped": [
+    {
+      "id": "question1513",
+      "number": "3.3.16",
+      "year": 1999,
+      "reason": "no options and no answer"
+    },
+    {
+      "id": "question43583",
+      "number": "2.13.3",
+      "year": 1992,
+      "reason": "no options and no answer"
+    }
+  ]
+}

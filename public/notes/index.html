@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GATE CSE 2027 — Prep Command Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0c0f; --bg-deep:#060708; --panel:#141519; --panel-alt:#1a1b21;
+  --glass:rgba(255,255,255,0.028); --glass-hover:rgba(255,255,255,0.05);
+  --line:#26272e; --line-soft:#1c1d23; --grid-line:rgba(203,163,107,0.028);
+  --gold:#cba36b; --gold-bright:#e6c58e; --gold-dim:#8a7048;
+  --copper:#d98a5f; --rose:#e0776c; --sage:#82b79a;
+  --text:#f2ede4; --text-dim:#a39d92; --text-faint:#68635a;
+  --mono:'JetBrains Mono',monospace; --sans:'Inter',sans-serif; --disp:'Fraunces','Georgia',serif;
+  --shadow-sm:0 2px 14px rgba(0,0,0,0.28); --shadow-md:0 20px 50px -18px rgba(0,0,0,0.6);
+}
+[data-theme="light"]{
+  --bg:#faf7f1; --bg-deep:#f1ebdf; --panel:#ffffff; --panel-alt:#f4efe4;
+  --glass:rgba(30,25,15,0.035); --glass-hover:rgba(30,25,15,0.06);
+  --line:#e3dac8; --line-soft:#ece4d4; --grid-line:rgba(150,110,50,0.05);
+  --gold:#a9773b; --gold-bright:#8a5f2a; --gold-dim:#c9a877;
+  --copper:#a85a2c; --rose:#b8483a; --sage:#3f7d5c;
+  --text:#211d16; --text-dim:#5c5346; --text-faint:#8a8071;
+  --shadow-sm:0 2px 10px rgba(60,45,20,0.08); --shadow-md:0 18px 44px -18px rgba(60,45,20,0.18);
+}
+[data-theme="light"] body::after{ opacity:0.015; }
+[data-theme="light"] ::selection{ background:var(--gold); color:#fff; }
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:
+    radial-gradient(ellipse 1000px 560px at 80% -10%, rgba(203,163,107,0.09), transparent 60%),
+    linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0/40px 40px,
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0/40px 40px,
+    var(--bg);
+  color:var(--text); font-family:var(--sans); line-height:1.68; position:relative;
+}
+body::after{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:9998;
+  opacity:0.025; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection{background:var(--gold); color:var(--bg-deep);}
+::-webkit-scrollbar{width:10px;}
+::-webkit-scrollbar-track{background:var(--bg-deep);}
+::-webkit-scrollbar-thumb{background:var(--line); border-radius:6px; border:2px solid var(--bg-deep);}
+::-webkit-scrollbar-thumb:hover{background:var(--gold-dim);}
+a{color:var(--gold); text-decoration:none; transition:color .15s;}
+a:hover{color:var(--gold-bright);}
+h1,h2,h3{font-family:var(--disp); font-weight:600; letter-spacing:-0.01em;}
+code,.mono{font-family:var(--mono);}
+@keyframes fadeUp{from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);}}
+
+.wrap{max-width:1120px; margin:0 auto; padding:64px 28px 110px;}
+
+/* ---- Hero / countdown ---- */
+.hero{padding:8px 0 46px; border-bottom:1px solid var(--line-soft); margin-bottom:52px; position:relative; animation:fadeUp .6s ease both;}
+.eyebrow{font-family:var(--mono); font-size:11.5px; color:var(--gold); letter-spacing:.18em; text-transform:uppercase;}
+.hero h1{font-size:clamp(30px,4.2vw,46px); margin:16px 0 16px; max-width:780px; line-height:1.16; font-weight:600;}
+.hero p{color:var(--text-dim); max-width:620px; font-size:16px; margin-bottom:34px;}
+
+.countdown{display:flex; gap:36px; flex-wrap:wrap; align-items:flex-end;}
+.countdown .num{font-family:var(--disp); font-size:42px; font-weight:600; color:var(--gold-bright); line-height:1;}
+.countdown .lbl{font-family:var(--mono); font-size:10.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.12em; margin-top:8px;}
+.countdown .unit{display:flex; flex-direction:column;}
+
+/* ---- Section headers ---- */
+.section-head{display:flex; align-items:baseline; gap:12px; margin-bottom:22px;}
+.section-head h2{font-size:20px; color:var(--text); font-weight:600;}
+.section-head .tag{font-family:var(--mono); font-size:10.5px; color:var(--gold-dim); letter-spacing:.12em; text-transform:uppercase;}
+section{margin-bottom:56px; animation:fadeUp .6s ease both;}
+
+/* ---- Subject grid ---- */
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(232px,1fr)); gap:14px;}
+.card{
+  background:var(--glass); border:1px solid var(--line-soft); border-radius:12px;
+  padding:22px; display:flex; flex-direction:column; gap:11px; transition:border-color .2s, transform .2s, box-shadow .2s, background .2s;
+  position:relative; overflow:hidden; backdrop-filter:blur(6px);
+}
+.card.live{cursor:pointer;}
+.card.live:hover{border-color:rgba(203,163,107,0.4); transform:translateY(-3px); box-shadow:var(--shadow-md); background:var(--glass-hover);}
+.card.soon{opacity:.5;}
+.card .num{font-family:var(--mono); font-size:10.5px; color:var(--text-faint); letter-spacing:.04em;}
+.card h3{font-size:16px; color:var(--text); margin:2px 0 2px; font-weight:600;}
+.card .desc{font-size:12.5px; color:var(--text-dim); flex-grow:1; line-height:1.55;}
+.card .status{
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.08em; text-transform:uppercase;
+  padding:3px 9px; border-radius:20px; width:fit-content;
+}
+.status.s-live{background:rgba(130,183,154,0.12); color:var(--sage); border:1px solid rgba(130,183,154,0.3);}
+.status.s-soon{background:rgba(168,161,150,0.08); color:var(--text-faint); border:1px solid var(--line-soft);}
+
+/* ---- Companion tools ---- */
+.tool-row{display:flex; flex-direction:column; gap:10px;}
+.tool{
+  background:var(--glass); border:1px solid var(--line-soft); border-radius:12px;
+  padding:18px 22px; display:flex; justify-content:space-between; align-items:center; gap:16px;
+  transition:border-color .2s, background .2s;
+}
+.tool:hover{border-color:var(--line); background:var(--glass-hover);}
+.tool .t-name{font-size:14px; color:var(--text); font-weight:500;}
+.tool .t-desc{font-size:12.5px; color:var(--text-faint); margin-top:3px;}
+.tool .t-link{font-family:var(--mono); font-size:10.5px; color:var(--text-faint); white-space:nowrap;}
+
+footer{color:var(--text-faint); font-size:11.5px; font-family:var(--mono); border-top:1px solid var(--line-soft); padding-top:22px;}
+</style>
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'home', base:''};</script>
+<script src="assets/site-nav.js"></script>
+
+<div class="wrap">
+
+  <div class="hero">
+    <span class="eyebrow">Personal revision hub · GATE CSE 2027</span>
+    <h1>One place for revision, trend analysis, and the topics that actually matter.</h1>
+    <p>Blueprint-style notes per subject, plus a 20-year data-backed breakdown of what GATE actually asks. Built to grow as each subject gets finished.</p>
+    <div class="countdown" id="countdown">
+      <div class="unit"><span class="num" id="cd-days">--</span><span class="lbl">Days to GATE 2027</span></div>
+      <div class="unit"><span class="num">7 Feb</span><span class="lbl">2027 · Exam Date</span></div>
+      <div class="unit"><span class="num" id="cd-subjects">15</span><span class="lbl">Subjects Live</span></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-head"><h2>Subjects</h2><span class="tag">Revision notes</span></div>
+    <div class="grid">
+
+      <a class="card live" href="subjects/digital-logic.html" style="text-decoration:none;">
+        <span class="num">01</span>
+        <h3>Digital Logic</h3>
+        <p class="desc">Number systems, Boolean algebra, K-maps, combinational &amp; sequential circuits, FSMs, computer arithmetic.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/c-programming.html" style="text-decoration:none;">
+        <span class="num">02a</span>
+        <h3>C Programming</h3>
+        <p class="desc">Number systems, data types &amp; promotion, control flow, operators, functions, storage classes, recursion, pointers &amp; arrays, dynamic memory, structures.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/data-structures.html" style="text-decoration:none;">
+        <span class="num">02b</span>
+        <h3>Data Structures</h3>
+        <p class="desc">Arrays, linked lists, stacks/queues, trees, heaps, graphs, hashing.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/algorithms.html" style="text-decoration:none;">
+        <span class="num">02c</span>
+        <h3>Algorithms</h3>
+        <p class="desc">Asymptotic analysis, sorting/searching, D&amp;C, greedy, DP, graph algorithms.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/operating-systems.html" style="text-decoration:none;">
+        <span class="num">03</span>
+        <h3>Operating Systems</h3>
+        <p class="desc">Processes, scheduling, memory management, concurrency, file systems.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/theory-of-computation.html" style="text-decoration:none;">
+        <span class="num">04</span>
+        <h3>Theory of Computation</h3>
+        <p class="desc">Automata, formal languages, decidability, computability.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/compiler-design.html" style="text-decoration:none;">
+        <span class="num">05</span>
+        <h3>Compiler Design</h3>
+        <p class="desc">Lexical analysis, top-down &amp; bottom-up (LR family) parsing, syntax-directed translation, runtime environments, code optimization.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/discrete-mathematics.html" style="text-decoration:none;">
+        <span class="num">06</span>
+        <h3>Discrete Mathematics</h3>
+        <p class="desc">Logic, sets/relations/functions, partial orders &amp; lattices, monoids &amp; groups, graph theory, combinatorics.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/linear-algebra.html" style="text-decoration:none;">
+        <span class="num">07</span>
+        <h3>Linear Algebra</h3>
+        <p class="desc">Matrices, determinants, systems of linear equations, eigenvalues &amp; eigenvectors, LU decomposition.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/probability-statistics.html" style="text-decoration:none;">
+        <span class="num">07b</span>
+        <h3>Probability &amp; Statistics</h3>
+        <p class="desc">Random variables, standard distributions, mean/median/mode, conditional probability, Bayes theorem.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/calculus.html" style="text-decoration:none;">
+        <span class="num">07c</span>
+        <h3>Calculus</h3>
+        <p class="desc">Limits &amp; continuity, differentiability, mean value theorems, maxima/minima, integration.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/dbms.html" style="text-decoration:none;">
+        <span class="num">08</span>
+        <h3>DBMS</h3>
+        <p class="desc">ER modeling, relational algebra &amp; calculus, SQL, functional dependencies &amp; normalization, transactions &amp; concurrency control, indexing.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/computer-organization.html" style="text-decoration:none;">
+        <span class="num">09</span>
+        <h3>Computer Organization &amp; Architecture</h3>
+        <p class="desc">ISA &amp; addressing modes, ALU &amp; control unit design, datapath, memory hierarchy &amp; cache, I/O, pipelining.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/computer-networks.html" style="text-decoration:none;">
+        <span class="num">10</span>
+        <h3>Computer Networks</h3>
+        <p class="desc">OSI/TCP-IP layers, routing, congestion control, application protocols.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+      <a class="card live" href="subjects/aptitude.html" style="text-decoration:none;">
+        <span class="num">11</span>
+        <h3>General Aptitude</h3>
+        <p class="desc">Verbal, numerical &amp; data interpretation, analytical, and spatial aptitude — 15 marks, common to every GATE paper.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Trends &amp; Strategy</h2><span class="tag">Data-driven</span></div>
+    <div class="grid">
+      <a class="card live" href="subjects/analysis.html" style="text-decoration:none;">
+        <span class="num">◆</span>
+        <h3>20-Year PYQ Analysis</h3>
+        <p class="desc">Subject weightage, topic frequency, difficulty trends, high-ROI topics, and predictions from 2007–2026 papers.</p>
+        <span class="status s-live">● Live</span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    gate-prep-site · add a new subject page under /subjects/, register it in assets/site-nav.js, add a card above.
+  </footer>
+
+</div>
+
+<script>
+  var examDate = new Date('2027-02-07T00:00:00');
+  var now = new Date();
+  var days = Math.ceil((examDate - now) / 86400000);
+  document.getElementById('cd-days').textContent = days > 0 ? days : '0';
+</script>
+</body>
+</html>

@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C Programming — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'c-programming', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // C Programming</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">10 modules · full syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#intro-numbers"><span class="num">01</span> Introduction &amp; Number Systems</a></div>
+      <div class="navgroup"><a class="navlink" href="#datatypes"><span class="num">02</span> Data Types, Conversion &amp; Promotion</a></div>
+      <div class="navgroup"><a class="navlink" href="#control-flow"><span class="num">03</span> Conditionals &amp; Loops</a></div>
+      <div class="navgroup"><a class="navlink" href="#operators"><span class="num">04</span> Operators &amp; Expressions</a></div>
+      <div class="navgroup"><a class="navlink" href="#functions"><span class="num">05</span> Functions &amp; Compilation</a></div>
+      <div class="navgroup"><a class="navlink" href="#storage-classes"><span class="num">06</span> Storage Classes</a></div>
+      <div class="navgroup"><a class="navlink" href="#recursion"><span class="num">07</span> Recursion</a></div>
+      <div class="navgroup"><a class="navlink" href="#pointers-arrays"><span class="num">08</span> Pointers &amp; Arrays</a></div>
+      <div class="navgroup"><a class="navlink" href="#advanced-pointers"><span class="num">09</span> Advanced Pointers &amp; DMA</a></div>
+      <div class="navgroup"><a class="navlink" href="#structures"><span class="num">10</span> Structures</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Compiled notes · GATE CSE 2027</span>
+      <h1>C Programming, traced <em>through the compiler</em>, not just the syntax.</h1>
+      <p>Ten modules covering the complete GATE CSE C syllabus — from number representation to structures — built around the thing GATE actually tests: predicting exact output, tracing memory, and catching undefined behaviour before it bites you.</p>
+      <div class="chips">
+        <span class="chip">01 Intro &amp; Number Systems</span>
+        <span class="chip">02 Data Types &amp; Promotion</span>
+        <span class="chip">03 Conditionals &amp; Loops</span>
+        <span class="chip">04 Operators</span>
+        <span class="chip">05 Functions &amp; Compilation</span>
+        <span class="chip">06 Storage Classes</span>
+        <span class="chip">07 Recursion</span>
+        <span class="chip">08 Pointers &amp; Arrays</span>
+        <span class="chip">09 Advanced Pointers &amp; DMA</span>
+        <span class="chip">10 Structures</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g fill="none" stroke="#2a2b33" stroke-width="1.4">
+          <rect x="20" y="20" width="70" height="34" rx="3"/>
+          <rect x="20" y="80" width="70" height="34" rx="3" stroke="#cba36b"/>
+          <rect x="20" y="140" width="70" height="34" rx="3"/>
+          <rect x="170" y="80" width="90" height="34" rx="3" stroke="#d98a5f"/>
+          <line x1="90" y1="37" x2="170" y2="97"/>
+          <line x1="90" y1="97" x2="170" y2="97"/>
+          <line x1="90" y1="157" x2="170" y2="97"/>
+        </g>
+        <g font-family="JetBrains Mono" font-size="10" fill="#6f6a60">
+          <text x="30" y="41">.c</text><text x="30" y="101">.o</text><text x="20" y="161">.h</text>
+          <text x="190" y="101" fill="#d98a5f">a.out</text>
+        </g>
+      </svg>
+    </section>
+    <section class="topic" id="intro-numbers">
+      <div class="topic-head"><span class="idx">01</span><h2>Introduction &amp; Number Systems</h2></div>
+      <div class="topic-kicker">COMPILATION STAGES · KEYWORDS &amp; IDENTIFIERS · INTEGER &amp; FLOAT REPRESENTATION</div>
+
+      <h3 class="sub">From source to executable</h3>
+      <p>A <code>.c</code> file goes through four distinct stages before it runs. GATE likes to ask which stage catches which kind of error.</p>
+      <table>
+        <tr><th>Stage</th><th>Tool</th><th>Input → Output</th><th>Catches</th></tr>
+        <tr><td>Preprocessing</td><td>cpp</td><td>.c → .i</td><td>macro/include errors</td></tr>
+        <tr><td>Compilation</td><td>cc1</td><td>.i → .s (assembly)</td><td>syntax, type errors</td></tr>
+        <tr><td>Assembly</td><td>as</td><td>.s → .o (object)</td><td>—</td></tr>
+        <tr><td>Linking</td><td>ld</td><td>.o + libs → executable</td><td>undefined reference / multiple definition</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">Common trap</span>
+        <p>A missing function <em>definition</em> (declared via prototype but never written) compiles fine — it fails only at the <strong>linking</strong> stage with "undefined reference". A missing <em>declaration</em> for a function used before its definition is only a warning in old C standards, not an error.</p>
+      </div>
+
+      <h3 class="sub">Tokens: keywords, identifiers, constants</h3>
+      <p>Keyword count grows with each standard — C90/C89 has 32, C99 has 37, C11 has 44, C23 has more still — but this exact trivia is low-yield for GATE; what matters is recognizing that keywords can't be reused as identifiers. Identifiers: letters, digits, underscore; can't start with a digit; case-sensitive.</p>
+      <div class="card">
+        <h4 class="subsub">Reserved vs valid identifiers</h4>
+        <p><code>int</code>, <code>_int</code>, <code>Int</code>, <code>int_</code> — only the first is a keyword. The rest are all valid, distinct identifiers because C is case-sensitive and underscore-prefixed names are legal (though names starting with underscore + capital, or double underscore, are reserved for the implementation).</p>
+      </div>
+
+      <h3 class="sub">Integer representation in memory</h3>
+      <p>C stores signed integers using the machine's native representation — on every mainstream platform today, that's <strong>2's complement</strong>. This directly determines the range and overflow behaviour GATE loves to test.</p>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Signed n-bit range (2's complement)</span>
+          <p>Minimum = −2<sup>n−1</sup>, Maximum = 2<sup>n−1</sup> − 1. For 32-bit <code>int</code>: −2147483648 to 2147483647. Note the asymmetry — one extra negative value, since 0 uses up a "positive" slot.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Unsigned n-bit range</span>
+          <p>0 to 2<sup>n</sup> − 1. For 32-bit <code>unsigned int</code>: 0 to 4294967295. Unsigned arithmetic wraps modulo 2<sup>n</sup> — it is <strong>well-defined</strong>, unlike signed overflow.</p>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — signed overflow is UB</span>
+        <p>Signed integer overflow (e.g. <code>INT_MAX + 1</code>) is <strong>undefined behaviour</strong> in standard C — the compiler is not required to wrap, saturate, or do anything predictable. Do not default to "it wraps to INT_MIN" as a general rule. Only compute a specific wrapped value when the question <em>explicitly</em> tells you to assume a particular machine/compiler representation (e.g. "assume 32-bit 2's complement") — in that case, and only then, discuss the implementation-specific result.</p>
+      </div>
+
+      <h3 class="sub">Floating point representation</h3>
+      <div class="card pyq">
+        <span class="label">GATE trap — IEEE-754 is NOT mandated by the C standard</span>
+        <p>The C language itself does <strong>not</strong> require <code>float</code> to be 32 bits, <code>double</code> to be 64 bits, or either to use IEEE-754 representation at all — the standard only specifies minimum precision/range requirements and leaves the exact format implementation-defined. What follows below (IEEE-754 binary32/binary64, 4/8 bytes) is the overwhelmingly common implementation on virtually every modern platform (x86, ARM, etc.) — reasonable to assume by default, and exactly what a GATE question means when it says "assume IEEE-754 single/double precision." But don't state it as a language-level guarantee: if a GATE question describes a different floating-point format explicitly, use THAT instead of defaulting to IEEE-754 from memory.</p>
+      </div>
+      <p>The common implementation: <code>float</code> (32-bit) and <code>double</code> (64-bit) follow IEEE-754: 1 sign bit, exponent (biased), and mantissa with an implicit leading 1.</p>
+      <table>
+        <tr><th>Type</th><th>Bits</th><th>Sign</th><th>Exponent</th><th>Mantissa</th><th>Bias</th></tr>
+        <tr><td>float</td><td>32</td><td>1</td><td>8</td><td>23</td><td>127</td></tr>
+        <tr><td>double</td><td>64</td><td>1</td><td>11</td><td>52</td><td>1023</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">Why 0.1 + 0.2 != 0.3 in C</span>
+        <p>0.1 and 0.2 have no exact finite binary fraction representation (like 1/3 in decimal) — they're stored as the nearest rounded double. Adding the rounded values produces a result that's close to, but not bit-identical to, the rounded representation of 0.3. Avoid using <code>==</code> to test mathematical equality of independently computed floating-point values when rounding error is expected — compare <code>fabs(a-b) &lt; epsilon</code> instead. (<code>==</code> itself isn't universally wrong for floats — it's valid when exact equality is genuinely intended, e.g. comparing against literal 0.0 in a controlled context, checking values produced by identical deterministic operations, or comparing special values like infinities — the guidance is about comparing independently-computed values expected to match mathematically, not about the operator being unusable.)</p>
+      </div>
+
+      <h3 class="sub">Character representation</h3>
+      <p><code>sizeof(char)</code> is always 1 by definition — but that 1 unit is <code>CHAR_BIT</code> bits, not necessarily 8; <code>CHAR_BIT</code> is defined in <code>&lt;limits.h&gt;</code> and the standard only guarantees it's at least 8. Every mainstream platform GATE assumes uses 8-bit bytes, so treat <code>char</code> as 1 byte = 8 bits <em>only when that assumption is explicit or standard for the platform in question</em>. Whether plain <code>char</code> is signed or unsigned is <strong>implementation-defined</strong> — GATE questions that rely on this usually state it explicitly. ASCII values: <code>'A'</code>=65, <code>'a'</code>=97, <code>'0'</code>=48.</p>
+      <div class="eq">char ch = 'A';
+printf("%d", ch);      <span class="c">// prints 65 — char promotes to int in printf's varargs</span></div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A program has a function <code>void foo(void);</code> declared (prototype) but never defined, and <code>foo()</code> is never called anywhere. Will it compile and link successfully?</summary>
+          <div class="ans">
+            <p>An unused declaration with no call and no definition needs no linking resolution — the linker only complains about references it must resolve. Since <code>foo</code> is never referenced (called), there's nothing to resolve. (Note: <code>void foo(void);</code> is a true prototype — it specifies the parameter list as empty. <code>void foo();</code> is an old-style declaration with an <em>unspecified</em> parameter list, not a prototype; it doesn't tell the compiler foo takes no arguments.)</p>
+            <p class="final">Answer: Yes, it compiles and links successfully</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Assuming an ASCII execution character set, what is the output of <code>printf("%d", 'A' + 1);</code>?</summary>
+          <div class="ans">
+            <p>C does not require ASCII, so <code>'A'</code>'s numeric value is technically implementation-defined — under the stated ASCII assumption, <code>'A'</code> is 65. In the expression <code>'A' + 1</code>, the char undergoes integer promotion to <code>int</code> before the addition, giving 65 + 1 = 66. Printed with <code>%d</code> it shows as a number, not a character.</p>
+            <p class="final">Answer: 66 (assuming ASCII)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A question explicitly states: "Assume a 32-bit, 2's complement machine with wraparound on overflow." Under that stated assumption, what is the value of <code>INT_MAX + 1</code>?</summary>
+          <div class="ans">
+            <p>INT_MAX = 2147483647 = 0111...1 in binary. Adding 1 flips it to 1000...0, which is the 2's complement bit pattern for INT_MIN — but this computation is only valid because the question fixed the machine representation. Without that stated assumption, signed overflow is undefined behaviour and no specific value can be assumed.</p>
+            <p class="final">Answer: −2147483648 (INT_MIN) — valid only under the stated 32-bit 2's-complement wraparound assumption, not as a general rule</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Which compilation stage reports an "undeclared function" vs "undefined reference" error, and what's the difference?</summary>
+          <div class="ans">
+            <p>"Implicit declaration" / "undeclared" issues are caught at the <strong>compilation</strong> stage (no prototype visible when the call is parsed). "Undefined reference" is a <strong>linker</strong> error — the prototype/declaration existed and satisfied the compiler, but no matching definition (object code) was found in any linked file or library.</p>
+            <p class="final">Answer: Undeclared → compile-time; undefined reference → link-time</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Why can two different float values sometimes print as equal with <code>printf("%.1f", ...)</code> even though <code>==</code> would compare them as unequal in full precision, and vice versa?</summary>
+          <div class="ans">
+            <p><code>%.1f</code> rounds the stored value to 1 decimal digit for display, discarding the tiny representation-error bits that make two "mathematically equal" computed floats bit-different internally. So two values with different raw bit patterns can round to the same printed string, while values with identical printed rounding can still differ in their unrounded, full-precision stored bits — that's exactly why direct <code>==</code> comparison on floats is unreliable.</p>
+            <p class="final">Answer: Because printing rounds/truncates precision, masking the tiny binary representation errors that make raw == comparison unsafe for floats</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="datatypes">
+      <div class="topic-head"><span class="idx">02</span><h2>Data Types, Type Conversion &amp; Integer Promotion</h2></div>
+      <div class="topic-kicker">SIZES · IMPLICIT CONVERSION · USUAL ARITHMETIC CONVERSIONS · PROMOTION RULES</div>
+
+      <h3 class="sub">Type sizes — what C actually guarantees vs. typical implementation</h3>
+      <div class="card formula">
+        <span class="label">What the C standard actually guarantees (language-level facts)</span>
+        <table>
+          <tr><th>Guarantee</th><th>Detail</th></tr>
+          <tr><td><code>sizeof(char)</code> = 1</td><td>By definition — always exactly 1, though that 1 "byte" is <code>CHAR_BIT</code> bits, guaranteed only to be &ge; 8, not necessarily exactly 8</td></tr>
+          <tr><td>Minimum widths</td><td><code>short</code> and <code>int</code> &ge; 16 bits; <code>long</code> &ge; 32 bits; <code>long long</code> &ge; 64 bits (C99+) — these are floors, not fixed sizes</td></tr>
+          <tr><td>Ordering of sizes</td><td><code>sizeof(char) &le; sizeof(short) &le; sizeof(int) &le; sizeof(long) &le; sizeof(long long)</code> — guaranteed non-decreasing, but exact sizes and even whether some are equal is NOT fixed</td></tr>
+          <tr><td>float/double representation</td><td>NOT mandated to be IEEE-754, and NOT mandated to be exactly 32/64 bits — the standard only fixes minimum precision/range, not the bit layout</td></tr>
+          <tr><td>Pointer size</td><td>NOT specified at all by the language — follows the machine's address width and ABI, which C says nothing about</td></tr>
+        </table>
+        <p>Everything above is a hard guarantee — true on every conforming C implementation, no matter the platform. Anything more specific than this table is implementation-defined, not a property of the C language itself.</p>
+      </div>
+      <div class="card note">
+        <span class="label">Typical GATE / modern-implementation assumption (NOT a language guarantee &mdash; just the overwhelmingly common case, 64-bit LP64 environment such as Linux/macOS with GCC/Clang)</span>
+        <table>
+          <tr><th>Type</th><th>Typical size</th><th>Notes</th></tr>
+          <tr><td>char</td><td>1 byte</td><td>signedness implementation-defined</td></tr>
+          <tr><td>short</td><td>2 bytes</td><td>at least 16 bits (guaranteed)</td></tr>
+          <tr><td>int</td><td>4 bytes</td><td>at least 16 bits (guaranteed); usually 32 in practice</td></tr>
+          <tr><td>long</td><td>8 bytes (LP64: 64-bit Linux/macOS)</td><td>4 bytes on LLP64 (64-bit Windows) — long's size is the single biggest cross-platform trap; GATE questions should state which model applies</td></tr>
+          <tr><td>long long</td><td>8 bytes</td><td>at least 64 bits (guaranteed, C99+)</td></tr>
+          <tr><td>float</td><td>4 bytes</td><td>commonly IEEE-754 single &mdash; not guaranteed by C itself (see box above)</td></tr>
+          <tr><td>double</td><td>8 bytes</td><td>commonly IEEE-754 double &mdash; not guaranteed by C itself (see box above)</td></tr>
+          <tr><td>pointer (any type)</td><td>8 bytes under LP64/LLP64 64-bit models</td><td>4 bytes under 32-bit models — pointer size follows the machine's address width, not any particular data type's size, and isn't specified by C at all</td></tr>
+        </table>
+        <p>Assume this table (the common LP64 convention) ONLY when a question just says "64-bit system" without giving exact sizes — and treat it as a stated assumption, not a fact derived from the C standard. When a question gives explicit sizes, always use those instead.</p>
+      </div>
+      <div class="card note">
+        <span class="label">"64-bit system" alone doesn't fix these sizes</span>
+        <p>A 64-bit architecture doesn't uniquely determine <code>sizeof(long)</code>, <code>sizeof(int)</code>, or pointer size — those depend on the data model (LP64, LLP64, ILP64, etc.), which varies by OS/compiler even on identical 64-bit hardware. GATE exam questions normally state the exact sizes to assume; when a question just says "64-bit system" without giving sizes, the safe default to use is the common LP64 convention above (8-byte long/pointer, 4-byte int) — but flag the assumption rather than treating it as a universal law.</p>
+      </div>
+      <div class="card note">
+        <span class="label">GATE won't assume a size for you</span>
+        <p>Sizes are implementation-defined; a good GATE question either states them explicitly or expects the standard guarantee <code>sizeof(char)=1 ≤ sizeof(short) ≤ sizeof(int) ≤ sizeof(long) ≤ sizeof(long long)</code>.</p>
+      </div>
+
+      <h3 class="sub">Integer promotion</h3>
+      <p>Integer promotions apply to operands of certain operators — mainly arithmetic and relational operators, unary <code>+</code>/<code>-</code>/<code>~</code>, and as part of the usual arithmetic conversions for binary operators — not literally "before every operator" unconditionally. In those contexts, an operand of type <code>char</code>, <code>short</code>, <code>_Bool</code>, or an eligible bit-field/enum smaller than <code>int</code> is <strong>promoted to <code>int</code></strong> (or <code>unsigned int</code> if <code>int</code> can't represent all its values). This matters most for GATE around <code>sizeof</code> (which uses the operand's declared type, not a promoted one), casts, assignments, and unary-operator expressions — so check exactly which operator/context a question is asking about rather than assuming promotion applies everywhere.</p>
+      <div class="eq">char a = 200, b = 100;
+int r = a + b;     <span class="c">// both promoted to int first: 200 + 100 = 300 (no overflow, since char range doesn't apply after promotion)</span></div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>200 doesn't fit in a signed 8-bit char (range −128 to 127), so if <code>char</code> is signed, the C standard does not universally guarantee what <code>char a = 200;</code> stores — the conversion is implementation-defined (or may raise an implementation-defined signal). On the common case of an 8-bit two's-complement signed char with the usual modulo-2⁸ conversion, this becomes −56, and that's the result GATE expects when a question explicitly states "8-bit two's complement." Promotion to <code>int</code> then preserves whatever value was actually stored, not the bit pattern reinterpreted as unsigned. Always check whether char is signed — and whether the question fixes a representation — before predicting output for values &gt; 127.</p>
+      </div>
+
+      <h3 class="sub">Usual arithmetic conversions (binary operators)</h3>
+      <p>When two operands of different types meet in a binary arithmetic/relational operator, C converts the "narrower" one up to match the "wider" one, following this rank order:</p>
+      <div class="eq">long double  &gt;  double  &gt;  float  &gt;  unsigned long long  &gt;  long long
+    &gt;  unsigned long  &gt;  long  &gt;  unsigned int  &gt;  int</div>
+      <div class="card formula">
+        <span class="label">The classic trap: signed vs unsigned int of same rank</span>
+        <p>If one operand is <code>int</code> and the other <code>unsigned int</code> (same rank), the <code>int</code> is converted to <code>unsigned int</code> — <strong>even if it's negative</strong>. A negative number becomes a huge positive number via modulo 2ⁿ wraparound.</p>
+      </div>
+      <div class="eq">int a = -1;
+unsigned int b = 1;
+if (a &lt; b) printf("yes"); else printf("no");
+<span class="out">// -1 converts to UINT_MAX (4294967295), which is NOT &lt; 1 → prints "no"</span></div>
+
+      <h3 class="sub">Implicit vs explicit conversion</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Implicit (coercion)</h4>
+          <p>Compiler inserts it automatically: assignment between types, promotion in expressions, passing arguments, return values. Can silently lose data (double→int truncates, int→char truncates).</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Explicit (cast)</h4>
+          <p><code>(int)</code>, <code>(float)</code> etc. — programmer-directed. <code>(int)3.99</code> truncates toward zero, giving 3, not 4 (no rounding).</p>
+        </div>
+      </div>
+      <div class="card note">
+        <span class="label">Truncation direction — and the representability caveat</span>
+        <p>float/double → int conversion truncates <strong>toward zero</strong> WHEN the resulting integral value is representable in the destination integer type: <code>(int)-3.7 == -3</code>, not −4. This differs from the mathematical floor function for negative numbers.</p>
+        <p>That "when representable" condition matters: if the integral part of the value doesn't fit in the destination type's range (e.g. casting a value like 1e100, or any float/double whose truncated value exceeds INT_MAX or is below INT_MIN, to <code>int</code>), the conversion is <strong>undefined behavior</strong> in C — not a predictable wraparound, not a clamped value, and not a compile error either. Never treat such a cast as having a deterministic numeric answer.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Assuming sizeof(short) = 2 (the common case, though the standard only guarantees ≥ 2), predict the output: <code>printf("%zu", sizeof(char) + sizeof(short));</code></summary>
+          <div class="ans">
+            <p><code>sizeof</code> returns type <code>size_t</code> (unsigned), so the correct conversion specifier is <code>%zu</code>, not <code>%d</code> — passing a <code>size_t</code> where <code>%d</code> expects <code>int</code> is a type mismatch with <code>printf</code>'s variadic arguments and is technically undefined behavior, even though it happens to print the right digits on most common platforms. sizeof(char) is always exactly 1 by definition; sizeof(short) is assumed 2 here (the standard guarantees only sizeof(short) ≥ sizeof(char), i.e. at least 2, not necessarily exactly 2). Under this assumption their sum is 3.</p>
+            <p class="final">Answer: 3 (assuming sizeof(short)=2; not guaranteed by the standard in general)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> What does this print? <code>int a = -1; unsigned int b = 1; printf("%d", a &lt; b);</code></summary>
+          <div class="ans">
+            <p>Usual arithmetic conversions: <code>int</code> and <code>unsigned int</code> are same rank, so <code>a</code> (int) converts to <code>unsigned int</code>. −1 as unsigned 32-bit becomes 4294967295, which is not less than 1.</p>
+            <p class="final">Answer: 0 (false)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> What is the output of <code>char c = 127; c = c + 1; printf("%d", c);</code>, assuming an 8-bit signed char and that the implementation converts out-of-range signed char values using two's-complement modulo wrapping?</summary>
+          <div class="ans">
+            <p><code>c</code> is promoted to <code>int</code> for the addition: 127+1=128. This addition happens entirely in <code>int</code>, well within <code>int</code>'s range, so it is ordinary, well-defined arithmetic — no signed-overflow UB occurs here at all.</p>
+            <p>The interesting step is assigning that <code>int</code> value 128 back into an 8-bit signed <code>char</code>, which cannot represent 128. Converting an out-of-range value to a signed integer type is <strong>implementation-defined</strong> behavior per the C standard (not undefined behavior, and not "signed arithmetic overflow" — no arithmetic overflow occurred). Under the stated assumption that the implementation performs two's-complement modulo wrapping for this conversion, 128 wraps to −128. Without that stated assumption, the result is implementation-defined and can't be pinned to a single value.</p>
+            <p class="final">Answer: −128 (only under the stated two's-complement wrapping assumption for the conversion)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Evaluate <code>printf("%d", (int)(3.9 + 3.9));</code> and explain the rounding rule used.</summary>
+          <div class="ans">
+            <p>3.9+3.9 = 7.8 as a double first (full addition happens before the cast, since the cast applies to the whole expression's result here). <code>(int)7.8</code> truncates toward zero, dropping the fractional part entirely — no rounding to nearest.</p>
+            <p class="final">Answer: 7</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> In <code>float f = 5 / 2;</code>, what value does <code>f</code> hold, and why (even though the target is a float)?</summary>
+          <div class="ans">
+            <p>The division <code>5 / 2</code> happens first using the operand types — both are <code>int</code>, so it's <strong>integer division</strong> giving 2, regardless of the fact the result will later be stored in a float. Only after computing 2 (as int) is it converted to float for the assignment.</p>
+            <p class="final">Answer: f = 2.0 (not 2.5) — conversion to float happens only at assignment, after integer division already truncated it</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="control-flow">
+      <div class="topic-head"><span class="idx">03</span><h2>Conditional Statements &amp; Loops</h2></div>
+      <div class="topic-kicker">IF/ELSE · SWITCH · FOR/WHILE/DO-WHILE · BREAK, CONTINUE, GOTO</div>
+
+      <h3 class="sub">Dangling else</h3>
+      <p>An <code>else</code> always binds to the <strong>nearest unmatched <code>if</code></strong>, regardless of indentation. This is the single most common GATE trap in this topic.</p>
+      <div class="eq">if (a &gt; 0)
+    if (b &gt; 0)
+        printf("both positive");
+else
+    printf("a not positive");   <span class="c">// misleading indentation!</span>
+<span class="out">// This else actually binds to "if (b &gt; 0)", NOT "if (a &gt; 0)" — despite how it looks</span></div>
+
+      <h3 class="sub">switch statement</h3>
+      <p><code>switch</code> works only on integer/char/enum expressions (not float, not string). Case labels must be compile-time constants. Without <code>break</code>, execution <strong>falls through</strong> to the next case.</p>
+      <div class="eq">int x = 2;
+switch (x) {
+  case 1: printf("1");
+  case 2: printf("2");        <span class="c">// matches here</span>
+  case 3: printf("3"); break; <span class="c">// falls through since no break above</span>
+  default: printf("D");
+}
+<span class="out">// Output: 23</span></div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p><code>default</code> doesn't have to be last — it can appear anywhere, and it only executes if no <code>case</code> matches. If <code>default</code> is placed in the middle, fall-through still proceeds downward from wherever the match/default landed, not necessarily to the textual end.</p>
+      </div>
+
+      <h3 class="sub">Loop constructs and their exact semantics</h3>
+      <table>
+        <tr><th>Loop</th><th>Test point</th><th>Guaranteed executions</th></tr>
+        <tr><td>for(init;cond;update)</td><td>before body</td><td>0 or more</td></tr>
+        <tr><td>while(cond)</td><td>before body</td><td>0 or more</td></tr>
+        <tr><td>do{...}while(cond);</td><td>after body</td><td>1 or more</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">for loop's three parts are all optional</span>
+        <p><code>for(;;)</code> is an infinite loop. Any of init/cond/update can be omitted (semicolons stay). The <code>cond</code> being empty is treated as always-true.</p>
+      </div>
+
+      <h3 class="sub">break, continue, goto</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">break</h4>
+          <p>Exits the <strong>innermost</strong> enclosing loop or switch only. To break out of nested loops, GATE questions often use a flag variable or <code>goto</code> — there's no multi-level break in C.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">continue</h4>
+          <p>Skips to the next iteration. In a <code>for</code> loop, this still runs the <strong>update</strong> expression before re-testing the condition — a common output-tracing trap.</p>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — continue in for vs while</span>
+        <p>In <code>for(i=0;i&lt;5;i++){ if(i==2) continue; ... }</code>, the <code>i++</code> still executes even when <code>continue</code> fires (no infinite loop). But if the same logic is naively rewritten as a <code>while</code> loop with the increment written <em>after</em> the check inside the body, <code>continue</code> would skip the increment entirely and cause an infinite loop.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> What does this print?<br><span class="code">int x=5;
+if(x&gt;0)
+  if(x&gt;10) printf("big");
+else printf("small");</span></summary>
+          <div class="ans">
+            <p>The <code>else</code> binds to the nearest unmatched if, i.e. <code>if(x&gt;10)</code>, not <code>if(x&gt;0)</code>. Since x=5, x&gt;10 is false, so the else branch executes.</p>
+            <p class="final">Answer: small</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Trace the output:<br><span class="code">int x=2;
+switch(x){
+ case 1: printf("A");
+ case 2: printf("B");
+ case 3: printf("C"); break;
+ case 4: printf("D");
+}</span></summary>
+          <div class="ans">
+            <p>x=2 matches case 2, prints B, then falls through (no break) into case 3, prints C, then hits break and exits — case 4 never runs.</p>
+            <p class="final">Answer: BC</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> How many times does the body execute? <span class="code">int i=10;
+do { i++; } while(i&lt;5);</span></summary>
+          <div class="ans">
+            <p><code>do-while</code> always executes the body at least once before testing the condition. After the first (only) execution, i becomes 11, and 11&lt;5 is false, so the loop stops.</p>
+            <p class="final">Answer: 1 time (body runs once even though the condition was already false)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> What is printed?<br><span class="code">for(int i=0;i&lt;5;i++){
+  if(i==2) continue;
+  printf("%d",i);
+}</span></summary>
+          <div class="ans">
+            <p>continue skips the printf for i==2 but the for loop's update (i++) still runs on every iteration, so it doesn't loop forever — it just prints all values except 2.</p>
+            <p class="final">Answer: 0134</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Identify the bug: <span class="code">int i=0;
+while(i&lt;5){
+  if(i==2) continue;
+  printf("%d",i);
+  i++;
+}</span></summary>
+          <div class="ans">
+            <p>Unlike a for loop, this while loop's increment <code>i++</code> is written inside the body <em>after</em> the printf. When i==2, continue jumps straight back to the condition check, skipping <code>i++</code> entirely — i stays 2 forever.</p>
+            <p class="final">Answer: Infinite loop at i=2, because continue skips the increment statement</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="operators">
+      <div class="topic-head"><span class="idx">04</span><h2>Operators &amp; Expressions</h2></div>
+      <div class="topic-kicker">PRECEDENCE &amp; ASSOCIATIVITY · SEQUENCE POINTS · SHORT-CIRCUIT · BITWISE</div>
+
+      <h3 class="sub">Precedence &amp; associativity — the parts GATE actually tests</h3>
+      <table>
+        <tr><th>Category</th><th>Operators</th><th>Associativity</th></tr>
+        <tr><td>Postfix</td><td>() [] -&gt; . ++ --</td><td>L→R</td></tr>
+        <tr><td>Unary</td><td>++ -- + - ! ~ * &amp; sizeof (type)</td><td>R→L</td></tr>
+        <tr><td>Multiplicative</td><td>* / %</td><td>L→R</td></tr>
+        <tr><td>Additive</td><td>+ -</td><td>L→R</td></tr>
+        <tr><td>Relational</td><td>&lt; &lt;= &gt; &gt;=</td><td>L→R</td></tr>
+        <tr><td>Equality</td><td>== !=</td><td>L→R</td></tr>
+        <tr><td>Logical AND / OR</td><td>&amp;&amp; / ||</td><td>L→R</td></tr>
+        <tr><td>Ternary</td><td>?:</td><td>R→L</td></tr>
+        <tr><td>Assignment</td><td>= += -= etc.</td><td>R→L</td></tr>
+      </table>
+
+      <h3 class="sub">Sequence points and undefined behaviour</h3>
+      <p>Between two sequence points, if the same variable is modified more than once, or modified and read for a purpose other than computing the new value, the behaviour is <strong>undefined</strong>. This is the older sequence-point formulation (C89/C99); modern C (C11 onward) describes these same cases more precisely using <strong>sequenced-before / unsequenced</strong> side-effect rules instead of a fixed set of "sequence points." Both formulations flag the same code as UB, so the classic sequence-point wording is retained here because that's how older GATE questions phrase it — just don't treat "sequence point" as the current standard's terminology if you go reading the C11/C23 text itself. GATE occasionally flags these; more often it just expects the "typical gcc" answer.</p>
+      <div class="eq">int i = 1;
+int x = i++ + ++i;   <span class="c">// UB in strict standard C — order of side effects unspecified</span>
+<span class="out">// gcc commonly gives x = 1 + 3 = 4, but this is NOT guaranteed by the standard</span></div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Function argument evaluation order is <strong>unspecified</strong> — <code>f(i++, i++)</code> may evaluate left-to-right or right-to-left depending on the compiler. Never assume a fixed order across GATE questions unless told to use "left to right, as in gcc".</p>
+      </div>
+
+      <h3 class="sub">Short-circuit evaluation</h3>
+      <p><code>&amp;&amp;</code> and <code>||</code> stop evaluating as soon as the result is determined — the right operand may never execute, including any side effects (like <code>++</code> or function calls) it contains.</p>
+      <div class="eq">int i = 0;
+if (i != 0 &amp;&amp; (10/i) &gt; 1)   <span class="c">// safe: 10/i never evaluated since i!=0 is false</span>
+    printf("yes");
+else
+    printf("no");
+<span class="out">// Output: no  (no division-by-zero crash)</span></div>
+      <div class="eq">int a = 5, b = 0;
+if (a &gt; 0 || b++)   <span class="c">// b++ never runs — a&gt;0 is already true</span>
+    printf("%d", b);
+<span class="out">// Output: 0, not 1 — the right side's side effect is skipped</span></div>
+
+      <h3 class="sub">Bitwise operators</h3>
+      <table>
+        <tr><th>Op</th><th>Meaning</th><th>Example (4-bit)</th></tr>
+        <tr><td>&amp;</td><td>AND</td><td>1100 &amp; 1010 = 1000</td></tr>
+        <tr><td>|</td><td>OR</td><td>1100 | 1010 = 1110</td></tr>
+        <tr><td>^</td><td>XOR</td><td>1100 ^ 1010 = 0110</td></tr>
+        <tr><td>~</td><td>NOT (1's complement)</td><td>~1100 = 0011 (4-bit view)</td></tr>
+        <tr><td>&lt;&lt;</td><td>Left shift</td><td>x&lt;&lt;n ≈ x·2ⁿ</td></tr>
+        <tr><td>&gt;&gt;</td><td>Right shift</td><td>arithmetic for signed (impl-defined), logical for unsigned</td></tr>
+      </table>
+      <div class="card formula">
+        <span class="label">Swap without a temp</span>
+        <div class="eq">a ^= b;
+b ^= a;
+a ^= b;   <span class="c">// swaps a and b using only XOR — fails silently if &amp;a == &amp;b</span></div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — right shift of negative numbers</span>
+        <p><code>&gt;&gt;</code> on a <strong>signed negative</strong> number is <em>implementation-defined</em>: most compilers do arithmetic shift (sign-extend, fill with 1s), but the standard doesn't mandate it. Shift count ≥ width of the type, or negative shift count, is undefined behaviour entirely.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Evaluate: <code>int a=5,b=2,c; c = a++ + b++; printf("%d %d %d",a,b,c);</code></summary>
+          <div class="ans">
+            <p>Post-increment returns the old value first, then increments. c = 5+2 = 7 (using old a, old b). After the statement, a becomes 6 and b becomes 3. This case is well-defined because each variable is incremented only once with a clear sequence point at the full expression's end.</p>
+            <p class="final">Answer: 6 3 7</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> What does this print? <code>int x=0; if(x=5) printf("yes"); else printf("no");</code></summary>
+          <div class="ans">
+            <p>This is assignment <code>=</code>, not comparison <code>==</code> — a classic typo trap. <code>x=5</code> assigns 5 to x and the expression's value is 5 (nonzero → true), so the if branch executes.</p>
+            <p class="final">Answer: yes</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Evaluate <code>5 &amp; 3 | 8</code> using correct C operator precedence (not left-to-right blindly).</summary>
+          <div class="ans">
+            <p>&amp; has higher precedence than |. First: 5 &amp; 3 = 0101 &amp; 0011 = 0001 = 1. Then: 1 | 8 = 0001 | 1000 = 1001 = 9.</p>
+            <p class="final">Answer: 9</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> What is printed? <code>int a=4, b=0; printf("%d", (b!=0) &amp;&amp; (a/b &gt; 1));</code></summary>
+          <div class="ans">
+            <p>Short-circuit evaluation: since <code>b!=0</code> is false, the left operand of &amp;&amp; is already false, so the right operand <code>a/b</code> is never evaluated — no division-by-zero crash occurs. The whole expression evaluates to 0.</p>
+            <p class="final">Answer: 0 (and no runtime crash, because a/b is never evaluated)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Why is the value of <code>i = i++ + ++i;</code> (with i initially 1) not reliably predictable across compilers?</summary>
+          <div class="ans">
+            <p>Both <code>i++</code> and <code>++i</code> modify the same variable <code>i</code> within the same expression, with no sequence point separating those modifications from each other or from the final assignment's read. The C standard leaves the order of these side effects unspecified — this is classic undefined behaviour, so different compilers (or optimization levels) may legally produce different results.</p>
+            <p class="final">Answer: It's undefined behaviour — multiple unsequenced modifications of i in the same expression</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q6</span> Given <code>int i = 0; printf("%d %d", f1(), f2());</code> where <code>f1</code> and <code>f2</code> have no side effects on shared state, is the order in which <code>f1()</code> and <code>f2()</code> are called guaranteed by the C standard? How does this differ from the UB in <code>i++ + i++</code>?</summary>
+          <div class="ans">
+            <p>The order of evaluation of function arguments (and of the function designator relative to its arguments) is <strong>unspecified</strong> — a compiler may call <code>f2()</code> before <code>f1()</code> or vice versa, and different compilers (or even different calls) are free to choose either order legally. This is <em>not</em> undefined behaviour: the program's behaviour is still well-defined, just not fixed to one particular order that the standard guarantees.</p>
+            <p>Contrast this with <code>i++ + i++</code>: there, the same object <code>i</code> is modified twice with no sequencing between those modifications, which the standard flags as <strong>undefined behaviour</strong> — the entire program's behaviour becomes unpredictable, not just the order of two independent side-effect-free calls. Unspecified evaluation order (pick one of several legal orders, result still well-defined) and undefined behaviour (no constraints at all, anything can happen) are different categories — don't conflate them.</p>
+            <p class="final">Answer: Call order is unspecified (not UB) as long as f1/f2 have no overlapping side effects; i++ + i++ is UB because it modifies the same variable twice without a sequence point</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="functions">
+      <div class="topic-head"><span class="idx">05</span><h2>Functions &amp; the Compilation Process</h2></div>
+      <div class="topic-kicker">CALL BY VALUE/REFERENCE · ACTIVATION RECORDS · HEADER FILES · PREPROCESSOR</div>
+
+      <h3 class="sub">C is strictly call-by-value</h3>
+      <p>Every argument in C is passed by <strong>value</strong> — the function gets a copy. "Call by reference" behaviour is simulated by explicitly passing a pointer (an address), and the function then dereferences that copy of the address to modify the original.</p>
+      <div class="eq">void swap(int *a, int *b){ int t=*a; *a=*b; *b=t; }
+<span class="c">// swap(&amp;x, &amp;y) — x and y themselves are still passed by value, but the value being
+// passed is an address, so dereferencing it inside swap() reaches the caller's memory</span></div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Arrays "decay" to pointers when passed to functions, which makes array modification inside a function <em>appear</em> like call-by-reference — but this is still call-by-value of the pointer, not a special array-passing mode.</p>
+      </div>
+
+      <h3 class="sub">Activation records (stack frames)</h3>
+      <p>Each function call pushes an activation record containing: return address, parameters, local variables, saved registers. Recursive calls stack multiple records — this is central to Module 07.</p>
+      <div class="eq">Stack grows ↓ (typical convention)
+┌─────────────────┐
+│ return address   │
+│ saved frame ptr  │
+│ parameters       │
+│ local variables  │
+└─────────────────┘  ← one frame per active call</div>
+
+      <h3 class="sub">Function prototypes and default int</h3>
+      <p><strong>C90</strong> allowed "implicit int" — a function called without a prior declaration was assumed to return <code>int</code>, and a function definition with no return type was also implicitly <code>int</code> — but this was already a historical/legacy behavior even then, not something to write new code around. <strong>C99 removed implicit-int</strong> entirely: an undeclared function used before it's seen is a constraint violation (compilers must diagnose it), and a conforming C99-or-later program requires a visible declaration (prototype or full definition) for every function before it is called. Treat "default int" as a fact about old/legacy C history for reading old code and answering GATE questions about historical behavior — <strong>not</strong> as a valid mechanism in modern C. Prototypes let the compiler check argument types and counts at every call site.</p>
+
+      <h3 class="sub">The preprocessor</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Macros (#define)</h4>
+          <p>Pure text substitution — no type checking, no scoping. <code>#define SQ(x) x*x</code> expands <code>SQ(a+b)</code> to <code>a+b*a+b</code>, NOT <code>(a+b)*(a+b)</code> — always parenthesize macro parameters and the whole expansion.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Header guards / #include</h4>
+          <p><code>#include "file.h"</code> and <code>#include &lt;file.h&gt;</code> select different, <strong>implementation-defined</strong> header search paths — the standard doesn't mandate an exact search algorithm for either form. In practice, quoted includes typically search a local/project directory before falling back to the system directories, while angle-bracket includes typically go straight to the system/standard-library directories — but treat this as a common convention, not a language guarantee. <code>#ifndef/#define/#endif</code> guards prevent multiple-inclusion redefinition errors.</p>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — macro side-effect duplication</span>
+        <div class="eq">#define MAX(a,b) ((a)&gt;(b)?(a):(b))
+int x = 5;
+int r = MAX(x++, 10);   <span class="c">// x++ may be textually substituted TWICE</span>
+<span class="out">// r could evaluate x++ once or twice depending on which branch of the ternary
+// is taken — x ends up incremented more than once if x++ &gt; 10 branch is chosen</span></div>
+      </div>
+
+      <h3 class="sub">Static vs dynamic linking, and multi-file compilation</h3>
+      <p>Separate <code>.c</code> files compile independently into <code>.o</code> object files; the linker resolves cross-file symbol references. A function defined in one file and used in another needs a matching <strong>declaration</strong> (usually via a shared <code>.h</code>) visible at the call site — the definition itself doesn't need to be visible until link time.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> What does <code>SQ(2+3)</code> expand to and evaluate to, given <code>#define SQ(x) x*x</code>?</summary>
+          <div class="ans">
+            <p>Pure textual substitution: <code>SQ(2+3)</code> becomes <code>2+3*2+3</code>. Applying normal precedence (* before +): 2 + 6 + 3 = 11, not 25 as a naive "square of 5" reading would suggest.</p>
+            <p class="final">Answer: 11 (not 25) — because the macro isn't parenthesized</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A function <code>void modify(int arr[])</code> does <code>arr[0] = 99;</code> on a caller's array. Does the caller see the change? Why, given C is call-by-value?</summary>
+          <div class="ans">
+            <p>When an array is passed to a function, it decays to a pointer to its first element. That pointer (an address) is copied by value into the parameter — but the copy still points to the same memory as the original array, so dereferencing/indexing through it modifies the caller's actual array data.</p>
+            <p class="final">Answer: Yes, the caller sees the change — because the pointer value (address) is copied, not the array data itself</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Given <code>void swap(int a, int b){int t=a;a=b;b=t;}</code> called as <code>swap(x,y);</code>, will x and y be swapped in the caller?</summary>
+          <div class="ans">
+            <p>This swap takes plain int parameters, not pointers. Since C is strictly call-by-value, a and b inside swap() are local copies — modifying them has zero effect on the caller's x and y.</p>
+            <p class="final">Answer: No — x and y remain unchanged in the caller</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A recursive function's call chain has 4 active calls at its deepest point, including the original call. How many activation records exist on the stack at that point?</summary>
+          <div class="ans">
+            <p>Each call (including the original/outermost one) pushes its own activation record, and none is popped until its own call returns. With 4 active calls in the chain at maximum depth, that's 4 records simultaneously on the stack.</p>
+            <p class="final">Answer: 4 activation records</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Given <code>#define MAX(a,b) ((a)&gt;(b)?(a):(b))</code> and <code>int x=5; int r = MAX(x++, 3);</code>, why is the final value of x unpredictable-by-formula without knowing macro expansion, and what does x become if the (a) branch is taken?</summary>
+          <div class="ans">
+            <p>x++ appears twice in the expanded macro: <code>((x++)&gt;(3)?(x++):(3))</code>. First occurrence (the comparison) evaluates x++ (using 5, then incrementing x to 6). Since 5&gt;3 is true, the <code>(a)</code> branch — the second <code>x++</code> — also executes, using 6 and incrementing x again to 7.</p>
+            <p class="final">Answer: x becomes 7 — because x++ is expanded and evaluated twice by the macro</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="storage-classes">
+      <div class="topic-head"><span class="idx">06</span><h2>Storage Classes</h2></div>
+      <div class="topic-kicker">AUTO · STATIC · EXTERN · REGISTER · SCOPE, LIFETIME &amp; LINKAGE</div>
+
+      <h3 class="sub">The four storage-class keywords</h3>
+      <table>
+        <tr><th>Keyword</th><th>Storage duration</th><th>Linkage</th><th>Scope</th></tr>
+        <tr><td>auto</td><td>Automatic</td><td>None</td><td>Block (wherever declared)</td></tr>
+        <tr><td>static (at block scope)</td><td>Static</td><td>None</td><td>Block</td></tr>
+        <tr><td>static (at file scope)</td><td>Static</td><td>Internal</td><td>File</td></tr>
+        <tr><td>extern</td><td>Depends on the declared entity — see note below</td><td>External by default</td><td>Wherever the declaration itself appears — file OR block</td></tr>
+        <tr><td>register</td><td>Automatic</td><td>None</td><td>Block</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">These are language guarantees — "stack" / "data segment" / "CPU register" are not</span>
+        <p>Storage duration, linkage, and scope are properties the C standard actually defines and guarantees. Where the object physically lives is an <strong>implementation detail</strong>, not a language guarantee — the standard never says "automatic-duration objects go on a stack." Typical implementation, useful as a mental model: <code>auto</code> → stack frame; <code>static</code> → data/BSS segment; <code>extern</code> (for an object) → data/BSS segment, same as wherever it's actually defined; <code>register</code> → CPU register <em>if the compiler honors the hint</em>, otherwise it's just another stack variable.</p>
+      </div>
+      <div class="card note">
+        <span class="label">register is only a hint</span>
+        <p>The compiler may ignore <code>register</code> entirely and still put the variable in memory. Because of this, you cannot take the address (<code>&amp;</code>) of a variable declared <code>register</code> — the compiler must guarantee that's always legal, and it can't if the variable ends up in a register with no address.</p>
+      </div>
+
+      <h3 class="sub">static — the most heavily tested keyword here</h3>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">static local variable</span>
+          <p>Retains its value <strong>between function calls</strong>. Initialized only <strong>once</strong>, the first time control reaches its declaration — subsequent calls skip re-initialization.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">static global / static function</span>
+          <p>Restricts <strong>linkage to internal</strong> — the name is invisible outside the file it's declared in, even to other files that <code>extern</code> it. Used to hide file-private helpers.</p>
+        </div>
+      </div>
+      <div class="eq">void counter(){
+  static int c = 0;   <span class="c">// init runs only on the very first call</span>
+  c++;
+  printf("%d ", c);
+}
+<span class="c">// counter(); counter(); counter();</span>
+<span class="out">// Output: 1 2 3   (not 1 1 1 — value persists across calls)</span></div>
+
+      <h3 class="sub">extern — declaration without definition, and its scope/duration/linkage separately</h3>
+      <p><code>extern int x;</code> tells the compiler "this variable exists somewhere (possibly another file, possibly earlier in this one), just resolve the reference." It does not allocate storage — the actual storage comes from whichever file contains the <strong>definition</strong> (<code>int x;</code> at file scope, no <code>extern</code>).</p>
+      <div class="card pyq">
+        <span class="label">GATE trap — extern's scope, storage duration, and linkage are three separate questions</span>
+        <p>These three properties don't move together, and GATE likes to mix them:</p>
+        <ul>
+          <li><strong>Scope</strong> of the <code>extern</code> declaration itself is wherever it textually appears — this can be file scope, but it can equally be <strong>block scope</strong>: writing <code>extern int x;</code> inside a function body is entirely legal, and only makes that name visible within that block.</li>
+          <li><strong>Storage duration</strong> is a property of the underlying object, not of the <code>extern</code> keyword — an object referred to by an <code>extern</code> declaration always has <strong>static</strong> storage duration, because it's defined at file scope somewhere, regardless of whether the particular <code>extern</code> declaration you're looking at sits at file scope or block scope. (This distinction is moot for functions — functions don't have a "storage duration" attribute at all, only objects do.)</li>
+          <li><strong>Linkage</strong> is external by default — unless that same identifier was already declared <code>static</code> earlier in the same file, in which case a later <code>extern</code> declaration for it inherits the internal linkage already established, rather than overriding it back to external.</li>
+        </ul>
+      </div>
+
+      <h3 class="sub">Scope vs lifetime — don't conflate them</h3>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p><strong>Scope</strong> is about where a name is <em>visible in the source code</em> (compile-time concept). <strong>Lifetime</strong> (storage duration) is about how long the variable's storage <em>exists in memory</em> (runtime concept). A <code>static</code> local variable has block <strong>scope</strong> (invisible outside the function) but static <strong>storage duration</strong> (memory persists across all calls, for the entire program) — these two properties are independent of each other.</p>
+      </div>
+
+      <h3 class="sub">Uninitialized values</h3>
+      <p>An automatic (<code>auto</code>) or <code>register</code> object without an initializer does <strong>not</strong> get zero-initialized — its value is <strong>indeterminate</strong>: unspecified, and in some cases (e.g. certain uninitialized reads, or types with trap representations) reading it is itself undefined behaviour, not merely "some unpredictable number." "Garbage value" is a fine informal way to describe this in conversation, but "indeterminate value, possibly UB to read" is the technically precise statement. By contrast, <code>static</code> and file-scope (global) objects <strong>are</strong> zero-initialized automatically if no initializer is given — this is a real language guarantee, unlike anything about automatic objects' initial contents.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> What does this print across 3 calls?<br><span class="code">void f(){
+  static int x = 0;
+  x++;
+  printf("%d ", x);
+}
+f(); f(); f();</span></summary>
+          <div class="ans">
+            <p>static's initializer (<code>x=0</code>) runs only once, on the first call ever. Every call afterward reuses the same persisted storage, incrementing it further: 1, then 2, then 3.</p>
+            <p class="final">Answer: 1 2 3</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Two files both declare <code>static int helper() {...}</code> with the same name and different bodies. Does linking fail?</summary>
+          <div class="ans">
+            <p><code>static</code> at file scope gives internal linkage — the symbol is private to its own translation unit and never exposed to the linker for cross-file resolution. Two files can each have their own private <code>helper()</code> with no name clash.</p>
+            <p class="final">Answer: No — static gives internal linkage, so there's no conflict between the two files</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> What's the value of a plain global (file-scope, non-static, no initializer) <code>int count;</code> before any code sets it?</summary>
+          <div class="ans">
+            <p>Variables at file/global scope (and static variables) live in the data/BSS segment and are automatically zero-initialized by the C runtime before main() starts, unlike auto/register locals.</p>
+            <p class="final">Answer: 0</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Why is <code>register int *p = &amp;x;</code> (taking the address of a register variable) invalid?</summary>
+          <div class="ans">
+            <p><code>register</code> only hints that the variable might be placed directly in a CPU register rather than in addressable memory. Since the compiler can't guarantee a register variable has a memory address at all, the language forbids applying <code>&amp;</code> to it — this is a compile error, not a runtime issue.</p>
+            <p class="final">Answer: register variables may have no memory address, so &amp; on them is disallowed by the language</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> File A has <code>int total = 10;</code> (global). File B has <code>extern int total; printf("%d", total);</code>. What prints, and what would go wrong if File A's line were also <code>extern int total = 10;</code> instead?</summary>
+          <div class="ans">
+            <p>File B correctly declares (not defines) total via extern, referencing File A's actual definition — link succeeds and prints 10. If File A instead wrote <code>extern int total = 10;</code>, that's still a valid definition too (extern with an initializer defines the variable) — so the effect is actually the same in this specific case, though mixing extern with an initializer is unusual style and can confuse readers about which file "owns" the variable.</p>
+            <p class="final">Answer: Prints 10 — File B's extern correctly links to File A's definition</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="recursion">
+      <div class="topic-head"><span class="idx">07</span><h2>Recursion</h2></div>
+      <div class="topic-kicker">BASE CASE · CALL STACK TRACING · TAIL VS NON-TAIL · RECURRENCE COMPLEXITY</div>
+
+      <h3 class="sub">Anatomy of a recursive call</h3>
+      <p>Every recursive function needs a <strong>base case</strong> (stops recursion) and a <strong>recursive case</strong> that moves measurably closer to it. Each call gets its own activation record with its own copy of local variables and parameters — this is why recursion doesn't "overwrite" earlier calls' variables.</p>
+      <div class="eq">int fact(int n){
+  if (n == 0) return 1;         <span class="c">// base case</span>
+  return n * fact(n - 1);        <span class="c">// recursive case</span>
+}</div>
+
+      <h3 class="sub">Tracing recursive output — the technique GATE tests most</h3>
+      <p>Draw the call stack growing down, then unwind bottom-up. Track exactly <em>when</em> each print/computation happens relative to the recursive call — before it (unwinding down) or after it (unwinding up, on return).</p>
+      <div class="eq">void f(int n){
+  if (n == 0) return;
+  printf("%d ", n);   <span class="c">// prints BEFORE recursing → top-down order</span>
+  f(n - 1);
+}
+<span class="c">// f(3) prints:</span>
+<span class="out">3 2 1</span></div>
+      <div class="eq">void g(int n){
+  if (n == 0) return;
+  g(n - 1);
+  printf("%d ", n);   <span class="c">// prints AFTER recursing → bottom-up order (on the way back)</span>
+}
+<span class="c">// g(3) prints:</span>
+<span class="out">1 2 3</span></div>
+
+      <h3 class="sub">Tail vs non-tail recursion</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Tail recursion</h4>
+          <p>The recursive call is the <strong>very last operation</strong> — nothing happens after it returns. Compilers <em>can</em> optimize this into a loop (tail-call optimization), but C doesn't guarantee TCO — GATE assumes no TCO unless told otherwise.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Non-tail recursion</h4>
+          <p>Work remains after the recursive call returns (e.g. <code>n * fact(n-1)</code> — the multiply happens after the call comes back). Requires the full call stack to unwind to complete the computation.</p>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>A function can look "almost tail recursive" but not be — e.g. <code>return 1 + fact(n-1);</code> is NOT tail recursion because addition happens after the call returns. Only <code>return fact(n-1);</code> (nothing else) qualifies.</p>
+      </div>
+
+      <h3 class="sub">Recurrence relations and complexity (frequently paired with recursion questions)</h3>
+      <table>
+        <tr><th>Recurrence</th><th>Example</th><th>Complexity</th></tr>
+        <tr><td>T(n) = T(n-1) + O(1)</td><td>factorial, linear recursion</td><td>O(n)</td></tr>
+        <tr><td>T(n) = 2T(n-1) + O(1)</td><td>naive Fibonacci</td><td>O(2ⁿ)</td></tr>
+        <tr><td>T(n) = T(n/2) + O(1)</td><td>binary search</td><td>O(log n)</td></tr>
+        <tr><td>T(n) = 2T(n/2) + O(n)</td><td>merge sort</td><td>O(n log n)</td></tr>
+      </table>
+
+      <h3 class="sub">Stack overflow and recursion depth</h3>
+      <p>Every unreturned call keeps its activation record alive. Deep or infinite recursion (missing/wrong base case) exhausts stack memory — a runtime crash (stack overflow), not a compile-time error.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> What does <code>f(3)</code> print?<br><span class="code">void f(int n){
+  if(n==0) return;
+  printf("%d",n);
+  f(n-1);
+  printf("%d",n);
+}</span></summary>
+          <div class="ans">
+            <p>Each call prints n, recurses, then prints n again after returning. Trace: f(3) prints 3, calls f(2) which prints 2, calls f(1) which prints 1, calls f(0) (returns immediately). Unwinding: f(1) prints 1 again, f(2) prints 2 again, f(3) prints 3 again.</p>
+            <p class="final">Answer: 321123</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Is <code>int sum(int n){ if(n==0) return 0; return n + sum(n-1); }</code> tail recursive? Justify.</summary>
+          <div class="ans">
+            <p>No — after <code>sum(n-1)</code> returns, the addition <code>n + ...</code> still must happen before the function itself returns. Since work remains after the recursive call, it's non-tail recursion; it needs the full stack to unwind to accumulate the sum.</p>
+            <p class="final">Answer: Not tail recursive — addition happens after the recursive call returns</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> How many total function calls (including the initial one) does naive <code>fib(4)</code> make, given <code>fib(n)=fib(n-1)+fib(n-2)</code>, base cases fib(0)=fib(1)=1?</summary>
+          <div class="ans">
+            <p>Draw the call tree: fib(4) calls fib(3) and fib(2). fib(3) calls fib(2) and fib(1). fib(2) [first] calls fib(1) and fib(0). fib(2) [second] calls fib(1) and fib(0). Counting every node in the tree: fib(4)=1, fib(3)=1, fib(2)×2=2, fib(1)×3=3, fib(0)×2=2 → total 1+1+2+3+2 = 9.</p>
+            <p class="final">Answer: 9 calls</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A recursive function has no base case (or a base case that's never reached for the given input). What is the runtime consequence?</summary>
+          <div class="ans">
+            <p>Each call keeps pushing a fresh activation record without ever returning, since the base case never terminates the chain. The call stack keeps growing until it exhausts the memory reserved for it, producing a runtime crash.</p>
+            <p class="final">Answer: Stack overflow (runtime crash), not a compile error</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Write the recurrence for this function's running time and give its complexity: <span class="code">int f(int n){
+  if(n&lt;=1) return 1;
+  return f(n/2) + f(n/2);
+}</span></summary>
+          <div class="ans">
+            <p>Each call does O(1) work outside the two recursive calls, and each recursive call halves n: T(n) = 2T(n/2) + O(1). By the Master theorem (a=2, b=2, so n^(log_b a) = n^1 = n, dominating the O(1) extra work), this solves to O(n).</p>
+            <p class="final">Answer: T(n) = 2T(n/2) + O(1) ⇒ O(n)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="pointers-arrays">
+      <div class="topic-head"><span class="idx">08</span><h2>Pointers &amp; Arrays</h2></div>
+      <div class="topic-kicker">POINTER ARITHMETIC · ARRAY DECAY · MULTI-DIM ARRAYS · POINTER-TO-ARRAY VS ARRAY-OF-POINTERS</div>
+
+      <h3 class="sub">Pointer arithmetic is scaled by type size</h3>
+      <p><code>p + 1</code> doesn't add 1 byte — it adds <code>sizeof(*p)</code> bytes, moving to the next element of that type. This is the single most tested idea in this module.</p>
+      <div class="eq">int arr[5] = {10,20,30,40,50};
+int *p = arr;         <span class="c">// array decays to &amp;arr[0]</span>
+printf("%d", *(p+2)); <span class="c">// = arr[2] = 30, and p+2 skips 2*sizeof(int) bytes</span></div>
+      <div class="card formula">
+        <span class="label">Array indexing IS pointer arithmetic</span>
+        <p><code>arr[i]</code> is defined as <code>*(arr + i)</code>, which means <code>i[arr]</code> is also legal C and identical in meaning — addition is commutative. GATE sometimes tests this exact equivalence.</p>
+      </div>
+
+      <h3 class="sub">Array decay — the trap that eats most marks</h3>
+      <p>An array name, when passed to a function or used in most expressions, "decays" into a pointer to its first element — it loses its size information entirely.</p>
+      <div class="eq">void f(int arr[10]){
+  printf("%zu", sizeof(arr));  <span class="c">// prints sizeof(int*) — e.g. 8, NOT 40!</span>
+}
+int main(){
+  int a[10];
+  printf("%zu", sizeof(a));    <span class="c">// prints 40 (10*4) — full array, no decay here</span>
+}</div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p><code>sizeof</code> is the ONE major place an array does <em>not</em> decay when used directly on the array name at its point of definition/scope — it correctly reports the whole array's byte size. But the moment that same array is passed as a function parameter, the parameter is really just a pointer, and <code>sizeof</code> inside the function reports pointer size.</p>
+        <p><code>sizeof</code> returns type <code>size_t</code>, whose portable <code>printf</code> specifier is <code>%zu</code>, not <code>%lu</code>. On LP64 systems (most Linux/macOS) <code>%lu</code> happens to work because <code>size_t</code> and <code>unsigned long</code> are both 64-bit there, but on LLP64 systems (64-bit Windows) <code>size_t</code> is not <code>unsigned long</code>, so <code>%lu</code> is undefined behaviour. Always use <code>%zu</code> for <code>sizeof</code> results.</p>
+      </div>
+
+      <h3 class="sub">2D arrays vs pointer-to-pointer</h3>
+      <p>A true 2D array <code>int a[3][4]</code> is contiguous memory — <code>a</code> decays to a pointer to an array of 4 ints (<code>int(*)[4]</code>), NOT to <code>int**</code>. This distinction is a very common GATE trap.</p>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">int a[3][4]; (true 2D array)</h4>
+          <p>Contiguous block of 12 ints. <code>a[i][j]</code> = <code>*(*(a+i)+j)</code>. Row size is fixed and known at compile time. Cannot be assigned to <code>int **p</code> directly — needs <code>int (*p)[4]</code>.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">int **p; (array of pointers)</h4>
+          <p>p points to a block of pointers, each pointing to a separately allocated row — rows need NOT be contiguous with each other. Used for jagged/ragged 2D structures built via <code>malloc</code>.</p>
+        </div>
+      </div>
+      <div class="eq">int a[3][4];
+int (*p)[4] = a;      <span class="c">// correct: p points to "array of 4 ints"</span>
+p = p + 1;             <span class="c">// moves forward by 4*sizeof(int) = 16 bytes → next row</span></div>
+
+      <h3 class="sub">String literals — pointer to literal vs writable array copy</h3>
+      <p>These two declarations look almost identical but behave very differently at runtime — one of the highest-value GATE pointer traps:</p>
+      <div class="eq">char *p = "hello";
+p[0] = 'H';     // undefined behavior — p points into a string literal, which may be stored read-only
+
+char a[] = "hello";
+a[0] = 'H';     // valid — a is a separate, writable array initialized by COPYING the literal's contents</div>
+      <div class="card pyq">
+        <span class="label">GATE trap — the canonical comparison</span>
+        <table>
+          <tr><th>Declaration</th><th>What's actually stored</th><th>Modifying an element</th></tr>
+          <tr><td><code>char *p = "abc";</code></td><td>p is a pointer variable holding the address of a string-literal object (typically placed in a read-only/text segment by the implementation)</td><td>Undefined behavior — <code>p[0] = 'X'</code> attempts to modify the literal itself; on many systems this segfaults, on some it silently corrupts other data, and it may even appear to "work" — none of these outcomes is guaranteed</td></tr>
+          <tr><td><code>char a[] = "abc";</code></td><td>a is a full array object, sized to fit "abc\0" (4 bytes), initialized by copying the literal's characters into a's own writable storage</td><td>Fully valid — <code>a[0] = 'X'</code> just writes to a's own memory, same as any other array</td></tr>
+        </table>
+        <p>The key insight: <code>char *p = "abc"</code> makes p point directly AT the literal — there's no copy, so writing through p writes to the literal itself, which the standard does not guarantee is writable (and in practice, on most modern systems, is placed in read-only memory specifically to catch this bug). <code>char a[] = "abc"</code> is fundamentally different — it's array initialization syntax, so the compiler allocates a's own storage and copies the literal's bytes in; after that, a and the original literal are unrelated, and a's storage is exactly as writable as any other local/global array. Also note the size difference this implies: <code>sizeof(a)</code> is 4 (array of 4 chars including the null terminator), while <code>sizeof(p)</code> is the pointer's size (e.g. 8 on a common 64-bit system) — p never held the string's bytes, only their address.</p>
+      </div>
+
+      <p>Equality and relational comparison of pointers are governed by <strong>different rules</strong> — don't lump them together as "compare within the same array only."</p>
+      <table>
+        <tr><th>Operation</th><th>Important rule</th></tr>
+        <tr><td><code>==</code>, <code>!=</code></td><td>General pointer equality comparison — well-defined for any two pointers of compatible type (not restricted to the same array/object)</td></tr>
+        <tr><td><code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code></td><td>Ordering is only defined for pointers into the <strong>same array object</strong> (including the one-past-the-end pointer); comparing pointers into unrelated objects is undefined behaviour</td></tr>
+        <tr><td><code>p - q</code></td><td>Subtraction likewise requires both pointers to point within the same array object (or one past its end); otherwise the result is undefined</td></tr>
+      </table>
+      <p><code>NULL</code> is a pointer value guaranteed not to point to any valid object — dereferencing it is undefined behaviour (commonly a segfault).</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Given <code>int arr[]={2,4,6,8,10}; int *p=arr;</code>, what does <code>*(p+3)</code> evaluate to, and what is <code>*(arr+3)</code>?</summary>
+          <div class="ans">
+            <p>Both p and arr point to the same base address (arr decayed into p). p+3 and arr+3 both point to the 4th element (index 3), scaled by sizeof(int). Dereferencing gives arr[3] = 8 in both cases.</p>
+            <p class="final">Answer: Both evaluate to 8</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> What is printed by <code>int a[5]; printf("%zu", sizeof(a)/sizeof(a[0]));</code> assuming 4-byte int?</summary>
+          <div class="ans">
+            <p>sizeof(a) at its point of definition (not decayed, still a true array) = 5*4 = 20 bytes. sizeof(a[0]) = sizeof(int) = 4 bytes. 20/4 = 5, the standard idiom for computing array length.</p>
+            <p class="final">Answer: 5</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Given <code>int a[3][4];</code>, what is <code>a+1</code> equal to in terms of address offset from <code>a</code>, assuming 4-byte int?</summary>
+          <div class="ans">
+            <p>a decays to type int(*)[4] — a pointer to a 4-int row. a+1 advances by one full row = 4*sizeof(int) = 16 bytes, landing exactly at the start of a[1].</p>
+            <p class="final">Answer: a+1 = a + 16 bytes = &amp;a[1][0]</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Inside <code>void f(int arr[]){ printf("%zu", sizeof(arr)); }</code> called from main with a 10-int array, what does it print on a typical 64-bit LP64 system (8-byte pointers), and why not 40?</summary>
+          <div class="ans">
+            <p>Function parameters written as <code>int arr[]</code> are adjusted by the compiler to <code>int *arr</code> — the array has already decayed to a pointer by the time it's a parameter. sizeof(arr) inside f measures the pointer's own size, not the array it points to. Pointer size follows the machine's data model, not any fixed rule of "64-bit" alone — 8 bytes is the LP64/LLP64 convention assumed here.</p>
+            <p class="final">Answer: 8 (pointer size under the stated 64-bit LP64 assumption) — because array parameters always decay to pointers</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Is <code>arr[i]</code> equivalent to <code>i[arr]</code> in C? Explain using the underlying definition of array indexing.</summary>
+          <div class="ans">
+            <p>Array indexing <code>x[y]</code> is defined by the standard as pure syntactic sugar for <code>*(x+y)</code>. Since pointer/integer addition is commutative (arr+i == i+arr), *(arr+i) and *(i+arr) are the same expression, and therefore arr[i] and i[arr] are semantically equivalent and give the same result. A compiler may well generate identical machine code for both, but the C standard only guarantees the semantic equivalence — it doesn't mandate identical code generation.</p>
+            <p class="final">Answer: Yes, they're equivalent — both expand to *(arr + i)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="advanced-pointers">
+      <div class="topic-head"><span class="idx">09</span><h2>Advanced Pointers, Dynamic Memory &amp; Miscellaneous</h2></div>
+      <div class="topic-kicker">MALLOC/CALLOC/REALLOC/FREE · MEMCPY/MEMMOVE/MEMSET · DANGLING/WILD POINTERS · STRICT ALIASING · FUNCTION POINTERS · VOID POINTERS</div>
+
+      <h3 class="sub">Dynamic memory allocation family</h3>
+      <table>
+        <tr><th>Function</th><th>Behaviour</th><th>Initializes to</th></tr>
+        <tr><td>malloc(n)</td><td>allocates n bytes</td><td>indeterminate values (uninitialized storage — not zeroed, not any predictable pattern)</td></tr>
+        <tr><td>calloc(n,size)</td><td>allocates n*size bytes</td><td>all-bits-zero</td></tr>
+        <tr><td>realloc(p,n)</td><td>resizes block pointed to by p to n bytes</td><td>old contents preserved up to min(old,new) bytes; any newly added portion (when n &gt; old size) has indeterminate values</td></tr>
+        <tr><td>free(p)</td><td>releases the block</td><td>—</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">realloc's return value</span>
+        <p><code>realloc</code> may move the block to a new address if it can't grow in place — always check its return value before committing to it. The risk with <code>p = realloc(p, n);</code> isn't the syntax itself, it's that if realloc fails and returns NULL, that assignment overwrites your only copy of the original pointer — the original block is still allocated, but now unreachable and leaked. Correct pattern: assign to a temporary first, and only overwrite p once you know the call succeeded — <code>void *tmp = realloc(p, n); if (tmp) p = tmp;</code></p>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — realloc(p, 0) is not portable, treat it as a trap edge case</span>
+        <p>The behavior of <code>realloc(p, 0)</code> has genuinely differed across C standard versions and implementations — depending on which, it may free the block and return NULL, or return a non-NULL pointer to a zero-size allocation that must still eventually be freed. <strong>Avoid relying on realloc(p, 0) for portable code</strong>; explicitly handle the zero-size case yourself (e.g. call <code>free(p)</code> directly instead of calling realloc with a size of 0) rather than assuming a single fixed outcome, unless a GATE question explicitly states which behavior/standard version to assume.</p>
+      </div>
+
+      <h3 class="sub">memcpy vs memmove — the overlapping-region trap</h3>
+      <table>
+        <tr><th>Function</th><th>Overlapping source/destination</th></tr>
+        <tr><td>memcpy(dest, src, n)</td><td>Undefined behaviour if source and destination regions overlap</td></tr>
+        <tr><td>memmove(dest, src, n)</td><td>Correctly handles overlap (behaves as if src were first copied to a temporary buffer)</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap — shifting an array in place needs memmove, not memcpy</span>
+        <p>Shifting elements of an array within itself — e.g. <code>memmove(a + 1, a, 5);</code> (shift 5 bytes one position to the right, in place) — has source and destination regions that overlap. Using <code>memcpy</code> for this is undefined behaviour: a typical naive forward byte-by-byte implementation would overwrite source bytes before they've been read, corrupting the data. <code>memmove</code> is specifically designed to detect and handle this correctly (conceptually, by copying through a temporary buffer, or by choosing a copy direction that avoids the clobber) — whenever overlap is possible or you're not certain it isn't, default to <code>memmove</code>; the safety costs at most a small, usually negligible performance difference versus memcpy.</p>
+      </div>
+
+      <h3 class="sub">memset — a byte-fill operation, not a value-fill operation</h3>
+      <p><code>memset(ptr, value, n)</code> writes the single byte <code>(unsigned char)value</code> into each of the <code>n</code> bytes starting at <code>ptr</code> — it operates purely at the byte level, with no awareness of the pointed-to type's actual size or representation.</p>
+      <div class="eq">int arr[5];
+memset(arr, 0, sizeof arr);   <span class="c">// commonly used to zero an int array</span>
+<span class="out">// works correctly because all-bits-zero represents integer 0 on every
+// conventional (2's-complement) system — a byte-level coincidence, not
+// memset "understanding" that arr holds ints</span></div>
+      <div class="card pyq">
+        <span class="label">GATE trap — memset(arr, 1, ...) does NOT set every int to 1</span>
+        <div class="eq">int arr[5];
+memset(arr, 1, sizeof arr);   <span class="c">// writes the byte 0x01 into EVERY byte, not the value 1 into every int</span>
+<span class="out">// each 4-byte int becomes 0x01010101 = 16843009, NOT 1</span></div>
+        <p>memset has no concept of "the int value 1" — it only knows bytes. Filling every byte of a multi-byte int with 0x01 produces the int whose byte pattern is 0x01010101, not the small integer 1. This only "accidentally works as expected" for the specific fill value 0 (and, separately, for an all-bits-one pattern via <code>memset(arr, 0xFF, ...)</code>, which happens to give −1 for a 2's-complement signed int) — never assume <code>memset(arr, v, n)</code> sets each element to the value v for any other v.</p>
+      </div>
+
+      <h3 class="sub">Dangling, wild, and NULL pointers</h3>
+      <div class="two-col">
+        <div class="card pyq">
+          <span class="label">Dangling pointer</span>
+          <p>Points to memory that has been freed (or a local variable's stack frame that has returned). The pointer's bit pattern is valid-looking but the memory it refers to is no longer yours.</p>
+        </div>
+        <div class="card pyq">
+          <span class="label">Wild pointer</span>
+          <p>Never initialized at all — holds garbage from whatever was in that memory location previously. Dereferencing either kind is undefined behaviour, commonly a segfault, but not guaranteed to crash immediately.</p>
+        </div>
+      </div>
+      <div class="eq">int *dangling(){
+  int x = 10;
+  return &amp;x;     <span class="c">// x's stack frame is destroyed when the function returns</span>
+}
+<span class="c">// the caller now holds a dangling pointer — reading it is UB, even if it "seems to work"</span></div>
+
+      <h3 class="sub">Memory leaks and double-free</h3>
+      <p>A <strong>memory leak</strong> occurs when the last reference to allocated memory is lost without calling <code>free</code> — the program permanently loses the ability to access or free that block for the rest of its run. Whether the underlying memory pages are ever given back to the OS is a separate question: that depends on the allocator's implementation and strategy (some allocators return large freed regions to the OS eagerly, others hold onto freed memory in their own free list for reuse and only release it under specific conditions, if ever) — don't assume either behavior as a blanket rule. A <strong>double free</strong> (calling <code>free</code> twice on the same pointer without reallocating in between) is undefined behaviour, often corrupting the heap's internal bookkeeping.</p>
+
+      <h3 class="sub">void pointers</h3>
+      <p><code>void *</code> is the generic <strong>object</strong> pointer type — it can hold the address of any object type, and converting a <code>void *</code> back to the original object-pointer type is always safe (no data loss). It cannot be dereferenced directly (no type = no known size to read) and requires an explicit cast first. <code>malloc</code> returns <code>void *</code> so it can be assigned to any object-pointer type without a cast in C (a cast IS required in C++).</p>
+      <div class="card pyq">
+        <span class="label">GATE trap — void * is NOT a portable generic pointer for function pointers</span>
+        <p>Don't overgeneralize "void * can hold the address of any type" — it applies to <strong>object</strong> pointers (pointers to data: int, struct, array elements, and so on). <strong>Function pointers are a separate category</strong>: the C standard does not guarantee that a function pointer can be converted to <code>void *</code> and back without loss of information on all implementations (though POSIX explicitly requires this convertibility as an extension, because dlsym() needs it). In strictly portable, standard C, treat object pointers and function pointers as two distinct pointer worlds — <code>void *</code> is the generic member of the first, not the second.</p>
+      </div>
+
+      <h3 class="sub">Strict aliasing — accessing an object through an incompatible pointer type</h3>
+      <p>C's <strong>strict aliasing rule</strong> says an object may generally only be accessed through an lvalue of its own type (with a few explicitly permitted exceptions: a compatible type, a qualified version of its type, the signed/unsigned counterpart of its type, or <code>char</code>/<code>unsigned char</code>). Accessing it through an lvalue of an unrelated, incompatible type violates this rule and is undefined behaviour — even when the reinterpretation "looks like it should work" at the byte level.</p>
+      <div class="eq">int x = 10;
+float *p = (float *)&amp;x;
+printf("%f", *p);    <span class="c">// UB — reads the int's bytes through an incompatible float lvalue,</span>
+                      <span class="c">// violating strict aliasing; NOT a legitimate way to "reinterpret" int as float</span></div>
+      <div class="card pyq">
+        <span class="label">GATE trap — this is NOT a valid int→float reinterpretation trick</span>
+        <p>The snippet above compiles, and might even appear to run and print something on a specific compiler/optimization level — but it invokes undefined behaviour, not a defined reinterpretation. An optimizing compiler is free to assume <code>int x</code> and <code>*p</code> never alias the same memory (since their types are incompatible), and can reorder or eliminate accesses based on that assumption — producing results that don't match a naive byte-level mental model at all once optimizations are enabled. Never present this pattern as a legitimate way to reinterpret one type's bit pattern as another.</p>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Correct alternative 1: memcpy</h4>
+          <p>Copying the bytes via <code>memcpy</code> is always well-defined and is the standard-recommended way to reinterpret a bit pattern as a different type:</p>
+          <div class="eq">int x = 10;
+float f;
+memcpy(&amp;f, &amp;x, sizeof(f));   <span class="c">// well-defined byte copy — no aliasing violation</span></div>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Correct alternative 2: union (with caveats)</h4>
+          <p>As covered in Module 10, reading a union member other than the one most recently written IS explicitly legal in C (unlike raw pointer-cast aliasing) — but the resulting VALUE is still implementation-dependent (endianness, padding, representation details). Treat union-based inspection as legal-but-not-portable, and reach for it specifically when you need that kind of representation inspection, not as a casual substitute for memcpy.</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Function pointers</h3>
+      <p>A function pointer stores the address of executable code, letting you call functions indirectly — the basis of callbacks and dynamic dispatch tables in C.</p>
+      <div class="eq">int add(int a,int b){ return a+b; }
+int (*fp)(int,int) = add;   <span class="c">// fp is "pointer to function taking (int,int), returning int"</span>
+printf("%d", fp(3,4));       <span class="c">// calls add(3,4) indirectly → 7</span></div>
+      <div class="card pyq">
+        <span class="label">GATE trap — reading function pointer syntax</span>
+        <p><code>int *fp(int)</code> declares a <strong>function</strong> named fp returning <code>int *</code>. <code>int (*fp)(int)</code> declares a <strong>pointer to a function</strong>. The parentheses around <code>*fp</code> are what change the meaning entirely — read declarations "inside-out" starting from the identifier.</p>
+      </div>
+
+      <h3 class="sub">Pointer to pointer, and const correctness</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">const int *p vs int *const p</h4>
+          <p><code>const int *p</code>: the pointed-to value can't change through p (p itself can be reassigned). <code>int *const p</code>: p itself is fixed (can't repoint), but the value it points to can change.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">int **pp</h4>
+          <p>Pointer to a pointer to int — one level of indirection more. Commonly used to modify a caller's pointer itself (e.g. functions that allocate memory and hand back the pointer via an out-parameter).</p>
+        </div>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — the classic four-way const-pointer table</span>
+        <p>Read each declaration <strong>right to left</strong> starting from the variable name — that's the fastest way to parse which part is const. <code>const</code> binds to whatever is immediately to its left (or, if nothing is to its left, to whatever is immediately to its right) — this is exactly why <code>const int *p</code> and <code>int const *p</code> are the SAME declaration: in the first, const has nothing on its left, so it binds right to int; in the second, const binds left to int — either way, it's the pointed-to int that's const, not the pointer.</p>
+        <table>
+          <tr><th>Declaration</th><th>Read as</th><th>Can modify <code>*p</code> (pointee)?</th><th>Can modify <code>p</code> (the pointer itself)?</th></tr>
+          <tr><td><code>const int *p</code><br><code>int const *p</code> (identical meaning)</td><td>p is a pointer to a const int</td><td>❌ No</td><td>✅ Yes</td></tr>
+          <tr><td><code>int *const p</code></td><td>p is a const pointer to int</td><td>✅ Yes</td><td>❌ No</td></tr>
+          <tr><td><code>const int *const p</code></td><td>p is a const pointer to a const int</td><td>❌ No</td><td>❌ No</td></tr>
+        </table>
+        <p>Mnemonic: find the <code>*</code> in the declaration — <code>const</code> written BEFORE the <code>*</code> locks the pointee (what's pointed to); <code>const</code> written AFTER the <code>*</code> (i.e. directly next to the variable name, as in <code>*const p</code>) locks the pointer itself. When both appear, both are locked. This distinction is one of the highest-frequency GATE C-pointer MCQs — always locate the <code>*</code> first, then check which side(s) of it carry <code>const</code>.</p>
+      </div>
+
+      <h3 class="sub">volatile — the other type qualifier</h3>
+      <p><code>volatile</code> tells the compiler that an object's value may change for reasons outside the normal flow of the current code (a hardware register updated by external circuitry, a variable modified by an interrupt handler or a signal handler, or by another thread) — so the compiler must not optimize accesses to it away or merge/reorder/cache them in a register as if the value were stable between reads. Every read and write of a <code>volatile</code> object must actually happen, in program order, exactly as written — the compiler can't assume "I already read this value, no need to read it again."</p>
+      <div class="eq">volatile int flag;
+while (flag == 0) { }   <span class="c">// without volatile, an optimizer could hoist the read of flag
+                          // out of the loop entirely, turning it into an infinite loop
+                          // even if some other code (an ISR, another thread) sets flag=1</span></div>
+      <div class="card pyq">
+        <span class="label">GATE trap — volatile is NOT about atomicity or thread synchronization</span>
+        <p>The critical distinction: <code>volatile</code> only controls compiler <em>optimization</em> behavior — it forces the compiler to actually generate the load/store instructions instead of assuming a cached value. It does <strong>NOT</strong> make an operation atomic, and it does <strong>NOT</strong> provide any thread synchronization guarantee. A read-modify-write like <code>volatile_counter++</code> is still multiple separate machine instructions (load, increment, store) — two threads can still race on it and lose updates, exactly as with a non-volatile variable. For actual atomicity or synchronization between threads, you need real synchronization primitives (mutexes, atomic operations, memory barriers) — <code>volatile</code> alone guarantees none of that. This is the exact trap GATE likes to set: don't answer "volatile makes this thread-safe."</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> What's the key difference between <code>malloc(10)</code> and <code>calloc(10,1)</code> in terms of the bytes returned?</summary>
+          <div class="ans">
+            <p>Both allocate 10 bytes total. malloc leaves that memory uninitialized (indeterminate values — not zeroed, not any predictable pattern), while calloc initializes every byte of the allocated block to all-bits-zero before returning it. That's a statement about the byte representation, not about the C value it produces — all-bits-zero is guaranteed to give 0 for integer types, but it is not a universally portable representation of every type's "zero" (e.g. a null pointer or a floating-point 0.0 need not be all-bits-zero on every platform, though this holds on the common ones GATE assumes).</p>
+            <p class="final">Answer: malloc leaves memory with indeterminate (uninitialized) values; calloc sets every byte to all-bits-zero</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> What's wrong with this code?<br><span class="code">int *get(){
+  int x = 5;
+  return &amp;x;
+}</span></summary>
+          <div class="ans">
+            <p>x has automatic storage duration and ceases to exist once get() returns — the C standard guarantees this lifetime rule but doesn't mandate how it's implemented. Implementations commonly store such objects on a stack frame, which is reclaimed/invalidated on return, so the returned address points to memory that's no longer reserved for x — a dangling pointer. Using the returned pointer afterward is undefined behaviour, regardless of the underlying storage mechanism.</p>
+            <p class="final">Answer: Returns a dangling pointer to a local variable whose (automatic-duration) lifetime ended when the function returned</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Declare a pointer to a function that takes two <code>double</code> arguments and returns a <code>double</code>, and explain why the parentheses around the pointer name are mandatory.</summary>
+          <div class="ans">
+            <p>Correct declaration: <code>double (*fp)(double, double);</code>. Without the parentheses — <code>double *fp(double, double)</code> — the function-call parentheses <code>()</code> bind tighter than the pointer <code>*</code>, so it would instead declare a function fp that returns <code>double*</code>, a completely different meaning.</p>
+            <p class="final">Answer: double (*fp)(double, double); — parentheses needed because () binds tighter than *</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> What happens when <code>free(p); free(p);</code> is called twice on the same unaltered pointer p?</summary>
+          <div class="ans">
+            <p>The second free() operates on memory that's already been returned to the allocator's free list — this is a double-free, which is undefined behaviour. It commonly corrupts the heap's internal bookkeeping structures and can crash the program immediately or much later, unpredictably.</p>
+            <p class="final">Answer: Undefined behaviour (double free) — often heap corruption, not a clean error</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Given <code>int x=10; const int *p = &amp;x;</code>, which of these is legal: <code>*p = 20;</code> or <code>p = NULL;</code>?</summary>
+          <div class="ans">
+            <p><code>const int *p</code> means the value pointed to is treated as constant through p — <code>*p = 20</code> is illegal (compile error). But p itself is an ordinary (non-const) pointer variable, so reassigning where it points, e.g. <code>p = NULL;</code>, is perfectly legal.</p>
+            <p class="final">Answer: p = NULL; is legal; *p = 20; is a compile error</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q6</span> Given <code>int a[10] = {0,1,2,3,4,5,6,7,8,9};</code>, what is the difference in behaviour between <code>memcpy(a + 1, a, 5 * sizeof(int));</code> and <code>memmove(a + 1, a, 5 * sizeof(int));</code>?</summary>
+          <div class="ans">
+            <p>Both calls target overlapping regions of the same array — <code>a+1</code> starts only one <code>int</code> after <code>a</code>, while 5 ints are being copied, so source and destination ranges overlap. <code>memcpy</code> does not guarantee correct behaviour when source and destination overlap — it's undefined behaviour, and a typical forward byte-by-byte implementation would overwrite source elements before they're read, corrupting the result (e.g. element 0 gets copied into element 1, but by the time element 1 is due to be copied into element 2, it may already have been clobbered).</p>
+            <p><code>memmove</code> is explicitly specified to handle overlapping regions correctly, as if the source were first copied to a temporary buffer before writing to the destination — so <code>memmove(a+1, a, 5*sizeof(int))</code> reliably copies the original a[0..4] = {0,1,2,3,4} into a[1..5], giving a final array of {0,0,1,2,3,4,6,7,8,9} (a[0] and a[6..9] unchanged; a[1..5] now hold the shifted values).</p>
+            <p class="final">Answer: memcpy is undefined behaviour on overlapping regions and may corrupt data; memmove is guaranteed correct for overlap and safely performs the in-place shift</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="structures">
+      <div class="topic-head"><span class="idx">10</span><h2>Structures</h2></div>
+      <div class="topic-kicker">MEMBER ACCESS · PADDING &amp; ALIGNMENT · NESTED/SELF-REFERENTIAL · UNIONS · TYPEDEF</div>
+
+      <h3 class="sub">Declaring and accessing structures</h3>
+      <div class="eq">struct Point { int x; int y; };
+struct Point p1 = {10, 20};
+struct Point *ptr = &amp;p1;
+printf("%d", ptr-&gt;x);    <span class="c">// arrow operator: same as (*ptr).x</span></div>
+      <div class="card note">
+        <span class="label">. vs -&gt;</span>
+        <p><code>.</code> accesses a member directly on a struct <em>value</em>. <code>-&gt;</code> accesses a member through a struct <em>pointer</em> — it's exactly equivalent to dereferencing first, then using dot: <code>ptr-&gt;x</code> ≡ <code>(*ptr).x</code>.</p>
+      </div>
+
+      <h3 class="sub">Structure padding and alignment — the most-tested idea here</h3>
+      <p>The compiler inserts padding bytes between members so each member starts at an address that's a multiple of its own alignment requirement (usually its size, up to some max). <code>sizeof(struct)</code> is NOT simply the sum of member sizes.</p>
+      <div class="eq">struct S { char c; int i; char c2; };
+<span class="c">// layout on a typical 32-bit-aligned system:</span>
+<span class="c">// c    : offset 0, 1 byte used, 3 bytes padding (to align i to a 4-byte boundary)</span>
+<span class="c">// i    : offset 4, 4 bytes</span>
+<span class="c">// c2   : offset 8, 1 byte, 3 bytes trailing padding (so array-of-struct stays aligned)</span>
+<span class="out">// sizeof(struct S) = 12, NOT 1+4+1 = 6</span></div>
+      <div class="card pyq">
+        <span class="label">GATE trap — reorder members to shrink size</span>
+        <p>Reordering to <code>struct S2 { int i; char c; char c2; };</code> needs only: i(4) + c(1) + c2(1) + 2 trailing padding = 8 bytes, saving 4 bytes over the original layout. GATE frequently asks you to compute both the "as declared" and "optimally reordered" sizes.</p>
+      </div>
+
+      <h3 class="sub">Self-referential structures</h3>
+      <p>A struct can contain a pointer to its own type (not the struct itself, which would be an infinite-size paradox) — this is the basis of linked lists, trees, and other dynamic structures.</p>
+      <div class="eq">struct Node {
+  int data;
+  struct Node *next;   <span class="c">// legal — pointer size is known even before the struct is fully defined</span>
+};</div>
+
+      <h3 class="sub">struct vs union</h3>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">struct</span>
+          <p>Each member gets its own separate memory — size ≥ sum of member sizes (plus padding). All members can hold valid values simultaneously.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">union</span>
+          <p>All members <strong>share the same memory</strong> — size = size of the largest member (plus alignment padding). Writing one member overwrites the bytes of all others.</p>
+        </div>
+      </div>
+      <div class="eq">union U { int i; float f; char c[4]; };
+printf("%zu", sizeof(union U));   <span class="c">// = 4 (size of the largest member, int or float)</span></div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — reading a different member than you last wrote ("type punning")</span>
+        <p>The common beginner framing — "only one member is meaningfully valid at a time" — is too simplistic. C explicitly permits reading a member other than the one most recently written: union members overlap the same storage, writing one member changes the stored bit representation, and reading a different member reinterprets those same bytes according to that member's type. This IS legal C (unlike the analogous case in C++, which is murkier) — the C standard explicitly allows it, subject to representation rules.</p>
+        <p>What's NOT guaranteed is <strong>portability of the resulting value</strong>: what you actually read back depends on implementation-defined and unspecified details — byte order (endianness), padding bits, the exact in-memory representation of the written type, and trap representations for some types. The little-endian byte-extraction example below works exactly as shown only on little-endian machines; a big-endian system would put the same int's most-significant byte at <code>c[0]</code> instead. Treat union type-punning results as implementation-dependent, not as a portable, universally predictable trick — GATE questions on this topic normally state the endianness explicitly for exactly this reason.</p>
+      </div>
+
+      <h3 class="sub">typedef with structures</h3>
+      <p><code>typedef struct { int x, y; } Point;</code> creates an alias so you can write <code>Point p;</code> instead of <code>struct Point p;</code> — this doesn't create a new type, just a new name for the existing (possibly anonymous) struct type.</p>
+
+      <h3 class="sub">Array of structures and passing structures to functions</h3>
+      <p>Unlike arrays, structures are NOT automatically passed by pointer — passing a struct by value to a function copies the <em>entire</em> struct (all members, all padding). For large structs, this is expensive; pass a pointer instead when the struct is large or must be modified.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Given <code>struct S { char a; int b; char c; };</code>, assuming sizeof(int) = 4 and 4-byte int alignment (with the usual ABI padding rules), compute sizeof(struct S).</summary>
+          <div class="ans">
+            <p>a: offset 0 (1 byte), then 3 bytes padding so b aligns to offset 4. b: offset 4 (4 bytes), ends at offset 8. c: offset 8 (1 byte), then 3 bytes trailing padding so the struct's total size is itself a multiple of its largest alignment requirement (4).</p>
+            <p class="final">Answer: 12 bytes</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Under the same assumption (sizeof(int) = 4, 4-byte int alignment), reorder the members of <code>struct S { char a; int b; char c; };</code> to minimize sizeof, and give the new size.</summary>
+          <div class="ans">
+            <p>Group the two 1-byte chars together so they share a single alignment slot: <code>struct S2 { int b; char a; char c; };</code>. b: offset 0 (4 bytes). a: offset 4 (1 byte). c: offset 5 (1 byte). Trailing padding: 2 bytes, to round total up to a multiple of 4.</p>
+            <p class="final">Answer: struct S2 { int b; char a; char c; }; → 8 bytes (down from 12)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Given <code>union U { int i; char c[4]; }; union U u; u.i = 1;</code>, what is <code>u.c[0]</code> on a little-endian system?</summary>
+          <div class="ans">
+            <p>All union members overlap the same 4 bytes of memory. On little-endian, the least-significant byte of the int is stored first (lowest address), and since i=1 has only its LSB set to 1, that byte lands at c[0].</p>
+            <p class="final">Answer: 1 (on little-endian; would be 0 on big-endian, with u.c[3]==1 instead)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Why is <code>struct Node { struct Node data; int val; };</code> (embedding the struct type directly, not a pointer) illegal, while <code>struct Node { struct Node *next; int val; };</code> is fine?</summary>
+          <div class="ans">
+            <p>Embedding struct Node directly inside itself would require the compiler to know sizeof(struct Node) in order to compute sizeof(struct Node) — an infinite regress with no base case, so the size can never be determined. A pointer, however, has a fixed known size (e.g. 8 bytes on 64-bit) regardless of what it points to, so the size computation terminates.</p>
+            <p class="final">Answer: Direct embedding creates an infinitely-sized type (size depends on itself); a pointer has a fixed, self-independent size</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A struct is passed by value into <code>void f(struct Big b)</code> where struct Big is 200 bytes, and the function modifies <code>b.field</code>. Does the caller's original struct change? What's the performance implication?</summary>
+          <div class="ans">
+            <p>C passes the struct by value: the callee receives its own independent copy of the struct's value, semantically distinct from the caller's original. Modifying the local copy b inside f() has no effect on the caller's original struct. The exact physical mechanism (stack copy, registers, hidden pointer to a caller-allocated copy, etc.) is ABI/compiler dependent, but conceptually a full 200-byte copy is made on every call — which is why large structs are typically passed by pointer instead.</p>
+            <p class="final">Answer: No change to the caller's struct — a full 200-byte copy was modified locally; passing by pointer avoids this copy cost</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      Blueprint Notes — C Programming for GATE CSE · built for revision, not first-read · always verify sizes/behaviour against your target compiler and platform.
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compiler Design — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'compiler-design', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // Compiler Design</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">7 sheets · full syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#intro-lexical"><span class="num">01</span> Introduction &amp; Lexical Analysis</a></div>
+      <div class="navgroup"><a class="navlink" href="#top-down"><span class="num">02</span> Top-Down Parsing</a></div>
+      <div class="navgroup"><a class="navlink" href="#bottom-up"><span class="num">03</span> Bottom-Up Parsing (LR family)</a></div>
+      <div class="navgroup"><a class="navlink" href="#sdt"><span class="num">04</span> Syntax-Directed Translation &amp; ICG</a></div>
+      <div class="navgroup"><a class="navlink" href="#runtime"><span class="num">05</span> Runtime Environments &amp; Symbol Tables</a></div>
+      <div class="navgroup"><a class="navlink" href="#optimization"><span class="num">06</span> Code Optimization</a></div>
+      <div class="navgroup"><a class="navlink" href="#revision"><span class="num">07</span> Revision Sheet</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Schematic notes · GATE CSE 2027</span>
+      <h1>Compiler Design, traced <em>phase by phase</em>, not memorized as a diagram.</h1>
+      <p>Seven sheets covering the complete GATE CSE Compiler Design syllabus — lexical analysis, top-down and bottom-up parsing, syntax-directed translation, runtime environments, and code optimization — with worked parsing tables and the exact traps GATE likes to set.</p>
+      <div class="chips">
+        <span class="chip">01 Lexical Analysis</span>
+        <span class="chip">02 Top-Down Parsing</span>
+        <span class="chip">03 Bottom-Up Parsing</span>
+        <span class="chip">04 SDT &amp; ICG</span>
+        <span class="chip">05 Runtime Env</span>
+        <span class="chip">06 Optimization</span>
+        <span class="chip">07 Revision</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g fill="none" stroke="#2a2b33" stroke-width="1.4">
+          <rect x="15" y="20" width="60" height="28" rx="3"/>
+          <rect x="15" y="66" width="60" height="28" rx="3" stroke="#cba36b"/>
+          <rect x="15" y="112" width="60" height="28" rx="3"/>
+          <rect x="15" y="158" width="60" height="28" rx="3"/>
+          <rect x="150" y="89" width="70" height="28" rx="3" stroke="#d98a5f"/>
+          <line x1="75" y1="34" x2="150" y2="103"/>
+          <line x1="75" y1="80" x2="150" y2="103"/>
+          <line x1="75" y1="126" x2="150" y2="103"/>
+          <line x1="75" y1="172" x2="150" y2="103"/>
+        </g>
+        <g font-family="JetBrains Mono" font-size="9.5" fill="#6f6a60">
+          <text x="24" y="38">Lexer</text>
+          <text x="21" y="84" fill="#cba36b">Parser</text>
+          <text x="18" y="130">SDT</text>
+          <text x="18" y="176">Opt</text>
+          <text x="163" y="107" fill="#d98a5f">Target</text>
+        </g>
+      </svg>
+    </section>
+    <section class="topic" id="intro-lexical">
+      <div class="topic-head"><span class="idx">01</span><h2>Introduction &amp; Lexical Analysis</h2></div>
+      <div class="topic-kicker">COMPILER PHASES · TOKENS &amp; LEXEMES · REGEX → NFA → DFA</div>
+
+      <h3 class="sub">The phases of a compiler</h3>
+      <table>
+        <tr><th>Phase</th><th>Input → Output</th><th>Typical technique</th></tr>
+        <tr><td>Lexical analysis</td><td>source chars → tokens</td><td>DFA / regex</td></tr>
+        <tr><td>Syntax analysis</td><td>tokens → parse tree</td><td>CFG / LL, LR parsing</td></tr>
+        <tr><td>Semantic analysis</td><td>parse tree → annotated tree</td><td>type checking, scope resolution</td></tr>
+        <tr><td>Intermediate code gen</td><td>annotated tree → IR (3AC)</td><td>SDT</td></tr>
+        <tr><td>Code optimization</td><td>IR → optimized IR</td><td>data-flow analysis</td></tr>
+        <tr><td>Code generation</td><td>IR → target code</td><td>register allocation</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">Front end / middle end / back end</span>
+        <p>Lexical + syntax + semantic analysis + IR generation = <strong>front end</strong> (depends only on the source language, machine-independent). Code generation = <strong>back end</strong> (machine-dependent: instruction selection, register allocation, target-specific scheduling). Optimization doesn't fit cleanly into either — most textbooks place machine-independent optimization (constant folding, dead-code elimination, common-subexpression elimination on the IR) in a conceptual <strong>middle end</strong> between the two, reserving "back end" for machine-dependent optimizations (peephole optimization, instruction scheduling) plus code generation itself. For GATE you don't need to insist on a strict three-way split, but don't flatly call optimization "back end" — say which kind of optimization (machine-independent vs machine-dependent) you mean.</p>
+      </div>
+
+      <h3 class="sub">Tokens, lexemes, and patterns</h3>
+      <ul>
+        <li><strong>Token</strong> — a category, e.g. <code>ID</code>, <code>NUM</code>, <code>KEYWORD</code>.</li>
+        <li><strong>Lexeme</strong> — the actual substring matched, e.g. <code>count</code>, <code>42</code>.</li>
+        <li><strong>Pattern</strong> — the rule (regex) describing what lexemes a token can match.</li>
+      </ul>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>The lexical analyzer resolves ambiguity between keywords and identifiers using the <strong>maximal munch (longest match)</strong> rule, and ties between rules matching the same longest length are broken by <strong>rule priority</strong> (order listed) — e.g. <code>if</code> matches both the keyword rule and the identifier rule; keyword wins because it's listed first, not because of length.</p>
+      </div>
+
+      <h3 class="sub">Regex → NFA → DFA pipeline</h3>
+      <p>A lexer generator (like <code>lex</code>/<code>flex</code>) compiles the set of token regexes into a single NFA (Thompson's construction), converts it to a DFA (subset construction), and minimizes that DFA — the same automata-theory pipeline from Theory of Computation, applied to build a real scanner.</p>
+      <div class="eq">regex  --Thompson's construction-->  NFA
+NFA    --subset construction-->        DFA
+DFA    --Hopcroft/Moore minimization--> minimal DFA</div>
+      <div class="card formula">
+        <span class="label">NFA→DFA state explosion</span>
+        <p>Subset construction can blow up an n-state NFA to as many as 2ⁿ DFA states in the worst case — GATE frequently asks you to actually perform the construction on a small NFA and count resulting DFA states.</p>
+      </div>
+
+      <h3 class="sub">Error recovery in lexical analysis</h3>
+      <p>Common panic-mode strategies: delete one character and resume, insert a missing character, or skip to the next delimiter (whitespace). Lexical errors are relatively rare because almost any character sequence can form <em>some</em> valid lexeme (e.g. as an identifier).</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Which phase of the compiler is responsible for detecting that a variable was used without being declared?</summary>
+          <div class="ans">
+            <p>Undeclared-variable use is a scope/binding issue, not a grammatical (syntax) one — the sequence of tokens can be perfectly well-formed. This is checked during semantic analysis, which builds and consults the symbol table.</p>
+            <p class="final">Answer: Semantic analysis</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Given the input <code>ifx = 5;</code> (no space between "if" and "x"), what token(s) does the lexer produce for the first word, and why?</summary>
+          <div class="ans">
+            <p>The maximal-munch rule makes the lexer greedily consume the longest possible match. "ifx" as a whole matches the identifier pattern (letters), and it's longer than just "if", so the lexer produces one ID token "ifx" — it does NOT split it into keyword "if" + identifier "x".</p>
+            <p class="final">Answer: A single identifier token "ifx" (maximal munch overrides the keyword match)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> An NFA for a certain regex has 5 states. What is the maximum number of states in the DFA produced by subset construction, before minimization?</summary>
+          <div class="ans">
+            <p>Subset construction builds one DFA state per distinct reachable subset of the NFA's state set — worst case, all 2⁵ subsets are reachable and distinct.</p>
+            <p class="final">Answer: 2⁵ = 32 states (worst case, before minimization)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Classify the compiler phases into front end and back end, and explain why this split is useful for building compilers for multiple source languages and target machines.</summary>
+          <div class="ans">
+            <p>Front end (lexical, syntax, semantic analysis, IR generation) is primarily source-language dependent; back end (code generation, plus machine-dependent optimization) is primarily target-machine dependent. In practice this is an idealization — real compilers can have target-dependent semantic constraints, ABI considerations, target-specific IR decisions, and other source-target interactions that blur the boundary somewhat. IR generation itself is commonly classed as part of the front end, but some compiler architectures place parts of IR construction/transformation in the middle end instead — treat this as a terminology convention rather than a fixed rule. Machine-independent optimization sits on the IR between the two and is often called the middle end. Because front and back ends communicate through a shared, largely machine-independent IR, you can mix-and-match — reuse one front end with several back ends (multiple targets) or one back end with several front ends (multiple source languages) instead of writing a full compiler for every language×machine pair.</p>
+            <p class="final">Answer: Front end = language-dependent (lexical/syntax/semantic/IR-gen); back end = machine-dependent (codegen, machine-dependent optimization); machine-independent optimization sits between them (middle end); the IR boundary lets front/back ends be mixed and reused</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A lexer encounters the character sequence <code>@</code> which matches no token pattern in the language. What is a typical panic-mode recovery action?</summary>
+          <div class="ans">
+            <p>Typical recovery: delete/skip the offending character and resume scanning from the next one, reporting an error. Note that lexical errors aren't limited to stray illegal characters like this — they also include cases such as unterminated string literals, malformed numeric literals, invalid escape sequences, and unterminated comments, each of which may call for a different recovery heuristic (e.g. scanning to the next quote/newline/delimiter).</p>
+            <p class="final">Answer: Skip/delete the bad character and resume scanning, reporting an error</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="top-down">
+      <div class="topic-head"><span class="idx">02</span><h2>Top-Down Parsing</h2></div>
+      <div class="topic-kicker">CFG RECAP · LEFT RECURSION &amp; FACTORING · FIRST/FOLLOW · LL(1) PARSING TABLE</div>
+
+      <h3 class="sub">Why left recursion breaks top-down parsing</h3>
+      <p>A top-down parser expands the leftmost nonterminal first. With <code>A → Aα | β</code>, trying to expand A immediately calls A again before consuming any input — infinite recursion with no progress.</p>
+      <div class="card formula">
+        <span class="label">Standard left-recursion elimination</span>
+        <div class="eq">A → Aα | β     transforms to:
+A  → βA'
+A' → αA' | ε</div>
+      </div>
+
+      <h3 class="sub">Left factoring</h3>
+      <p>When two productions for the same nonterminal share a common prefix, the parser can't decide which to pick by looking only one token ahead. Left-factor to defer the decision.</p>
+      <div class="eq">A → αβ₁ | αβ₂    transforms to:
+A  → αA'
+A' → β₁ | β₂</div>
+
+      <h3 class="sub">FIRST and FOLLOW sets</h3>
+      <table>
+        <tr><th>Set</th><th>Meaning</th></tr>
+        <tr><td>FIRST(α)</td><td>terminals that can begin a string derived from α (includes ε if α can derive ε)</td></tr>
+        <tr><td>FOLLOW(A)</td><td>terminals that can immediately follow A in some derivation from the start symbol (includes $ if A can be the last symbol)</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap — FOLLOW never truly "contains ε"</span>
+        <p>FOLLOW sets never include ε itself as a symbol — when a production's right side can derive ε, that ε-possibility propagates into computing OTHER symbols' FOLLOW sets, but ε is never listed as a member of any FOLLOW set. Only FIRST sets can list ε as a member.</p>
+      </div>
+
+      <h3 class="sub">Building the LL(1) parsing table</h3>
+      <p>For each production <code>A → α</code>: add it to table cell <code>M[A, a]</code> for every terminal <code>a</code> in FIRST(α); if ε ∈ FIRST(α), also add it to <code>M[A, b]</code> for every <code>b</code> in FOLLOW(A).</p>
+      <div class="card note">
+        <span class="label">Grammar is LL(1) iff...</span>
+        <p>No cell of the table ever gets two different productions filled in — equivalently, for every nonterminal with multiple productions, their FIRST sets must be pairwise disjoint, and at most one alternative can derive ε (and if one does, its FIRST and the other alternatives' FOLLOW must not overlap).</p>
+      </div>
+
+      <h3 class="sub">Ambiguous and left-recursive grammars are never LL(1)</h3>
+      <p>Left recursion always creates a table conflict (infinite expansion attempts for the same lookahead). Ambiguous grammars have some string with two parse trees, which manifests as two productions competing for the same table cell.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Eliminate left recursion from: <code>E → E + T | T</code>.</summary>
+          <div class="ans">
+            <p>Matching the pattern A→Aα|β with α="+T", β="T": rewrite as E→TE', E'→+TE'|ε — the standard transformation moves the recursive part to the right via a new nonterminal E'.</p>
+            <p class="final">Answer: E → T E' ,  E' → + T E' | ε</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> For the grammar S→aS|aSbS|ε (a genuinely ambiguous grammar for a classic language), why does LL(1) table construction necessarily fail?</summary>
+          <div class="ans">
+            <p>Both productions S→aS and S→aSbS begin with terminal "a", so FIRST of both alternatives overlaps at "a" — the LL(1) table cell M[S,a] would need to hold both productions simultaneously, which is disallowed. Left-factoring itself is a purely mechanical step (factor out the common "a" prefix) and can always be applied here; the deeper problem is that this grammar is ambiguous (some strings, like "aab", have 2 distinct parse trees), and no LL(1) grammar can be ambiguous. So even after factoring out the common prefix, the resulting grammar still can't be made LL(1) — the ambiguity would have to be removed by rewriting the grammar's structure (not just factoring prefixes) before an LL(1) table could exist for it.</p>
+            <p class="final">Answer: FIRST sets of the two S-productions both contain "a" → table conflict; ambiguous grammars can never be LL(1)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Given FIRST(A)={a,b,ε} and FOLLOW(S)={c,d,$}, for the production S→A, which table cells get filled for this production?</summary>
+          <div class="ans">
+            <p>The rule for a production X→α always looks at FOLLOW of the LHS nonterminal X, not of anything on the right-hand side — here the production is S→A, so the LHS is S and it's FOLLOW(S) that matters (FOLLOW(A) is irrelevant to filling row S). For every terminal in FIRST(A) except ε, add S→A at that column: M[S,a] and M[S,b]. Since ε∈FIRST(A), also add S→A at every column in FOLLOW(S): M[S,c], M[S,d], M[S,$].</p>
+            <p class="final">Answer: M[S,a], M[S,b], M[S,c], M[S,d], M[S,$] — five cells total</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Left-factor the grammar: <code>Stmt → if E then Stmt else Stmt | if E then Stmt</code>.</summary>
+          <div class="ans">
+            <p>Both alternatives share the prefix "if E then Stmt". Factor it out into a new nonterminal covering just the differing tail (else-branch or nothing): Stmt → if E then Stmt Stmt', Stmt' → else Stmt | ε.</p>
+            <p class="final">Answer: Stmt → if E then Stmt Stmt' ,  Stmt' → else Stmt | ε</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Does every regular language have an equivalent LL(1) grammar? (Note: this is different from asking whether every grammar someone writes for a regular language is automatically LL(1) — it usually isn't, e.g. S→Sa|a for a⁺ is left-recursive and not LL(1) as written.)</summary>
+          <div class="ans">
+            <p>Yes. Since regular languages are a strict subset of deterministic context-free languages, an equivalent unambiguous, non-left-recursive grammar can always be constructed for one (typically via a right-linear form derived from its DFA), and such a grammar is LL(1). This is a claim about the language's inherent parsability, not about any one arbitrary grammar someone happens to write for it — a specific grammar for a regular language can still be ambiguous or left-recursive as given, making that particular grammar not LL(1), even though an LL(1)-equivalent grammar for the same language exists.</p>
+            <p class="final">Answer: Yes — every regular language has an equivalent LL(1) grammar, even though an arbitrarily-written grammar for it need not itself be LL(1).</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="bottom-up">
+      <div class="topic-head"><span class="idx">03</span><h2>Bottom-Up Parsing (LR family)</h2></div>
+      <div class="topic-kicker">SHIFT-REDUCE · LR(0) ITEMS &amp; HANDLES · SLR / CLR / LALR · CONFLICTS</div>
+
+      <h3 class="sub">Shift-reduce parsing basics</h3>
+      <p>A bottom-up parser maintains a stack and repeatedly either <strong>shifts</strong> the next input symbol onto the stack, or <strong>reduces</strong> a string on top of the stack (a "handle") back to a nonterminal using a production, right-to-left, building the parse tree from leaves to root — the reverse of top-down parsing.</p>
+
+      <h3 class="sub">Power hierarchy of the LR family</h3>
+      <div class="eq">LR(0)  ⊂  SLR(1)  ⊂  LALR(1)  ⊂  CLR(1) / LR(1)</div>
+      <table>
+        <tr><th>Parser</th><th>Lookahead source</th><th>Table size</th><th>Power</th></tr>
+        <tr><td>LR(0)</td><td>none — reduce on any input</td><td>smallest</td><td>weakest</td></tr>
+        <tr><td>SLR(1)</td><td>FOLLOW(A) of the reduced nonterminal</td><td>small</td><td>weak — approximates lookahead</td></tr>
+        <tr><td>LALR(1)</td><td>merged, item-specific lookaheads</td><td>same size as SLR</td><td>strong — used by yacc/bison</td></tr>
+        <tr><td>CLR(1) / LR(1)</td><td>full, item-specific lookaheads</td><td>largest (many more states)</td><td>strongest</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap — LALR merging can introduce reduce-reduce conflicts</span>
+        <p>LALR(1) is built by merging CLR(1) states with identical cores (same LR(0) items, different lookaheads). This merge can never introduce a NEW shift-reduce conflict that wasn't already latent, but it CAN introduce a new <strong>reduce-reduce</strong> conflict that didn't exist in the full CLR(1) table — a classic GATE distinction question.</p>
+      </div>
+
+      <h3 class="sub">Shift-reduce vs reduce-reduce conflicts</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Shift-reduce conflict</h4>
+          <p>Parser can't decide whether to shift the next token or reduce what's on the stack. Classic example: dangling-else grammar. Default resolution (as in yacc) is usually to shift.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Reduce-reduce conflict</h4>
+          <p>Two different productions could both validly reduce the same handle — the grammar is ambiguous with respect to that construct, or the parser class is too weak to disambiguate it (common with LALR on certain grammars, absent in CLR for the same grammar).</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Augmented grammar and LR(0) items</h3>
+      <p>Add a new start production <code>S' → S</code> so the parser has a unique accept state. An LR(0) item is a production with a dot marking how much of the RHS has been recognized so far, e.g. <code>A → α·β</code>.</p>
+      <div class="card formula">
+        <span class="label">Closure and Goto operations</span>
+        <p><strong>closure(I)</strong>: if <code>A→α·Bβ</code> is in I, add all items <code>B→·γ</code> for every production of B. <strong>goto(I, X)</strong>: the closure of all items <code>A→αX·β</code> where <code>A→α·Xβ</code> was in I — this builds the transition to the next state on symbol X.</p>
+      </div>
+
+      <h3 class="sub">Handle-pruning intuition</h3>
+      <p>A <strong>handle</strong> is a substring on the stack matching some production's RHS, such that reducing it is a step in the reverse of some rightmost derivation. Bottom-up parsing = repeatedly find and reduce the handle ("handle pruning") until only the start symbol remains.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Rank LR(0), SLR(1), LALR(1), and CLR(1) from weakest to strongest in terms of the class of grammars each can parse without conflict.</summary>
+          <div class="ans">
+            <p>Each adds lookahead precision over the last: LR(0) uses none, SLR(1) approximates with a static FOLLOW set, LALR(1) uses item-specific (but merged) lookaheads, and CLR(1) uses full unmerged item-specific lookaheads.</p>
+            <p class="final">Answer: LR(0) &lt; SLR(1) &lt; LALR(1) &lt; CLR(1)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A grammar's CLR(1) parsing table has no conflicts, but its LALR(1) table (built by merging same-core CLR states) does have a conflict. What kind of conflict must it be, and why?</summary>
+          <div class="ans">
+            <p>It must be a reduce-reduce conflict. Merging states with the same core can combine two different lookahead sets on the same reduce item, causing two productions to become eligible to reduce on an overlapping lookahead that wasn't shared before merging. Merging is proven to never introduce a fresh shift-reduce conflict, since shift actions depend only on the core (which is identical before/after merging), not on the lookaheads.</p>
+            <p class="final">Answer: A reduce-reduce conflict — merging can create these but never a new shift-reduce conflict</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Compute closure({S'→·S}) given the augmented grammar S'→S, S→AA, A→aA|b.</summary>
+          <div class="ans">
+            <p>Start with S'→·S. Since the dot precedes nonterminal S, add all S-productions with dot at the start: S→·AA. Since the dot in that new item precedes nonterminal A, add all A-productions with dot at start: A→·aA and A→·b. No further nonterminals appear right after a dot, so closure is complete.</p>
+            <p class="final">Answer: { S'→·S, S→·AA, A→·aA, A→·b }</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Why does the "dangling else" grammar cause a shift-reduce conflict in LR parsing, and what is the conventional default resolution?</summary>
+          <div class="ans">
+            <p>When the parser has just reduced/recognized "if E then Stmt" and sees "else" as the next token, it can either shift the else (attaching it to the nearer if) or reduce the current Stmt (attaching else, if it comes later, to an outer if) — both are grammatically valid continuations, creating a shift-reduce conflict. The conventional default (used by yacc/bison) is to prefer shift, which correctly implements the standard "else binds to the nearest unmatched if" rule.</p>
+            <p class="final">Answer: Shift-reduce conflict; default resolution is to shift, which matches else to the nearest if</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A CLR(1) parser for a certain grammar has 20 states; the LALR(1) parser for the same grammar has 12 states. Explain why LALR always has fewer or equal states compared to CLR for the same grammar.</summary>
+          <div class="ans">
+            <p>LALR(1) is constructed by taking the CLR(1) automaton and merging every group of states that share the identical LR(0) core (same items ignoring lookaheads) into a single state, only keeping the union of their lookaheads. Since merging can only combine states together and never split them, the resulting state count can only decrease or stay the same, never increase.</p>
+            <p class="final">Answer: LALR merges same-core CLR states into one, so it can only have fewer or equal states, never more</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="sdt">
+      <div class="topic-head"><span class="idx">04</span><h2>Syntax-Directed Translation &amp; Intermediate Code</h2></div>
+      <div class="topic-kicker">SYNTHESIZED VS INHERITED · S-ATTRIBUTED &amp; L-ATTRIBUTED · THREE-ADDRESS CODE</div>
+
+      <h3 class="sub">Synthesized vs inherited attributes</h3>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Synthesized attribute</span>
+          <p>Computed from a node's <strong>children</strong> (bottom-up flow). E.g. an expression's type computed from its subexpressions' types.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Inherited attribute</span>
+          <p>Computed from a node's <strong>parent or siblings</strong> (top-down/left-to-right flow). E.g. passing the declared type down to each identifier in a declaration list.</p>
+        </div>
+      </div>
+
+      <h3 class="sub">S-attributed vs L-attributed definitions</h3>
+      <table>
+        <tr><th>Class</th><th>Rule</th><th>Compatible with</th></tr>
+        <tr><td>S-attributed</td><td>only synthesized attributes</td><td>bottom-up (LR) parsing</td></tr>
+        <tr><td>L-attributed</td><td>synthesized + inherited, but each inherited attribute depends only on attributes to its <strong>left</strong> (siblings before it, or the parent)</td><td>top-down (LL) parsing, and bottom-up with care</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Every S-attributed definition is automatically L-attributed (a stricter subset), but not vice versa. GATE often gives an SDD and asks "is this S-attributed, L-attributed, both, or neither" — check whether ANY inherited attributes exist first; if none, it's S-attributed (hence also L-attributed). If inherited attributes exist, verify they only look leftward.</p>
+      </div>
+
+      <h3 class="sub">Three-address code (3AC)</h3>
+      <p>An intermediate representation where each instruction has at most one operator and three addresses (2 operands + 1 result), making it close to assembly but still machine-independent.</p>
+      <div class="eq">Expression:  x = (a + b) * (c - d)
+
+3AC:
+  t1 = a + b
+  t2 = c - d
+  t3 = t1 * t2
+  x  = t3</div>
+      <div class="card formula">
+        <span class="label">Common 3AC representations</span>
+        <p><strong>Quadruples</strong>: (op, arg1, arg2, result) — 4 fields. <strong>Triples</strong>: (op, arg1, arg2) where arg1/arg2 can reference another triple's position instead of a temp name — no separate result field, saving space but complicating code motion (reordering breaks position-based references).</p>
+      </div>
+
+      <h3 class="sub">Syntax trees vs DAGs for expressions</h3>
+      <p>A syntax tree has one node per subexpression occurrence. A <strong>DAG (directed acyclic graph)</strong> shares nodes for common subexpressions — <code>(a+b)*(a+b)</code> as a DAG has just ONE node for <code>a+b</code>, used twice, enabling common-subexpression elimination for free during IR construction.</p>
+
+      <h3 class="sub">Backpatching for control flow</h3>
+      <p>For boolean expressions and control statements, target jump addresses are often unknown when the jump instruction is generated (e.g. the "then" branch hasn't been code-generated yet). <strong>Backpatching</strong> leaves the jump target blank initially and fills it in once the target address becomes known.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> An SDD has the rule <code>E.val = E1.val + T.val</code> where E, E1, T are all on the production's right-hand or left-hand side appropriately (E→E1+T). Is E.val synthesized or inherited?</summary>
+          <div class="ans">
+            <p>E.val is being computed for the LHS nonterminal E using only attribute values from its children (E1 and T) on the RHS — the defining characteristic of a synthesized attribute (bottom-up information flow).</p>
+            <p class="final">Answer: Synthesized</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> An SDD contains only synthesized attributes throughout. Classify it as S-attributed, L-attributed, both, or neither.</summary>
+          <div class="ans">
+            <p>S-attributed is defined as having ONLY synthesized attributes. Since S-attributed is always a subset of L-attributed (the leftward-dependency condition on inherited attributes is vacuously satisfied when there are none), this SDD qualifies as both.</p>
+            <p class="final">Answer: Both S-attributed and L-attributed</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Generate three-address code for <code>x = a * b + c * d</code>.</summary>
+          <div class="ans">
+            <p>Break the expression into elementary operations, introducing one temp per operator, evaluating left-to-right respecting precedence (* before +).</p>
+            <p class="final">Answer: t1 = a * b; t2 = c * d; t3 = t1 + t2; x = t3</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Why can triples be problematic when a code optimizer wants to reorder or delete instructions, compared to quadruples?</summary>
+          <div class="ans">
+            <p>A triple's operands can reference another triple by its position/index in the instruction list rather than by a named temporary. If the optimizer reorders, inserts, or deletes instructions, every position-based reference throughout the list can silently become wrong, requiring careful renumbering. Quadruples avoid this because they refer to results via explicitly named temporaries, which remain valid regardless of instruction order.</p>
+            <p class="final">Answer: Triples use position-based references that break under reordering; quadruples use named temporaries that don't</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Draw the key difference (conceptually) between a syntax tree and a DAG for the expression <code>(a+b)*(a+b)</code>, and state one optimization this difference enables.</summary>
+          <div class="ans">
+            <p>A syntax tree would have two completely separate subtrees for the two occurrences of "a+b", each with its own '+' node and leaf nodes for a and b. A DAG instead has a single '+' node for "a+b", with both "uses" of it (as left and right operand of '*') pointing to that same shared node — the identical subexpression is stored and computed once.</p>
+            <p class="final">Answer: The DAG shares the single "a+b" node instead of duplicating it, directly enabling common-subexpression elimination</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="runtime">
+      <div class="topic-head"><span class="idx">05</span><h2>Runtime Environments &amp; Symbol Tables</h2></div>
+      <div class="topic-kicker">ACTIVATION RECORDS · STATIC VS DYNAMIC SCOPING · STORAGE ALLOCATION STRATEGIES</div>
+
+      <h3 class="sub">Storage allocation strategies</h3>
+      <table>
+        <tr><th>Strategy</th><th>Where</th><th>Used for</th></tr>
+        <tr><td>Static allocation</td><td>fixed address, compile-time</td><td>globals, static locals — no recursion support</td></tr>
+        <tr><td>Stack allocation</td><td>runtime stack, LIFO</td><td>local variables, parameters — supports recursion</td></tr>
+        <tr><td>Heap allocation</td><td>runtime heap, arbitrary lifetime</td><td>dynamically sized/lifetime data (malloc-style)</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap — why static allocation can't support recursion</span>
+        <p>Static allocation gives each variable exactly ONE fixed memory address for the entire program run. A recursive function needs a fresh, independent copy of its locals for every active call — impossible with a single fixed address, since the second call would overwrite the first's still-in-use values. This is precisely why recursive languages require stack (or heap) allocation for locals.</p>
+      </div>
+
+      <h3 class="sub">Activation record layout</h3>
+      <div class="eq">┌────────────────────┐  ↑ higher addresses
+│ actual parameters   │
+├────────────────────┤
+│ return address       │
+├────────────────────┤
+│ control link (dyn.)  │  → points to caller's AR
+├────────────────────┤
+│ access link (static) │  → points to lexically enclosing AR
+├────────────────────┤
+│ saved machine state   │
+├────────────────────┤
+│ local variables       │
+├────────────────────┤
+│ temporaries            │
+└────────────────────┘  ↓ lower addresses (typical stack growth)</div>
+      <div class="card note">
+        <span class="label">Control link vs access link</span>
+        <p><strong>Control link (dynamic link)</strong> points to the caller's AR — used to restore the caller's frame on return, tracks the actual call sequence. <strong>Access link (static link)</strong> points to the AR of the lexically (textually) enclosing scope — used to resolve non-local variable references in nested-function languages. These two links coincide only when a function is called from directly within its own lexical parent.</p>
+      </div>
+
+      <h3 class="sub">Static vs dynamic scoping</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Static (lexical) scoping</h4>
+          <p>A name resolves to the binding visible in the <strong>enclosing source-code block</strong> at the point where it's written — determined entirely at compile time. Used by nearly all modern languages including C.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Dynamic scoping</h4>
+          <p>A name resolves to the most recent binding still active on the <strong>call stack at runtime</strong> — depends on the call sequence, not the source layout. Rare in modern languages (older Lisp, some shell variables).</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Symbol table</h3>
+      <p>A compiler-wide data structure mapping identifier names to their attributes: type, scope, memory location/offset, size. Implemented typically as a hash table for O(1) average lookup, often organized as nested scopes (a stack of tables, one per active block) to support shadowing.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Why can't a language that supports recursive functions use pure static (fixed-address) allocation for local variables?</summary>
+          <div class="ans">
+            <p>Static allocation binds each variable to one fixed memory address for the program's entire lifetime. A recursive call creates a new logical instance of the same local variable while the outer call's instance is still active and needed — with only one address available, the inner call would overwrite the outer call's value, corrupting it. Stack allocation solves this by giving each call its own activation record with independent storage.</p>
+            <p class="final">Answer: Recursion needs multiple simultaneous live instances of the same local variable, which one fixed address cannot provide</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Function A (defined at the top level) calls function B, which is nested inside function C. Function A itself is not inside C. Under static scoping with access links, does B's access link point to A's activation record?</summary>
+          <div class="ans">
+            <p>No. The access link (static link) always points to the AR of the lexically enclosing scope in the SOURCE CODE — B is lexically nested inside C, so B's access link points to C's activation record, regardless of who actually called B at runtime. Only the control (dynamic) link would point to A's activation record in this scenario, since A is the actual caller.</p>
+            <p class="final">Answer: No — B's access link points to C's AR (lexical parent), not A's; A's AR is reachable only via the control link</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Under dynamic scoping, consider: global x=1; function f(){print(x);} function g(){int x=2; f();} Calling g() — what does f print?</summary>
+          <div class="ans">
+            <p>Dynamic scoping resolves a name using the most recent binding still active on the call stack at the moment of use, not the textual/lexical structure. When f() executes print(x), the most recently active binding of x on the call stack is g's local x=2 (g called f, and g's x is still in scope on the stack), so that's what resolves.</p>
+            <p class="final">Answer: 2 (under dynamic scoping — it would print 1 under static/lexical scoping, since f is lexically outside g)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> What is stored for each identifier entry in a compiler's symbol table, and why is a hash table the typical underlying structure?</summary>
+          <div class="ans">
+            <p>Typical fields: name, type, scope/block level, storage location or stack offset, and size. A hash table is preferred because identifier lookup happens extremely frequently throughout compilation (every reference to every variable), and hashing gives average O(1) insert/lookup, which is essential for compiling large programs efficiently.</p>
+            <p class="final">Answer: Name, type, scope, memory offset, size; hash table chosen for average O(1) lookup given how frequently it's queried</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A function has 3 parameters, 2 local variables, and makes one nested call. At the moment that nested call's activation record is pushed, how many activation records exist on the stack in total for this call chain (assuming this was the initial/outermost call)?</summary>
+          <div class="ans">
+            <p>The outermost function's own AR was already on the stack when it was called, and it remains on the stack (not popped) while it waits for the nested call to return. Pushing the nested call's AR adds one more on top — so both are simultaneously present.</p>
+            <p class="final">Answer: 2 activation records (the outer call's AR remains on the stack beneath the newly pushed nested call's AR)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="optimization">
+      <div class="topic-head"><span class="idx">06</span><h2>Code Optimization</h2></div>
+      <div class="topic-kicker">BASIC BLOCKS &amp; CFG · LOCAL VS GLOBAL OPTIMIZATION · LOOP OPTIMIZATION · DATA-FLOW ANALYSIS</div>
+
+      <h3 class="sub">Basic blocks and control-flow graphs</h3>
+      <p>A <strong>basic block</strong> is a maximal sequence of instructions with a single entry (first instruction) and single exit (last instruction) — control enters only at the top and leaves only at the bottom, with no branches into or out of the middle. A <strong>control-flow graph (CFG)</strong> has basic blocks as nodes and possible control transfers as edges.</p>
+      <div class="card formula">
+        <span class="label">Identifying leaders (basic block starts)</span>
+        <p>A leader is: (1) the first instruction, (2) any instruction that is the target of a jump/branch, or (3) any instruction immediately following a jump/branch. Each basic block runs from one leader up to (but not including) the next leader.</p>
+      </div>
+
+      <h3 class="sub">Local vs global optimization</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Local optimization</h4>
+          <p>Analyzed within a single basic block only. Examples: local common-subexpression elimination, constant folding, dead-code elimination within the block. Simple, no data-flow analysis needed.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Global optimization</h4>
+          <p>Analyzed across the whole CFG (multiple blocks). Needs data-flow analysis (reaching definitions, live variables) since a variable's value may come from different blocks depending on the execution path taken.</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Common optimizations</h3>
+      <table>
+        <tr><th>Optimization</th><th>What it does</th></tr>
+        <tr><td>Constant folding</td><td>evaluate constant expressions at compile time: <code>x=2+3</code> → <code>x=5</code></td></tr>
+        <tr><td>Common subexpr. elim.</td><td>compute a repeated subexpression once, reuse the value</td></tr>
+        <tr><td>Dead code elimination</td><td>remove code whose result is never used</td></tr>
+        <tr><td>Loop-invariant code motion</td><td>hoist computations that don't change across iterations out of the loop</td></tr>
+        <tr><td>Strength reduction</td><td>replace expensive ops with cheaper equivalents, e.g. <code>i*2</code> → <code>i&lt;&lt;1</code></td></tr>
+        <tr><td>Induction variable elim.</td><td>remove redundant loop counters derivable from another</td></tr>
+      </table>
+
+      <h3 class="sub">Data-flow analyses — the three the GATE 2027 syllabus names</h3>
+      <p>The official GATE 2027 Compiler Design syllabus explicitly lists three data-flow analyses: <strong>constant propagation</strong>, <strong>liveness analysis</strong>, and <strong>common subexpression elimination</strong>. All three sit inside the same general <strong>iterative data-flow framework</strong> — a CFG, per-block IN/OUT information, transfer functions, and a meet operator combining information at join points, iterated to a fixed point — but their actual <strong>data-flow domains, transfer functions, and meet operators differ</strong>, so don't treat them as one interchangeable GEN/KILL recipe. Concretely: liveness is a set-based <em>backward</em> analysis, reaching definitions and common-subexpression/available-expressions analysis are set-based <em>forward</em> analyses (all three do reduce to GEN/KILL-style set equations), while constant propagation is a <em>lattice/value</em> analysis — its "state" per variable is a three-level lattice value (⊤ / constant / ⊥), not a set of definitions or expressions, and its meet operator combines lattice values rather than unioning or intersecting sets of statements.</p>
+
+      <div class="card pyq">
+        <span class="label">Reaching definitions (forward analysis)</span>
+        <p>A definition of variable x <strong>reaches</strong> a point p if there's a path from the definition to p along which x is not redefined. Direction: <strong>forward</strong>. Meet operator: <strong>union (∪)</strong> — a definition reaches if it comes along <em>any</em> path. Used to detect use of possibly-uninitialized variables and as the foundation for constant propagation.</p>
+        <div class="eq">OUT[B] = GEN[B] ∪ (IN[B] − KILL[B]) &emsp;&emsp; IN[B] = ∪ OUT[predecessors of B]</div>
+      </div>
+      <div class="card pyq">
+        <span class="label">Live variable analysis (backward analysis)</span>
+        <p>A variable x is <strong>live</strong> at point p if there's a path from p to some use of x along which x is not redefined first. Direction: <strong>backward</strong> (computed from uses back toward definitions). Meet operator: <strong>union (∪)</strong>. Used for register allocation and dead-code/dead-store elimination.</p>
+        <div class="eq">IN[B] = USE[B] ∪ (OUT[B] − DEF[B]) &emsp;&emsp; OUT[B] = ∪ IN[successors of B]</div>
+      </div>
+
+      <h3 class="sub">Constant propagation</h3>
+      <p><strong>Constant propagation</strong> replaces variables with their known constant values at compile time. If every reaching definition of variable x assigns the <em>same</em> constant value c, then every subsequent use of x can be replaced by c. This often enables further optimizations like constant folding (<code>x=5; y=x+3</code> → <code>y=8</code>) and dead-code elimination.</p>
+
+      <div class="card formula">
+        <span class="label">Constant propagation — lattice model</span>
+        <p>Each variable's state at any program point is one of three values on a lattice:</p>
+        <p><strong>⊤ (top/undefined)</strong> — variable not yet assigned on any reaching path<br>
+        <strong>c (constant)</strong> — variable has the same constant value c on all reaching paths<br>
+        <strong>⊥ (bottom/NAC)</strong> — variable has different values on different paths (Not A Constant)</p>
+        <p>The lattice order is: ⊤ &gt; any constant c &gt; ⊥. The <strong>meet operator (∩)</strong> combines values at join points:</p>
+        <div class="eq">c ∩ c = c &emsp;|&emsp; c₁ ∩ c₂ = ⊥ (if c₁ ≠ c₂) &emsp;|&emsp; c ∩ ⊤ = c &emsp;|&emsp; c ∩ ⊥ = ⊥</div>
+      </div>
+
+      <div class="card formula">
+        <span class="label">Transfer function for constant propagation</span>
+        <p>For each statement <code>x = expr</code> in a basic block:</p>
+        <p>• If <code>expr</code> is a constant c → set x = c<br>
+        • If <code>expr</code> involves only variables with known constant values → evaluate and set x = result (constant folding)<br>
+        • If any variable in <code>expr</code> is ⊥ (NAC) → set x = ⊥<br>
+        • If any variable in <code>expr</code> is ⊤ (undefined) → set x = ⊤</p>
+        <p>At <strong>join points</strong> (where multiple CFG paths merge), use the <strong>meet (∩)</strong> operator — this is <em>intersection</em>, not union. A variable is constant only if ALL incoming paths agree on the same value.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">Worked example — constant propagation on a CFG</span>
+        <p>Consider three basic blocks with edges B1→B2, B1→B3, B2→B4, B3→B4:</p>
+        <p><strong>B1:</strong> <code>x = 5; y = 3</code><br>
+        <strong>B2:</strong> <code>y = 7</code> &emsp;(only reached if condition true)<br>
+        <strong>B3:</strong> <code>y = 7</code> &emsp;(only reached if condition false)<br>
+        <strong>B4:</strong> <code>z = x + y</code></p>
+        <p>At B4's entry (join of B2 and B3): x = 5 from both paths → x is constant 5. y = 7 from B2, y = 7 from B3 → y is constant 7 (both agree). Therefore z = 5 + 7 = 12 — all three variables are constants at B4.</p>
+        <p>But if B3 had <code>y = 9</code> instead, then at B4: y = 7 ∩ 9 = ⊥ (NAC) — y cannot be propagated, and z = ⊥.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — constant propagation</span>
+        <p>⚠️ At join points, constant propagation uses <strong>intersection (meet/∩)</strong>, not union. A variable is constant only if ALL paths agree on the same value. This is the opposite of reaching definitions (which uses union — a definition reaches if it comes from ANY path). Confusing meet vs join operators is the #1 trap in GATE data-flow questions.</p>
+      </div>
+
+      <h3 class="sub">Common subexpression elimination (CSE)</h3>
+      <p><strong>CSE</strong> identifies expressions that are computed more than once with the same operand values, and replaces redundant recomputations with a stored result. An expression <code>a op b</code> is an <strong>available expression</strong> at point p if every path from the entry to p evaluates <code>a op b</code>, and neither a nor b is redefined after the last such evaluation.</p>
+
+      <div class="card formula">
+        <span class="label">Available expressions analysis (for CSE)</span>
+        <p>Direction: <strong>forward</strong>. Meet operator: <strong>intersection (∩)</strong> — an expression is available only if it's available on ALL incoming paths.</p>
+        <div class="eq">OUT[B] = e_GEN[B] ∪ (IN[B] − e_KILL[B]) &emsp;&emsp; IN[B] = ∩ OUT[predecessors of B]</div>
+        <p><strong>e_GEN[B]</strong>: expressions computed in B whose operands are not subsequently redefined in B.<br>
+        <strong>e_KILL[B]</strong>: all expressions involving any variable defined in B.</p>
+      </div>
+
+      <div class="card formula">
+        <span class="label">CSE worked example</span>
+        <p><strong>Before CSE:</strong> <code>t1 = a + b; c = t1 * d; ... t2 = a + b; e = t2 * f;</code></p>
+        <p><strong>After CSE:</strong> <code>t1 = a + b; c = t1 * d; ... e = t1 * f;</code> (reuse t1, eliminate redundant a+b)</p>
+        <p>CSE requires that neither <code>a</code> nor <code>b</code> was redefined between the two occurrences of <code>a + b</code>.</p>
+      </div>
+
+      <h3 class="sub">Loop optimization — the highest-value target</h3>
+      <p>Loops execute far more often than straight-line code, so optimizing them gives disproportionate speedup. Key targets: identify natural loops (via dominators/back edges in the CFG), hoist loop-invariant computations, and eliminate redundant induction variables.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">8 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Given the 3AC sequence: (1) t1=a+b (2) if t1&gt;0 goto (5) (3) t2=a-b (4) goto (6) (5) t2=a*b (6) print t2 — identify the leaders.</summary>
+          <div class="ans">
+            <p>Leader rule: instruction 1 (first instruction) is always a leader. Instruction 5 is a leader (target of the goto in line 2). Instruction 3 is a leader (immediately follows the branch at line 2). Instruction 6 is a leader (target of goto at line 4, and also immediately follows instruction 5's fallthrough... but since line 6 is a jump target it qualifies either way).</p>
+            <p class="final">Answer: Leaders at instructions 1, 3, 5, 6</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Is dead-code elimination within a single basic block a local or global optimization, and why?</summary>
+          <div class="ans">
+            <p>Determining whether a value computed within one basic block is ever used again purely within that same block requires only examining that block's own instruction sequence — no information about other blocks or possible execution paths is needed. This makes it a local optimization by definition (confined to a single basic block's analysis).</p>
+            <p class="final">Answer: Local optimization — it only needs information within the single block</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Which classical data-flow analysis is computed in the backward direction, and what is it used for?</summary>
+          <div class="ans">
+            <p>Live variable analysis is computed backward — starting from a variable's use and propagating "liveness" back toward its definitions, since whether x is live at a point depends on whether it's used somewhere later along some future path. It's primarily used for register allocation (a dead register can be reused) and dead-store elimination.</p>
+            <p class="final">Answer: Live variable analysis — used for register allocation and dead-store elimination</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Rewrite this loop after applying loop-invariant code motion: <span class="code">for(i=0;i&lt;n;i++){
+  x = a*b;
+  sum += x + i;
+}</span></summary>
+          <div class="ans">
+            <p>The computation <code>x = a*b</code> doesn't depend on the loop variable i and produces the same result on every iteration — it's loop-invariant and can be safely hoisted out to execute exactly once, before the loop begins, instead of n times inside it.</p>
+            <p class="final">Answer: x = a*b; for(i=0;i&lt;n;i++){ sum += x + i; }</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Explain the difference in direction between reaching-definitions analysis and live-variable analysis, and why they must go in opposite directions.</summary>
+          <div class="ans">
+            <p>Reaching definitions asks "which earlier definition might still be the current value at this point?" — a question that's naturally answered by propagating information forward from definitions toward later uses. Live variables asks "will this value be used somewhere later?" — a question naturally answered by propagating information backward from uses toward earlier points. The two questions are inherently mirror images (looking forward from a write vs. looking forward to a future read from the current point), which is exactly why one is a forward data-flow problem and the other a backward one.</p>
+            <p class="final">Answer: Reaching definitions is forward (definition → later point); live variables is backward (point → later use) — they answer mirror-image questions</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q6</span> In the CFG below, can x be constant-propagated at point P? B1: x=5. B2: x=5. B3 (joins B1,B2): use x at point P.</summary>
+          <div class="ans">
+            <p>At the join point (entry of B3), we apply the meet operator to the values of x from both incoming paths. From B1: x = 5. From B2: x = 5. Meet: 5 ∩ 5 = 5 — both paths agree on the same constant value. Therefore x can be replaced by 5 at point P.</p>
+            <p class="final">Answer: Yes — x = 5 on both incoming paths, so meet gives constant 5</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q7</span> B1: a=3, b=4. B2: a=3, b=7. B3 (joins B1,B2): c = a + b. After constant propagation, what is c at B3?</summary>
+          <div class="ans">
+            <p>At B3 entry: a = 3 ∩ 3 = 3 (constant). b = 4 ∩ 7 = ⊥ (NAC — different values on different paths). Since b is NAC, the expression a + b cannot be fully evaluated. c = ⊥ (not a constant). Only a can be propagated: c = 3 + b.</p>
+            <p class="final">Answer: c is NAC (⊥) — a can be propagated as 3, but b differs across paths so c = 3 + b</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q8</span> Given: t1 = a*b; c = t1 + d; a = 7; t2 = a*b; e = t2 + d. Can CSE eliminate the second computation of a*b?</summary>
+          <div class="ans">
+            <p>Between the first <code>a*b</code> (t1) and the second <code>a*b</code> (t2), the variable <code>a</code> is redefined (<code>a = 7</code>). This means the expression <code>a*b</code> is <strong>killed</strong> — the second <code>a*b</code> uses a different value of a than the first. The expression is NOT available at the second computation point, so CSE cannot eliminate it.</p>
+            <p class="final">Answer: No — a is redefined between the two occurrences, so a*b is not an available expression at the second point</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="revision">
+      <div class="topic-head"><span class="idx">07</span><h2>Revision Sheet</h2></div>
+      <div class="topic-kicker">EVERYTHING ON ONE SCREEN — LAST-MINUTE PASS</div>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Compiler phases (order)</span>
+          <p>Lexical → Syntax → Semantic → IR generation → Optimization → Code generation. First four = front end (source-dependent). Code generation = back end (target-dependent). Optimization straddles both: machine-independent optimization (middle end) sits right after IR generation; machine-dependent optimization belongs with the back end.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Maximal munch</span>
+          <p>Lexer always matches the longest possible lexeme; ties between equal-length matches broken by rule priority order.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Left recursion → always non-LL(1)</span>
+          <p>A→Aα|β transforms to A→βA', A'→αA'|ε. Left-recursive or ambiguous grammars can never be LL(1).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">FIRST vs FOLLOW</span>
+          <p>FIRST(α): terminals that can start a derivation from α (may include ε). FOLLOW(A): terminals that can appear right after A (never lists ε itself).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">LR power hierarchy</span>
+          <p>LR(0) ⊂ SLR(1) ⊂ LALR(1) ⊂ CLR(1). LALR merges same-core CLR states — can create new reduce-reduce conflicts, never new shift-reduce ones.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Shift-reduce default</span>
+          <p>Conventional yacc/bison default resolves shift-reduce conflicts by shifting — correctly resolves dangling-else to bind with the nearest if.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Synthesized vs inherited</span>
+          <p>Synthesized: computed from children (bottom-up). Inherited: computed from parent/left-siblings (top-down/left-to-right). S-attributed ⊂ L-attributed.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">3AC formats</span>
+          <p>Quadruples (op,arg1,arg2,result) — reorder-safe. Triples (op,arg1,arg2) reference by position — breaks under reordering.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Static vs stack allocation</span>
+          <p>Static = one fixed address, no recursion support. Stack = fresh AR per call, required for recursion. Heap = arbitrary lifetime, dynamic sizing.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Control link vs access link</span>
+          <p>Control (dynamic) link → caller's AR (actual call sequence). Access (static) link → lexically enclosing scope's AR (source structure). Coincide only when called from the direct lexical parent.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Static vs dynamic scoping</span>
+          <p>Static: resolved by source-code nesting, compile-time. Dynamic: resolved by the live call stack at runtime. Virtually all modern languages (incl. C) use static scoping.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Reaching definitions vs live variables</span>
+          <p>Reaching definitions: forward, union, def → later point. Live variables: backward, union, point → later use. Mirror-image data-flow problems.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Constant propagation</span>
+          <p>Replaces variables with known constants. Lattice: ⊤ → constant c → ⊥ (NAC). At join points: meet = intersection (c ∩ c = c, c₁ ∩ c₂ = ⊥). A variable is constant only if ALL paths agree.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Available expressions (for CSE)</span>
+          <p>Forward analysis, meet = intersection. OUT[B] = e_GEN[B] ∪ (IN[B] − e_KILL[B]). Expression a op b is available if computed on ALL paths and operands not redefined since.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Data-flow meet operators — the critical distinction</span>
+          <p>Reaching defs & liveness use <strong>union (∪)</strong> — any path suffices. Constant prop & available exprs use <strong>intersection (∩)</strong> — all paths must agree. GATE frequently tests this distinction.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Basic block leaders</span>
+          <p>Leader = first instruction, OR a jump/branch target, OR the instruction immediately after a jump/branch. Block = leader up to next leader.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Highest-value optimization target</span>
+          <p>Loops — since they execute far more often than straight-line code, loop-invariant code motion and induction-variable elimination give disproportionate speedup per instruction touched.</p>
+        </div>
+      </div>
+
+      <div class="card note" style="margin-top:26px;">
+        <span class="label">How to use this sheet</span>
+        <p>Read sections 01–06 once to build the mental model of how source becomes target code, then loop back to this page alone for every later revision pass — if a card doesn't immediately click, that's the section to reopen. Compiler Design rewards being able to hand-construct a FIRST/FOLLOW set, an LL(1) table, or an LR(0) item set on the spot, far more than reciting definitions — drill construction problems, not re-reading theory.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — rapid-fire mix (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A grammar is ambiguous. Can it be parsed by a CLR(1) parser?</summary>
+          <div class="ans">
+            <p>No — ambiguity means some string has two distinct parse trees/derivations, which always manifests as a genuine conflict (typically reduce-reduce) in the parsing table of any deterministic LR-family parser, no matter how much lookahead is used. More lookahead resolves lookahead-limited weaknesses, not fundamental grammatical ambiguity.</p>
+            <p class="final">Answer: No — ambiguous grammars cannot be parsed by any deterministic LR-family parser, including CLR(1)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Which phase would catch a type mismatch like adding an int to a struct?</summary>
+          <div class="ans">
+            <p>Type compatibility isn't a question of token sequence (syntax) — the expression is grammatically well-formed. It requires knowing the declared types of the operands, which is exactly what semantic analysis checks using the symbol table.</p>
+            <p class="final">Answer: Semantic analysis</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> True or false: a variable being "live" at a point guarantees it was also "reached" by some definition at that point.</summary>
+          <div class="ans">
+            <p>False. Liveness asks "will the current value of x be used in the future before being overwritten?" while reaching definitions asks "which definitions of x may reach this point?" — these are independent analyses, and neither guarantees the other.</p>
+            <p>Counterexample: <code>int x; if (cond) x = 10; printf("%d", x);</code>. At the <code>printf</code>, x is live (its value will be used), but along the path where <code>cond</code> is false, no definition of x reaches that point — so a variable can be live without being reached by any definition.</p>
+            <p class="final">Answer: False — liveness and reaching definitions are independent; a live variable need not have a reaching definition</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Convert to postfix and generate 3AC for: <code>x = (a+b)*c - d</code>.</summary>
+          <div class="ans">
+            <p>Following operator precedence (parentheses, then *, then -), break into elementary steps introducing one temp per operation.</p>
+            <p class="final">Answer: t1 = a+b; t2 = t1*c; t3 = t2-d; x = t3</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A function is called recursively 5 levels deep. What do the access links point to if the function is not lexically nested inside anything (a top-level function calling itself)?</summary>
+          <div class="ans">
+            <p>Since the function is top-level (not nested inside any other function), it has NO lexically enclosing procedure at all — so the access link isn't pointing to some other function's activation record. What actually happens depends on the implementation: many textbook treatments model this by giving each activation record an access link to a shared global/static environment, but that "global AR" framing is a teaching simplification, not a universal rule — real implementations commonly resolve top-level/global names directly through the compiler's global/static data area (fixed addresses, a global symbol table, etc.) rather than through an access-link chain at all. Either way, the key fact holds regardless of implementation: since there's no lexically enclosing procedure, every one of the 5 activation records reaches the SAME global/static environment through whatever mechanism the implementation uses — this is unlike the control/dynamic links, which do chain caller→callee down the 5 levels.</p>
+            <p class="final">Answer: All 5 activation records reach the same global/static environment (not each other's frames) since there's no lexically enclosing procedure — but exactly how that's implemented (a shared "global AR" vs direct static/global storage access) is implementation-dependent, not a fixed rule</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      Blueprint Notes — Compiler Design for GATE CSE · built for revision, not first-read · official syllabus: "Lexical analysis, parsing, syntax-directed translation. Runtime environments. Intermediate code generation, code optimization."
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

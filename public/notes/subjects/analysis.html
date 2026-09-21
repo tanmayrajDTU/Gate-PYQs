@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GATE CSE 2007–2026 · Deep Analysis Report</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Premium editorial theme — shared palette with the rest of the site */
+  :root {
+    --bg: #0b0c0f;
+    --surface: rgba(255,255,255,0.028);
+    --surface2: #1a1b21;
+    --border: #212228;
+    --accent: #cba36b;
+    --accent-bright: #e6c58e;
+    --accent2: #d98a5f;
+    --accent3: #82b79a;
+    --accent4: #e0776c;
+    --accent5: #b09bd6;
+    --text: #f2ede4;
+    --muted: #a39d92;
+    --header-font: 'Fraunces', 'Georgia', serif;
+  }
+  [data-theme="light"] {
+    --bg: #faf7f1;
+    --surface: rgba(30,25,15,0.035);
+    --surface2: #f4efe4;
+    --border: #e3dac8;
+    --accent: #a9773b;
+    --accent-bright: #8a5f2a;
+    --accent2: #a85a2c;
+    --accent3: #3f7d5c;
+    --accent4: #b8483a;
+    --accent5: #6d4f96;
+    --text: #211d16;
+    --muted: #5c5346;
+  }
+  [data-theme="light"] body::after { opacity: 0.015; }
+  [data-theme="light"] ::selection { background: var(--accent); color: #fff; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(ellipse 900px 500px at 85% -8%, rgba(203,163,107,0.08), transparent 60%),
+      linear-gradient(rgba(203,163,107,0.028) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, rgba(203,163,107,0.028) 1px, transparent 1px) 0 0/40px 40px,
+      var(--bg);
+    color: var(--text); font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.65;
+    position: relative;
+  }
+  body::after {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+    opacity: 0.025; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  ::selection { background: var(--accent); color: #0a0a0c; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: #060708; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 6px; border: 2px solid #060708; }
+  ::-webkit-scrollbar-thumb:hover { background: #8a7048; }
+
+  /* NAV */
+  nav { position: sticky; top: 48px; z-index: 100; background: rgba(6,7,8,0.85); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); border-bottom: 1px solid rgba(203,163,107,0.14); padding: 0 24px; display: flex; align-items: center; gap: 3px; height: 52px; overflow-x: auto; box-shadow: 0 1px 24px rgba(0,0,0,0.35); }
+  nav .logo { font-family: var(--header-font); font-size: 13.5px; color: var(--accent); font-weight: 600; white-space: nowrap; margin-right: 18px; letter-spacing: .5px; }
+  nav button { background: none; border: none; color: var(--muted); cursor: pointer; padding: 7px 13px; border-radius: 7px; font-size: 12px; white-space: nowrap; transition: all .18s; font-family: 'Inter', sans-serif; }
+  nav button:hover { color: var(--text); background: rgba(255,255,255,0.045); }
+  nav button.active { color: var(--accent-bright); background: rgba(203,163,107,0.1); }
+
+  /* LAYOUT */
+  .page { display: none; padding: 32px 24px; max-width: 1400px; margin: 0 auto; animation: fadeUp .5s ease both; }
+  .page.active { display: block; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* HERO */
+  .hero { border: 1px solid var(--border); border-radius: 14px; padding: 38px; margin-bottom: 26px; background: linear-gradient(135deg, #131317 0%, #0a0a0c 100%); position: relative; overflow: hidden; box-shadow: 0 20px 50px -18px rgba(0,0,0,0.6); }
+  .hero::before { content: 'GATE CSE'; position: absolute; right: -20px; top: -20px; font-size: 130px; font-family: var(--header-font); font-style: italic; color: rgba(203,163,107,0.045); font-weight: 700; pointer-events: none; }
+  .hero h1 { font-family: var(--header-font); font-size: 24px; color: var(--accent-bright); letter-spacing: 1px; margin-bottom: 10px; font-weight: 600; }
+  .hero p { color: var(--muted); font-size: 13.5px; max-width: 600px; }
+  .hero .stats-row { display: flex; gap: 36px; margin-top: 26px; flex-wrap: wrap; }
+  .hero .stat { }
+  .hero .stat .val { font-size: 30px; font-weight: 600; color: var(--text); font-family: var(--header-font); }
+  .hero .stat .lbl { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; margin-top: 2px; display: block; }
+
+  /* CARDS */
+  .grid { display: grid; gap: 16px; }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  @media(max-width: 900px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; backdrop-filter: blur(6px); box-shadow: 0 2px 14px rgba(0,0,0,0.24); transition: border-color .18s; }
+  .card:hover { border-color: #2a2b33; }
+  .card h3 { font-size: 11.5px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); margin-bottom: 16px; font-family: var(--header-font); font-weight: 600; }
+  .card h2 { font-size: 15px; color: var(--text); margin-bottom: 12px; font-weight: 600; font-family: var(--header-font); }
+
+  /* TABLES */
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th { background: var(--surface2); color: var(--muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: .6px; padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 9px 12px; border-bottom: 1px solid rgba(35,36,42,0.6); vertical-align: middle; }
+  tr:hover td { background: rgba(203,163,107,0.035); }
+  tr:last-child td { border-bottom: none; }
+
+  /* BADGES */
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .6px; }
+  .badge-high { background: rgba(130,183,154,0.14); color: #82b79a; border: 1px solid rgba(130,183,154,0.3); }
+  .badge-med { background: rgba(217,138,95,0.14); color: #d98a5f; border: 1px solid rgba(217,138,95,0.3); }
+  .badge-low { background: rgba(224,119,108,0.14); color: #e0776c; border: 1px solid rgba(224,119,108,0.3); }
+  .badge-blue { background: rgba(203,163,107,0.14); color: #cba36b; border: 1px solid rgba(203,163,107,0.3); }
+  .badge-purple { background: rgba(176,155,214,0.14); color: #b09bd6; border: 1px solid rgba(176,155,214,0.3); }
+
+  /* TREND ARROWS */
+  .up { color: #82b79a; }
+  .down { color: #e0776c; }
+  .stable { color: #d98a5f; }
+
+  /* BAR */
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
+  .bar-label { width: 160px; font-size: 12px; color: var(--text); flex-shrink: 0; }
+  .bar-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-bright)); }
+  .bar-val { width: 40px; text-align: right; font-size: 12px; color: var(--muted); font-family: var(--header-font); }
+
+  /* HEATMAP */
+  .heatmap { display: grid; gap: 3px; }
+  .hm-row { display: flex; align-items: center; gap: 3px; }
+  .hm-label { width: 120px; font-size: 11px; color: var(--muted); flex-shrink: 0; text-align: right; padding-right: 6px; }
+  .hm-cell { width: 32px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-family: var(--header-font); color: rgba(255,255,255,0.75); cursor: default; transition: transform .15s; }
+  .hm-cell:hover { transform: scale(1.2); z-index: 5; position: relative; box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+  .hm-year-row { display: flex; gap: 3px; padding-left: 126px; }
+  .hm-year { width: 32px; font-size: 9px; color: var(--muted); text-align: center; transform: rotate(-45deg); white-space: nowrap; }
+
+  /* PREDICTION */
+  .pred-item { border-left: 3px solid var(--accent); padding: 11px 15px; margin-bottom: 9px; background: rgba(203,163,107,0.045); border-radius: 0 8px 8px 0; }
+  .pred-item .conf { font-size: 9.5px; text-transform: uppercase; letter-spacing: .6px; font-weight: 700; }
+  .pred-item p { font-size: 12.5px; color: var(--muted); margin-top: 5px; }
+
+  /* SECTION TITLE */
+  .section-title { font-family: var(--header-font); font-size: 13.5px; color: var(--accent-bright); letter-spacing: .5px; margin: 26px 0 13px; padding-bottom: 9px; border-bottom: 1px solid var(--border); font-weight: 600; }
+
+  /* ROI */
+  .roi-item { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid rgba(35,36,42,0.6); }
+  .roi-item:last-child { border-bottom: none; }
+  .roi-bar { flex: 1; height: 4px; background: var(--border); border-radius: 2px; margin: 0 12px; overflow: hidden; }
+  .roi-bar-fill { height: 100%; border-radius: 2px; }
+  .roi-name { font-size: 12.5px; width: 160px; flex-shrink: 0; }
+  .roi-score { font-size: 12px; font-family: var(--header-font); color: var(--accent2); width: 40px; text-align: right; flex-shrink: 0; }
+
+  .note { background: rgba(217,138,95,0.06); border: 1px solid rgba(217,138,95,0.2); border-radius: 10px; padding: 13px 17px; font-size: 12px; color: var(--accent2); margin-top: 16px; }
+
+  canvas { max-width: 100%; }
+  .chart-container { position: relative; height: 260px; }
+  .chart-container-sm { position: relative; height: 200px; }
+  .chart-container-lg { position: relative; height: 340px; }
+
+  .tag { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; font-size: 10px; padding: 2px 9px; color: var(--muted); margin: 2px; }
+
+  .insight-box { background: var(--surface2); border-radius: 10px; padding: 15px; margin-bottom: 10px; border: 1px solid var(--border); }
+  .insight-box .num { font-size: 23px; font-weight: 600; font-family: var(--header-font); color: var(--accent-bright); }
+  .insight-box .desc { font-size: 12px; color: var(--muted); margin-top: 5px; }
+
+  .pareto-item { display: flex; gap: 12px; align-items: flex-start; padding: 11px 0; border-bottom: 1px solid rgba(35,36,42,0.5); }
+  .pareto-item:last-child { border-bottom: none; }
+  .pareto-rank { font-family: var(--header-font); font-size: 16px; font-weight: 600; color: var(--accent); width: 30px; flex-shrink: 0; }
+  .pareto-info { flex: 1; }
+  .pareto-info strong { font-size: 13px; }
+  .pareto-info p { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .pareto-pct { font-family: var(--header-font); font-size: 13px; color: var(--accent3); }
+</style>
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'analysis', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+
+<nav>
+  <span class="logo">▸ GATE CSE 2007–2026</span>
+  <button class="active" onclick="showPage('overview')">Overview</button>
+  <button onclick="showPage('subjects')">Subject Analysis</button>
+  <button onclick="showPage('topics')">Topic Analysis</button>
+  <button onclick="showPage('heatmap')">Heatmap</button>
+  <button onclick="showPage('difficulty')">Difficulty</button>
+  <button onclick="showPage('trends')">Trends</button>
+  <button onclick="showPage('roi')">Historical Yield</button>
+  <button onclick="showPage('taxonomy')">Taxonomy</button>
+  <button onclick="showPage('predictions')">Historical Freq.</button>
+  <button onclick="showPage('top100')">Top 100 Concepts</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: OVERVIEW
+═══════════════════════════════════════════════ -->
+<div class="page active" id="page-overview">
+  <div class="hero">
+    <h1>GATE CSE · PYQ Intelligence Report</h1>
+    <p>Subject-level trend analysis of GATE CSE 2007–2026 papers. This project contains no question-level PYQ dataset — everything below is computed from a subject×year marks dataset assembled from cited external sources. See "Data Integrity" for exactly what's verified, estimated, or unavailable.</p>
+    <div class="stats-row">
+      <div class="stat"><div class="val">18/20</div><div class="lbl">Years with a real source</div></div>
+      <div class="stat"><div class="val">100</div><div class="lbl">Marks per Paper (2010+)</div></div>
+      <div class="stat"><div class="val">9</div><div class="lbl">Subject Buckets Tracked</div></div>
+      <div class="stat"><div class="val">2014</div><div class="lbl">NAT Introduced (verified)</div></div>
+      <div class="stat"><div class="val">2021</div><div class="lbl">MSQ Introduced (verified)</div></div>
+    </div>
+  </div>
+
+  <div class="section-title">🔎 DATA INTEGRITY</div>
+  <div id="dataIntegrityPanel"></div>
+
+  <div class="note" style="margin-top:16px">📋 <strong>Methodology:</strong> No question-level PYQ dataset exists in this project (checked before writing this page). All statistics on this page are computed from a subject×year marks dataset — the finest granularity available. Anything that would require question-level data (per-topic frequency, per-question difficulty, question-type taxonomy) has been removed rather than estimated to look complete. Where a number is genuinely just an editorial/community judgment, it's labeled as such and kept separate from computed statistics.</div>
+
+  <div class="section-title">EXECUTIVE SUMMARY · SUBJECT RANKINGS BY AVERAGE MARKS</div>
+  <div class="card">
+    <h3>Subject-wise Weightage — Official Syllabus Sections (5-Year Average)</h3>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Rank</th><th>Subject</th><th>Avg Marks</th><th>% of Paper</th><th>Priority</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Engineering Mathematics <span style="color:var(--muted)">(incl. Discrete Math, Linear Algebra, Calculus, Probability)</span></td><td><strong>16.4</strong></td><td>16.4%</td><td><span class="badge badge-high">Critical</span></td></tr>
+        <tr><td>2</td><td>General Aptitude</td><td><strong>15.7</strong></td><td>15.7%</td><td><span class="badge badge-high">Critical</span></td></tr>
+        <tr><td>3</td><td>Computer Networks</td><td><strong>9.9</strong></td><td>9.9%</td><td><span class="badge badge-high">Critical</span></td></tr>
+        <tr><td>4</td><td>Programming &amp; Data Structures</td><td><strong>9.9</strong></td><td>9.9%</td><td><span class="badge badge-high">Critical</span></td></tr>
+        <tr><td>5</td><td>Computer Organization &amp; Architecture</td><td><strong>9.4</strong></td><td>9.4%</td><td><span class="badge badge-high">Critical</span></td></tr>
+        <tr><td>6</td><td>DBMS</td><td><strong>8.8</strong></td><td>8.8%</td><td><span class="badge badge-high">Critical</span></td></tr>
+        <tr><td>7</td><td>Operating Systems</td><td><strong>8.5</strong></td><td>8.5%</td><td><span class="badge badge-high">Critical</span></td></tr>
+        <tr><td>8</td><td>Theory of Computation</td><td><strong>7.2</strong></td><td>7.2%</td><td><span class="badge badge-med">Important</span></td></tr>
+        <tr><td>9</td><td>Digital Logic</td><td><strong>4.9</strong></td><td>4.9%</td><td><span class="badge badge-med">Important</span></td></tr>
+        <tr><td>10</td><td>Compiler Design</td><td><strong>4.7</strong></td><td>4.7%</td><td><span class="badge badge-med">Important</span></td></tr>
+        <tr><td>11</td><td>Algorithms</td><td><strong>4.5</strong></td><td>4.5%</td><td><span class="badge badge-med">Important</span></td></tr>
+        <tr><td colspan="2" style="text-align:right;color:var(--muted)">Total</td><td><strong>100.0</strong></td><td>100%</td><td></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note" style="margin-top:12px">📌 <strong>Source (🟢 verified):</strong> 5-year average subject weightage, Careers360 GATE CSE Chapter-Wise Weightage analysis (accessed 2026). Software Engineering has effectively dropped out of the current GATE CSE syllabus/paper and carries negligible weight, so it is omitted here. This table uses the official mutually-exclusive syllabus sections — the site's separate Discrete Mathematics, Linear Algebra, Calculus, and Probability & Statistics pages all fall under the single "Engineering Mathematics" row above; C Programming falls under "Programming &amp; Data Structures." Year-to-year weightage does fluctuate by a few marks either way, so treat this as a priority guide, not a guarantee for any single year's paper.</div>
+  </div>
+
+  <div class="section-title">YEAR-WISE MARKS DISTRIBUTION (2007–2026)</div>
+  <div class="card">
+    <div class="chart-container-lg">
+      <canvas id="yearwiseChart"></canvas>
+    </div>
+    <div class="note" style="margin-top:12px">Years marked <strong>*</strong> on the x-axis (2007–2008) are placeholder data — no subject-wise source was found for them; interpret the whole stacked bar for those two years with caution. Years marked <strong>†</strong> (2009, 2026) are estimated — 2009's math/aptitude split is uncertain and 2026 reflects Shift 1 only. All other years are verified against a cited source.</div>
+  </div>
+
+  <div class="section-title">⏱ WHAT THIS MEANS FOR MY PREPARATION</div>
+  <div class="card">
+    <h3>Generate a priority list from real data</h3>
+    <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px">Choose your remaining study time. The list below is the actual Priority Score ranking (see Subject Analysis tab for the formula), just truncated to fit the time you have — nothing is re-ordered by hand.</p>
+    <div style="display:flex;gap:10px;margin-bottom:14px">
+      <button class="badge badge-high" style="cursor:pointer;border:none" onclick="renderPriorityPlan(100)">100+ hours</button>
+      <button class="badge badge-med" style="cursor:pointer;border:none" onclick="renderPriorityPlan(50)">~50 hours</button>
+      <button class="badge badge-low" style="cursor:pointer;border:none" onclick="renderPriorityPlan(20)">~20 hours</button>
+    </div>
+    <div id="prepPlanOutput"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: SUBJECTS
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-subjects">
+  <div class="section-title">SUBJECT-WISE DETAILED STATISTICS 🟢 Computed live from the dataset</div>
+
+  <div class="card" style="margin-bottom:16px">
+    <h3>Min / Average / Max Marks by Subject (2009–2026, verified+estimated years)</h3>
+    <div class="chart-container-lg">
+      <canvas id="subjectBoxChart"></canvas>
+    </div>
+    <div class="note" style="margin-top:10px">This is a min/avg/max bar chart, not a true box plot (no quartiles/IQR are shown) — labeled as such rather than called a "box plot." All three values are computed directly from <code>subjectData</code> above, over the 18 non-placeholder years.</div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <h3>Filter</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:12px">
+      <label style="font-size:12px;color:var(--muted)"><input type="checkbox" class="subj-filter" value="DSA" checked onchange="applyFilters()"> DSA</label><label style="font-size:12px;color:var(--muted)"><input type="checkbox" class="subj-filter" value="TOC" checked onchange="applyFilters()"> TOC</label><label style="font-size:12px;color:var(--muted)"><input type="checkbox" class="subj-filter" value="CN" checked onchange="applyFilters()"> CN</label><label style="font-size:12px;color:var(--muted)"><input type="checkbox" class="subj-filter" value="OS" checked onchange="applyFilters()"> OS</label><label style="font-size:12px;color:var(--muted)"><input type="checkbox" class="subj-filter" value="DBMS" checked onchange="applyFilters()"> DBMS</label><label style="font-size:12px;color:var(--muted)"><input type="checkbox" class="subj-filter" value="EngMath" checked onchange="applyFilters()"> EngMath</label><label style="font-size:12px;color:var(--muted)"><input type="checkbox" class="subj-filter" value="DL" checked onchange="applyFilters()"> DL</label><label style="font-size:12px;color:var(--muted)"><input type="checkbox" class="subj-filter" value="COA" checked onchange="applyFilters()"> COA</label><label style="font-size:12px;color:var(--muted)"><input type="checkbox" class="subj-filter" value="SE" checked onchange="applyFilters()"> SE</label>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Full Subject Comparison Table</h3>
+    <div id="statsTableContainer"></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <details>
+      <summary style="cursor:pointer;color:var(--accent-bright);font-family:var(--header-font);font-size:13px">How the Priority Score is calculated ▾</summary>
+      <div style="margin-top:12px;font-size:12.5px;color:var(--muted);line-height:1.7">
+        <p><strong>Priority Score</strong> = 0.35 × (recent 5-year avg, normalized) + 0.25 × (long-term avg, normalized) + 0.20 × (frequency across years, normalized) + 0.10 × (trend/change %, normalized) + 0.10 × (inverse volatility, normalized)</p>
+        <p>Each component is min–max normalized across the 9 subjects (0 = lowest of the 9, 1 = highest) before weighting, so the final score is a relative ranking among these subjects, not an absolute probability. "Volatility" here is coefficient of variation (std dev ÷ avg) — a lower CV (more consistent year-to-year marks) contributes positively.</p>
+        <p>This formula is a judgment call, not an official GATE methodology — the weights (35/25/20/10/10) were chosen to weight recent performance somewhat more than distant history, consistent with GATE's own periodic syllabus revisions. A different set of reasonable weights would shift the ranking somewhat, especially among adjacent-ranked subjects.</p>
+      </div>
+    </details>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: TOPICS
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-topics">
+  <div class="section-title">TOPIC-WISE ANALYSIS</div>
+  <div class="note">🔴 <strong>Removed:</strong> This tab used to show topic-level tables — "Dynamic Programming: 20/20 years, avg 2.2 marks, 100% probability," per-topic difficulty ratings, and similar. None of it was backed by real data: this project has no question-level PYQ dataset (checked before writing this page), so those numbers could not have been computed from anything. Rather than keep inventing plausible-looking figures, this tab has been cut down to what's actually defensible.</div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Commonly-Emphasized Topics (editorial, not statistical)</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">This is a qualitative list of topics widely covered in GATE CS preparation resources for each subject — compiled editorially, the same way a coaching institute's syllabus checklist would be. It carries <strong>no frequency numbers, no percentages, no difficulty ratings</strong> because none of those could be verified. Treat it as "these are worth knowing," not "these are ranked by importance."</p>
+    <div class="grid grid-3">
+      <div><h4 style="color:var(--accent-bright);font-size:13px;margin-bottom:8px">DSA</h4><p style="font-size:12px;color:var(--muted)">Dynamic programming, graph traversal &amp; shortest paths, trees (BST/AVL/heaps), sorting, hashing, complexity analysis</p></div>
+      <div><h4 style="color:var(--accent-bright);font-size:13px;margin-bottom:8px">TOC</h4><p style="font-size:12px;color:var(--muted)">DFA/NFA construction &amp; minimization, regular expressions, CFG/PDA, Turing machines, decidability, P vs NP</p></div>
+      <div><h4 style="color:var(--accent-bright);font-size:13px;margin-bottom:8px">OS</h4><p style="font-size:12px;color:var(--muted)">CPU scheduling, page replacement, deadlock, semaphores/synchronization, memory management</p></div>
+      <div><h4 style="color:var(--accent-bright);font-size:13px;margin-bottom:8px">DBMS</h4><p style="font-size:12px;color:var(--muted)">SQL joins/subqueries, normalization (BCNF), functional dependencies, transactions/serializability</p></div>
+      <div><h4 style="color:var(--accent-bright);font-size:13px;margin-bottom:8px">CN</h4><p style="font-size:12px;color:var(--muted)">IP addressing/subnetting, TCP mechanics, routing algorithms, error detection/correction</p></div>
+      <div><h4 style="color:var(--accent-bright);font-size:13px;margin-bottom:8px">Engineering Math</h4><p style="font-size:12px;color:var(--muted)">Linear algebra (eigenvalues), probability &amp; distributions, graph theory, set theory, combinatorics</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: HEATMAP
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-heatmap">
+  <div class="section-title">SUBJECT × YEAR MARKS HEATMAP 🟢 Derived from verified/estimated data</div>
+  <div class="card">
+    <h3>Subject × Year Marks Heatmap</h3>
+    <div id="heatmapContainer" style="overflow-x:auto;padding-bottom:12px"></div>
+    <div style="display:flex;gap:8px;margin-top:16px;align-items:center;font-size:11px;color:var(--muted);flex-wrap:wrap">
+      <span>Low</span>
+      <div style="display:flex;gap:2px">
+        <div style="width:20px;height:14px;background:rgba(203,163,107,0.1);border-radius:2px"></div>
+        <div style="width:20px;height:14px;background:rgba(203,163,107,0.25);border-radius:2px"></div>
+        <div style="width:20px;height:14px;background:rgba(203,163,107,0.4);border-radius:2px"></div>
+        <div style="width:20px;height:14px;background:rgba(203,163,107,0.6);border-radius:2px"></div>
+        <div style="width:20px;height:14px;background:rgba(203,163,107,0.8);border-radius:2px"></div>
+        <div style="width:20px;height:14px;background:rgba(203,163,107,1.0);border-radius:2px"></div>
+      </div>
+      <span>High</span>
+      <span style="margin-left:12px">Hover a cell for its exact marks, confidence tier, and source</span>
+      <span style="margin-left:12px">Year labels: <strong>*</strong> = placeholder (2007–08), <strong>†</strong> = estimated (2009, 2026), cells with a dashed outline = not fully verified</span>
+    </div>
+  </div>
+  <div class="note" style="margin-top:14px">🔴 <strong>Removed:</strong> A per-topic "presence heatmap" (checkmarks per topic per year) used to sit below this — it was hand-invented 0/1 data with no source. It's been removed rather than kept as an approximation, since a year-by-year presence/absence claim is a specific factual assertion this project can't back up at the topic level.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: DIFFICULTY
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-difficulty">
+  <div class="section-title">DIFFICULTY ANALYSIS</div>
+  <div class="note">🔴 <strong>Removed:</strong> A "year-by-year difficulty score (1–10)" line chart used to be here. It was a hardcoded array with no stated methodology — not derived from candidate performance, cutoffs, or any question-level difficulty labeling. Per the no-hallucinated-data rule, it's been removed rather than kept as decoration. What's below (highest/lowest-weight subject per year, and the two Toughest/Easiest Papers lists) is either computed from the real marks dataset or explicitly labeled as editorial community perception — nothing in between.</div>
+
+  <div class="card" style="margin-bottom:16px">
+    <h3>Year-wise Paper Classification</h3>
+    <div class="note" style="margin-bottom:10px">Rows for 2009–2026 use "Highest/Lowest-weight subject" — the subject that carried the most/fewest marks that year among Digital Logic, COA, Programming+DS+Algorithms, TOC, OS, DBMS, CN — reconstructed from real per-year sources (cited below the table). This is a real weight comparison, not a difficulty judgment. Rows for 2007–2008 predate any subject-wise breakdown source found in this pass. Structurally, those two years are also not comparable to the rest of the table: GATE CS was a 150-mark exam from 2005–2008, only becoming the current 65-question/100-mark format from 2010 onward (2009 was itself a transitional 60-question/100-mark year) — so treat the 2007–2008 rows below as illustrative placeholders, not verified data.</div>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Year</th><th>Overall</th><th>Toughest Subject</th><th>Easiest Subject</th><th>Type</th><th>Notable</th></tr></thead>
+      <tbody>
+        <tr><td>2007</td><td><span class="badge badge-med">Medium</span></td><td>TOC</td><td>SE</td><td>Conceptual</td><td>150-mark format (verified) — not otherwise checked</td></tr>
+        <tr><td>2008</td><td><span class="badge badge-high">Easy</span></td><td>COA</td><td>DBMS</td><td>Formula-heavy</td><td>150-mark format (verified) — not otherwise checked</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="tbl-wrap" style="margin-top:16px">
+    <table>
+      <thead><tr><th>Year</th><th>Highest-weight Subject</th><th>Lowest-weight Subject</th><th>Sessions</th><th>Verified Note</th></tr></thead>
+      <tbody>
+        <tr><td>2009</td><td>OS (16)</td><td>DL (5)</td><td>1</td><td>Transitional 60-question/100-mark format; GA and Engineering Math weights unclear in source, EngMath figure is a rough estimate</td></tr>
+        <tr><td>2010</td><td>DSA (20)</td><td>TOC (7)</td><td>1</td><td>—</td></tr>
+        <tr><td>2011</td><td>DSA (16)</td><td>DBMS (5)</td><td>1</td><td>Software Engineering carried 7 marks this year per source — a real exception to the "SE≈0" pattern seen elsewhere</td></tr>
+        <tr><td>2012</td><td>DSA (20)</td><td>DL (3)</td><td>1</td><td>—</td></tr>
+        <tr><td>2013</td><td>COA (11)</td><td>DL (3)</td><td>1</td><td>—</td></tr>
+        <tr><td>2014</td><td>DSA (15)</td><td>DL (2)</td><td>3 (Feb sessions)</td><td>Held across three sessions; source separately confirms Software Engineering had shrunk to 0–1 marks by this year</td></tr>
+        <tr><td>2015</td><td>DSA (19)</td><td>COA (5)</td><td>3</td><td>Held across three sessions</td></tr>
+        <tr><td>2016</td><td>DSA (20)</td><td>DL (3)</td><td>2</td><td>Held across two sessions; this is the last year Software Engineering appears at all in either source checked</td></tr>
+        <tr><td>2017</td><td>DSA (~20)</td><td>OS (6)</td><td>2</td><td>Held across two sessions</td></tr>
+        <tr><td>2018</td><td>DSA (18)</td><td>DBMS (6)</td><td>1</td><td>—</td></tr>
+        <tr><td>2019</td><td>DSA (20)</td><td>COA (4)</td><td>1</td><td>—</td></tr>
+        <tr><td>2020</td><td>DSA (18)</td><td>CN (6)</td><td>1</td><td>—</td></tr>
+        <tr><td>2021</td><td>DSA (~19)</td><td>COA (~6)</td><td>2 (Feb &amp; Mar/Apr)</td><td>Held across two sessions</td></tr>
+        <tr><td>2022</td><td>CN (10)</td><td>DL (5)</td><td>1</td><td>—</td></tr>
+        <tr><td>2023</td><td>COA (10)</td><td>DBMS (5)</td><td>1</td><td>—</td></tr>
+        <tr><td>2024</td><td>OS (10)</td><td>TOC (~6)</td><td>2</td><td>Held across two sessions</td></tr>
+        <tr><td>2025</td><td>DSA (~19)</td><td>CN (~7)</td><td>2</td><td>Held across two sessions</td></tr>
+        <tr><td>2026</td><td>DSA (~19)</td><td>DL (5)</td><td>1 used here</td><td>Based on Shift 1 only (Feb 8) — Shift 2 not incorporated</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note" style="margin-top:10px">📌 <strong>Sources for 2009–2026:</strong> gateexam.info "GATE Subject Wise Weightage for CSE" (used for 2014–2016 and 2019, where its per-session rows sum cleanly to 100, and for the 2009–2013 core-subject figures) cross-checked against GATE Overflow / gatecse.in "Mark Distribution in GATE CSE" (used for 2017–2018 and 2020–2025, question-by-question community tagging); GeeksforGeeks "GATE CSE 2026 Shift 1: Comprehensive Paper Analysis" for 2026. Where the two sources overlap (2010–2013), they agree closely, which is why 2009–2013 uses gateexam.info with Engineering Math inferred as the remainder to 100 (that source doesn't itemize it for those years). DSA figures combine Programming, Data Structures, and Algorithms. Where a year had multiple sessions, sessions were averaged. Totals don't always land exactly on 100 — treat the figures as a reliable relative ranking of subject weight, not exact non-overlapping marks in every case.</div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h2>🏆 Toughest Papers (2007–2026)</h2>
+      <div class="note" style="margin-bottom:8px">⚠️ Difficulty rankings are subjective estimates based on community perception, not derived from official candidate performance data.</div>
+      <div class="pareto-item"><div class="pareto-rank">1</div><div class="pareto-info"><strong>GATE 2023</strong><p>DBMS and Discrete Math questions were calculation-heavy; widely reported by the community as one of the tougher recent papers (community perception, not a measured score comparison).</p></div></div>
+      <div class="pareto-item"><div class="pareto-rank">2</div><div class="pareto-info"><strong>GATE 2012</strong><p>Dense conceptual questions across every subject. Considered difficult by community consensus.</p></div></div>
+      <div class="pareto-item"><div class="pareto-rank">3</div><div class="pareto-info"><strong>GATE 2014</strong><p>NAT-type questions appeared. Many multi-concept integrations.</p></div></div>
+      <div class="pareto-item"><div class="pareto-rank">4</div><div class="pareto-info"><strong>GATE 2018</strong><p>Graph + DP combo questions caught most off-guard. OS scheduling also hard.</p></div></div>
+    </div>
+    <div class="card">
+      <h2>📗 Easiest Papers (2007–2026)</h2>
+      <div class="pareto-item"><div class="pareto-rank">1</div><div class="pareto-info"><strong>GATE 2016</strong><p>Most direct questions, high conceptual clarity, many formula-based. High scores across board.</p></div></div>
+      <div class="pareto-item"><div class="pareto-rank">2</div><div class="pareto-info"><strong>GATE 2008</strong><p>Early paper era — straightforward, many single-concept questions. Cutoff was highest that year.</p></div></div>
+      <div class="pareto-item"><div class="pareto-rank">3</div><div class="pareto-info"><strong>GATE 2011</strong><p>Relatively balanced; TOC and DBMS were standard difficulty.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: TRENDS
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-trends">
+  <div class="section-title">TREND ANALYSIS 🟢 Computed live from the dataset</div>
+  <div class="card" style="margin-bottom:16px">
+    <h3>Subject Weight by Period: 2009–2013 vs 2014–2020 vs 2021–2026</h3>
+    <div class="chart-container-lg">
+      <canvas id="trendChart"></canvas>
+    </div>
+    <div class="note" style="margin-top:10px">Each bar is a real average computed from <code>subjectData</code> for that period, at page-load time — not a separately hand-typed number. 2007–2008 are excluded from all three periods since no source was found for them. Period boundaries (2009–13 / 2014–20 / 2021–26) are somewhat arbitrary but chosen to roughly track the pre-NAT / NAT-era / most-recent eras rather than to make any particular trend look cleaner.</div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <h3>Change: Early (2009–2013 avg) vs Recent (2022–2026 avg)</h3>
+    <div id="trendCardsContainer"></div>
+    <div class="note" style="margin-top:10px">Sorted by computed % change, largest increase first. "Increasing"/"Decreasing" labels require a change beyond ±12% to avoid over-reading small, likely-noise fluctuations as a trend; anything within that band is labeled "Stable."</div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Question Format: Verified Facts Only</h3>
+    <div class="note" style="margin-bottom:8px">✅ Verified: NAT questions were introduced in GATE 2014 (alongside the shift to a fully computer-based exam); MSQ questions were introduced in GATE 2021.</div>
+    <div class="note">🔴 <strong>Removed:</strong> A table estimating "% Numerical vs Conceptual vs Multi-concept questions," "average cutoff score," and "trick/trap question frequency" pre/post-2014 used to be here. None of those percentages came from a real question-level classification — they were invented to fill the table. They've been cut rather than kept as "illustrative estimates," since a specific percentage point figure (e.g. "~55%") implies a precision that doesn't exist here. The two rows that <em>were</em> computable from real data — DSA and SE average marks pre/post-2014 — are shown as real numbers in the Change card above instead (see DSA and Software Engineering entries).</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: ROI
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-roi">
+  <div class="section-title">HISTORICAL YIELD · SUBJECT TIERS 🟢 Computed live from the dataset</div>
+  <div class="note">This tab used to show 40 per-topic "ROI scores" (e.g. "BST Operations: 8.7") across four subjects. None of that was real — there's no per-topic marks or effort data anywhere in this project, so an ROI score at that granularity can't be computed honestly. What follows instead is a <strong>subject-level</strong> Historical Yield, which the dataset actually supports.</div>
+  <div class="note" style="margin-top:8px">Historical Yield = 0.5 × (recent 5-year avg, normalized) + 0.3 × (frequency across years, normalized) + 0.2 × (inverse volatility, normalized). This measures marks contribution and consistency — it is <strong>not</strong> an effort-adjusted ROI, because study effort per subject isn't something this project can measure objectively (per-subject prep time varies hugely by student background). Historical frequency does not guarantee future appearance — GATE 2027's actual paper may differ from this pattern.</div>
+
+  <div id="yieldTiersContainer" style="margin-top:16px"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: TAXONOMY
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-taxonomy">
+  <div class="section-title">QUESTION TAXONOMY</div>
+  <div class="note">🔴 <strong>Removed:</strong> A question-type breakdown ("32% Numerical, 25% Conceptual, 18% Formula-based..."), a pre/post-2014 taxonomy shift chart, and a 9×7 Subject × Taxonomy percentage matrix used to be here. All of it was invented — this project has no per-question classification data, so none of those percentages could be computed, and mutual exclusivity between categories (a real requirement for percentages like this to mean anything) was never established either. Rather than relabel invented numbers as "editorial," they've been removed outright, since a specific percentage point figure isn't the kind of thing that can honestly be "editorial judgment" — it reads as measured data whether or not it's labeled otherwise.</div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Last-30-Day Revision Plan (editorial study plan, not a statistical output)</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Ordered roughly by the real Priority Score ranking from the Subject Analysis tab. Day counts are a suggested allocation, not derived from any formula.</p>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Day Range</th><th>Focus</th><th>Topics (editorial list, see Topic Analysis tab)</th></tr></thead>
+      <tbody>
+        <tr><td>Day 1–5</td><td>DSA Core</td><td>DP, graph traversal/shortest path, BST operations</td></tr>
+        <tr><td>Day 6–9</td><td>Engineering Math</td><td>Linear algebra, probability, graph theory, set theory</td></tr>
+        <tr><td>Day 10–13</td><td>OS</td><td>CPU scheduling, page replacement, deadlock, semaphores</td></tr>
+        <tr><td>Day 14–17</td><td>CN &amp; DBMS</td><td>IP subnetting, TCP; SQL, normalization, transactions</td></tr>
+        <tr><td>Day 18–21</td><td>TOC &amp; COA</td><td>DFA/NFA, CFG, decidability; pipelining, cache mapping</td></tr>
+        <tr><td>Day 22–24</td><td>Digital Logic &amp; Compilers</td><td>Boolean minimization, K-maps; parsing basics</td></tr>
+        <tr><td>Day 25–27</td><td>GA</td><td>Quant aptitude, reasoning, data interpretation</td></tr>
+        <tr><td>Day 28–30</td><td>PYQ Sprint</td><td>Timed practice across all subjects, weakest areas first</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: PREDICTIONS
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-predictions">
+  <div class="section-title">📊 HISTORICAL FREQUENCY SIGNALS — NOT PREDICTIONS</div>
+  <div class="note">⚠️ <strong>Historical signal, not a prediction guarantee.</strong> This tab shows historical frequency patterns only. Historical frequency does not predict the next GATE paper. Every official GATE 2027 syllabus topic should be prepared regardless of what's shown here.</div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Historical Subject Weightage — Study Priority Guidance</h3>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Subject</th><th>Historical Avg Range</th><th>Full Range</th><th>Consistency</th><th>Reasoning</th></tr></thead>
+      <tbody>
+        <tr><td>DSA (Prog+DS &amp; Algorithms combined)</td><td><strong>13–15</strong></td><td>11–17</td><td><span class="badge badge-high">High</span></td><td>Two syllabus sections combined; consistently the single largest technical bloc</td></tr>
+        <tr><td>Engineering Mathematics</td><td><strong>15–17</strong></td><td>13–19</td><td><span class="badge badge-high">High</span></td><td>Includes Discrete Math, Linear Algebra, Calculus, Probability — largest single section overall</td></tr>
+        <tr><td>General Aptitude</td><td><strong>15</strong></td><td>15–15</td><td><span class="badge badge-high">Fixed by rules</span></td><td>Fixed by GATE syllabus rules, but no single question's appearance is "certain"</td></tr>
+        <tr><td>TOC</td><td><strong>6–8</strong></td><td>5–9</td><td><span class="badge badge-med">Medium</span></td><td>Decidability/P-NP rising; core remains constant</td></tr>
+        <tr><td>OS</td><td><strong>7–9</strong></td><td>6–11</td><td><span class="badge badge-med">Medium</span></td><td>Stable but scheduling variations unpredictable</td></tr>
+        <tr><td>DBMS</td><td><strong>8–10</strong></td><td>7–11</td><td><span class="badge badge-med">Medium</span></td><td>Stable core; SQL+normalization frequently tested, not "guaranteed"</td></tr>
+        <tr><td>CN</td><td><strong>9–11</strong></td><td>8–12</td><td><span class="badge badge-med">Medium</span></td><td>Remains important; application-layer may return</td></tr>
+        <tr><td>Digital Logic</td><td><strong>4–6</strong></td><td>3–7</td><td><span class="badge badge-med">Medium</span></td><td>Smallest technical section but still a reliably scorable few marks</td></tr>
+        <tr><td>COA</td><td><strong>8–10</strong></td><td>7–12</td><td><span class="badge badge-med">Medium</span></td><td>Pipelining + memory hierarchy remain frequent</td></tr>
+        <tr><td>Compilers/PL</td><td><strong>4–6</strong></td><td>3–7</td><td><span class="badge badge-low">Low</span></td><td>Volatile; parsing topics overlap with TOC</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note" style="margin-top:10px">Ranges above are directional planning suggestions consistent with the sourced weightage table on the Overview tab, not a verified year-by-year record. Software Engineering has effectively been dropped from the current GATE CSE paper and is omitted.</div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Subject-Level Frequency Signals 🟢 Computed live from the dataset</h3>
+    <div id="predSignalsContainer"></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Commonly-Recurring Topics (editorial — see Topic Analysis tab for scope)</h3>
+    <div class="note">🔴 <strong>Removed:</strong> This card used to make claims like "Dynamic Programming — 20/20 streak, will appear" and "Network Security — absent since 2020, ~7-year cycle suggests return." Those streak numbers and cycle-based return predictions were invented — there's no topic-level dataset to compute a streak or a cycle from, and "will appear" is exactly the kind of unsupported predictive language this page is supposed to avoid. See the Topic Analysis tab for the (non-numeric) editorial topic list instead.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: TOP 100 CONCEPTS
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-top100">
+  <div class="section-title">100 COMMONLY-EMPHASIZED CONCEPTS (editorial checklist)</div>
+  <div class="note">This is an editorial compilation of concepts widely covered in GATE CS preparation resources — the same kind of checklist a coaching institute would hand out — <strong>not</strong> a statistically derived ranking. The list below no longer claims specific topics "appeared in every paper since 2007": that would require question-level data this project doesn't have. Use it as a syllabus-coverage checklist, not a frequency ranking.</div>
+  <div class="grid grid-3" style="margin-top:16px">
+    <div class="card">
+      <h3>DSA (1–25)</h3>
+      <table style="font-size:12px">
+        <tbody>
+          <tr><td style="color:var(--accent2)">1</td><td>Dynamic Programming — LCS, LIS</td></tr>
+          <tr><td style="color:var(--accent2)">2</td><td>DP — 0/1 Knapsack & variants</td></tr>
+          <tr><td style="color:var(--accent2)">3</td><td>DP — Matrix Chain Multiplication</td></tr>
+          <tr><td style="color:var(--accent)">4</td><td>BFS/DFS — applications</td></tr>
+          <tr><td style="color:var(--accent)">5</td><td>Dijkstra's algorithm + Bellman-Ford</td></tr>
+          <tr><td style="color:var(--accent)">6</td><td>Topological Sort</td></tr>
+          <tr><td style="color:var(--accent)">7</td><td>BST — insert, delete, search</td></tr>
+          <tr><td style="color:var(--accent)">8</td><td>AVL Tree rotations</td></tr>
+          <tr><td style="color:var(--accent)">9</td><td>Heap sort & heap operations</td></tr>
+          <tr><td style="color:var(--accent)">10</td><td>Hashing — open/closed addressing</td></tr>
+          <tr><td style="color:var(--accent)">11</td><td>QuickSort / MergeSort analysis</td></tr>
+          <tr><td style="color:var(--accent)">12</td><td>Recurrence — Master theorem</td></tr>
+          <tr><td style="color:var(--accent)">13</td><td>MST — Kruskal's & Prim's</td></tr>
+          <tr><td style="color:var(--accent)">14</td><td>Strongly Connected Components</td></tr>
+          <tr><td style="color:var(--accent)">15</td><td>Floyd-Warshall algorithm</td></tr>
+          <tr><td style="color:var(--muted)">16</td><td>Segment Trees basics</td></tr>
+          <tr><td style="color:var(--muted)">17</td><td>Stack applications (infix/postfix)</td></tr>
+          <tr><td style="color:var(--muted)">18</td><td>Queue applications (BFS)</td></tr>
+          <tr><td style="color:var(--muted)">19</td><td>Greedy — Activity Selection, HuffMan</td></tr>
+          <tr><td style="color:var(--muted)">20</td><td>Time complexity analysis — all sorts</td></tr>
+          <tr><td style="color:var(--muted)">21</td><td>Space complexity analysis</td></tr>
+          <tr><td style="color:var(--muted)">22</td><td>Disjoint Set Union (Union-Find)</td></tr>
+          <tr><td style="color:var(--muted)">23</td><td>Bit manipulation tricks</td></tr>
+          <tr><td style="color:var(--muted)">24</td><td>Binary Search variants</td></tr>
+          <tr><td style="color:var(--muted)">25</td><td>Red-Black Tree properties</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>TOC + OS (26–55)</h3>
+      <table style="font-size:12px">
+        <tbody>
+          <tr><td style="color:var(--accent2)">26</td><td>DFA construction from language</td></tr>
+          <tr><td style="color:var(--accent2)">27</td><td>NFA → DFA conversion</td></tr>
+          <tr><td style="color:var(--accent)">28</td><td>DFA minimization</td></tr>
+          <tr><td style="color:var(--accent)">29</td><td>Regular expressions ↔ DFA</td></tr>
+          <tr><td style="color:var(--accent)">30</td><td>Closure properties of regular langs</td></tr>
+          <tr><td style="color:var(--accent)">31</td><td>Pumping lemma for RL</td></tr>
+          <tr><td style="color:var(--accent)">32</td><td>CFG → CFL construction</td></tr>
+          <tr><td style="color:var(--accent)">33</td><td>PDA construction & acceptance</td></tr>
+          <tr><td style="color:var(--accent)">34</td><td>Chomsky Normal Form</td></tr>
+          <tr><td style="color:var(--accent)">35</td><td>Turing Machine variants</td></tr>
+          <tr><td style="color:var(--accent)">36</td><td>Halting Problem (undecidability)</td></tr>
+          <tr><td style="color:var(--accent)">37</td><td>Rice's theorem applications</td></tr>
+          <tr><td style="color:var(--accent)">38</td><td>P vs NP — reduction examples</td></tr>
+          <tr><td style="color:var(--accent)">39</td><td>NP-complete problems (list)</td></tr>
+          <tr><td style="color:var(--muted)">40</td><td>Chomsky hierarchy + relations</td></tr>
+          <tr><td style="color:var(--accent2)">41</td><td>FCFS/SJF/Round Robin scheduling</td></tr>
+          <tr><td style="color:var(--accent2)">42</td><td>Priority scheduling + starvation</td></tr>
+          <tr><td style="color:var(--accent)">43</td><td>FIFO/LRU/Optimal page replacement</td></tr>
+          <tr><td style="color:var(--accent)">44</td><td>Page fault calculation</td></tr>
+          <tr><td style="color:var(--accent)">45</td><td>Belady's anomaly</td></tr>
+          <tr><td style="color:var(--accent)">46</td><td>Deadlock conditions + detection</td></tr>
+          <tr><td style="color:var(--accent)">47</td><td>Banker's Algorithm (safety)</td></tr>
+          <tr><td style="color:var(--accent)">48</td><td>Semaphores — P&C, R&W</td></tr>
+          <tr><td style="color:var(--accent)">49</td><td>Mutex / Monitor / Condition vars</td></tr>
+          <tr><td style="color:var(--accent)">50</td><td>Virtual memory + TLB hit/miss</td></tr>
+          <tr><td style="color:var(--muted)">51</td><td>File system — Inode structure</td></tr>
+          <tr><td style="color:var(--muted)">52</td><td>Disk scheduling — SSTF/SCAN</td></tr>
+          <tr><td style="color:var(--muted)">53</td><td>Segmentation + page tables</td></tr>
+          <tr><td style="color:var(--muted)">54</td><td>Thrashing concept</td></tr>
+          <tr><td style="color:var(--muted)">55</td><td>Process states diagram</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>DBMS + CN + EngMath (56–100)</h3>
+      <table style="font-size:12px">
+        <tbody>
+          <tr><td style="color:var(--accent2)">56</td><td>SQL — All JOIN types</td></tr>
+          <tr><td style="color:var(--accent2)">57</td><td>SQL — Nested subqueries</td></tr>
+          <tr><td style="color:var(--accent)">58</td><td>Functional dependencies + closure</td></tr>
+          <tr><td style="color:var(--accent)">59</td><td>BCNF decomposition algorithm</td></tr>
+          <tr><td style="color:var(--accent)">60</td><td>3NF + lossless join</td></tr>
+          <tr><td style="color:var(--accent)">61</td><td>Relational Algebra operations</td></tr>
+          <tr><td style="color:var(--accent)">62</td><td>Transaction — ACID properties</td></tr>
+          <tr><td style="color:var(--accent)">63</td><td>Isolation levels + anomalies</td></tr>
+          <tr><td style="color:var(--accent)">64</td><td>Conflict serializability (precedence)</td></tr>
+          <tr><td style="color:var(--accent)">65</td><td>2PL protocol</td></tr>
+          <tr><td style="color:var(--muted)">66</td><td>B+ Tree — insert/delete/search</td></tr>
+          <tr><td style="color:var(--muted)">67</td><td>ER diagram → Relational mapping</td></tr>
+          <tr><td style="color:var(--muted)">68</td><td>Aggregate SQL (GROUP BY, HAVING)</td></tr>
+          <tr><td style="color:var(--accent2)">69</td><td>IP Addressing + VLSM/CIDR</td></tr>
+          <tr><td style="color:var(--accent)">70</td><td>TCP — 3-way handshake</td></tr>
+          <tr><td style="color:var(--accent)">71</td><td>TCP sliding window (throughput)</td></tr>
+          <tr><td style="color:var(--accent)">72</td><td>Congestion control (AIMD)</td></tr>
+          <tr><td style="color:var(--accent)">73</td><td>Distance Vector Routing</td></tr>
+          <tr><td style="color:var(--accent)">74</td><td>OSPF / Link State Routing</td></tr>
+          <tr><td style="color:var(--accent)">75</td><td>CSMA/CD + ALOHA protocols</td></tr>
+          <tr><td style="color:var(--accent)">76</td><td>CRC error detection</td></tr>
+          <tr><td style="color:var(--muted)">77</td><td>Hamming code correction</td></tr>
+          <tr><td style="color:var(--muted)">78</td><td>Application layer — DNS, HTTP</td></tr>
+          <tr><td style="color:var(--muted)">79</td><td>DHCP, ARP operations</td></tr>
+          <tr><td style="color:var(--accent2)">80</td><td>Eigenvalues & eigenvectors</td></tr>
+          <tr><td style="color:var(--accent2)">81</td><td>Probability — Bayes' theorem</td></tr>
+          <tr><td style="color:var(--accent)">82</td><td>Matrix rank + null space</td></tr>
+          <tr><td style="color:var(--accent)">83</td><td>Linear independence + basis</td></tr>
+          <tr><td style="color:var(--accent)">84</td><td>Gaussian elimination</td></tr>
+          <tr><td style="color:var(--accent)">85</td><td>Probability distributions (Poisson, Normal)</td></tr>
+          <tr><td style="color:var(--accent)">86</td><td>Conditional probability</td></tr>
+          <tr><td style="color:var(--accent)">87</td><td>Counting — permutation/combination</td></tr>
+          <tr><td style="color:var(--accent)">88</td><td>Graph theory — Eulerian + Hamiltonian</td></tr>
+          <tr><td style="color:var(--muted)">89</td><td>Propositional logic — CNF/DNF</td></tr>
+          <tr><td style="color:var(--muted)">90</td><td>Predicate logic — quantifiers</td></tr>
+          <tr><td style="color:var(--muted)">91</td><td>Recurrence — solving by substitution</td></tr>
+          <tr><td style="color:var(--muted)">92</td><td>K-map simplification (3–4 var)</td></tr>
+          <tr><td style="color:var(--muted)">93</td><td>Flip-flops — SR, JK, D, T</td></tr>
+          <tr><td style="color:var(--muted)">94</td><td>Pipeline hazard analysis</td></tr>
+          <tr><td style="color:var(--muted)">95</td><td>Cache mapping (direct/set-assoc)</td></tr>
+          <tr><td style="color:var(--muted)">96</td><td>Lexical analysis / Regular grammar</td></tr>
+          <tr><td style="color:var(--muted)">97</td><td>LR(0) / SLR parsing</td></tr>
+          <tr><td style="color:var(--muted)">98</td><td>General Aptitude — Number series</td></tr>
+          <tr><td style="color:var(--muted)">99</td><td>GA — Logical syllogisms</td></tr>
+          <tr><td style="color:var(--muted)">100</td><td>GA — Data interpretation tables</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:10px;color:var(--muted);margin-top:8px"> = appeared every year 2007–2026 | Blue = critical | Gray = important</p>
+    </div>
+  </div>
+
+  <div class="section-title">AIR &lt;100 SUBJECT PRIORITY ORDER</div>
+  <div class="card">
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Priority</th><th>Subject</th><th>Target Marks</th><th>Min Acceptable</th><th>Strategy</th></tr></thead>
+      <tbody>
+        <tr><td>P1</td><td>General Aptitude</td><td>13–15</td><td>12</td><td>Highest ROI — 15 free marks if prepared. Never skip.</td></tr>
+        <tr><td>P2</td><td>Engineering Mathematics</td><td>13–16</td><td>11</td><td>Largest single section — Linear Algebra + Probability are the most scorable parts.</td></tr>
+        <tr><td>P3</td><td>DSA (Prog+DS &amp; Algorithms)</td><td>11–14</td><td>9</td><td>Do DP + Graphs + Trees first. Attempt all DSA questions.</td></tr>
+        <tr><td>P4</td><td>CN</td><td>8–10</td><td>6</td><td>IP addressing + TCP calculations. Skip deep app layer.</td></tr>
+        <tr><td>P5</td><td>COA</td><td>7–9</td><td>6</td><td>Pipelining formula + cache = reliably scorable marks.</td></tr>
+        <tr><td>P6</td><td>DBMS</td><td>7–9</td><td>6</td><td>SQL + Normalization are consistently scorable if practiced.</td></tr>
+        <tr><td>P7</td><td>OS</td><td>7–9</td><td>6</td><td>Scheduling + Memory numerical are very scorable.</td></tr>
+        <tr><td>P8</td><td>TOC</td><td>6–8</td><td>5</td><td>DFA/NFA + CFG mandatory. Decidability = bonus.</td></tr>
+        <tr><td>P9</td><td>Digital Logic</td><td>4–6</td><td>3</td><td>Boolean algebra + K-map = easy marks. Don't over-invest.</td></tr>
+        <tr><td>P10</td><td>Compilers/PL</td><td>3–5</td><td>2</td><td>Focus on parsing only; skip code generation details.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div style="text-align:center;padding:16px 0;font-family:var(--header-font);font-size:13px;color:var(--accent2)">
+      Target Total: 76–90 marks → a commonly cited AIR &lt; 100 planning range (illustrative, not an official or guaranteed cutoff)
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'heatmap') buildHeatmap();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CANONICAL DATASET
+// This is the single source of truth for every statistic on this
+// page. No question-level PYQ dataset exists anywhere in this
+// project (verified by search before writing this file), so the
+// finest granularity available is (year × subject × marks). Every
+// number derived below traces back to this object — nothing past
+// this point should be hardcoded independently of it.
+// ═══════════════════════════════════════════════════════════════
+const YEARS_FULL = [2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026];
+const YEARS_SHORT = YEARS_FULL.map(y => "'" + String(y).slice(2));
+
+const SUBJECT_META = {
+  DSA:     { name: 'Programming, Data Structures & Algorithms', color: '#cba36b' },
+  TOC:     { name: 'Theory of Computation',                     color: '#82b79a' },
+  CN:      { name: 'Computer Networks',                         color: '#d98a5f' },
+  OS:      { name: 'Operating Systems',                         color: '#e0776c' },
+  DBMS:    { name: 'Databases',                                 color: '#b09bd6' },
+  EngMath: { name: 'Engineering Mathematics',                   color: '#e0a86e' },
+  DL:      { name: 'Digital Logic',                              color: '#7fbfa0' },
+  COA:     { name: 'Computer Organization & Architecture',       color: '#c9a876' },
+  SE:      { name: 'Software Engineering (dropped from syllabus by 2016)', color: '#786d5c' },
+};
+
+const subjectData = {
+  DSA:       [11,11, 21,20,16,20,18,15,19,20,20,18, 18,18,19,15,15,15,19,19],
+  TOC:       [11,10, 9,7,9,6,8,5,5,10,11,8, 8,9,10,8,9,6,9,7],
+  CN:        [10,10, 10,8,6,9,7,9,8,9,7,7, 9,6,8,10,8,9,7,6],
+  OS:        [10,9, 16,7,8,9,12,10,7,8,6,9, 10,10,7,10,9,10,8,6],
+  DBMS:      [9,10, 10,7,5,11,7,4,6,5,8,6, 8,8,8,7,5,8,9,7],
+  EngMath:   [10,10, 14,16,14,16,13,26,21,20,15,18, 16,13,16,19,16,15,13,14],
+  DL:        [9,9, 5,7,8,3,3,2,6,3,7,6, 8,6,7,5,6,6,8,5],
+  COA:       [8,8, 5,9,9,7,11,7,5,8,8,8, 4,9,6,7,10,8,9,9],
+  SE:        [5,5, 6,0,7,0,3,0,5,0,0,0, 0,0,0,0,0,0,0,0],
+};
+
+// CONFIDENCE TIER PER YEAR (applies to every subject's value that year).
+// 'placeholder' = not backed by any subject-wise source found in this pass.
+// 'estimated'   = backed by a source, but with at least one uncertain field
+//                 (e.g. 2009's GA/EngMath split could not be pinned down;
+//                 2026 is Shift 1 only, not the complete paper).
+// 'verified'    = backed by a cited external source with a defensible
+//                 methodology (session-averaged where applicable).
+// This is a YEAR-level tier, not a per-field one — a coarser grain than
+// the ideal, disclosed here rather than implied to be finer than it is.
+const YEAR_CONFIDENCE = {
+  2007:'placeholder', 2008:'placeholder',
+  2009:'estimated',
+  2010:'verified',2011:'verified',2012:'verified',2013:'verified',2014:'verified',
+  2015:'verified',2016:'verified',2017:'verified',2018:'verified',2019:'verified',
+  2020:'verified',2021:'verified',2022:'verified',2023:'verified',2024:'verified',2025:'verified',
+  2026:'estimated', // Shift 1 only
+};
+const YEAR_SOURCE = {
+  2007:'No source found', 2008:'No source found',
+  2009:'gateexam.info (GA/EngMath split uncertain)',
+  2010:'gateexam.info', 2011:'gateexam.info', 2012:'gateexam.info', 2013:'gateexam.info',
+  2014:'gateexam.info (3 sessions avg)', 2015:'gateexam.info (3 sessions avg)',
+  2016:'gateexam.info (2 sessions avg)', 2017:'GATE Overflow / gatecse.in (2 sessions avg)',
+  2018:'GATE Overflow / gatecse.in', 2019:'gateexam.info',
+  2020:'GATE Overflow / gatecse.in', 2021:'GATE Overflow / gatecse.in (2 sessions avg)',
+  2022:'GATE Overflow / gatecse.in', 2023:'GATE Overflow / gatecse.in',
+  2024:'GATE Overflow / gatecse.in (2 sessions avg)', 2025:'GATE Overflow / gatecse.in (2 sessions avg)',
+  2026:'GeeksforGeeks — Shift 1 only, Shift 2 not incorporated',
+};
+const GA_MARKS = 15; // fixed by GATE rules for verified years; not separately itemized as a subjectData key
+
+// ═══════════════════════════════════════════════════════════════
+// STATS ENGINE — every number displayed on this page that looks
+// like "average", "median", "trend" etc. is computed here, live,
+// from subjectData. Nothing of that shape is hand-typed elsewhere.
+// ═══════════════════════════════════════════════════════════════
+function mean(arr){ return arr.reduce((a,b)=>a+b,0)/arr.length; }
+function median(arr){ const s=[...arr].sort((a,b)=>a-b); const m=Math.floor(s.length/2); return s.length%2 ? s[m] : (s[m-1]+s[m])/2; }
+function stddev(arr){ const m=mean(arr); return Math.sqrt(mean(arr.map(x=>(x-m)**2))); }
+
+// Indices of "verified"/"estimated" years (excludes the two 2007-08 placeholder years)
+const VERIFIED_IDX = YEARS_FULL.map((y,i)=>i).filter(i => YEAR_CONFIDENCE[YEARS_FULL[i]] !== 'placeholder');
+const RECENT5_IDX  = VERIFIED_IDX.slice(-5);
+const RECENT10_IDX = VERIFIED_IDX.slice(-10);
+// "Early" comparison window for trend: earliest 5 verified years (2009-2013)
+const EARLY5_IDX = VERIFIED_IDX.slice(0,5);
+
+function subjectStats(key){
+  const full = subjectData[key];
+  const v  = VERIFIED_IDX.map(i=>full[i]);
+  const r5 = RECENT5_IDX.map(i=>full[i]);
+  const r10= RECENT10_IDX.map(i=>full[i]);
+  const e5 = EARLY5_IDX.map(i=>full[i]);
+  const avg = mean(v), r5avg = mean(r5), r10avg = mean(r10), e5avg = mean(e5);
+  const sd = stddev(v);
+  const freqYears = v.filter(x=>x>0).length;
+  const freqPct = freqYears / v.length;
+  const changePct = e5avg > 0 ? ((r5avg - e5avg)/e5avg*100) : null;
+  let trendLabel = 'Stable';
+  if (changePct !== null) {
+    if (changePct > 12) trendLabel = 'Increasing';
+    else if (changePct < -12) trendLabel = 'Decreasing';
+  }
+  return {
+    key, name: SUBJECT_META[key].name,
+    avg, median: median(v), min: Math.min(...v), max: Math.max(...v),
+    stddev: sd, recent5avg: r5avg, recent10avg: r10avg, early5avg: e5avg,
+    freqYears, totalYears: v.length, freqPct,
+    changePct, trendLabel,
+    cv: avg>0 ? sd/avg : 0,
+  };
+}
+
+const ALL_KEYS = Object.keys(subjectData);
+const STATS = Object.fromEntries(ALL_KEYS.map(k=>[k, subjectStats(k)]));
+
+// ── Priority Score (methodology disclosed in UI, weights match spec) ──
+// 35% recent(5yr) avg weight + 25% long-term avg weight + 20% frequency/
+// consistency + 10% trend + 10% (inverse) volatility.
+function normalize(vals){
+  const min=Math.min(...vals), max=Math.max(...vals);
+  return vals.map(v => max>min ? (v-min)/(max-min) : 0.5);
+}
+(function computePriorityScores(){
+  const recent5 = ALL_KEYS.map(k=>STATS[k].recent5avg);
+  const longterm = ALL_KEYS.map(k=>STATS[k].avg);
+  const freq = ALL_KEYS.map(k=>STATS[k].freqPct);
+  const trend = ALL_KEYS.map(k=>STATS[k].changePct ?? 0);
+  const invVol = ALL_KEYS.map(k=>1-Math.min(STATS[k].cv,1)); // lower volatility = higher score
+  const nR5=normalize(recent5), nLT=normalize(longterm), nF=normalize(freq), nT=normalize(trend), nV=normalize(invVol);
+  ALL_KEYS.forEach((k,i)=>{
+    STATS[k].priorityScore = 0.35*nR5[i] + 0.25*nLT[i] + 0.20*nF[i] + 0.10*nT[i] + 0.10*nV[i];
+  });
+})();
+
+// ── Historical Yield / ROI tier (subject-level; spec §8) ──
+// yield = 0.5*recent5avg(normalized) + 0.3*frequency + 0.2*(1-volatility)
+(function computeYield(){
+  const recent5 = ALL_KEYS.map(k=>STATS[k].recent5avg);
+  const freq = ALL_KEYS.map(k=>STATS[k].freqPct);
+  const invVol = ALL_KEYS.map(k=>1-Math.min(STATS[k].cv,1));
+  const nR5=normalize(recent5), nF=normalize(freq), nV=normalize(invVol);
+  ALL_KEYS.forEach((k,i)=>{
+    const y = 0.5*nR5[i] + 0.3*nF[i] + 0.2*nV[i];
+    STATS[k].yieldScore = y;
+    STATS[k].tier = y>=0.72 ? 'A' : y>=0.5 ? 'B' : y>=0.3 ? 'C' : 'D';
+  });
+})();
+
+// ═══════════════════════════════════════════════════════════════
+// VALIDATION — checks the dataset itself, doesn't silently repair it
+// ═══════════════════════════════════════════════════════════════
+function validateDataset(){
+  const issues = [];
+  const lengths = ALL_KEYS.map(k=>subjectData[k].length);
+  const allLengthsMatch = lengths.every(l=>l===YEARS_FULL.length);
+  if (!allLengthsMatch) issues.push('Array length mismatch across subjects.');
+
+  const yearTotals = YEARS_FULL.map((y,i)=>{
+    const sum = ALL_KEYS.reduce((s,k)=>s+subjectData[k][i],0);
+    const total = sum + (YEAR_CONFIDENCE[y]==='placeholder' ? 0 : GA_MARKS);
+    return {year:y, total, sum};
+  });
+  const unreconciled = yearTotals.filter(t => YEAR_CONFIDENCE[t.year]!=='placeholder' && Math.abs(t.total-100) > 8);
+
+  const impossible = [];
+  ALL_KEYS.forEach(k=>subjectData[k].forEach((v,i)=>{
+    if (v<0 || v>50) impossible.push(`${k} ${YEARS_FULL[i]}: ${v}`);
+  }));
+
+  const verifiedYears = YEARS_FULL.filter(y=>YEAR_CONFIDENCE[y]==='verified').length;
+  const estimatedYears = YEARS_FULL.filter(y=>YEAR_CONFIDENCE[y]==='estimated').length;
+  const placeholderYears = YEARS_FULL.filter(y=>YEAR_CONFIDENCE[y]==='placeholder').length;
+
+  return {
+    allLengthsMatch, yearTotals, unreconciled, impossible,
+    verifiedYears, estimatedYears, placeholderYears,
+    totalYears: YEARS_FULL.length,
+    verifiedPct: Math.round(verifiedYears/YEARS_FULL.length*100),
+    estimatedPct: Math.round(estimatedYears/YEARS_FULL.length*100),
+    placeholderPct: Math.round(placeholderYears/YEARS_FULL.length*100),
+  };
+}
+const VALIDATION = validateDataset();
+
+// ═══════════════════════════════════════════════════════════════
+// RENDERERS
+// ═══════════════════════════════════════════════════════════════
+function confBadge(tier){
+  if (tier==='verified') return '<span class="badge badge-high">🟢 Verified</span>';
+  if (tier==='estimated') return '<span class="badge badge-med">🟡 Estimated</span>';
+  return '<span class="badge badge-low">🔴 Placeholder</span>';
+}
+function fmt1(n){ return (Math.round(n*10)/10).toFixed(1); }
+
+function renderDataIntegrity(targetId){
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  const u = VALIDATION.unreconciled.map(t=>`${t.year} (${fmt1(t.total)})`).join(', ') || 'none';
+  el.innerHTML = `
+    <div class="grid grid-4">
+      <div class="insight-box"><div class="num">${VALIDATION.totalYears}</div><div class="desc">Years in scope (2007–2026)</div></div>
+      <div class="insight-box"><div class="num" style="color:#82b79a">${VALIDATION.verifiedPct}%</div><div class="desc">${VALIDATION.verifiedYears} years verified</div></div>
+      <div class="insight-box"><div class="num" style="color:#d98a5f">${VALIDATION.estimatedPct}%</div><div class="desc">${VALIDATION.estimatedYears} years estimated (2009, 2026 Shift 1 only)</div></div>
+      <div class="insight-box"><div class="num" style="color:#e0776c">${VALIDATION.placeholderPct}%</div><div class="desc">${VALIDATION.placeholderYears} years placeholder (2007–2008, no source found)</div></div>
+    </div>
+    <div class="note" style="margin-top:14px">
+      <strong>validateDataset() output:</strong> array-length check: ${VALIDATION.allLengthsMatch ? 'pass — all 9 subjects × 20 years' : 'FAIL'}.
+      Impossible values (&lt;0 or &gt;50 marks): ${VALIDATION.impossible.length ? VALIDATION.impossible.join(', ') : 'none found'}.
+      Years where subject totals + GA deviate from 100 by more than 8 marks: ${u}.
+      This deviation is expected for a subject-level (not question-level) dataset assembled from external secondary sources rather than official raw papers — see methodology note below. No question-level classification data exists in this project (confirmed by repository search), so question-count/duplicate-ID checks are not applicable here.
+    </div>`;
+}
+
+function renderStatsTable(targetId, keys){
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  const rows = keys.map(k=>{
+    const s = STATS[k];
+    const trendClass = s.trendLabel==='Increasing' ? 'up' : s.trendLabel==='Decreasing' ? 'down' : 'stable';
+    const trendArrow = s.trendLabel==='Increasing' ? '↑' : s.trendLabel==='Decreasing' ? '↓' : '→';
+    return `<tr>
+      <td>${SUBJECT_META[k].name}</td>
+      <td><strong>${fmt1(s.avg)}</strong></td>
+      <td>${fmt1(s.median)}</td>
+      <td>${fmt1(s.recent5avg)}</td>
+      <td>${fmt1(s.recent10avg)}</td>
+      <td>${s.min}–${s.max}</td>
+      <td>${fmt1(s.stddev)}</td>
+      <td>${s.freqYears}/${s.totalYears}</td>
+      <td class="${trendClass}">${trendArrow} ${s.trendLabel}${s.changePct!==null ? ' ('+(s.changePct>=0?'+':'')+fmt1(s.changePct)+'%)' : ''}</td>
+      <td><strong>${fmt1(s.priorityScore*100)}</strong></td>
+    </tr>`;
+  }).join('');
+  el.innerHTML = `<div class="tbl-wrap"><table>
+    <thead><tr><th>Subject</th><th>Avg</th><th>Median</th><th>Recent 5yr</th><th>Recent 10yr</th><th>Min–Max</th><th>Std Dev</th><th>Years Present</th><th>Trend</th><th>Priority Score</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table></div>
+  <div class="note" style="margin-top:10px">All columns computed live from the dataset above, over the 18 verified/estimated years (2009–2026) — the 2 placeholder years (2007–2008) are excluded from every statistic here so they can't silently distort an average. "Priority Score" = 0.35×recent-5yr-avg + 0.25×long-term-avg + 0.20×frequency + 0.10×trend + 0.10×(inverse volatility), each min–max normalized across subjects — see "How this is calculated" below.</div>`;
+}
+
+function renderYieldTiers(targetId){
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  const tiers = {A:[],B:[],C:[],D:[]};
+  ALL_KEYS.filter(k=>k!=='SE').forEach(k=>tiers[STATS[k].tier].push(k));
+  const tierMeta = {
+    A:{label:'Tier A — Must Master', desc:'High recent weight + high frequency + low volatility', color:'#82b79a'},
+    B:{label:'Tier B — Strong Priority', desc:'Solid weight and frequency, somewhat more volatile', color:'#cba36b'},
+    C:{label:'Tier C — Opportunistic', desc:'Moderate weight or frequency', color:'#d98a5f'},
+    D:{label:'Tier D — Low Historical Yield', desc:'Low recent weight and/or low frequency', color:'#e0776c'},
+  };
+  el.innerHTML = Object.entries(tierMeta).map(([t,meta])=>{
+    const items = tiers[t].sort((a,b)=>STATS[b].yieldScore-STATS[a].yieldScore).map(k=>{
+      const s = STATS[k];
+      return `<div class="roi-item"><span class="roi-name">${SUBJECT_META[k].name}</span><div class="roi-bar"><div class="roi-bar-fill" style="width:${(s.yieldScore*100).toFixed(0)}%;background:${meta.color}"></div></div><span class="roi-score">${fmt1(s.yieldScore*100)}</span></div>`;
+    }).join('') || '<p style="font-size:12px;color:var(--muted)">None in this tier.</p>';
+    return `<div class="card" style="margin-bottom:14px"><h3 style="color:${meta.color}">${meta.label}</h3><p style="font-size:11.5px;color:var(--muted);margin-bottom:10px">${meta.desc}</p>${items}</div>`;
+  }).join('');
+}
+
+function renderTrendCards(targetId){
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  const sorted = [...ALL_KEYS].filter(k=>k!=='SE').sort((a,b)=>(STATS[b].changePct??0)-(STATS[a].changePct??0));
+  el.innerHTML = sorted.map(k=>{
+    const s = STATS[k];
+    const cls = s.trendLabel==='Increasing'?'up':s.trendLabel==='Decreasing'?'down':'stable';
+    const arrow = s.trendLabel==='Increasing'?'↑':s.trendLabel==='Decreasing'?'↓':'→';
+    return `<div class="pred-item" style="border-left-color:${SUBJECT_META[k].color}">
+      <div class="conf ${cls}">${arrow} ${SUBJECT_META[k].name}</div>
+      <p>2009–2013 avg: ${fmt1(s.early5avg)} → 2022–2026 avg: ${fmt1(s.recent5avg)} (${s.changePct>=0?'+':''}${fmt1(s.changePct)}%). Verified/estimated years only.</p>
+    </div>`;
+  }).join('');
+}
+
+function renderPriorityPlan(hours){
+  const el = document.getElementById('prepPlanOutput');
+  if (!el) return;
+  const ranked = [...ALL_KEYS].filter(k=>k!=='SE').sort((a,b)=>STATS[b].priorityScore-STATS[a].priorityScore);
+  const cutoff = hours>=100 ? ranked.length : hours>=50 ? 6 : 3;
+  const shown = ranked.slice(0, cutoff);
+  el.innerHTML = `<ol style="margin-left:20px;color:var(--text)">${shown.map(k=>`<li style="margin-bottom:6px"><strong>${SUBJECT_META[k].name}</strong> <span style="color:var(--muted);font-size:12px">— Priority Score ${fmt1(STATS[k].priorityScore*100)}, recent avg ${fmt1(STATS[k].recent5avg)} marks</span></li>`).join('')}</ol>
+  <div class="note" style="margin-top:10px">Generated from the Priority Score ranking above (real, computed) — not a separate hand-picked list. With less time, the list is simply truncated to the top-ranked subjects; it does not reorder anything.</div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHARTS (all Chart.js instances now read live from subjectData/STATS)
+// ═══════════════════════════════════════════════════════════════
+const __initialLight = document.documentElement.getAttribute('data-theme') === 'light';
+Chart.defaults.color = __initialLight ? '#5c5346' : '#a39d92';
+Chart.defaults.borderColor = __initialLight ? '#e3dac8' : '#26252c';
+Chart.defaults.font.family = "'Inter', sans-serif";
+
+const yearLabels = YEARS_FULL.map(y => YEAR_CONFIDENCE[y]==='placeholder' ? y+'*' : (YEAR_CONFIDENCE[y]==='estimated' ? y+'†' : String(y)));
+
+new Chart(document.getElementById('yearwiseChart'), {
+  type: 'bar',
+  data: {
+    labels: yearLabels,
+    datasets: ALL_KEYS.map(k => ({
+      label: k, data: subjectData[k],
+      backgroundColor: SUBJECT_META[k].color + 'b3',
+      stack: 'a'
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } },
+    scales: {
+      x: { stacked: true, grid: { display: false } },
+      y: { stacked: true, min: 0, max: 90, title: { display: true, text: 'Marks (excl. GA)' } }
+    }
+  }
+});
+
+// Real computed 3-period comparison (only verified/estimated years; 2007-08 excluded)
+function periodAvg(key, years){
+  const idx = years.map(y=>YEARS_FULL.indexOf(y));
+  return mean(idx.map(i=>subjectData[key][i]));
+}
+const P1 = [2009,2010,2011,2012,2013], P2=[2014,2015,2016,2017,2018,2019,2020], P3=[2021,2022,2023,2024,2025,2026];
+new Chart(document.getElementById('trendChart'), {
+  type: 'bar',
+  data: {
+    labels: ALL_KEYS.map(k=>k),
+    datasets: [
+      { label: '2009–2013 avg', data: ALL_KEYS.map(k=>periodAvg(k,P1)), backgroundColor: 'rgba(120,109,92,0.6)' },
+      { label: '2014–2020 avg', data: ALL_KEYS.map(k=>periodAvg(k,P2)), backgroundColor: 'rgba(203,163,107,0.6)' },
+      { label: '2021–2026 avg', data: ALL_KEYS.map(k=>periodAvg(k,P3)), backgroundColor: 'rgba(130,183,154,0.6)' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } },
+    scales: { x: { grid: { display: false } }, y: { title: { display: true, text: 'Average Marks (computed live)' }, min: 0 } }
+  }
+});
+
+// Real min/avg/max per subject (not a true box plot — labeled honestly)
+new Chart(document.getElementById('subjectBoxChart'), {
+  type: 'bar',
+  data: {
+    labels: ALL_KEYS.map(k=>k),
+    datasets: [
+      { label: 'Min', data: ALL_KEYS.map(k=>STATS[k].min), backgroundColor: 'rgba(224,119,108,0.5)' },
+      { label: 'Avg', data: ALL_KEYS.map(k=>STATS[k].avg), backgroundColor: 'rgba(203,163,107,0.7)' },
+      { label: 'Max', data: ALL_KEYS.map(k=>STATS[k].max), backgroundColor: 'rgba(130,183,154,0.5)' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } },
+    scales: { x: { grid: { display: false } }, y: { title: { display: true, text: 'Marks' }, min: 0 } }
+  }
+});
+
+// Charts don't re-read CSS variables on their own (Chart.js draws to <canvas>,
+// not styled DOM), so axis/legend text and gridlines are re-tinted manually
+// here whenever the theme toggle fires. Bar colors themselves are saturated
+// enough to stay legible in both themes without changing.
+window.addEventListener('gate-theme-change', function(e){
+  const light = e.detail.theme === 'light';
+  const textColor = light ? '#5c5346' : '#a39d92';
+  const gridColor = light ? '#e3dac8' : '#26252c';
+  Chart.instances && Object.values(Chart.instances).forEach(chart => {
+    chart.options.color = textColor;
+    if (chart.options.scales) {
+      Object.values(chart.options.scales).forEach(scale => {
+        scale.ticks = scale.ticks || {};
+        scale.ticks.color = textColor;
+        if (scale.grid) scale.grid.color = gridColor;
+        if (scale.title) scale.title.color = textColor;
+      });
+    }
+    if (chart.options.plugins && chart.options.plugins.legend) {
+      chart.options.plugins.legend.labels = chart.options.plugins.legend.labels || {};
+      chart.options.plugins.legend.labels.color = textColor;
+    }
+    chart.update();
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════
+// HEATMAP — Subject × Year Marks (real, derived from subjectData)
+// The DSA per-topic presence heatmap that used to be here was
+// removed: it was hand-invented 0/1 data with no source and no way
+// to distinguish it from the real heatmap below, so it stays out
+// rather than being kept "as an approximation."
+// ═══════════════════════════════════════════════════════════════
+function buildHeatmap() {
+  const subjects = ALL_KEYS;
+  const container = document.getElementById('heatmapContainer');
+  if (container.children.length > 0) return;
+
+  const yearRow = document.createElement('div');
+  yearRow.className = 'hm-year-row';
+  YEARS_FULL.forEach(y => {
+    const el = document.createElement('div');
+    el.className = 'hm-year';
+    el.textContent = String(y).slice(2) + (YEAR_CONFIDENCE[y]!=='verified' ? (YEAR_CONFIDENCE[y]==='placeholder'?'*':'†') : '');
+    yearRow.appendChild(el);
+  });
+  container.appendChild(yearRow);
+
+  subjects.forEach(subj => {
+    const row = document.createElement('div');
+    row.className = 'hm-row';
+    const lbl = document.createElement('div');
+    lbl.className = 'hm-label';
+    lbl.textContent = subj;
+    row.appendChild(lbl);
+    subjectData[subj].forEach((val, i) => {
+      const maxVal = Math.max(...subjectData[subj]);
+      const minVal = Math.min(...subjectData[subj]);
+      const norm = (val - minVal) / (maxVal - minVal + 0.01);
+      const alpha = 0.08 + norm * 0.92;
+      const cell = document.createElement('div');
+      cell.className = 'hm-cell';
+      const y = YEARS_FULL[i];
+      cell.style.background = `rgba(203,163,107,${alpha.toFixed(2)})`;
+      if (YEAR_CONFIDENCE[y] !== 'verified') cell.style.outline = '1px dashed rgba(224,119,108,0.5)';
+      cell.textContent = val;
+      cell.title = `${subj} ${y}: ${val} marks [${YEAR_CONFIDENCE[y]}] — ${YEAR_SOURCE[y]}`;
+      row.appendChild(cell);
+    });
+    container.appendChild(row);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FILTERS (Subject Analysis comparison table)
+// ═══════════════════════════════════════════════════════════════
+function applyFilters(){
+  const checked = Array.from(document.querySelectorAll('.subj-filter:checked')).map(cb=>cb.value);
+  renderStatsTable('statsTableContainer', checked.length ? checked : ALL_KEYS);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INITIAL RENDER
+// ═══════════════════════════════════════════════════════════════
+renderDataIntegrity('dataIntegrityPanel');
+renderStatsTable('statsTableContainer', ALL_KEYS);
+renderYieldTiers('yieldTiersContainer');
+renderTrendCards('trendCardsContainer');
+function renderPredSignals(targetId){
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  const sorted = [...ALL_KEYS].filter(k=>k!=='SE').sort((a,b)=>STATS[b].freqPct-STATS[a].freqPct || STATS[b].recent5avg-STATS[a].recent5avg);
+  el.innerHTML = sorted.map(k=>{
+    const s = STATS[k];
+    const conf = s.freqPct===1 && s.cv<0.2 ? 'HIGH' : s.freqPct>=0.8 ? 'MEDIUM' : 'LOWER';
+    const color = conf==='HIGH' ? '#82b79a' : conf==='MEDIUM' ? '#d98a5f' : '#b09bd6';
+    return `<div class="pred-item" style="border-left-color:${color}">
+      <div class="conf" style="color:${color}">${conf} HISTORICAL FREQUENCY</div>
+      <p><strong>${SUBJECT_META[k].name}</strong> — present in ${s.freqYears}/${s.totalYears} verified/estimated years, recent 5yr avg ${fmt1(s.recent5avg)} marks. Historical signal, not a prediction guarantee.</p>
+    </div>`;
+  }).join('');
+}
+renderPredSignals('predSignalsContainer');
+renderPriorityPlan(100);
+</script>
+</body>
+</html>

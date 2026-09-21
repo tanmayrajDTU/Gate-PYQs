@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DBMS — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'dbms', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // DBMS</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">7 sheets · full syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#er-relational"><span class="num">01</span> ER Model &amp; Relational Model</a></div>
+      <div class="navgroup"><a class="navlink" href="#ra-rc"><span class="num">02</span> Relational Algebra &amp; Calculus</a></div>
+      <div class="navgroup"><a class="navlink" href="#sql"><span class="num">03</span> SQL</a></div>
+      <div class="navgroup"><a class="navlink" href="#normalization"><span class="num">04</span> Functional Dependencies &amp; Normalization</a></div>
+      <div class="navgroup"><a class="navlink" href="#transactions"><span class="num">05</span> Transactions, Concurrency &amp; Recovery</a></div>
+      <div class="navgroup"><a class="navlink" href="#indexing"><span class="num">06</span> Indexing &amp; File Organization</a></div>
+      <div class="navgroup"><a class="navlink" href="#revision"><span class="num">07</span> Revision Sheet</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Schematic notes · GATE CSE 2027</span>
+      <h1>DBMS, worked out <em>relation by relation</em>, not memorized as a diagram.</h1>
+      <p>Seven sheets covering the complete GATE CSE DBMS syllabus — ER modeling, relational algebra/calculus, SQL, functional dependencies &amp; normalization, transactions &amp; concurrency control, and indexing — with worked examples and the exact traps GATE likes to set.</p>
+      <div class="chips">
+        <span class="chip">01 ER &amp; Relational Model</span>
+        <span class="chip">02 Algebra &amp; Calculus</span>
+        <span class="chip">03 SQL</span>
+        <span class="chip">04 FDs &amp; Normalization</span>
+        <span class="chip">05 Transactions &amp; Concurrency</span>
+        <span class="chip">06 Indexing</span>
+        <span class="chip">07 Revision</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g fill="none" stroke="#2a2b33" stroke-width="1.4">
+          <rect x="20" y="30" width="90" height="70" rx="3" stroke="#cba36b"/>
+          <rect x="180" y="30" width="90" height="70" rx="3"/>
+          <path d="M110 65 L180 65" stroke="#d98a5f"/>
+          <path d="M170 59 L180 65 L170 71" stroke="#d98a5f"/>
+          <rect x="90" y="140" width="120" height="60" rx="3"/>
+          <path d="M65 100 L130 140" />
+          <path d="M235 100 L170 140" />
+        </g>
+        <g font-family="JetBrains Mono" font-size="10" fill="#6f6a60">
+          <text x="45" y="20" fill="#cba36b">Student</text>
+          <text x="205" y="20">Course</text>
+          <text x="112" y="130">Enrolls (M:N)</text>
+        </g>
+      </svg>
+    </section>
+    <section class="topic" id="er-relational">
+      <div class="topic-head"><span class="idx">01</span><h2>ER Model &amp; Relational Model</h2></div>
+      <div class="topic-kicker">ENTITIES &amp; RELATIONSHIPS · KEYS · MAPPING ER TO TABLES · CONSTRAINTS</div>
+
+      <h3 class="sub">ER model building blocks</h3>
+      <table>
+        <tr><th>Construct</th><th>Meaning</th></tr>
+        <tr><td>Entity</td><td>a real-world object with independent existence (e.g. Student)</td></tr>
+        <tr><td>Weak entity</td><td>no key of its own — identified only via a owner entity + a partial (discriminator) key</td></tr>
+        <tr><td>Attribute</td><td>property of an entity: simple, composite, single/multi-valued, derived</td></tr>
+        <tr><td>Relationship</td><td>association between entities, with a degree (binary, ternary...) and cardinality (1:1, 1:N, M:N)</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">Weak entities need identifying relationships</span>
+        <p>A weak entity (e.g. Dependent, identified only relative to an Employee) is connected to its owner via an <strong>identifying relationship</strong>, drawn with a double diamond, and the weak entity set is drawn with a double rectangle. Its primary key = owner's key + its own partial/discriminator key.</p>
+      </div>
+
+      <h3 class="sub">Types of keys</h3>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Candidate key</span>
+          <p>A minimal superkey — no proper subset of it can also uniquely identify tuples. A relation can have multiple candidate keys.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Primary vs alternate/foreign key</span>
+          <p><strong>Primary key</strong>: the chosen candidate key. <strong>Alternate keys</strong>: the other candidate keys, not chosen. <strong>Foreign key</strong>: an attribute referencing a candidate/primary key of another (or the same) relation, enforcing referential integrity.</p>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — superkey vs candidate key count</span>
+        <p>Every candidate key is a superkey, but not every superkey is a candidate key — a superkey can have extra, redundant attributes. If a relation has n attributes and a single-attribute candidate key, the number of superkeys is 2^(n−1) (that attribute must be present; the rest are optional), a classic counting question.</p>
+      </div>
+
+      <h3 class="sub">Mapping ER diagrams to relational tables</h3>
+      <table>
+        <tr><th>ER construct</th><th>Table mapping rule</th></tr>
+        <tr><td>Strong entity</td><td>own table, PK = entity's key attribute(s)</td></tr>
+        <tr><td>Weak entity</td><td>own table, PK = owner's PK + discriminator; owner's PK is also a FK</td></tr>
+        <tr><td>1:1 relationship</td><td>FK on EITHER side (prefer the side with mandatory participation)</td></tr>
+        <tr><td>1:N relationship</td><td>FK placed on the "N" (many) side, referencing the "1" side's PK</td></tr>
+        <tr><td>M:N relationship</td><td>separate junction/bridge table with FKs to both entities; together they form its PK</td></tr>
+        <tr><td>Multi-valued attribute</td><td>separate table: FK to owning entity + the attribute value, together forming the PK</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap — total vs partial participation</span>
+        <p><strong>Total participation</strong> (double line in ER diagrams) is an ER-level constraint: every entity instance MUST participate in the relationship. <strong>Partial participation</strong> (single line) means participation is optional. When the relationship is mapped to tables via a foreign key, total participation is commonly enforced with a NOT NULL constraint on that FK — but this is a mapping choice, not a definitional equivalence: total participation ≠ "NOT NULL" by itself. The exact relational representation depends on the design (e.g. total participation on a weak entity's identifying relationship is enforced structurally, not just via NOT NULL; and a NOT NULL column doesn't by itself tell you an ER relationship was totally participating — it could just be a mandatory attribute). This distinction is frequently tested when mapping 1:1 relationships — the side with total participation is the better place to embed the foreign key, to avoid excess NULLs.</p>
+      </div>
+
+      <h3 class="sub">Relational model integrity constraints</h3>
+      <ul>
+        <li><strong>Domain constraint</strong> — each attribute value must come from its declared domain.</li>
+        <li><strong>Entity integrity</strong> — no attribute of the primary key can be NULL.</li>
+        <li><strong>Referential integrity</strong> — every non-NULL foreign key value must match an existing primary key value in the referenced relation. Whether NULL is permitted at all depends on the FK column's own definition: a <em>nullable</em> FK may hold NULL; one declared <strong>NOT NULL</strong> (e.g. to enforce total participation) cannot; and a <em>composite</em> FK adds further nuance, since SQL's handling of a key where only some component columns are NULL is implementation/standard-dependent (MATCH FULL / MATCH PARTIAL / MATCH SIMPLE semantics differ).</li>
+      </ul>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — UNIQUE is not just "a nullable primary key"</span>
+        <p><strong>Primary key</strong> is unambiguous: entity integrity forbids NULL entirely, so a table has at most one row per key value AND no row can leave that column(s) empty.</p>
+        <p><strong>UNIQUE</strong> only enforces that no two <em>non-NULL</em> values in the column are equal — but how many NULLs the column may hold is <strong>SQL-semantic / DBMS-dependent</strong>, not a single universal rule. The reasoning behind the common (though not universally mandated) behavior: ordinary equality comparisons treat NULL as unknown, so two NULLs are never considered "equal" for a uniqueness check, which is why most SQL implementations (e.g. PostgreSQL, SQL Server, SQLite, MySQL) permit <strong>multiple NULLs</strong> in a UNIQUE column — but this isn't identical across every system or every reading of the standard, and some configurations restrict it to at most one NULL. Don't memorize "UNIQUE = primary key except nullable" as a universal identity — memorize the actual distinction: primary key forbids NULL outright (entity integrity); UNIQUE only constrains non-NULL values, with NULL-count behavior left to the specific DBMS.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A relation R(A,B,C,D) has candidate key {A}. How many superkeys does R have?</summary>
+          <div class="ans">
+            <p>Any superkey must contain the candidate key A. The remaining attributes B, C, D can each independently be included or excluded, giving 2³ = 8 combinations, each unioned with A forming a valid (if sometimes redundant) superkey.</p>
+            <p class="final">Answer: 8 superkeys</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> In an ER diagram, Employee (strong entity) has a 1:1 total-participation-on-both-sides relationship "Manages" with Department. How should this be mapped to tables, and is a separate junction table needed here?</summary>
+          <div class="ans">
+            <p>Since both sides have total participation in a 1:1 relationship, the foreign key can be embedded directly in either table (say, dept_id in Employee, or manager_id in Department) without any NULLs on either side — a separate junction table isn't needed here. The standard mapping guideline: 1:N puts the FK on the "N" side; M:N normally requires a junction/associative table since neither side alone can hold multiple FKs cleanly; 1:1 can place the FK on either side. Note this is about what's typically required, not an absolute rule — a designer can still deliberately use a junction table for a 1:1 or 1:N relationship (e.g. to attach relationship-specific attributes, or to keep the schema uniform), even though it isn't structurally necessary.</p>
+            <p class="final">Answer: Embed the FK directly in either table (no junction table strictly needed for 1:1) — junction tables are the standard requirement for M:N, not the only case they can be used</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Dependent is a weak entity identified relative to Employee via relationship "HasDependent," with Dependent's own partial key being "dep_name". What is Dependent's full primary key in the mapped table?</summary>
+          <div class="ans">
+            <p>A weak entity's primary key always combines its owner's full primary key (to disambiguate which owner it belongs to) with its own partial/discriminator key (to disambiguate among that owner's dependents) — since dep_name alone could repeat across different employees' dependents.</p>
+            <p class="final">Answer: (Employee's PK, dep_name) — the composite of owner's key + discriminator</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Can a foreign key value be NULL? Under what integrity rule, and does this violate referential integrity?</summary>
+          <div class="ans">
+            <p>It depends on the FK column's definition. Referential integrity itself only requires that a NON-NULL foreign key value match an existing primary key value in the referenced table — a NULL is treated as "no reference yet" and doesn't violate that rule. But whether NULL is actually allowed is a separate, column-level decision: if the FK is declared NOT NULL (commonly done to enforce total participation from the ER model), NULL is rejected at the column-constraint level, independent of referential integrity.</p>
+            <p class="final">Answer: Only if the FK column permits NULL (i.e. isn't separately constrained NOT NULL) — referential integrity alone never forbids a NULL FK, only a non-matching non-NULL value would violate it</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A ternary relationship connects entities A, B, and C with cardinality constraints such that each (A,B) pair maps to at most one C. Assume each relationship instance is uniquely identified by its participating entity combination and there are no duplicate relationship instances. How is this typically mapped to a relational table?</summary>
+          <div class="ans">
+            <p>A single table is created for the relationship with foreign keys to A, B, and C. Since each (A,B) pair determines at most one C, the primary key of this relationship table can be just (A's key, B's key) rather than all three keys together — reflecting that A and B together are sufficient to identify a unique row. (The uniqueness assumption stated in the question is what rules out the relationship set itself containing duplicate/repeated (A,B,C) instances — without it, "the primary key" wouldn't be well-defined at all, since a relational table's rows must be distinct.)</p>
+            <p class="final">Answer: One relationship table with FKs to A, B, C; primary key = (A_id, B_id) only, since that pair determines C uniquely</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="ra-rc">
+      <div class="topic-head"><span class="idx">02</span><h2>Relational Algebra &amp; Calculus</h2></div>
+      <div class="topic-kicker">SELECT/PROJECT/JOIN · SET OPERATIONS · DIVISION · TUPLE &amp; DOMAIN CALCULUS</div>
+
+      <h3 class="sub">Core relational algebra operators</h3>
+      <table>
+        <tr><th>Operator</th><th>Symbol</th><th>Meaning</th></tr>
+        <tr><td>Selection</td><td>σ<sub>condition</sub>(R)</td><td>filter rows</td></tr>
+        <tr><td>Projection</td><td>π<sub>attrs</sub>(R)</td><td>filter columns, removes duplicates</td></tr>
+        <tr><td>Union / Intersection / Difference</td><td>∪ ∩ −</td><td>set ops — require union-compatible relations (same arity, matching domains)</td></tr>
+        <tr><td>Cartesian product</td><td>R × S</td><td>all combinations of tuples from R and S</td></tr>
+        <tr><td>Join</td><td>⋈</td><td>filtered Cartesian product on a condition</td></tr>
+        <tr><td>Rename</td><td>ρ</td><td>renames relation/attributes</td></tr>
+      </table>
+
+      <h3 class="sub">Join variants</h3>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Natural join (⋈)</span>
+          <p>Equi-join on ALL commonly-named attributes, then removes the duplicate join columns automatically. If no common attributes exist, natural join degenerates to the Cartesian product.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Theta join (⋈<sub>θ</sub>)</span>
+          <p>Join with an arbitrary condition θ (not necessarily equality) — equivalently, σ<sub>θ</sub>(R × S). An equi-join is a theta join restricted to "=" conditions, and unlike natural join, it does NOT auto-remove duplicate columns.</p>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — natural join can silently drop rows if column names accidentally match</span>
+        <p>If R and S share an attribute name that ISN'T semantically meant to be joined on (a coincidental naming collision), natural join will still equate them — potentially producing wrong or empty results. Always verify semantic intent, not just column-name overlap, when reasoning about natural join output.</p>
+      </div>
+
+      <h3 class="sub">Division operator — the most-tested RA operator</h3>
+      <p><code>R ÷ S</code> returns tuples t from R's non-S-attributes such that, for EVERY tuple s in S, the combination (t,s) appears in R. Classic use: "find students who have taken ALL courses in set S."</p>
+      <div class="eq">R(student, course)  ÷  S(course)
+<span class="c">// returns every student who has taken every course listed in S</span></div>
+      <div class="card formula">
+        <span class="label">Division built from primitives (if asked to derive it)</span>
+        <div class="eq">R ÷ S  =  π<sub>X</sub>(R) − π<sub>X</sub>( (π<sub>X</sub>(R) × S) − R )</div>
+      </div>
+
+      <h3 class="sub">Relational calculus</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Tuple relational calculus (TRC) <span style="color:var(--cyan); font-weight:400; font-size:12px;">— core</span></h4>
+          <p>{t | P(t)} — t ranges over tuples, P is a formula using t.attribute, ∃, ∀, ∧, ∨, ¬. Declarative — states WHAT to retrieve, not how.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Domain relational calculus (DRC) <span style="color:var(--text-faint); font-weight:400; font-size:12px;">— supporting</span></h4>
+          <p>{&lt;x1,...,xn&gt; | P(x1,...,xn)} — variables range over individual domain values (attribute values), not whole tuples.</p>
+        </div>
+      </div>
+      <div class="card note">
+        <span class="label">Prioritization for GATE prep</span>
+        <p>The official syllabus explicitly names relational algebra, tuple calculus, and SQL — DRC isn't separately listed. Treat TRC as core (understand it well enough to read/write expressions and reason about safety), and DRC as supporting/recognition-level (know what it looks like and how it differs from TRC) unless your own PYQ review turns up enough direct DRC questions to justify deeper drilling.</p>
+      </div>
+      <div class="card note">
+        <span class="label">Expressive equivalence</span>
+        <p>Relational algebra, TRC, and DRC (restricted to <strong>safe</strong> expressions, avoiding infinite results from negation over infinite domains) are all provably equivalent in expressive power — this equivalence is called <strong>relational completeness</strong>, and any of the three can serve as the baseline for judging a query language's power.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> R has 5 tuples, S has 3 tuples, both with no attributes in common. How many tuples does R × S produce?</summary>
+          <div class="ans">
+            <p>Cartesian product pairs every tuple of R with every tuple of S — the tuple count is the product of the two relation sizes, regardless of attribute overlap (or lack thereof).</p>
+            <p class="final">Answer: 15 tuples</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Given Enrolled(student, course) and a relation AllCourses(course) listing every course offered, write the RA expression to find students enrolled in every course in AllCourses.</summary>
+          <div class="ans">
+            <p>This is the textbook use case for the division operator — dividing the enrollment relation by the full course list returns exactly the students whose enrolled-course set is a superset of (i.e., covers) AllCourses.</p>
+            <p class="final">Answer: Enrolled ÷ AllCourses</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Why must the operands of a union operation in relational algebra be "union-compatible," and what does that require?</summary>
+          <div class="ans">
+            <p>Union combines tuples from two relations into one result set — for that result to be a well-defined relation (fixed number of attributes with consistent domains), both operand relations must have the same number of attributes (arity), and corresponding attributes must draw from compatible domains. Without this, the combined "relation" wouldn't have a consistent schema.</p>
+            <p class="final">Answer: Same arity and matching attribute domains — needed so the result is itself a well-formed relation</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> R(A,B) and S(B,C) are joined with a natural join. R has 4 tuples and S has 3 tuples, and for every tuple of R, exactly one tuple of S has the same B value. How many tuples does R ⋈ S produce?</summary>
+          <div class="ans">
+            <p>Natural join matches rows where the shared attribute B agrees. Since every tuple of R has exactly one matching tuple in S (by B value), each of R's 4 tuples contributes exactly one result tuple — no tuple of R is dropped (no match failure) and no tuple of R is duplicated (no multiple matches).</p>
+            <p class="final">Answer: Exactly 4 tuples</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Explain what "safety" means for a tuple relational calculus expression, and why unsafe expressions are excluded from being considered relationally complete.</summary>
+          <div class="ans">
+            <p>A TRC expression is unsafe if it could, in principle, generate an infinite result — most commonly arising from negation combined with an unbounded domain (e.g. "all tuples t such that t is NOT in R" ranges over every possible tuple in an infinite domain). Safety restricts formulas so results are always finite and drawn from values actually appearing in the referenced relations/constants. Only safe TRC expressions are considered when establishing equivalence with relational algebra, since RA itself can never produce an infinite result from finite input relations.</p>
+            <p class="final">Answer: Safety means the expression can only produce a finite result; unsafe (potentially-infinite) expressions are excluded because RA can never produce infinite output, so only safe TRC is equivalent to it</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="sql">
+      <div class="topic-head"><span class="idx">03</span><h2>SQL</h2></div>
+      <div class="topic-kicker">QUERY EXECUTION ORDER · JOINS · AGGREGATION · NULL SEMANTICS · SUBQUERIES</div>
+
+      <h3 class="sub">Logical order of SQL query evaluation</h3>
+      <p>SQL is written in one order but <strong>evaluated in a different logical order</strong> — this mismatch is the single most tested SQL concept on GATE. This is the <strong>logical (conceptual) query processing order</strong> defined by the SQL standard for reasoning about what a query means — it's a model for determining correctness and scoping (what's visible to what), not a claim about the literal sequence of steps a database engine physically executes. A real optimizer is free to reorder, rewrite, or parallelize internally (e.g. pushing a WHERE predicate down, or evaluating subqueries out of this textual order) as long as the final result matches what the logical order would produce. For GATE, always reason in terms of this logical order, not any assumption about physical execution.</p>
+      <div class="eq">FROM  →  WHERE  →  GROUP BY  →  HAVING  →  SELECT  →  ORDER BY
+<span class="c">// written order:  SELECT ... FROM ... WHERE ... GROUP BY ... HAVING ... ORDER BY</span></div>
+      <p><code>LIMIT</code>/<code>FETCH</code> is <strong>not</strong> part of the standard logical processing model above — it's dialect- and standard-version-dependent (e.g. MySQL/Postgres <code>LIMIT</code> vs SQL:2008+ <code>FETCH FIRST</code>). When it does apply, it's conceptually the last step, after <code>ORDER BY</code>.</p>
+      <div class="card pyq">
+        <span class="label">GATE trap — why WHERE can't use aggregate functions but HAVING can</span>
+        <p>In the <strong>logical query processing order</strong> (not necessarily the database's actual physical execution steps), <code>WHERE</code> is evaluated <strong>before</strong> <code>GROUP BY</code>, so no groups (and hence no aggregates like COUNT/SUM) exist yet at that point — using an aggregate in WHERE is a syntax/semantic error. <code>HAVING</code> is evaluated <strong>after</strong> GROUP BY, when aggregates are available, so it can filter on them. Similarly, a column alias defined in SELECT can't generally be used in WHERE (SELECT runs after WHERE) but often CAN be used in ORDER BY (which runs after SELECT).</p>
+      </div>
+
+      <h3 class="sub">Join types and NULL behaviour</h3>
+      <table>
+        <tr><th>Join</th><th>Unmatched left rows</th><th>Unmatched right rows</th></tr>
+        <tr><td>INNER JOIN</td><td>dropped</td><td>dropped</td></tr>
+        <tr><td>LEFT OUTER JOIN</td><td>kept, right side NULL</td><td>dropped</td></tr>
+        <tr><td>RIGHT OUTER JOIN</td><td>dropped</td><td>kept, left side NULL</td></tr>
+        <tr><td>FULL OUTER JOIN</td><td>kept, right side NULL</td><td>kept, left side NULL</td></tr>
+      </table>
+
+      <div class="card formula">
+        <span class="label">Worked example — NULL extension in a LEFT JOIN</span>
+        <p>R(id) = {1, 2}. S(id, val) = {(1, 'x')} — S has no row for id=2.</p>
+        <div class="eq">R LEFT JOIN S ON R.id = S.id:
+
+R.id | S.id | S.val
+-----|------|------
+  1  |   1  |  'x'
+  2  | NULL | NULL</div>
+        <p>Row 2 from R is preserved even though it has no match in S — every S-side column (including S.id itself, not just S.val) is filled with NULL. This "NULL extension" is exactly what distinguishes LEFT JOIN from INNER JOIN.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — a WHERE clause after LEFT JOIN can silently undo it</span>
+        <p>Adding <code>WHERE S.val = 'x'</code> (or any condition that tests an S-side column with a non-NULL comparison, e.g. <code>S.val = ...</code> or <code>S.id = ...</code>) after the LEFT JOIN above filters row 2 back out, since <code>NULL = 'x'</code> evaluates to UNKNOWN, not TRUE. The query behaves exactly like an INNER JOIN in that case — the whole point of using LEFT JOIN (keeping unmatched left rows) is defeated by a WHERE condition that implicitly requires the right side to be non-NULL. To filter on the right side while still keeping unmatched left rows, the condition needs to explicitly allow the NULL case, e.g. <code>WHERE S.val = 'x' OR S.val IS NULL</code>, or the filter should go in the join's ON clause instead of WHERE.</p>
+      </div>
+
+      <h3 class="sub">Three-valued logic and NULL</h3>
+      <p>SQL comparisons involving NULL evaluate to <strong>UNKNOWN</strong>, not TRUE or FALSE. A WHERE clause only keeps rows where the condition is TRUE — UNKNOWN rows are excluded, same as FALSE ones, but they're logically distinct.</p>
+      <div class="card pyq">
+        <span class="label">GATE trap — NULL comparisons and NOT IN</span>
+        <p><code>x = NULL</code> is always UNKNOWN, never TRUE — must use <code>IS NULL</code> instead. Even more subtle: <code>WHERE x NOT IN (1, 2, NULL)</code> returns <strong>zero rows always</strong> for ANY x, because NOT IN expands to a chain of AND'd <code>&lt;&gt;</code> comparisons, and <code>x &lt;&gt; NULL</code> is UNKNOWN — ANDing UNKNOWN into the chain poisons the whole condition to never be definitively TRUE.</p>
+      </div>
+      <div class="card note">
+        <span class="label">Prefer NOT EXISTS over NOT IN when the subquery could contain NULLs</span>
+        <p>The point isn't that <code>NOT EXISTS</code> and <code>NOT IN</code> are universally interchangeable — they aren't, precisely because of the NULL-poisoning trap above. For anti-join semantics (rows in R with no matching row in S) where S's join column might contain NULLs, <code>NOT EXISTS</code> is the safer default, because its correlated subquery compares row-by-row and never builds a flat value list that a stray NULL can silently poison:</p>
+        <div class="eq">WHERE NOT EXISTS (
+    SELECT 1
+    FROM S
+    WHERE S.x = R.x
+)</div>
+        <p>When S.x has no NULLs, <code>NOT IN (SELECT x FROM S)</code> and this <code>NOT EXISTS</code> form give the same result. The moment S.x can contain NULL, <code>NOT IN</code> silently returns zero rows for everything (as shown above), while <code>NOT EXISTS</code> continues to behave correctly — it only asks "does S.x = R.x hold for any S-row," which is simply FALSE (not UNKNOWN-poisoned) when no match exists, NULLs included.</p>
+      </div>
+
+      <h3 class="sub">Aggregate functions and GROUP BY rules</h3>
+      <p>Every column in SELECT that is NOT wrapped in an aggregate function MUST appear in GROUP BY (strict SQL standard) — otherwise the value to display for that column within a group is ambiguous.</p>
+      <div class="card formula">
+        <span class="label">COUNT(*) vs COUNT(column) vs COUNT(DISTINCT column) — the canonical distinction</span>
+        <table>
+          <tr><th>Form</th><th>Counts</th></tr>
+          <tr><td>COUNT(*)</td><td>All rows in the group/table, including rows where every column is NULL</td></tr>
+          <tr><td>COUNT(column)</td><td>Only rows where <code>column</code> is non-NULL — NULLs in that column are skipped</td></tr>
+          <tr><td>COUNT(DISTINCT column)</td><td>Only the distinct non-NULL values of <code>column</code> — duplicates and NULLs both collapse away</td></tr>
+        </table>
+      </div>
+
+      <h3 class="sub">Correlated vs uncorrelated subqueries</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Uncorrelated subquery</h4>
+          <p>Independent of the outer query — evaluated once. E.g. <code>WHERE salary &gt; (SELECT AVG(salary) FROM Emp)</code>.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Correlated subquery</h4>
+          <p>References a column from the outer query — conceptually re-evaluated once per outer row. E.g. <code>WHERE EXISTS (SELECT 1 FROM Emp e2 WHERE e2.dept=e1.dept AND e2.salary&gt;e1.salary)</code> finds non-top earners per department.</p>
+        </div>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Why does <code>SELECT dept, COUNT(*) FROM Emp WHERE COUNT(*) &gt; 5 GROUP BY dept;</code> fail?</summary>
+          <div class="ans">
+            <p>WHERE is evaluated before GROUP BY in the logical query processing order, so no groups (and thus no COUNT(*) per group) exist yet when WHERE runs — aggregate functions are unavailable at that stage. The correct fix is to move the condition to HAVING, which runs after grouping.</p>
+            <p class="final">Answer: WHERE runs before GROUP BY, so aggregates aren't available yet; must use HAVING COUNT(*) &gt; 5 instead</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Table Emp has 5 rows, 2 of which have dept = NULL. What does <code>SELECT COUNT(dept) FROM Emp;</code> return, versus <code>SELECT COUNT(*) FROM Emp;</code>?</summary>
+          <div class="ans">
+            <p>COUNT(column) counts only non-NULL values of that specific column, skipping the 2 NULL depts, giving 3. COUNT(*) counts all rows regardless of NULLs in any column, giving 5.</p>
+            <p class="final">Answer: COUNT(dept) = 3, COUNT(*) = 5</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Table A(id) has values {1,2,3}. Table B(id) has values {1, NULL}. Under standard SQL three-valued logic, what does <code>SELECT * FROM A WHERE id NOT IN (SELECT id FROM B);</code> return?</summary>
+          <div class="ans">
+            <p>SQL uses three-valued logic: every comparison evaluates to TRUE, FALSE, or UNKNOWN, and a row is returned only if the WHERE condition evaluates to TRUE (UNKNOWN is treated like FALSE for filtering, but still "poisons" AND chains differently from FALSE). NOT IN expands to AND-chained inequality checks against every value in the subquery result, including NULL. For any row of A, the comparison "id &lt;&gt; NULL" evaluates to UNKNOWN (not TRUE or FALSE), and ANDing UNKNOWN with anything else (e.g. TRUE AND UNKNOWN → UNKNOWN) can never produce definite TRUE — so the WHERE condition is never satisfied for any row, no matter what id value it has.</p>
+            <p><strong>GATE trap:</strong> this is exactly why <code>NOT IN</code> is dangerous whenever the subquery could return NULLs — <code>NOT EXISTS</code> is the safer default for anti-join logic like this, since it never gets NULL-poisoned this way.</p>
+            <p class="final">Answer: Empty result (zero rows) — the NULL inside the NOT IN subquery poisons the entire condition under three-valued logic</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Emp(1000 rows) LEFT OUTER JOIN Dept(50 rows) ON Emp.dept_id=Dept.id, where 30 employees have a dept_id that doesn't match any Dept row (including possibly NULL dept_id). How many rows does the result have, at minimum?</summary>
+          <div class="ans">
+            <p>LEFT OUTER JOIN preserves every row from the left table (Emp) regardless of whether a match exists on the right (Dept) — unmatched left rows appear once each, with all Dept columns as NULL. So the result has at least all 1000 Emp rows (exactly 1000 if each matching employee matches only one Dept row, since Dept.id being a key means at most one match per employee).</p>
+            <p class="final">Answer: 1000 rows (every Emp row is preserved; the 30 unmatched ones just get NULL Dept columns)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Write a correlated subquery to find employees who earn more than the average salary of their OWN department (not the company-wide average).</summary>
+          <div class="ans">
+            <p>Because "average of their own department" depends on which department the outer row belongs to, the subquery must reference the outer query's department value — making it correlated (re-evaluated conceptually per outer row) rather than a single company-wide average computed once.</p>
+            <p class="final">Answer: SELECT * FROM Emp e1 WHERE salary &gt; (SELECT AVG(salary) FROM Emp e2 WHERE e2.dept_id = e1.dept_id);</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="normalization">
+      <div class="topic-head"><span class="idx">04</span><h2>Functional Dependencies &amp; Normalization</h2></div>
+      <div class="topic-kicker">ARMSTRONG'S AXIOMS · CLOSURE &amp; CANDIDATE KEYS · 1NF–BCNF · DECOMPOSITION PROPERTIES</div>
+
+      <h3 class="sub">Functional dependency basics</h3>
+      <p><code>X → Y</code> means: whenever two tuples agree on X, they must also agree on Y. X is the determinant, Y is the dependent.</p>
+      <div class="card formula">
+        <span class="label">Armstrong's axioms (sound &amp; complete)</span>
+        <ul style="margin-top:8px;">
+          <li><strong>Reflexivity</strong>: if Y ⊆ X, then X → Y</li>
+          <li><strong>Augmentation</strong>: if X → Y, then XZ → YZ</li>
+          <li><strong>Transitivity</strong>: if X → Y and Y → Z, then X → Z</li>
+        </ul>
+        <p>Derived rules (union, decomposition, pseudotransitivity) all follow from these three.</p>
+      </div>
+
+      <h3 class="sub">Computing attribute closure (X⁺)</h3>
+      <p>The single most-tested computational skill in this module: given a set of FDs, compute X⁺ (all attributes functionally determined by X) by repeatedly applying FDs whose LHS is already covered, until no more attributes can be added.</p>
+      <div class="card pyq">
+        <span class="label">GATE trap — using closure to test candidate keys</span>
+        <p>X is a candidate key of R iff X⁺ = all attributes of R, AND no proper subset of X also has this property (minimality). GATE routinely asks "compute X⁺" as a stepping stone to "is X a candidate key / superkey" or "does X → Y hold" (check if Y ⊆ X⁺).</p>
+      </div>
+
+      <h3 class="sub">Normal forms — what each one actually forbids</h3>
+      <table>
+        <tr><th>Form</th><th>Requires (in addition to previous)</th></tr>
+        <tr><td>1NF</td><td>atomic (indivisible) attribute values — no repeating groups or multi-valued cells</td></tr>
+        <tr><td>2NF</td><td>no partial dependency — every non-prime attribute fully depends on the WHOLE of every candidate key (only matters when a key is composite)</td></tr>
+        <tr><td>3NF</td><td>for every non-trivial FD X→A: X is a superkey, OR A is a prime attribute (part of some candidate key) — informally, "no transitive dependency," but that phrase is a mnemonic, not the formal test</td></tr>
+        <tr><td>BCNF</td><td>for EVERY non-trivial FD X→Y, X must be a superkey — stricter than 3NF, drops 3NF's escape clause</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">The formal 3NF definition — and why "no transitive dependency" alone is dangerous</span>
+        <p>The GATE-precise definition of 3NF is: for every non-trivial FD X → A in R, either X is a superkey of R, or A is a prime attribute. "No transitive dependency" is a useful intuition for the first disjunct, but stated on its own it's incomplete — it hides the second disjunct (the prime-attribute escape clause) that GATE questions routinely exploit. A relation can have what looks like a transitive dependency (A determines B, B determines C) and still be in 3NF, as long as C happens to be part of some candidate key. Always check primeness before concluding a violation.</p>
+        <p>This escape clause is exactly what BCNF removes: 3NF allows a non-superkey X → Y dependency IF Y is a prime attribute — this exception is what makes 3NF always achievable via lossless, dependency-preserving decomposition, unlike BCNF, which sometimes must sacrifice dependency preservation to remain lossless.</p>
+      </div>
+
+      <h3 class="sub">Decomposition properties</h3>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Lossless-join decomposition</span>
+          <p>For a decomposition of R into R1, R2 governed by FD set F, it is lossless iff (R1∩R2) → R1 <strong>or</strong> (R1∩R2) → R2 holds in <strong>F⁺</strong> (the closure of F) — not just among the FDs literally listed, but among everything derivable from them. The common attributes must be a key (or superkey) of at least one of the two pieces; testing this properly means computing (R1∩R2)⁺ under F, not merely scanning F's given FDs by eye.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Dependency-preserving decomposition</span>
+          <p>Every original FD can be verified using only FDs local to individual decomposed relations (no need to rejoin them to check). BCNF decomposition sometimes cannot preserve all original dependencies — a fundamental tradeoff GATE tests directly.</p>
+        </div>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> R(A,B,C,D) has FDs: A→B, B→C, C→D. Compute A⁺.</summary>
+          <div class="ans">
+            <p>Start with {A}. A→B adds B: {A,B}. Now B→C applies (B is covered): add C: {A,B,C}. Now C→D applies: add D: {A,B,C,D}. No more FDs apply — closure is complete and covers all of R's attributes.</p>
+            <p class="final">Answer: A⁺ = {A,B,C,D} — so A is a candidate key of R</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> R(A,B,C) has candidate key {A,B} and FD: B→C (a non-prime attribute C depends on part of the composite key, not all of it). Which normal form does R violate?</summary>
+          <div class="ans">
+            <p>C is a non-prime attribute (not part of any candidate key) and it depends only on B, which is a PROPER SUBSET of the composite candidate key {A,B} — this is exactly the definition of a partial dependency, which 2NF forbids.</p>
+            <p class="final">Answer: Violates 2NF (partial dependency of non-prime C on part of the composite key)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> R(A,B,C) has candidate key {A} and FD chain A→B, B→C, where C is non-prime. Is R in 3NF? Is it in BCNF?</summary>
+          <div class="ans">
+            <p>By the formal test (for every non-trivial FD X→A: X is a superkey, or A is a prime attribute), check the FD B→C: B is not a superkey (the only candidate key is {A}), and C is non-prime, so this FD satisfies neither disjunct — the escape clause doesn't save it. So R violates 3NF. (Informally, this shows up as C depending on A only transitively, through B — "transitive dependency of a non-prime attribute" is a useful intuition for this case, but the formal test above is what actually decides it, since a transitive-looking chain can still be fine in 3NF if the final attribute happens to be prime.) Since BCNF is stricter than 3NF (BCNF ⇒ 3NF), the contrapositive holds: violating 3NF automatically means violating BCNF too.</p>
+            <p class="final">Answer: R violates both 3NF (transitive dependency A→B→C) and consequently BCNF too</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> R(A,B,C) is decomposed into R1(A,B) and R2(B,C). Given FD B→C holds in R, is this decomposition lossless?</summary>
+          <div class="ans">
+            <p>The common attribute between R1 and R2 is B. Lossless-join requires (R1∩R2)→R1 or (R1∩R2)→R2 to hold in <strong>F⁺</strong> (the closure of the given FD set) — i.e. B→(A,B) or B→(B,C) must be derivable, not necessarily listed outright. Compute B⁺ under F: B→C is given, and B→B holds trivially by reflexivity, so B⁺ ⊇ {B,C}, meaning B→(B,C) is in F⁺ — satisfying the lossless-join condition via the second disjunct.</p>
+            <p class="final">Answer: Yes, lossless — because B→BC is derivable in F⁺ (from the given B→C plus trivial reflexivity), satisfying the lossless-join test</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Why can BCNF decomposition sometimes fail to be dependency-preserving, while the standard 3NF synthesis algorithm always guarantees it?</summary>
+          <div class="ans">
+            <p>BCNF requires every non-trivial FD's LHS to be a superkey, with NO exceptions — so if an FD X→Y exists where X is not a superkey but Y happens to be prime (part of some other candidate key), BCNF still forces you to decompose it away, and that FD may end up spanning two separate decomposed relations with no single relation able to verify it locally. 3NF explicitly permits exactly this situation (its "Y is prime" escape clause), which is precisely why the 3NF synthesis algorithm can always guarantee both losslessness AND dependency preservation simultaneously, while BCNF decomposition cannot always guarantee both together. Note this guarantee is specific to the standard 3NF synthesis algorithm (built from a minimal cover of the FDs) — it doesn't mean every arbitrary decomposition into 3NF relations is automatically dependency-preserving.</p>
+            <p class="final">Answer: The standard 3NF synthesis algorithm can guarantee dependency preservation, whereas BCNF decomposition may sacrifice it — BCNF has no escape clause for FDs whose RHS is prime, so decomposing to satisfy BCNF can split such an FD across relations and lose the ability to check it locally</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="transactions">
+      <div class="topic-head"><span class="idx">05</span><h2>Transactions, Concurrency Control &amp; Recovery</h2></div>
+      <div class="topic-kicker">ACID · SCHEDULES, SERIALIZABILITY &amp; RECOVERABILITY · 2PL &amp; TIMESTAMP ORDERING · DEADLOCK · UNDO/REDO RECOVERY</div>
+
+      <h3 class="sub">ACID properties</h3>
+      <table>
+        <tr><th>Property</th><th>Guarantees</th></tr>
+        <tr><td>Atomicity</td><td>a transaction executes fully or not at all (no partial effects survive)</td></tr>
+        <tr><td>Consistency</td><td>a transaction moves the DB from one valid state to another, preserving all declared constraints</td></tr>
+        <tr><td>Isolation</td><td>concurrently executing transactions behave as if appropriately separated from each other's effects — serializability is the classical theoretical goal; the exact guarantee depends on the isolation level in force</td></tr>
+        <tr><td>Durability</td><td>once committed, changes survive any subsequent crash</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">Isolation isn't just "no dirty reads"</span>
+        <p>Isolation as an ACID property is about concurrent execution being equivalent to some serial execution (serializability), not a specific promise that no transaction ever sees another's uncommitted data. SQL isolation levels intentionally trade this off: READ UNCOMMITTED permits dirty reads by design, while READ COMMITTED and stronger levels prevent them. Don't equate "isolation" with "no dirty reads" — dirty-read prevention is one phenomenon controlled by isolation level, not the definition of isolation itself.</p>
+      </div>
+
+      <h3 class="sub">Schedules and serializability</h3>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Conflict serializability</span>
+          <p>A schedule is conflict-serializable if it can be transformed into a serial schedule by repeatedly swapping adjacent, non-conflicting operations (from different transactions). Tested via the <strong>precedence graph</strong>: draw an edge Ti→Tj if Ti has an operation that conflicts with and precedes a later operation of Tj on the same data item — the schedule is conflict-serializable iff this graph is <strong>acyclic</strong>.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">View serializability</span>
+          <p>A strictly weaker/broader condition — equivalent in initial reads, final writes, and which transaction's write each read sees. Every conflict-serializable schedule is view-serializable, but NOT vice versa (view-serializable schedules can exist that aren't conflict-serializable, typically involving "blind writes").</p>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — precedence graph cycle detection</span>
+        <p>To build the precedence graph, only consider pairs of operations from DIFFERENT transactions on the SAME data item where at least one is a write (RW, WR, or WW conflicts — RR is not a conflict since reads don't interfere). If the resulting graph has ANY cycle, the schedule is NOT conflict-serializable, no matter how few edges are involved.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">Worked example — a schedule that IS view-serializable but is NOT conflict-serializable</span>
+        <p>Three transactions on a single data item Q: T1 reads then writes Q; T2 and T3 each perform a single "blind write" to Q (a write with no prior read in that transaction). Schedule S:</p>
+        <div class="eq">S:  R1(Q)  W2(Q)  W1(Q)  W3(Q)</div>
+        <p><strong>Step 1 — build the precedence graph.</strong> Compare every pair of conflicting operations (different transactions, same item, at least one write) in the order they occur in S:</p>
+        <ul>
+          <li>R1(Q) before W2(Q) → RW conflict → edge T1 → T2</li>
+          <li>W2(Q) before W1(Q) → WW conflict → edge T2 → T1</li>
+          <li>W1(Q) before W3(Q) → WW conflict → edge T1 → T3</li>
+          <li>W2(Q) before W3(Q) → WW conflict → edge T2 → T3</li>
+        </ul>
+        <p>The edges T1→T2 <em>and</em> T2→T1 form a 2-cycle by themselves — the precedence graph is cyclic, so <strong>S is NOT conflict-serializable</strong>, full stop (no serial schedule is reachable from S by swapping adjacent non-conflicting operations).</p>
+        <p><strong>Step 2 — check view-serializability directly (the three conditions), independent of the graph.</strong> (a) <em>Same initial reads:</em> only T1 reads Q, and in S it reads before any write — so any view-equivalent serial order must also have T1 read Q first, meaning T1 must run before T2 and T3. (b) <em>Same "reads-from" for every read:</em> there's only one read (T1's), already satisfied by (a) — no other transaction reads a value written by another. (c) <em>Same final write:</em> in S, the last write to Q is W3(Q) — so T3 must also write last in the serial order. These three constraints force exactly one candidate order: <strong>T1, T2, T3</strong>.</p>
+        <p><strong>Step 3 — verify T1,T2,T3 as a serial schedule matches all three conditions.</strong> T1 reads the initial value of Q (nobody wrote before it) ✓. No transaction reads a value written by another transaction in either S or the serial order (T2 and T3's writes are never read by anyone) ✓. The final write to Q is T3's in both S and the serial order ✓. All three view-equivalence conditions hold, so <strong>S IS view-serializable</strong> (view-equivalent to the serial schedule T1, T2, T3).</p>
+        <p class="final">Result: S is view-serializable (≡ T1,T2,T3) but not conflict-serializable (cyclic precedence graph) — exactly the gap the "Conflict-serializable ⊂ View-serializable" containment describes. The gap exists here specifically because T2's and T3's blind writes create conflict edges that force an ordering the conflict-equivalence swap rules can't realize, even though the schedule's overall external effect (what's read, what Q ends up as) is indistinguishable from a valid serial execution.</p>
+      </div>
+
+      <h3 class="sub">Schedule recoverability — a separate axis from serializability</h3>
+      <p>Serializability asks "is this schedule equivalent to some serial order?" Recoverability asks a different question: "if a transaction aborts, can the system actually undo its effects cleanly?" A schedule can be serializable and still be unrecoverable — these are independent properties GATE tests separately.</p>
+      <table>
+        <tr><th>Class</th><th>Rule</th><th>Relationship</th></tr>
+        <tr><td>Recoverable</td><td>Ti commits only after every Tj it read an uncommitted value from has already committed</td><td>Weakest — just avoids permanently-uncorrectable states</td></tr>
+        <tr><td>Cascadeless (avoids cascading rollback)</td><td>Every transaction reads only values written by already-committed transactions (no dirty reads at all)</td><td>Stronger than recoverable — every cascadeless schedule is recoverable, not vice versa</td></tr>
+        <tr><td>Strict</td><td>A transaction can neither read NOR overwrite a data item written by another transaction until that writer commits/aborts</td><td>Strongest — every strict schedule is cascadeless (and hence recoverable); strict 2PL guarantees this</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">Nesting to remember</span>
+        <p>Strict ⊂ Cascadeless ⊂ Recoverable ⊂ (all schedules). GATE frequently gives a schedule and asks which of these classes it belongs to — check strict first (fails fast if any dirty read/write exists), then cascadeless, then recoverable, since each stronger class automatically satisfies the weaker ones.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — the read vs write distinction that separates cascadeless from strict</span>
+        <p>Students commonly conflate cascadeless and strict because both talk about "not touching uncommitted data" — the precise difference is exactly which operation is restricted:</p>
+        <table>
+          <tr><th>Class</th><th>Restricts <strong>reads</strong> of uncommitted writes?</th><th>Restricts <strong>overwrites</strong> of uncommitted writes?</th><th>Rule of thumb</th></tr>
+          <tr><td>Recoverable</td><td>Allowed, but the reader (Tj) can't commit before the writer (Ti) it read from commits</td><td>Allowed, no restriction</td><td>If Tj reads from Ti, Ti must commit before Tj</td></tr>
+          <tr><td>Cascadeless</td><td><strong>Forbidden</strong> — a transaction may never read a value written by an uncommitted transaction (no dirty reads at all)</td><td>Allowed, no restriction</td><td>Transactions never read uncommitted data</td></tr>
+          <tr><td>Strict</td><td><strong>Forbidden</strong> (same as cascadeless)</td><td><strong>Also forbidden</strong> — a transaction may not even overwrite (blind-write over) a value written by an uncommitted transaction until it commits/aborts</td><td>Transactions cannot read OR overwrite an item written by an uncommitted transaction</td></tr>
+        </table>
+        <p>So cascadeless only closes the door on <em>reading</em> dirty data; strict additionally closes the door on <em>writing over</em> dirty data before the original writer resolves. A schedule can be cascadeless yet still allow one transaction to blindly overwrite another's uncommitted write — that schedule is cascadeless but not strict, exactly the trap GATE sets up.</p>
+      </div>
+
+      <h3 class="sub">Locking protocols</h3>
+      <p><strong>Two-Phase Locking (2PL)</strong>: every transaction has a growing phase (only acquires locks) followed by a shrinking phase (only releases locks) — once a lock is released, no new lock can be acquired. 2PL guarantees conflict-serializability but does NOT by itself prevent deadlock or cascading rollback.</p>
+      <div class="card formula">
+        <span class="label">Strict 2PL</span>
+        <p>Holds ALL exclusive (write) locks until commit/abort (not just until the shrinking phase begins) — this additionally prevents cascading rollback, since no other transaction can read an uncommitted write. Strict 2PL is the most commonly assumed protocol in GATE problems unless stated otherwise.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — Basic 2PL vs Strict 2PL vs Rigorous 2PL</span>
+        <p>All three enforce the same growing/shrinking-phase discipline, but they differ in exactly when locks are released — and that difference is what each protocol additionally buys you:</p>
+        <table>
+          <tr><th>Protocol</th><th>Lock-release rule</th><th>Guarantees</th></tr>
+          <tr><td>Basic 2PL</td><td>Locks may start being released as soon as the shrinking phase begins — a lock can be released well before commit/abort, as long as no new lock is acquired afterward</td><td>Conflict-serializability only — does NOT prevent cascading rollback (a released write lock lets others read uncommitted data)</td></tr>
+          <tr><td>Strict 2PL</td><td>All <strong>exclusive/write</strong> locks are held until commit/abort; shared/read locks may still follow ordinary 2PL release timing</td><td>Conflict-serializability + avoids cascading rollback (nobody can read an uncommitted write)</td></tr>
+          <tr><td>Rigorous 2PL</td><td><strong>All</strong> locks — both shared/read and exclusive/write — are held until commit/abort</td><td>Conflict-serializability + avoids cascading rollback, with the added property that transactions appear to execute in exactly their commit order (strictly serializable) — the strongest of the three</td></tr>
+        </table>
+        <p>Mnemonic: Basic 2PL only constrains WHEN locks can be released relative to each other (growing vs shrinking phase); Strict 2PL pins write-lock release to commit time specifically; Rigorous 2PL pins ALL lock release to commit time. GATE options often swap "read locks" and "write locks" between Strict and Rigorous to test whether you know which one holds only exclusive locks vs all locks until commit.</p>
+      </div>
+
+      <h3 class="sub">Timestamp ordering — an alternative to locking</h3>
+      <p>Instead of locks, every transaction Ti is assigned a unique timestamp TS(Ti) at start (typically its start time or a monotonic counter) — older transactions get smaller timestamps. Every data item Q tracks two values: W-timestamp(Q) (largest timestamp of any transaction that successfully wrote Q) and R-timestamp(Q) (largest timestamp of any transaction that successfully read Q). Conflicts are resolved by comparing these to the requesting transaction's timestamp, rejecting (and rolling back) any operation that would violate timestamp order.</p>
+      <div class="eq">Basic timestamp-ordering protocol, for transaction Ti requesting on item Q:
+
+READ(Q):
+  if TS(Ti) &lt; W-timestamp(Q): reject, rollback Ti   [Ti is too old — would read a value "from the future"]
+  else: allow read; R-timestamp(Q) = max(R-timestamp(Q), TS(Ti))
+
+WRITE(Q):
+  if TS(Ti) &lt; R-timestamp(Q): reject, rollback Ti   [a younger transaction already read Q — this write would undo that read's validity]
+  else if TS(Ti) &lt; W-timestamp(Q): reject, rollback Ti (or, under Thomas Write Rule, just IGNORE the write instead of rolling back)
+  else: allow write; W-timestamp(Q) = TS(Ti)</div>
+      <div class="card note">
+        <span class="label">Thomas Write Rule — the one refinement GATE likes to test</span>
+        <p>Basic timestamp ordering rolls back Ti whenever TS(Ti) &lt; W-timestamp(Q) on a write. The <strong>Thomas Write Rule</strong> relaxes this specific case: if TS(Ti) &lt; W-timestamp(Q), the write is simply ignored (not applied) rather than rolling back Ti, because a later transaction has already overwritten Q with a "newer" value that will win anyway — this is safe precisely because no one read the value Ti was about to write. Thomas Write Rule allows some schedules that are view-serializable but NOT conflict-serializable to still be permitted (it's not equivalent to conflict-serializability).</p>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — timestamp ordering guarantees conflict-serializability automatically</span>
+        <p>This guarantee is specific to <strong>basic timestamp ordering</strong> (the algorithm above without the Thomas Write Rule). Unlike 2PL, basic TO never causes deadlock (transactions are simply rolled back on conflict, never made to wait for each other), but it can cause more aborts/rollbacks in practice. Basic TO guarantees a conflict-serializable schedule equivalent to the timestamp order itself — but does NOT automatically guarantee recoverability; a separate mechanism (e.g. only allowing commits after all read-from transactions commit) is needed for that.</p>
+        <p>Once the <strong>Thomas Write Rule</strong> is introduced, this specific guarantee changes: as noted above, Thomas Write Rule permits some schedules that are view-serializable but not conflict-serializable, so "conflict-serializable equivalent to timestamp order" no longer holds unqualified — the correct claim under Thomas Write Rule is the weaker one, view-serializability. Unless a question specifies Thomas Write Rule, assume basic timestamp ordering is what's being tested.</p>
+      </div>
+
+      <h3 class="sub">Deadlock — detection and prevention</h3>
+      <div class="card pyq">
+        <span class="label">The general framework — four categories, don't conflate them</span>
+        <table>
+          <tr><th>Technique</th><th>Idea</th></tr>
+          <tr><td>Prevention</td><td>Structurally rule out one of the four necessary conditions for deadlock (mutual exclusion, hold-and-wait, no preemption, circular wait) so deadlock can never arise in the first place</td></tr>
+          <tr><td>Avoidance</td><td>Allow requests dynamically, but before granting one, check whether the resulting system state is still "safe" (some ordering exists in which all transactions can finish) — deny/delay the request if it isn't</td></tr>
+          <tr><td>Detection</td><td>Don't restrict anything up front — let deadlock potentially happen, then periodically check for it and react</td></tr>
+          <tr><td>Recovery</td><td>Once a deadlock is detected, break it: abort one or more transactions, or preempt (forcibly take) a resource, or roll back to a safe point</td></tr>
+        </table>
+        <p>Where the standard DBMS techniques map onto this framework:</p>
+        <ul>
+          <li><strong>Wait-die / Wound-wait</strong> → <strong>Prevention</strong>. Both work by imposing a strict ordering rule (based on transaction age/timestamp) on who is allowed to wait for whom, which structurally rules out circular wait — the deadlock condition these two schemes specifically target.</li>
+          <li><strong>Banker's Algorithm</strong> → <strong>Avoidance</strong>. It's the canonical avoidance technique (more commonly taught in the OS context of resource allocation, but the same safe-state-checking idea applies conceptually to transaction resource requests): grant a request only if the resulting allocation state is still safe.</li>
+          <li><strong>Wait-for graph cycle detection</strong> → <strong>Detection</strong>. Transactions are allowed to wait freely; the DBMS periodically builds a wait-for graph and checks for cycles, only reacting once one is found.</li>
+          <li>Aborting the "victim" transaction once a wait-for cycle is found is the <strong>Recovery</strong> step that follows detection.</li>
+        </ul>
+      </div>
+      <table>
+        <tr><th>Approach</th><th>Mechanism</th></tr>
+        <tr><td>Prevention (wait-die)</td><td>older transaction waits for younger; younger requesting a lock held by older is aborted (dies)</td></tr>
+        <tr><td>Prevention (wound-wait)</td><td>older transaction "wounds" (forces abort of) younger holder; younger waits for older</td></tr>
+        <tr><td>Detection</td><td>build a wait-for graph; a cycle indicates deadlock — abort a victim to break it</td></tr>
+      </table>
+
+      <h3 class="sub">Recovery — update strategies</h3>
+      <p>How a DBMS handles writes relative to when they hit the log vs the actual database determines what recovery must do after a crash. The two classic strategies:</p>
+      <table>
+        <tr><th>Strategy</th><th>When DB is actually updated</th><th>Recovery needs</th></tr>
+        <tr><td>Deferred update</td><td>Only after the transaction commits (all writes are buffered/logged first, applied to disk at commit)</td><td>REDO only — since nothing uncommitted ever reached disk, there's nothing to undo; just re-apply committed transactions' writes if they didn't make it to disk before the crash</td></tr>
+        <tr><td>Immediate update</td><td>Writes can be applied to disk as soon as they happen, even before commit</td><td>Needs both UNDO (for transactions that didn't commit — their partial writes may already be on disk and must be reversed) and REDO (for committed transactions whose writes might not have reached disk yet)</td></tr>
+      </table>
+
+      <h3 class="sub">UNDO / REDO — what each actually does</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">UNDO</h4>
+          <p>Reverses the effect of a write using the log's <em>before-image</em> (old value) — applied to transactions that were active (uncommitted) at crash time, so their partial effects are removed entirely, preserving atomicity.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">REDO</h4>
+          <p>Re-applies a write using the log's <em>after-image</em> (new value) — applied to transactions that had committed but whose writes might not have made it from buffer to disk before the crash, so their effects are guaranteed durable.</p>
+        </div>
+      </div>
+      <div class="card formula">
+        <span class="label">UNDO/REDO — the general case</span>
+        <p>A DBMS supporting both immediate update and checkpointing typically needs an UNDO/REDO recovery algorithm: scan the log backward from the crash point to identify committed vs uncommitted transactions, UNDO all writes of transactions that never committed, and REDO all writes of transactions that did commit (to guarantee durability even if their writes hadn't yet reached disk).</p>
+      </div>
+
+      <h3 class="sub">Recovery from the log after a crash — the standard procedure</h3>
+      <ol>
+        <li>Scan the log backward from the end (crash point), building the set of transactions found.</li>
+        <li>A transaction is <strong>committed</strong> if a &lt;commit T&gt; record appears in the log for it — its writes must be REDONE (durability).</li>
+        <li>A transaction is <strong>uncommitted</strong> (active at crash, or explicitly aborted) if no &lt;commit T&gt; record exists — its writes must be UNDONE (atomicity).</li>
+        <li>If checkpoints exist, recovery only needs to scan back to the most recent checkpoint's transaction list, not the entire log history — checkpointing exists precisely to bound this scan.</li>
+        <li>Apply UNDOs and REDOs (order matters in some schemes — e.g. UNDO in reverse chronological order, REDO in forward chronological order — to correctly reconstruct the final consistent state).</li>
+      </ol>
+
+      <h3 class="sub">Worked example — tracing a crash against the log</h3>
+      <div class="eq">Log (in order written), with a checkpoint in the middle:
+
+&lt;T0 start&gt;
+T0: W(X)
+&lt;T0 commit&gt;
+&lt;CHECKPOINT&gt;              (active-transaction list at this point: { } — T0 already committed)
+&lt;T1 start&gt;
+T1: W(A)
+&lt;T2 start&gt;
+T2: W(B)
+&lt;T1 commit&gt;
+                          *** CRASH ***</div>
+      <div class="card pyq">
+        <span class="label">Reading the trace — step by step</span>
+        <p><strong>1. Where recovery starts scanning:</strong> from the crash point, scan backward only to the most recent CHECKPOINT — not the entire log. Anything before the checkpoint (here, T0) is already known-consistent on disk and needs no redo/undo work re-examined; that's the entire point of checkpointing.</p>
+        <p><strong>2. Transactions active after the checkpoint:</strong> T1 and T2 both started after the checkpoint, so both must be classified using the log between the checkpoint and the crash.</p>
+        <p><strong>3. Classify each:</strong> T1 has a &lt;commit T1&gt; record → its write W(A) must be <strong>REDONE</strong> (using the after-image of A), to guarantee durability in case A hadn't reached disk before the crash. T2 has no commit record (still active at crash) → its write W(B) must be <strong>UNDONE</strong> (using the before-image of B), to preserve atomicity — none of T2's partial effect may survive.</p>
+        <p><strong>4. T0's status:</strong> T0 committed before the checkpoint was even taken, so it needs no action at all during this recovery — this is exactly what makes checkpointing valuable: T0's work is irrelevant to the crash-time analysis.</p>
+        <p class="final">Result: REDO {T1's W(A)}, UNDO {T2's W(B)}, T0 untouched (already safe before the checkpoint).</p>
+      </div>
+
+      <h3 class="sub">Recovery — logging protocols</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">WAL (Write-Ahead Logging)</h4>
+          <p>The log record for a change must be written to stable storage BEFORE the corresponding data page is written to disk — this is what makes crash recovery (undo/redo) possible at all.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Checkpointing</h4>
+          <p>Periodically records which transactions are active, limiting how far back the recovery process must scan the log after a crash — without it, recovery would need to replay the entire log history.</p>
+        </div>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A schedule's precedence graph has edges T1→T2, T2→T3, T3→T1. Is the schedule conflict-serializable?</summary>
+          <div class="ans">
+            <p>These three edges form a cycle (T1→T2→T3→T1). Conflict-serializability requires an acyclic precedence graph — a cycle directly proves the schedule cannot be reordered into any equivalent serial schedule.</p>
+            <p class="final">Answer: No, not conflict-serializable (the precedence graph has a cycle)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Does two-phase locking (2PL) guarantee freedom from deadlock merely because the schedules it produces are conflict-serializable? Explain.</summary>
+          <div class="ans">
+            <p>No — conflict-serializability is a property of a completed schedule (the actual order operations ended up executing in), evaluated after the fact. Deadlock is a runtime lock-acquisition hazard that can occur while transactions are contending for locks, potentially preventing any schedule from ever completing at all — 2PL guarantees that whatever schedule DOES complete is conflict-serializable, but doesn't by itself prevent transactions from deadlocking while trying to acquire locks in the first place.</p>
+            <p class="final">Answer: No — 2PL guarantees conflict-serializability of completed schedules, but does not itself prevent deadlock during execution</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Under the wait-die deadlock prevention scheme, an older transaction Ti requests a lock held by younger transaction Tj. What happens?</summary>
+          <div class="ans">
+            <p>Wait-die's rule: an older transaction is allowed to WAIT for a younger one to release its lock (it doesn't "die"). It's the reverse situation — a younger transaction requesting a lock held by an older one — that causes the younger requester to be aborted ("dies").</p>
+            <p class="final">Answer: Ti (older) waits for Tj (younger) to release the lock — no abort occurs in this direction under wait-die</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Why does strict 2PL prevent cascading rollback, while ordinary (non-strict) 2PL does not?</summary>
+          <div class="ans">
+            <p>Cascading rollback happens when transaction Tj reads a value written by Ti, and Ti later aborts — forcing Tj (and anything that read from Tj) to also roll back. Ordinary 2PL only guarantees locks aren't newly ACQUIRED after the shrinking phase begins, but write locks can still be released (and hence read by others) before commit. Strict 2PL holds all write locks until commit/abort, so no other transaction can ever read an uncommitted (potentially-to-be-aborted) write in the first place — eliminating the possibility of cascading rollback entirely.</p>
+            <p class="final">Answer: Strict 2PL holds write locks until commit, so nobody can read uncommitted data — removing the precondition for cascading rollback</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Why must the write-ahead log record be flushed to stable storage BEFORE the corresponding modified data page is written to disk?</summary>
+          <div class="ans">
+            <p>If the data page were written first and the system crashed before the log record was saved, there would be no record describing what changed — making it impossible to undo that change if the transaction later needs to be rolled back, or to redo it correctly if only partially applied. Writing the log first guarantees that, no matter when a crash occurs, the log always has enough information to recover the data page to a consistent state (undo or redo) matching what actually happened.</p>
+            <p class="final">Answer: So that recovery always has a log record describing any change that might have reached disk, enabling correct undo/redo after a crash regardless of when it occurred</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — Recoverability, Timestamp Ordering &amp; UNDO/REDO (original)</h3><span class="pcount">4 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Schedule S: T2 reads a value written by T1; T1 commits AFTER T2 already commits. Is S recoverable?</summary>
+          <div class="ans">
+            <p>Recoverability requires that if Tj reads a value written by Ti, Ti must commit BEFORE Tj commits. Here T2 (the reader) commits before T1 (the writer it read from) — so if T1 later aborts instead of committing, T2's already-committed read would be uncorrectable. This violates recoverability.</p>
+            <p class="final">Answer: No, S is not recoverable — the reader (T2) committed before the writer it depended on (T1)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Transaction Ti has TS(Ti)=5. Data item Q currently has W-timestamp(Q)=8. Under basic timestamp ordering, what happens if Ti attempts to write Q? What changes under the Thomas Write Rule?</summary>
+          <div class="ans">
+            <p>Basic TO: since TS(Ti)=5 &lt; W-timestamp(Q)=8, a newer transaction has already written Q — Ti's write is rejected and Ti is rolled back. Under the Thomas Write Rule, this specific case (TS(Ti) &lt; W-timestamp(Q), no younger read to violate) instead just ignores/skips Ti's write silently — Ti continues without rollback, since its write would immediately be overwritten anyway.</p>
+            <p class="final">Answer: Basic TO rolls back Ti; Thomas Write Rule instead ignores the write and lets Ti proceed</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A system uses deferred update. A transaction crashes before committing. Does recovery need to UNDO anything on disk for it?</summary>
+          <div class="ans">
+            <p>No — under deferred update, writes are only applied to the actual database after commit. Since this transaction never committed, none of its writes ever reached disk in the first place, so there's nothing to undo — recovery simply discards its log records.</p>
+            <p class="final">Answer: No UNDO needed — deferred update guarantees uncommitted writes never reached disk</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> During log-based recovery after a crash, the log shows: T1 has &lt;commit T1&gt;, T2 has no commit record. What recovery action applies to each?</summary>
+          <div class="ans">
+            <p>T1 committed, so its writes must be REDONE (using after-images) to guarantee durability in case they hadn't reached disk before the crash. T2 never committed, so its writes must be UNDONE (using before-images) to preserve atomicity — none of its partial effects should survive.</p>
+            <p class="final">Answer: T1 → REDO; T2 → UNDO</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="indexing">
+      <div class="topic-head"><span class="idx">06</span><h2>Indexing &amp; File Organization</h2></div>
+      <div class="topic-kicker">ORDERED/HASH FILES · PRIMARY VS SECONDARY INDEX · B/B+ TREES · SPARSE VS DENSE</div>
+
+      <h3 class="sub">File organization strategies</h3>
+      <table>
+        <tr><th>Organization</th><th>Access pattern</th></tr>
+        <tr><td>Heap (unordered)</td><td>fast insert (append), slow search — O(n) scan</td></tr>
+        <tr><td>Sequential (ordered)</td><td>fast range queries, but insert/delete requires reorganization or overflow areas</td></tr>
+        <tr><td>Hash</td><td>fast exact-match lookup — O(1) average, but no support for range queries</td></tr>
+      </table>
+
+      <h3 class="sub">Primary vs secondary index — defined by the DATA FILE's order, not the index itself</h3>
+      <p>The classification below follows the <strong>classical file-organization terminology used in GATE/DBMS textbooks</strong> (Silberschatz-style) — it's a standard, widely-taught model, but treat it as that specific classical framework rather than a universal property every real-world database implementation is bound to.</p>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Primary index</span>
+          <p>Built on the field that the data file is <strong>physically sorted</strong> by (usually the key). Can be sparse.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Secondary index</span>
+          <p>Under this same classical terminology: built on a field that does NOT determine the data file's physical order. Must always be <strong>dense</strong>, since consecutive index entries don't correspond to physically adjacent records.</p>
+        </div>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — "primary index" and "clustered index" are not synonyms</span>
+        <p>These two terms answer genuinely different questions, and it's easy to blur them together:</p>
+        <ul>
+          <li><strong>Primary index</strong> is defined relative to WHICH KEY the index is built on and searches by — an index whose search key is the ordering key the file is defined to be sorted on (in most textbook treatments used for GATE, this is the relation's primary key).</li>
+          <li><strong>Clustered index</strong> is defined relative to PHYSICAL STORAGE — it means the data records THEMSELVES are physically stored/ordered according to that index's key, whatever that key happens to be.</li>
+        </ul>
+        <p>In the standard textbook examples used for GATE, a table's primary index and its clustered index usually coincide — the file is kept sorted by the primary key, so the primary index is also the clustered one. But they are not interchangeable by definition: a real DBMS can build a clustered index on a non-primary-key column (any single column the physical rows get sorted by), and conceptually "primary" describes the choice of key while "clustered" describes the physical row ordering. Only one clustered index can exist per table (data can only be physically sorted one way at a time); a table can have many non-clustered (secondary) indexes alongside it.</p>
+      </div>
+
+      <table>
+        <tr><th>Index type</th><th>Typical property</th></tr>
+        <tr><td>Dense</td><td>Index entry for every search-key value / record</td></tr>
+        <tr><td>Sparse</td><td>Entries for only some search-key values / blocks</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap — sparse index requires the file to be sorted on that field</span>
+        <p>A <strong>sparse index</strong> has one entry per BLOCK (not per record) — it only works if the file is physically sorted by the indexed field, so the index can point to a block and a sequential scan within that block finds the target. Sparse indexing therefore generally requires the underlying data file to be ordered on the search key — which is exactly why a sparse index is always a primary/clustering index; a secondary index can never be sparse, because the data file isn't ordered by the secondary key.</p>
+      </div>
+      <div class="card note">
+        <span class="label">Dense index</span>
+        <p>One entry for EVERY record (or every distinct key value, for a duplicate-key field), regardless of file ordering — works on both primary and secondary indexes, but uses more storage than sparse.</p>
+      </div>
+
+      <h3 class="sub">B-Tree vs B+-Tree — the most-tested distinction</h3>
+      <table>
+        <tr><th></th><th>B-Tree</th><th>B+-Tree</th></tr>
+        <tr><td>Data pointers</td><td>in BOTH internal and leaf nodes</td><td>ONLY in leaf nodes</td></tr>
+        <tr><td>Leaf nodes</td><td>not linked</td><td>linked in a sequence (linked list) — enables fast range scans</td></tr>
+        <tr><td>Key redundancy</td><td>each key stored exactly once</td><td>internal-node keys are duplicated as "guide posts"; actual data reference lives in the leaf</td></tr>
+        <tr><td>Fan-out</td><td>lower (data pointers take space in internal nodes)</td><td>higher (internal nodes hold only keys, so more fit per node)</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap — why B+-trees are preferred for DBMS indexes</span>
+        <p>Because B+-tree internal nodes store ONLY keys (no data pointers), they achieve a much higher fan-out per node than a B-tree of the same node/block size — this means fewer levels for the same number of keys, i.e. fewer disk I/Os per search. Combined with the linked leaf list enabling efficient range queries (just walk the leaf chain), this is why virtually every real DBMS uses B+-trees, not plain B-trees, for indexing.</p>
+      </div>
+
+      <div class="card note">
+        <span class="label">The 3-line canonical comparison (memorize this exact framing)</span>
+        <p><strong>B-tree:</strong> keys/records can potentially appear in internal nodes as well as leaves — a search can terminate early at an internal node if the key is found there.</p>
+        <p><strong>B+-tree:</strong> actual records/data pointers are stored ONLY at the leaves; internal nodes store nothing but separator/guide keys used purely to route the search — every search always descends all the way to a leaf, even for keys that appear "early."</p>
+        <p><strong>B+-tree leaves are linked</strong> (leaf-to-leaf pointers) → efficient sequential/range traversal without re-traversing the tree; plain B-trees have no such linkage.</p>
+      </div>
+
+      <h3 class="sub">B-Tree / B+-Tree order and height calculations</h3>
+      <p>For a B+-tree of order <em>p</em> (max <em>p</em> pointers per node): each internal node holds at most p−1 keys and p pointers, at least ⌈p/2⌉ pointers (except root). GATE frequently asks you to compute the maximum number of records searchable in <em>h</em> levels, or the minimum height for <em>n</em> records, given a fan-out.</p>
+
+      <h3 class="sub">B+-Tree deletion — the part revision sheets usually skip</h3>
+      <p>Deletion is the mirror image of insertion: instead of a node overflowing and splitting, a node can <strong>underflow</strong> (drop below the minimum ⌈p/2⌉ occupancy) and needs to borrow from or merge with a sibling. Steps, at a glance:</p>
+      <ol>
+        <li><strong>Delete from the leaf:</strong> locate the key via a normal search, remove it (and its data pointer) from the leaf node.</li>
+        <li><strong>Check for underflow:</strong> if the leaf still meets the minimum occupancy (⌈p/2⌉ pointers/keys), deletion is done — no further action needed.</li>
+        <li><strong>If underflow occurs, try redistribution (borrowing) first:</strong> check an immediate sibling (left or right) that has MORE than the minimum — if one exists, move one key/pointer over from that sibling into the underflowing node, and update the separator key in the parent to reflect the new split point.</li>
+        <li><strong>If no sibling can spare a key, merge instead:</strong> combine the underflowing node with a sibling into one node (which will still satisfy the max-occupancy bound, since together they held at most one node's worth plus the borrowed minimum), and remove the now-unused separator key from the parent.</li>
+        <li><strong>Propagate upward if needed:</strong> removing a separator key from the parent (step 4) can itself cause the parent to underflow — the same redistribute-or-merge logic then applies one level up, potentially cascading all the way to the root. If the root ends up with only one child after a merge, that child becomes the new root (tree height decreases by one).</li>
+      </ol>
+      <div class="card pyq">
+        <span class="label">GATE trap — redistribution vs merge, and the parent separator update</span>
+        <p>Always prefer redistribution over merging when a sibling has a spare key to lend — it's cheaper (no restructuring, no possible cascade upward) and keeps the tree shallower on average. Merging is only used when redistribution isn't possible (both adjacent siblings are already at minimum occupancy). Either way, the parent's separator key MUST be updated: redistribution shifts the separator to reflect the new dividing key between the two nodes; merging removes the separator entirely, since the two children have become one.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Can a secondary index ever be sparse? Justify.</summary>
+          <div class="ans">
+            <p>A sparse index relies on the data file being physically sorted by the indexed field, so one index entry per block is enough — a sequential scan within that block finds the target record. A secondary index is, by definition, built on a field the data file is NOT sorted by, so consecutive records with the indexed value aren't guaranteed to be in the same block — a sparse secondary index simply couldn't locate records reliably.</p>
+            <p class="final">Answer: No — sparse indexes require the file to be sorted on the indexed field, which is precisely what a secondary index is not</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Which structure supports efficient range queries better — B-Tree or B+-Tree — and why specifically?</summary>
+          <div class="ans">
+            <p>B+-Tree, because its leaf nodes are linked together in a sequential chain — once you find the starting key via a single root-to-leaf traversal, you can retrieve the rest of the range simply by following leaf-to-leaf pointers without any further tree traversal. A plain B-Tree has no such leaf linkage, so a range scan may require repeated in-order traversal logic across the tree structure itself.</p>
+            <p class="final">Answer: B+-Tree — its linked leaf-node chain allows sequential range retrieval without re-traversing the tree</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A B+-tree of order 4 (max 4 pointers per node, 3 keys per node) has a height of 3 (root + 2 levels, root itself considered level 1, leaves at level 3). Ignoring underflow constraints and assuming maximum fan-out throughout, roughly how many leaf-level key entries can it index at most?</summary>
+            <div class="ans">
+              <p>With maximum fan-out 4 at every internal level: level 1 (root) has up to 4 children, level 2 has up to 4×4=16 children (the leaves). Each of the 16 leaf nodes can hold up to 3 keys. Total ≈ 16 × 3 = 48 key entries at the leaf level in the best case.</p>
+              <p class="final">Answer: Approximately 48 key entries (16 leaves × 3 keys each, at maximum fan-out)</p>
+            </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A file is physically sorted by employee_id and has a primary index on employee_id with one entry per data block. Is this index sparse or dense, and why is this valid here specifically?</summary>
+          <div class="ans">
+            <p>One entry per BLOCK (not per record) is exactly the definition of a sparse index. This is valid because the file is physically sorted by employee_id — given a target id, the index locates the correct block, and since records within that block are guaranteed to be in sorted order too, a short sequential scan within the block finds the exact record.</p>
+            <p class="final">Answer: Sparse index — valid because the underlying file is sorted on the indexed field (employee_id)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Why does a plain B-Tree generally have LOWER fan-out than a B+-Tree built for the same block/node size?</summary>
+          <div class="ans">
+            <p>A B-Tree's internal nodes must store both keys AND data pointers (since records can be referenced from any level, not just leaves), consuming more space per key and leaving room for fewer total keys/pointers within a fixed-size node. A B+-Tree's internal nodes store ONLY keys (all actual data references live exclusively in the leaves), so more keys fit per node of the same size — directly translating into higher fan-out and, consequently, fewer tree levels for the same number of total keys.</p>
+            <p class="final">Answer: B-Tree internal nodes carry data pointers alongside keys, consuming space that reduces fan-out compared to B+-Tree's keys-only internal nodes</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="topic" id="revision">
+      <div class="topic-head"><span class="idx">07</span><h2>Revision Sheet</h2></div>
+      <div class="topic-kicker">EVERYTHING ON ONE SCREEN — LAST-MINUTE PASS</div>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Weak entity PK</span>
+          <p>Owner's PK + weak entity's own discriminator/partial key. Requires an identifying relationship to the owner.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Superkey count formula</span>
+          <p>If a single attribute is the only candidate key among n total attributes, superkey count = 2^(n−1).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Primary key vs UNIQUE</span>
+          <p>Primary key: entity integrity forbids NULL outright. UNIQUE: only constrains non-NULL values to be distinct; how many NULLs it permits is DBMS/SQL-semantic dependent (most allow multiple). Never treat "UNIQUE = nullable primary key" as a universal rule.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Total vs partial participation</span>
+          <p>Total = double line, ER-level mandatory participation (commonly mapped to NOT NULL FK, but that's a mapping choice, not the definition). Partial = single line, optional. Put the FK on the total-participation side of a 1:1.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Division (÷)</span>
+          <p>R÷S = tuples t such that (t,s)∈R for EVERY s∈S. Classic "find X related to ALL of Y" query.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Relational completeness</span>
+          <p>RA ≡ safe TRC ≡ safe DRC in expressive power. "Safe" excludes expressions that could yield infinite results.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">SQL logical evaluation order</span>
+          <p>FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY. WHERE can't use aggregates (runs before grouping); HAVING can.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">NULL is three-valued</span>
+          <p>Comparisons with NULL → UNKNOWN, not TRUE/FALSE. NOT IN with a NULL in the list always returns zero rows.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">X⁺ (attribute closure)</span>
+          <p>X is a candidate key iff X⁺ = all attributes of R AND no proper subset of X also satisfies this (minimality).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Normal form ladder</span>
+          <p>1NF: atomic values. 2NF: no partial dependency. 3NF: no transitive dependency (escape clause: RHS is prime). BCNF: every determinant is a superkey, no exceptions.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Lossless-join test</span>
+          <p>Decomposition of R into R1, R2 is lossless iff (R1∩R2)→R1 or (R1∩R2)→R2 holds in <strong>F⁺</strong> (the closure of the FD set) — compute (R1∩R2)⁺, don't just eyeball the given FDs.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Conflict-serializability test</span>
+          <p>Build the precedence graph from RW/WR/WW conflicts across different transactions on the same item — serializable iff the graph is acyclic.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Recoverability classes</span>
+          <p>Strict ⊂ Cascadeless ⊂ Recoverable. Recoverable: reader commits after writer it read from. Cascadeless: no dirty reads at all. Strict: no read/overwrite until writer commits/aborts.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Strict 2PL</span>
+          <p>Holds write locks until commit — guarantees serializability AND prevents cascading rollback, unlike plain 2PL.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Timestamp ordering</span>
+          <p>Reject read if TS(Ti)&lt;W-ts(Q); reject write if TS(Ti)&lt;R-ts(Q) or &lt;W-ts(Q) (Thomas Write Rule: ignore instead of rollback in the latter case). No deadlock, but more aborts than locking.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">UNDO vs REDO</span>
+          <p>UNDO (before-image) = reverse uncommitted transactions' writes. REDO (after-image) = reapply committed transactions' writes. Deferred update needs REDO only; immediate update needs both.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Sparse index requires sorted file</span>
+          <p>Sparse = 1 entry/block, only valid when file is physically sorted on the indexed field → always primary/clustering, never secondary. Dense = 1 entry/record, works either way.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Primary index ≠ clustered index</span>
+          <p>Primary index = which KEY the index searches by. Clustered index = whether the DATA ROWS are physically stored in that key's order. They often coincide in textbook examples but aren't synonyms — a table has at most one clustered index but can have many secondary ones.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">B+-Tree over B-Tree</span>
+          <p>Data pointers only in leaves → higher fan-out, fewer levels. Linked leaves → fast range scans. This is why DBMSs use B+-trees, not B-trees.</p>
+        </div>
+      </div>
+
+      <div class="card note" style="margin-top:26px;">
+        <span class="label">How to use this sheet</span>
+        <p>Read sections 01–06 once to build the mental model of how data moves from an ER diagram to a query result on disk, then loop back to this page alone for every later revision pass — if a card doesn't immediately click, that's the section to reopen. DBMS rewards being able to compute a closure, normalize a relation, or trace a precedence graph on the spot, far more than reciting definitions — drill construction problems, not re-reading theory.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — rapid-fire mix (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> R(A,B,C,D,E) has FDs A→B, BC→D, D→E. Is {A,C} a candidate key?</summary>
+          <div class="ans">
+            <p>Compute {A,C}⁺: start {A,C}. A→B adds B: {A,B,C}. Now BC→D applies (both B,C present): add D: {A,B,C,D}. Now D→E applies: add E: {A,B,C,D,E} — all attributes covered. Check minimality: does {A}⁺ alone reach everything? A→B gives {A,B}, but BC→D needs C too, which isn't derivable from A alone — so {A} isn't sufficient. Similarly {C} alone derives nothing. So {A,C} is minimal.</p>
+            <p class="final">Answer: Yes, {A,C} is a candidate key</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> True or false: every BCNF relation is also in 3NF.</summary>
+          <div class="ans">
+            <p>True — BCNF is strictly stronger than (a subset of conditions compared to) 3NF; it removes 3NF's escape clause rather than adding a new requirement outside of it. Any relation satisfying the stricter BCNF condition automatically satisfies the looser 3NF condition too.</p>
+            <p class="final">Answer: True</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A schedule has only read operations from multiple transactions on shared data, no writes at all. Is it necessarily conflict-serializable?</summary>
+          <div class="ans">
+            <p>Yes — conflicts only arise from RW, WR, or WW pairs; two reads (RR) never conflict, regardless of order. With no writes anywhere in the schedule, there are no conflicting operation pairs at all, so the precedence graph has no edges — trivially acyclic, and hence trivially conflict-serializable (equivalent to any serial order, including the schedule itself).</p>
+            <p class="final">Answer: Yes — an all-read schedule has no conflicts at all, so it's trivially conflict-serializable</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Which SQL clause would you use to filter groups based on their aggregate COUNT value, and why not WHERE?</summary>
+          <div class="ans">
+            <p>HAVING is used, because it's evaluated after GROUP BY has formed the groups and aggregate values like COUNT are computed — WHERE runs before grouping even happens, so no aggregate value exists yet to filter on at that stage.</p>
+            <p class="final">Answer: HAVING — because it runs after GROUP BY, when aggregates are actually available</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A data file is NOT sorted by any particular field. Can it have a sparse index on any field?</summary>
+          <div class="ans">
+            <p>No — sparse indexing fundamentally relies on physical file ordering matching the indexed field, so that one index entry per block is enough to locate the target via a short local scan. If the file has no sort order at all, no field can support a sparse index; only a dense index (one entry per record) would correctly locate every record.</p>
+            <p class="final">Answer: No — an unsorted file cannot support a sparse index on any field; only dense indexing works</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      Blueprint Notes — DBMS for GATE CSE · built for revision, not first-read · official syllabus: "ER model, relational model, relational algebra, tuple calculus, SQL. Normalization. File organization, indexing (B and B+ trees). Transactions and concurrency control."
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

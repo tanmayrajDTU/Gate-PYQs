@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Structures — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'data-structures', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // Data Structures</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">10 sheets · full syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#recursion"><span class="num">01</span> Recursion</a></div>
+      <div class="navgroup"><a class="navlink" href="#arrays"><span class="num">02</span> Arrays</a></div>
+      <div class="navgroup"><a class="navlink" href="#linked-lists"><span class="num">03</span> Linked Lists</a></div>
+      <div class="navgroup"><a class="navlink" href="#stacks"><span class="num">04</span> Stacks</a></div>
+      <div class="navgroup"><a class="navlink" href="#queues"><span class="num">05</span> Queues</a></div>
+      <div class="navgroup"><a class="navlink" href="#trees"><span class="num">06</span> Trees</a></div>
+      <div class="navgroup"><a class="navlink" href="#bst"><span class="num">07</span> Binary Search Trees</a></div>
+      <div class="navgroup"><a class="navlink" href="#heaps"><span class="num">08</span> Binary Heaps</a></div>
+      <div class="navgroup"><a class="navlink" href="#graphs"><span class="num">09</span> Graphs</a></div>
+      <div class="navgroup"><a class="navlink" href="#revision"><span class="num">10</span> Revision Sheet</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Schematic notes · GATE CSE 2027</span>
+      <h1>Data Structures, organized <em>like a hierarchy</em>, not a heap of facts.</h1>
+      <p>Ten thorough sheets covering the entire GATE CSE Data Structures syllabus — recursion, linear data structures, trees, heaps, and graphs — emphasizing time/space complexities and the exact operational traps tested in GATE.</p>
+      <div class="chips">
+        <span class="chip">01 Recursion</span>
+        <span class="chip">02 Arrays</span>
+        <span class="chip">03 Linked Lists</span>
+        <span class="chip">04 Stacks</span>
+        <span class="chip">05 Queues</span>
+        <span class="chip">06 Trees</span>
+        <span class="chip">07 BST</span>
+        <span class="chip">08 Heaps</span>
+        <span class="chip">09 Graphs</span>
+        <span class="chip">10 Revision</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g fill="none" stroke="#2a2b33" stroke-width="1.8">
+          <line x1="150" y1="40" x2="80" y2="100"/>
+          <line x1="150" y1="40" x2="220" y2="100"/>
+          <line x1="80" y1="100" x2="50" y2="160"/>
+          <line x1="80" y1="100" x2="110" y2="160"/>
+          <line x1="220" y1="100" x2="190" y2="160"/>
+          <line x1="220" y1="100" x2="250" y2="160"/>
+        </g>
+        <circle cx="150" cy="40" r="16" fill="#16171c" stroke="#cba36b" stroke-width="2"/>
+        <circle cx="80" cy="100" r="16" fill="#16171c" stroke="#d98a5f" stroke-width="2"/>
+        <circle cx="220" cy="100" r="16" fill="#16171c" stroke="#d98a5f" stroke-width="2"/>
+        <circle cx="50" cy="160" r="12" fill="#16171c" stroke="#2a2b33" stroke-width="2"/>
+        <circle cx="110" cy="160" r="12" fill="#16171c" stroke="#2a2b33" stroke-width="2"/>
+        <circle cx="190" cy="160" r="12" fill="#16171c" stroke="#2a2b33" stroke-width="2"/>
+        <circle cx="250" cy="160" r="12" fill="#16171c" stroke="#2a2b33" stroke-width="2"/>
+        <g font-family="JetBrains Mono" font-size="11" fill="#f2ede4" text-anchor="middle" dominant-baseline="middle">
+          <text x="150" y="40">root</text>
+          <text x="80" y="100">L</text>
+          <text x="220" y="100">R</text>
+        </g>
+      </svg>
+    </section>
+
+    <section class="topic" id="recursion">
+      <div class="topic-head"><span class="idx">01</span><h2>Recursion</h2></div>
+      <div class="topic-kicker">BASE CASE · RECURSIVE CASE · CALL STACK · TAIL RECURSION</div>
+
+      <h3 class="sub">How recursion works</h3>
+      <p>A recursive function is one that calls itself to solve a smaller instance of the same problem. It consists of two parts:</p>
+      <ul>
+        <li><strong>Base case:</strong> The terminating condition that stops the recursion.</li>
+        <li><strong>Recursive case:</strong> The part where the function calls itself with modified parameters that move toward the base case.</li>
+      </ul>
+      <p>Every recursive call pushes a new frame onto the <strong>call stack</strong> containing local variables and return addresses. When the base case is reached, the stack unwinds, resolving the calls in reverse order (LIFO).</p>
+
+      <h3 class="sub">Tail recursion</h3>
+      <p>A recursive function is <em>tail-recursive</em> if the recursive call is the very last operation performed in the function (nothing is evaluated after the recursive call returns). A compiler or runtime <strong>may</strong> perform <strong>tail-call optimization (TCO)</strong> — reusing the current stack frame instead of pushing a new one — which turns the recursion into effectively O(1) stack space. But this is an optimization the implementation chooses to do, not a guarantee of the language: <strong>C does not require TCO</strong>, and whether a given compiler actually performs it depends on the compiler and the optimization flags used (e.g. gcc often does it only at <code>-O2</code>/<code>-O3</code>, not at <code>-O0</code>). Don't conclude that tail-recursive C code necessarily uses O(1) stack space — without confirmed TCO, it still uses O(n) stack space like any other recursion, and can still overflow the stack.</p>
+
+      <div class="card formula">
+        <span class="label">Recurrence relations</span>
+        <p>The time complexity of a recursive function is often modeled as T(n) = aT(n/b) + f(n). The Master Theorem provides direct solutions for this form.</p>
+        <div class="eq">Space complexity = O(maximum depth of the recursion tree)
+Due to the call stack, even if the time complexity is O(n), the space complexity can be O(n) for a linear recursive chain.</div>
+      </div>
+
+      <div class="card note">
+        <span class="label">Converting recursion to iteration</span>
+        <p>Any recursive algorithm can be converted into an iterative one by using an explicit Stack data structure to simulate the call stack.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Missing base cases or base cases that are never reached lead to infinite recursion and a <strong>stack overflow</strong>. Also, GATE frequently tests whether a function is tail-recursive. `return n * fact(n-1)` is NOT tail-recursive because the multiplication happens after the recursive call returns.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> What is the time and space complexity of the standard recursive factorial function `fact(n)`?</summary>
+          <div class="ans">
+            <p>The recurrence is T(n) = T(n-1) + O(1), leading to O(n) time. The recursion depth is n, so the call stack takes O(n) space.</p>
+            <p class="final">Answer: Time O(n), Space O(n)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Consider `fib(n) = fib(n-1) + fib(n-2)`. What is the time complexity and space complexity?</summary>
+          <div class="ans">
+            <p>The time complexity is O(2ⁿ) due to overlapping subproblems (the recursion tree has ~2ⁿ nodes). The space complexity is O(n) because the maximum depth of the call stack is n.</p>
+            <p class="final">Answer: Time O(2ⁿ), Space O(n)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Is the function `void print(int n) { if(n==0) return; print(n-1); printf("%d", n); }` tail recursive?</summary>
+          <div class="ans">
+            <p>No, because the `printf` statement executes after the recursive call `print(n-1)` returns. The recursive call is not the last operation.</p>
+            <p class="final">Answer: No</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> What is the recurrence relation for the classic Tower of Hanoi problem with n disks?</summary>
+          <div class="ans">
+            <p>To move n disks, we move n-1 disks to an auxiliary peg, move the nth disk to the destination, and then move the n-1 disks to the destination. T(n) = 2T(n-1) + 1.</p>
+            <p class="final">Answer: T(n) = 2T(n-1) + 1</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A recursive function splits an array of size n into two halves, recursively processes each half, and does O(n) work to combine. What is the maximum depth of the recursion tree?</summary>
+          <div class="ans">
+            <p>The problem size halves at each step: n, n/2, n/4, ..., 1. The depth of this division is log₂(n).</p>
+            <p class="final">Answer: O(log n)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="arrays">
+      <div class="topic-head"><span class="idx">02</span><h2>Arrays</h2></div>
+      <div class="topic-kicker">CONTIGUOUS MEMORY · RANDOM ACCESS · DYNAMIC ARRAYS · 2D ARRAYS</div>
+
+      <h3 class="sub">Array properties</h3>
+      <p>Arrays allocate memory in a contiguous block. Because elements are contiguous and of fixed size, arrays provide O(1) random access by computing the memory address directly:</p>
+      <div class="eq">Address(A[i]) = Base_Address + (i - lower_bound) × element_size</div>
+      
+      <p>Operations complexity:</p>
+      <ul>
+        <li><strong>Access:</strong> O(1)</li>
+        <li><strong>Search (unsorted):</strong> O(n)</li>
+        <li><strong>Search (sorted):</strong> O(log n) via binary search</li>
+        <li><strong>Insert/Delete:</strong> O(n) because elements must be shifted to maintain contiguity.</li>
+      </ul>
+
+      <h3 class="sub">2D Array addressing</h3>
+      <p>For a 2D array <code>A[lr..ur][lc..uc]</code> where `lr` and `lc` are the lower bounds for rows and columns, `Nr = ur - lr + 1` is the number of rows, and `Nc = uc - lc + 1` is the number of columns:</p>
+
+      <div class="card formula">
+        <span class="label">Row-major order</span>
+        <div class="eq">Address(A[i][j]) = Base + ((i - lr) × Nc + (j - lc)) × size</div>
+      </div>
+      <div class="card formula">
+        <span class="label">Column-major order</span>
+        <div class="eq">Address(A[i][j]) = Base + ((j - lc) × Nr + (i - lr)) × size</div>
+      </div>
+
+      <div class="card note">
+        <span class="label">Dynamic arrays</span>
+        <p>Standard arrays have a fixed size. Dynamic arrays (like C++ vector, Java ArrayList) allocate a new contiguous block of double the size when full. This "doubling strategy" yields an amortized insertion time complexity of O(1) per element.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>In 2D addressing formulas, remember to multiply by the number of columns `Nc` for Row-Major (because you skip full rows of length `Nc`), and by the number of rows `Nr` for Column-Major. Off-by-one errors with `lr` and `lc` are common—assume 0-indexing unless the problem specifies 1-indexing or explicit bounds.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Given a 2D array A[1..10][1..15] stored in row-major order with base address 100 and element size 4 bytes, find the address of A[8][6].</summary>
+          <div class="ans">
+            <p>lr=1, lc=1, Nc=15. Address = 100 + ((8-1)×15 + (6-1))×4 = 100 + (7×15 + 5)×4 = 100 + (105+5)×4 = 100 + 440 = 540.</p>
+            <p class="final">Answer: 540</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Given the same array A[1..10][1..15], find the address of A[8][6] if stored in column-major order.</summary>
+          <div class="ans">
+            <p>lr=1, lc=1, Nr=10. Address = 100 + ((6-1)×10 + (8-1))×4 = 100 + (5×10 + 7)×4 = 100 + 57×4 = 100 + 228 = 328.</p>
+            <p class="final">Answer: 328</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> What is the amortized time complexity of appending an element to a dynamic array that doubles its capacity when full?</summary>
+          <div class="ans">
+            <p>n appends trigger reallocations at powers of 2. Total cost to append n elements is roughly n + (1 + 2 + 4 + ... + n) &le; 3n = O(n). Divided by n operations, the amortized cost is O(1).</p>
+            <p class="final">Answer: O(1)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Consider an array of size n containing elements from 1 to n-1 with exactly one duplicate. What is the time complexity to find the duplicate using only O(1) extra space?</summary>
+          <div class="ans">
+            <p>You can sum the elements and subtract the sum of 1 to n-1, or use Floyd's cycle-finding algorithm by treating elements as next pointers. Both take O(n) time and O(1) space.</p>
+            <p class="final">Answer: O(n)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> An array `A[-5..5][0..10]` is given. How many elements are in this array?</summary>
+          <div class="ans">
+            <p>Number of rows = 5 - (-5) + 1 = 11. Number of columns = 10 - 0 + 1 = 11. Total elements = 11 × 11 = 121.</p>
+            <p class="final">Answer: 121</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="linked-lists">
+      <div class="topic-head"><span class="idx">03</span><h2>Linked Lists</h2></div>
+      <div class="topic-kicker">SINGLY · DOUBLY · CIRCULAR · OPERATIONS COMPLEXITY</div>
+
+      <h3 class="sub">Variations</h3>
+      <p>Linked lists are dynamic collections of nodes where each node points to the next, sacrificing random access in exchange for cheap insertion/deletion — but "O(1) if the location is known" needs a caveat that depends on which kind of list and which node.</p>
+      <ul>
+        <li><strong>Singly Linked List:</strong> Node = data + <code>next</code> pointer. Traversal is one-way. Insertion/deletion at head is O(1). Deleting an arbitrary given node normally needs its <em>predecessor's</em> pointer (to relink <code>next</code>), not just a pointer to the node itself — so "O(1) deletion given a node pointer" doesn't hold for singly linked lists unless you also have the predecessor, or you use the copy-next-node trick (copy the next node's data into the target node, then delete the next node instead) — which fails if the target is the tail. Finding an arbitrary node is O(n).</li>
+        <li><strong>Doubly Linked List:</strong> Node = <code>prev</code> + data + <code>next</code> pointer. Allows backward traversal. Deleting a given node pointer is genuinely O(1) here, since the node itself carries a pointer to its predecessor — no separate traversal or trick needed.</li>
+        <li><strong>Circular Linked List:</strong> The <code>next</code> pointer of the last node points back to the first node. Used in round-robin scheduling algorithms.</li>
+      </ul>
+
+      <h3 class="sub">Array vs Linked List Comparison</h3>
+      <table>
+        <tr><th>Operation</th><th>Array</th><th>Linked List</th></tr>
+        <tr><td>Random Access</td><td>O(1)</td><td>O(n)</td></tr>
+        <tr><td>Insert at Head</td><td>O(n)</td><td>O(1)</td></tr>
+        <tr><td>Delete at End</td><td>O(1)</td><td>O(n) (singly, without tail ptr)</td></tr>
+        <tr><td>Memory overhead</td><td>None</td><td>O(n) for pointers</td></tr>
+      </table>
+
+      <h3 class="sub">Classic Algorithms</h3>
+      <div class="card formula">
+        <span class="label">Cycle Detection (Floyd's Tortoise and Hare)</span>
+        <p>Use two pointers: slow (moves 1 step) and fast (moves 2 steps). If there is a cycle, they will eventually meet. Time: O(n), Space: O(1).</p>
+      </div>
+
+      <div class="card formula">
+        <span class="label">Middle of Linked List</span>
+        <p>Use two pointers: slow (1 step) and fast (2 steps). When fast reaches the end, slow is at the middle. Time: O(n), Space: O(1).</p>
+      </div>
+
+      <div class="card formula">
+        <span class="label">Reversing a Singly Linked List</span>
+        <p>Maintain three pointers: <code>prev</code> (initially NULL), <code>curr</code> (initially head), and <code>next</code>. Traverse the list, changing <code>curr-&gt;next = prev</code>, then shifting all three pointers one step forward.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>When inserting or deleting nodes, the order of pointer assignments is critical. If you overwrite a node's `next` pointer before saving it, you lose the rest of the list (memory leak). Always handle edge cases: empty list (`head == NULL`) and single-node list.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Given a pointer to a node (not the tail) in a singly linked list, what is the time complexity to delete it?</summary>
+          <div class="ans">
+            <p>Normally O(n) because you need the previous node. However, if node identity is irrelevant and the node is not the tail, the standard data-copying trick can remove its value from the list in O(1): copy the next node's data into the current node, then delete the next node. Strictly speaking, the supplied node itself is not freed — its contents are replaced by those of its successor, and the successor's node is the one actually deallocated. This distinction matters if nodes have identity, external pointers reference the original node, the node holds metadata/resources, or the successor isn't semantically interchangeable.</p>
+            <p class="final">Answer: O(1) (with the data-copying trick)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> In a circular singly linked list, what is the time complexity to insert a new node at the head if we only have a pointer to the head?</summary>
+          <div class="ans">
+            <p>To insert at the head, the last node's next pointer must be updated to point to the new head. Finding the last node requires traversing the whole list. Thus, O(n). (If a tail pointer is maintained, it becomes O(1)).</p>
+            <p class="final">Answer: O(n)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> What are the correct steps to insert a new node `N` between `A` and `B` in a singly linked list?</summary>
+          <div class="ans">
+            <p>First attach N to the rest of the list: `N-&gt;next = A-&gt;next;`. Then attach A to N: `A-&gt;next = N;`. If done in reverse, the pointer to B is lost.</p>
+            <p class="final">Answer: N-&gt;next = A-&gt;next; A-&gt;next = N;</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> In Floyd's cycle detection algorithm, if the list length is N and the cycle length is C, what is the asymptotic time complexity (number of steps) before the pointers meet?</summary>
+          <div class="ans">
+            <p>The slow pointer enters the cycle after at most N-C steps. Once both are in the cycle, the distance between them decreases by 1 each step. The maximum distance is C-1, so they meet after at most N-C + (C-1) = N-1 steps, i.e. O(N) total steps. At GATE level, O(N) is the expected answer since N ≥ C always. If you want the tighter, more precise bound used when analyzing Floyd's algorithm itself (rather than just bounding by list length), it's usually written O(μ + λ), where μ is the length of the non-cyclic "tail" before the cycle starts and λ is the cycle length — this is the same quantity as N-C and C-1 above, just named differently.</p>
+            <p class="final">Answer: O(N) time (equivalently O(μ + λ))</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> How many pointers need to be modified to delete a node in a doubly linked list (assuming it is not the head or tail)?</summary>
+          <div class="ans">
+            <p>Two pointers must be updated: `node-&gt;prev-&gt;next = node-&gt;next;` and `node-&gt;next-&gt;prev = node-&gt;prev;`.</p>
+            <p class="final">Answer: 2 pointers</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="stacks">
+      <div class="topic-head"><span class="idx">04</span><h2>Stacks</h2></div>
+      <div class="topic-kicker">LIFO · PUSH/POP · APPLICATIONS · STACK USING ARRAY/LL</div>
+
+      <h3 class="sub">LIFO principle</h3>
+      <p>A stack is a linear data structure following the <strong>Last In, First Out (LIFO)</strong> principle. The operations push, pop, and peek all operate on the top element in O(1) time.</p>
+
+      <h3 class="sub">Implementation</h3>
+      <p><strong>Array-based:</strong> Uses a fixed-size array and a <code>top</code> pointer (initially −1). Pushing increments <code>top</code>; popping decrements it. Causes <em>overflow</em> if full.</p>
+      <p><strong>Linked-list-based:</strong> Uses a singly linked list. Push and pop operations are performed at the <em>head</em> of the list to ensure O(1) time complexity.</p>
+
+      <h3 class="sub">Applications</h3>
+      <ul>
+        <li>Parenthesis matching and syntax parsing</li>
+        <li>Expression conversion (infix to postfix/prefix)</li>
+        <li>Postfix expression evaluation</li>
+        <li>Function call stack (recursion)</li>
+        <li>Undo mechanisms in text editors</li>
+      </ul>
+
+      <h3 class="sub">Infix to postfix conversion</h3>
+      <p>Operands are added to the output immediately. Operators are pushed to the stack based on <strong>precedence</strong> and <strong>associativity</strong>. A higher precedence operator can be pushed on top of a lower one. If precedence is equal, associativity (left-to-right or right-to-left) determines the action.</p>
+
+      <h3 class="sub">Postfix evaluation</h3>
+      <p>Scan the expression left to right. Push operands to the stack. When an operator is encountered, pop the top two operands (first pop is right operand, second is left), apply the operator, and push the result back.</p>
+
+      <div class="card formula">
+        <span class="label">Complexity</span>
+        <table>
+          <tr><th>Operation</th><th>Array</th><th>Linked List</th></tr>
+          <tr><td>Push</td><td>O(1)</td><td>O(1)</td></tr>
+          <tr><td>Pop</td><td>O(1)</td><td>O(1)</td></tr>
+          <tr><td>Peek/Top</td><td>O(1)</td><td>O(1)</td></tr>
+        </table>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p><strong>Associativity trap:</strong> While converting infix to postfix, operators like <code>^</code> (exponentiation) are right-associative. You <em>can</em> push <code>^</code> on top of another <code>^</code> in the stack! Also, watch out for <strong>stack underflow</strong> (popping an empty stack), which GATE often tests in sequence-of-operations questions.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Evaluate postfix expression: 5 3 + 8 2 / *</summary>
+          <div class="ans">
+            <p>Push 5, 3. Encounter '+': pop 3, 5, compute 5+3=8, push 8. Stack: [8]. Push 8, 2. Encounter '/': pop 2, 8, compute 8/2=4, push 4. Stack: [8, 4]. Encounter '*': pop 4, 8, compute 8*4=32, push 32.</p>
+            <p class="final">Answer: 32</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> In infix to postfix, when is an operator popped from the stack?</summary>
+          <div class="ans">
+            <p>When the incoming operator has <em>lower</em> precedence, or <em>equal</em> precedence and left-to-right associativity, compared to the operator at the top of the stack.</p>
+            <p class="final">Answer: Lower precedence or equal precedence with L-to-R associativity</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> How many distinct binary trees can be formed with 3 unlabelled nodes, which also equals the number of stack permutations?</summary>
+          <div class="ans">
+            <p>This is given by the Catalan number Cₙ = (2n)! / ((n+1)! * n!). For n=3, C₃ = 6! / (4! * 3!) = 720 / (24 * 6) = 5.</p>
+            <p class="final">Answer: 5</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> To check balanced parentheses for "{ [ ( ) ] }", what is the maximum depth of the stack?</summary>
+          <div class="ans">
+            <p>Push '{' (depth 1), push '[' (depth 2), push '(' (depth 3). Next is ')', pop '('. Max depth reached is 3.</p>
+            <p class="final">Answer: 3</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> If we implement a stack using a singly linked list, which end should be the 'top' for O(1) operations?</summary>
+          <div class="ans">
+            <p>The head of the linked list. Pushing at the head is O(1) and popping at the head is O(1). If we used the tail, pushing might be O(1) with a tail pointer, but popping would be O(n) as we need to find the new tail.</p>
+            <p class="final">Answer: The head of the linked list</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="queues">
+      <div class="topic-head"><span class="idx">05</span><h2>Queues</h2></div>
+      <div class="topic-kicker">FIFO · CIRCULAR QUEUE · DEQUE · PRIORITY QUEUE</div>
+
+      <h3 class="sub">FIFO principle</h3>
+      <p>A queue follows the <strong>First In, First Out (FIFO)</strong> principle. Elements are inserted at the <code>rear</code> and removed from the <code>front</code>. Enqueue, dequeue, front, and rear operations are all O(1).</p>
+
+      <h3 class="sub">Linear vs Circular Queue</h3>
+      <p>In a linear array-based queue, dequeuing elements leaves empty spaces at the front that cannot be reused without shifting elements (which is O(n)). This <strong>wasted space</strong> problem is solved by the <strong>circular queue</strong>, where the rear pointer wraps around to the beginning of the array.</p>
+
+      <h3 class="sub">Circular Queue Implementation</h3>
+      <p>Using an array of size <code>n</code>, with modular arithmetic:</p>
+      <div class="eq">Enqueue: rear = (rear + 1) % n
+Dequeue: front = (front + 1) % n</div>
+      <p><strong>Distinguishing Full from Empty:</strong></p>
+      <ul>
+        <li><strong>Sacrifice one slot:</strong> Queue is full when <code>(rear + 1) % n == front</code>. Empty when <code>front == rear</code> (or <code>front == -1</code>). Array holds max n−1 elements.</li>
+        <li><strong>Size counter:</strong> Keep a <code>count</code> variable. Full when <code>count == n</code>. Empty when <code>count == 0</code>. Allows holding n elements.</li>
+      </ul>
+
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Deque (Double-ended queue)</h4>
+          <p>Allows insertion and deletion from <em>both</em> ends (front and rear). Can act as both a stack and a queue.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Priority Queue</h4>
+          <p>An abstract data type where each element has a priority. Elements with higher priority are dequeued before those with lower priority. Typically implemented using a <strong>Heap</strong> (covered in section 08) for O(log n) operations.</p>
+        </div>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p><strong>Off-by-one errors:</strong> Pay strict attention to initial conditions (e.g., front=0, rear=n−1 vs front=−1, rear=−1). GATE questions on circular queues often exploit the ambiguity between full and empty states if a counter isn't used — always check if the question implies leaving one slot empty!</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A circular queue of size n=5 has front=2, rear=4 (assume <code>rear</code> points to the last occupied slot, not the next free slot — the convention used consistently across all circular-queue questions on this page). If we enqueue one element, what are the new front and rear?</summary>
+          <div class="ans">
+            <p>Enqueue changes rear: rear = (4 + 1) % 5 = 0. Front remains 2.</p>
+            <p class="final">Answer: front=2, rear=0</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> How many stacks are minimally required to implement a queue?</summary>
+          <div class="ans">
+            <p>Two stacks are required. One stack handles enqueues, and the other handles dequeues (elements are transferred when the dequeue stack is empty).</p>
+            <p class="final">Answer: 2</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> In a circular queue using an array of size n, leaving one slot empty, what is the maximum number of elements it can hold?</summary>
+          <div class="ans">
+            <p>To distinguish between full and empty without a counter, one slot must remain unused. Thus, capacity is n−1.</p>
+            <p class="final">Answer: n−1</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A deque supports insertFront, insertRear, deleteFront, deleteRear. Which two operations restrict it to behave as a normal stack?</summary>
+          <div class="ans">
+            <p>To act as a stack, all insertions and deletions must happen at the same end. For example, using only insertFront and deleteFront.</p>
+            <p class="final">Answer: insertFront and deleteFront (or insertRear and deleteRear)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> If a queue is implemented with a singly linked list with head and tail pointers, what is the complexity of enqueue and dequeue?</summary>
+          <div class="ans">
+            <p>Enqueue at the tail using the tail pointer is O(1). Dequeue at the head using the head pointer is O(1).</p>
+            <p class="final">Answer: Both O(1)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="trees">
+      <div class="topic-head"><span class="idx">06</span><h2>Trees</h2></div>
+      <div class="topic-kicker">TERMINOLOGY · BINARY TREES · TRAVERSALS · PROPERTIES</div>
+
+      <h3 class="sub">Terminology</h3>
+      <p>A tree is an undirected, acyclic, connected graph. Key terms: <strong>root</strong> (top node), <strong>parent/child/sibling</strong>, <strong>leaf</strong> (node with 0 children), <strong>depth</strong> (edges from root to node), <strong>height</strong> (edges from node to deepest leaf), <strong>level</strong> (all nodes at same depth).</p>
+
+      <h3 class="sub">Binary Trees</h3>
+      <p>Each node has at most 2 children. Types:</p>
+      <ul>
+        <li><strong>Full/Strict:</strong> Every node has 0 or 2 children.</li>
+        <li><strong>Complete:</strong> All levels are completely filled except possibly the last, which is filled from left to right.</li>
+        <li><strong>Perfect:</strong> All internal nodes have 2 children, and all leaves are at the same level.</li>
+        <li><strong>Skewed:</strong> Every node has at most 1 child (essentially a linked list).</li>
+      </ul>
+
+      <div class="card formula">
+        <span class="label">Properties &amp; Formulas (Root at level 0)</span>
+        <div class="eq">Max nodes at level i = 2ⁱ
+Max nodes in tree of height h = 2ʰ⁺¹ − 1
+Min height for n nodes = ⌊log₂ n⌋
+Max height for n nodes = n − 1
+Leaves (n₀) and degree-2 nodes (n₂) relation: n₀ = n₂ + 1
+Number of NULL pointers in a binary tree with n nodes = n + 1</div>
+      </div>
+
+      <h3 class="sub">Traversals</h3>
+      <p>Depth-First Traversals (recursive):</p>
+      <ul>
+        <li><strong>Inorder (Left, Root, Right):</strong> Gives sorted order for a Binary Search Tree (BST).</li>
+        <li><strong>Preorder (Root, Left, Right):</strong> Used for tree copying/serialization.</li>
+        <li><strong>Postorder (Left, Right, Root):</strong> Used for tree deletion or postfix expression evaluation.</li>
+      </ul>
+      <p>Breadth-First Traversal: <strong>Level-order</strong> uses a queue to visit nodes level by level.</p>
+
+      <h3 class="sub">Constructing Tree from Traversals</h3>
+      <p>To uniquely reconstruct an <strong>arbitrary</strong> binary tree, you need the <strong>inorder</strong> traversal paired with either the <strong>preorder</strong> or <strong>postorder</strong> traversal. Preorder and postorder alone are not sufficient for arbitrary binary trees — without inorder, there isn't enough information to tell which side of a node a given subtree belongs on whenever a node has only one child.</p>
+      <div class="card pyq">
+        <span class="label">GATE trap — the full-binary-tree exception</span>
+        <p>The insufficiency above specifically comes from nodes with exactly one child: preorder+postorder can't tell you whether that one child is a left child or a right child. This ambiguity disappears entirely if the tree is a <strong>full (a.k.a. strict) binary tree</strong> — every node has either 0 or 2 children, never exactly 1. For a full binary tree with distinct node labels, <strong>preorder + postorder together ARE sufficient to uniquely reconstruct the tree</strong> — no inorder needed. Don't answer "preorder+postorder is never enough" as an unqualified blanket statement; GATE specifically likes testing whether you know this exception applies once the "full/strict" condition is stated.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p><strong>Height vs Depth Convention:</strong> Be very careful! Some GATE questions define the height of a single-node tree as 0 (counting edges), while others define it as 1 (counting nodes). Read the question carefully to determine their convention. Also, the formula <code>n₀ = n₂ + 1</code> is valid <em>only</em> for binary trees, not general trees!</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> In a binary tree, if the number of internal nodes with 2 children is 15, how many leaf nodes are there?</summary>
+          <div class="ans">
+            <p>Using the property n₀ = n₂ + 1, the number of leaf nodes n₀ = 15 + 1 = 16.</p>
+            <p class="final">Answer: 16</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Which two traversals are necessary and sufficient to uniquely reconstruct an arbitrary binary tree — and is there an exception?</summary>
+          <div class="ans">
+            <p>For an arbitrary binary tree, inorder traversal must be paired with either preorder or postorder traversal — preorder and postorder together cannot uniquely determine an arbitrary binary tree without inorder, because a node with exactly one child leaves the tree ambiguous as to which side that child is on. The exception: if the tree is known to be a <strong>full/strict binary tree</strong> (every node has 0 or 2 children, distinct labels), preorder + postorder alone ARE sufficient — the one-child ambiguity that inorder would normally resolve simply can't occur.</p>
+            <p class="final">Answer: Inorder and (Preorder OR Postorder) for arbitrary binary trees — but Preorder + Postorder alone suffice if the tree is guaranteed full/strict</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> What is the maximum number of nodes in a binary tree of height h (where a single node has height 0)?</summary>
+          <div class="ans">
+            <p>A perfect binary tree of height h has 2⁰ + 2¹ + ... + 2ʰ = 2ʰ⁺¹ − 1 nodes.</p>
+            <p class="final">Answer: 2ʰ⁺¹ − 1</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> How many NULL pointers exist in a binary tree with 100 nodes?</summary>
+          <div class="ans">
+            <p>A binary tree with n nodes has exactly n + 1 NULL pointers. For n=100, there are 101 NULL pointers.</p>
+            <p class="final">Answer: 101</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> If the inorder traversal of a BST is 'A B C D E', what can we say about the elements?</summary>
+          <div class="ans">
+            <p>Inorder traversal of a Binary Search Tree always visits the nodes in sorted (ascending) order. Therefore, A &lt; B &lt; C &lt; D &lt; E.</p>
+            <p class="final">Answer: The elements are sorted: A &lt; B &lt; C &lt; D &lt; E</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="bst">
+      <div class="topic-head"><span class="idx">07</span><h2>Binary Search Trees</h2></div>
+      <div class="topic-kicker">BST PROPERTY · SEARCH/INSERT/DELETE · BALANCING · AVL TREES</div>
+
+      <h3 class="sub">BST property</h3>
+      <p>For every node, all values in its left subtree are less than the node's value, and all values in its right subtree are greater than the node's value.</p>
+      <div class="eq">left subtree &lt; root &lt; right subtree (for all nodes recursively)</div>
+      <p>An inorder traversal of a BST always visits the nodes in <strong>sorted (ascending) order</strong>.</p>
+
+      <h3 class="sub">Operations &amp; complexities</h3>
+      <ul>
+        <li><strong>Search:</strong> Compare with root, go left if smaller or right if larger — O(h) where h = height.</li>
+        <li><strong>Insert:</strong> Search for position, insert as leaf — O(h).</li>
+        <li><strong>Delete:</strong> 3 cases:
+          <ul>
+            <li>Leaf node: just remove it.</li>
+            <li>One child: replace node with its child.</li>
+            <li>Two children: replace node with its inorder predecessor (max in left subtree) or inorder successor (min in right subtree), then recursively delete that node.</li>
+          </ul>
+        </li>
+      </ul>
+      <p><strong>Balanced vs unbalanced:</strong> In the worst case (skewed tree), operations are O(n). In a balanced tree, operations are O(log n).</p>
+      <div class="card formula">
+        <span class="label">BST operation complexity — don't drop the worst case</span>
+        <table>
+          <tr><th>Operation</th><th>Balanced BST (e.g. AVL)</th><th>Unbalanced/skewed BST (worst case)</th></tr>
+          <tr><td>Search</td><td>O(log n)</td><td>O(n)</td></tr>
+          <tr><td>Insert</td><td>O(log n)</td><td>O(n)</td></tr>
+          <tr><td>Delete</td><td>O(log n)</td><td>O(n)</td></tr>
+        </table>
+        <p>A plain BST offers <strong>no</strong> guarantee of O(log n) — that bound holds only once the tree is height-balanced (h = O(log n)), which is exactly what self-balancing schemes like AVL and Red-Black trees exist to enforce. A GATE question that just says "BST" (not "balanced BST" or "AVL tree") should be read as potentially skewed — O(h) is the honest general answer, and h can be as large as n−1.</p>
+      </div>
+
+      <h3 class="sub">AVL Trees</h3>
+      <div class="card formula">
+        <span class="label">Balance factor — definition, valid range, and rebalancing trigger</span>
+        <div class="eq">BF(v) = height(left subtree of v) − height(right subtree of v)</div>
+        <p>For a <strong>valid</strong> AVL tree, every node must satisfy <code>BF ∈ {−1, 0, +1}</code>. After an insertion or deletion, if any node ends up with <strong>|BF| &gt; 1</strong> (i.e. BF = +2 or BF = −2), that node is unbalanced and <strong>requires rebalancing</strong> via one of the four rotation cases below — which specific case depends on both the sign of the unbalanced node's own BF and the sign of its heavier child's BF.</p>
+      </div>
+      <p>When an insertion or deletion violates the balance factor, rotations are applied:</p>
+      <ul>
+        <li><strong>LL (Left-Left):</strong> Requires right rotation.</li>
+        <li><strong>RR (Right-Right):</strong> Requires left rotation.</li>
+        <li><strong>LR (Left-Right):</strong> Requires left rotation on child, then right rotation on parent.</li>
+        <li><strong>RL (Right-Left):</strong> Requires right rotation on child, then left rotation on parent.</li>
+      </ul>
+      <div class="card formula">
+        <span class="label">AVL rotation lookup — quick recall table</span>
+        <table>
+          <tr><th>Imbalance case</th><th>Rotation to apply</th></tr>
+          <tr><td>LL (inserted into left subtree of left child)</td><td>Single Right rotation</td></tr>
+          <tr><td>RR (inserted into right subtree of right child)</td><td>Single Left rotation</td></tr>
+          <tr><td>LR (inserted into right subtree of left child)</td><td>Left rotation on the child, then Right rotation on the parent</td></tr>
+          <tr><td>RL (inserted into left subtree of right child)</td><td>Right rotation on the child, then Left rotation on the parent</td></tr>
+        </table>
+        <p>Mnemonic: the case name tells you which two rotations to chain — "LR" means Left first (on the child), then Right (on the parent); "RL" means Right first, then Left. The single-letter cases (LL, RR) need only the opposite single rotation.</p>
+      </div>
+      <p>Height of an AVL tree with n nodes is O(log n), specifically bounded between log₂(n+1) and ≈1.44·log₂(n+2). The minimum nodes N(h) for an AVL tree of height h (using the convention that a single node has height 0, matching the rest of this page):</p>
+      <div class="eq">N(h) = N(h−1) + N(h−2) + 1  (Fibonacci-like sequence), with base cases N(0) = 1, N(1) = 2</div>
+      
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>In deletion with two children, GATE might test if you know that choosing the inorder predecessor vs successor results in a valid BST (both do). Also, for AVL rotations, the direction of rotation (left vs right) and the node around which rotation happens is a classic MCQ. Always draw the 3 nodes involved in the imbalance.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> The number of possible BSTs with n distinct keys is?</summary>
+          <div class="ans">
+            <p>It is given by the nth Catalan number: C(2n, n) / (n+1).</p>
+            <p class="final">Answer: Catalan number</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> In a BST, finding the minimum element takes what time in the worst case?</summary>
+          <div class="ans">
+            <p>The minimum element is the leftmost node. In a skewed BST, this can be at the deepest level h=n−1. Time is O(h) which is O(n) in worst case.</p>
+            <p class="final">Answer: O(n)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> What is the minimum number of nodes in an AVL tree of height 4? (Using the convention that a single node has height 0, consistent with the rest of this page.)</summary>
+          <div class="ans">
+            <p>N(0) = 1, N(1) = 2. N(2) = N(1) + N(0) + 1 = 2 + 1 + 1 = 4. N(3) = N(2) + N(1) + 1 = 4 + 2 + 1 = 7. N(4) = N(3) + N(2) + 1 = 7 + 4 + 1 = 12.</p>
+            <p class="final">Answer: 12</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> When deleting a node with two children in a BST, which node can replace it?</summary>
+          <div class="ans">
+            <p>Either the inorder predecessor (maximum value in the left subtree) or the inorder successor (minimum value in the right subtree).</p>
+            <p class="final">Answer: Inorder predecessor or inorder successor</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> An AVL tree becomes unbalanced after an insertion. The node causing the imbalance was inserted into the left subtree of the right child of the unbalanced node. Which rotation is needed?</summary>
+          <div class="ans">
+            <p>This is a Right-Left (RL) case. It requires a right rotation on the right child followed by a left rotation on the unbalanced node.</p>
+            <p class="final">Answer: RL rotation</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="heaps">
+      <div class="topic-head"><span class="idx">08</span><h2>Binary Heaps</h2></div>
+      <div class="topic-kicker">COMPLETE BINARY TREE · MIN/MAX HEAP · HEAPIFY · HEAP SORT</div>
+
+      <h3 class="sub">Heap property</h3>
+      <p>A heap is a complete binary tree satisfying the heap property:</p>
+      <ul>
+        <li><strong>Max-heap:</strong> parent value ≥ children's values. Root contains the maximum element.</li>
+        <li><strong>Min-heap:</strong> parent value ≤ children's values. Root contains the minimum element.</li>
+      </ul>
+
+      <h3 class="sub">Array representation</h3>
+      <p>Since it is a complete binary tree, it can be efficiently represented in an array without pointers.</p>
+      <div class="eq">0-indexed array:
+Parent of i = ⌊(i−1)/2⌋
+Left child of i = 2i + 1
+Right child of i = 2i + 2
+
+1-indexed array:
+Parent of i = ⌊i/2⌋
+Left child of i = 2i
+Right child of i = 2i + 1</div>
+
+      <h3 class="sub">Operations</h3>
+      <ul>
+        <li><strong>Insert:</strong> Add at the end of the array, then bubble up (heapify up) to restore property — O(log n).</li>
+        <li><strong>Extract-min/max:</strong> Replace root with the last element, reduce size, and bubble down (heapify down) — O(log n).</li>
+        <li><strong>Decrease/increase key:</strong> Modify the value, then bubble up or down as needed — O(log n).</li>
+        <li><strong>Build heap from array:</strong> Apply heapify down starting from the last non-leaf node (index n/2 - 1 down to 0) — <strong>O(n)</strong>.</li>
+      </ul>
+
+      <h3 class="sub">Heap sort</h3>
+      <p>Build a max-heap from the array, then repeatedly extract the max and place it at the end. Time complexity is O(n log n). It is an in-place sorting algorithm but it is <strong>not stable</strong>.</p>
+      <p>A Priority Queue is an abstract data type usually implemented using a heap.</p>
+
+      <div class="card formula">
+        <span class="label">Consolidated complexity sheet — standard binary heap (array-backed)</span>
+        <p>All complexities below assume a standard <strong>binary heap</strong> (array-backed, complete binary tree). Different heap variants (binomial, Fibonacci, pairing) have different amortized bounds — don't carry these numbers over to them.</p>
+        <table>
+          <tr><th>Operation</th><th>Time Complexity</th></tr>
+          <tr><td>Peek (find min/max at root)</td><td>O(1)</td></tr>
+          <tr><td>Insert</td><td>O(log n)</td></tr>
+          <tr><td>Extract-min / Extract-max</td><td>O(log n)</td></tr>
+          <tr><td>Decrease-key / Increase-key</td><td>O(log n)</td></tr>
+          <tr><td>Build heap from an unsorted array</td><td>O(n)</td></tr>
+          <tr><td>Heap sort (build + n extracts)</td><td>O(n log n)</td></tr>
+          <tr><td>Search for an arbitrary value</td><td>O(n) — heaps aren't built for searching</td></tr>
+        </table>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — build-heap is O(n), and here's why the "obvious" reasoning is wrong</span>
+        <p>The tempting (wrong) argument: "n insertions × O(log n) per insertion = O(n log n)." That bound is correct <strong>only</strong> for building a heap via <strong>repeated single insertion</strong> — inserting one element at a time into a growing heap really does cost O(n log n) total.</p>
+        <p><strong>Bottom-up build-heap</strong> (heapify-down starting from the last non-leaf node up to the root) is a different algorithm with a different bound: it's O(n) because most nodes sit near the <em>leaves</em>, where a sift-down has almost no distance to travel. Roughly n/2 nodes do O(1) work, n/4 nodes do O(2) work, n/8 nodes do O(3) work, and so on — summing height×count over all levels gives a series that converges to O(n), not O(n log n). Also remember: heap sort is NOT a stable sort, and heap search takes O(n) time — heaps aren't built for searching.</p>
+        <div class="eq">repeated insertion (n calls to insert)              → O(n log n)
+bottom-up build-heap (heapify from n/2−1 down to 0)  → O(n)</div>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> What is the index of the last non-leaf node in a 0-indexed heap of size n?</summary>
+          <div class="ans">
+            <p>The last node is at index n−1. Its parent is ⌊((n−1)−1)/2⌋ = ⌊(n−2)/2⌋ = ⌊n/2⌋ − 1.</p>
+            <p class="final">Answer: ⌊n/2⌋ − 1</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> True or False: Heap sort is a stable sorting algorithm.</summary>
+          <div class="ans">
+            <p>Heap sort is not stable because operations on the heap can change the relative order of equal elements.</p>
+            <p class="final">Answer: False</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Finding the maximum element in a min-heap takes what time?</summary>
+          <div class="ans">
+            <p>In a min-heap, the maximum element must be one of the leaf nodes. There are ceil(n/2) leaf nodes, so we must check all of them.</p>
+            <p class="final">Answer: O(n)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> What is the time complexity to build a heap from an array of n elements?</summary>
+          <div class="ans">
+            <p>Building a heap bottom-up takes linear time because most nodes are near the bottom and have small heights to sift down.</p>
+            <p class="final">Answer: O(n)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A max-heap contains elements [50, 30, 20, 10, 5]. After extracting the maximum element, what is the new array?</summary>
+          <div class="ans">
+            <p>Replace root (50) with last element (5). Array: [5, 30, 20, 10]. Heapify down 5: swap with max child (30). Array: [30, 5, 20, 10]. Heapify down 5: swap with max child (10). Array: [30, 10, 20, 5].</p>
+            <p class="final">Answer: [30, 10, 20, 5]</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="graphs">
+      <div class="topic-head"><span class="idx">09</span><h2>Graphs</h2></div>
+      <div class="topic-kicker">REPRESENTATIONS · BFS · DFS · CONNECTED COMPONENTS · PROPERTIES</div>
+
+      <h3 class="sub">Terminology &amp; properties</h3>
+      <p>Key terms: vertex, edge, directed/undirected, weighted, degree (in-degree, out-degree), path, cycle, connected, DAG (Directed Acyclic Graph).</p>
+      <div class="eq">Handshaking Lemma (Undirected): ∑ degrees = 2|E|
+Directed graph: ∑ in-degrees = ∑ out-degrees = |E|
+Tree: Connected acyclic graph with V vertices has exactly V−1 edges
+Max edges in undirected graph: V(V−1)/2
+Max edges in directed graph: V(V−1)</div>
+
+      <h3 class="sub">Representations</h3>
+      <table>
+        <tr><th>Representation</th><th>Space</th><th>Edge Check (u, v)</th><th>Iterate Neighbors</th><th>Good for</th></tr>
+        <tr><td>Adjacency Matrix</td><td>O(V²)</td><td>O(1)</td><td>O(V)</td><td>Dense graphs</td></tr>
+        <tr><td>Adjacency List</td><td>O(V+E)</td><td>O(degree)</td><td>O(degree)</td><td>Sparse graphs</td></tr>
+      </table>
+
+      <h3 class="sub">Breadth-First Search (BFS)</h3>
+      <p>Explores level-by-level using a <strong>queue</strong>. Time: O(V+E) for adjacency list, O(V²) for matrix.</p>
+      <ul>
+        <li>Applications: shortest path in unweighted graph, connected components <strong>in an undirected graph</strong>, bipartite check, level-order traversal.</li>
+      </ul>
+
+      <h3 class="sub">Depth-First Search (DFS)</h3>
+      <p>Explores deep first using a <strong>stack</strong> (or recursion). Time: O(V+E) for adjacency list, O(V²) for matrix.</p>
+      <ul>
+        <li>Applications: cycle detection, topological sort (DAGs), connected components <strong>in an undirected graph</strong>, reachability and strongly connected components <strong>in a directed graph</strong> (Kosaraju/Tarjan).</li>
+      </ul>
+      <div class="card note">
+        <span class="label">"Connected components" isn't the same question once edges have direction</span>
+        <p>"Connected components" (via BFS or DFS) is inherently an <strong>undirected-graph</strong> notion — it asks which vertices can reach each other ignoring edge direction entirely. In a <strong>directed</strong> graph, the analogous questions split into two genuinely different concepts: <strong>reachability</strong> (can vertex u reach vertex v, respecting edge direction?) and <strong>strongly connected components</strong> (maximal sets of vertices that can ALL reach each other, respecting direction) — computed via Kosaraju's or Tarjan's algorithm, not a plain BFS/DFS component scan.</p>
+      </div>
+
+      <h3 class="sub">Cycle detection — the undirected/directed distinction</h3>
+      <div class="two-col">
+        <div class="card pyq">
+          <span class="label">Undirected graph</span>
+          <p>During DFS, a cycle exists if you encounter an already-visited neighbor that is <strong>NOT the immediate parent</strong> you just came from. (Simply seeing "a visited neighbor" isn't enough — the edge straight back to your own parent is normal in a tree/DFS traversal, not a cycle.)</p>
+        </div>
+        <div class="card pyq">
+          <span class="label">Directed graph</span>
+          <p>During DFS, a cycle exists if you encounter an edge to a node that is currently <strong>on the recursion stack</strong> (a "gray" node, still being processed) — this is a <strong>back edge</strong>. An edge to an already-fully-finished ("black") node is NOT a cycle; it's a cross or forward edge.</p>
+        </div>
+      </div>
+      <div class="card note">
+        <span class="label">Why the two rules differ</span>
+        <p>In an undirected graph, every edge is inherently bidirectional, so the edge you just traversed to reach the current node always "points back" at its parent — that back-pointer is expected and must be explicitly excluded, or every single tree edge would incorrectly register as a cycle. In a directed graph, edges only go one way, so there's no symmetric "parent edge" to exclude — instead, the three-color (white/gray/black) recursion-stack membership test is what correctly separates a genuine cycle (back edge, to a gray/in-progress node) from a harmless cross or forward edge (to a black/already-finished node).</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Mix-ups between BFS and DFS applications are common, but "shortest path = BFS" is only true in a specific setting — don't over-generalize it. Precisely: <strong>BFS gives shortest paths only in an unweighted graph (or one where every edge has equal weight)</strong>, because BFS explores in layers of equal "distance" (edge count) and that only corresponds to true shortest distance when every edge costs the same. For weighted graphs, BFS's level order says nothing about path weight — you need <strong>Dijkstra's algorithm</strong> for non-negative edge weights, or <strong>Bellman-Ford</strong> if any edge weight can be negative (and to detect negative-weight cycles). Topological sort / cycle detection = DFS. Also, pay attention to graph representation — if a question assumes adjacency matrix, DFS/BFS is O(V²), not O(V+E). Handshaking lemma is tested frequently via degree sequences.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> An undirected graph has 10 vertices, each of degree 3. How many edges does it have?</summary>
+          <div class="ans">
+            <p>By Handshaking Lemma, ∑ degrees = 2|E|. 10 × 3 = 30 = 2|E| ⇒ |E| = 15.</p>
+            <p class="final">Answer: 15 edges</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Which graph traversal algorithm is used to find the shortest path in an unweighted graph?</summary>
+          <div class="ans">
+            <p>BFS visits nodes level by level, ensuring that the first time a node is reached, it is via the shortest path.</p>
+            <p class="final">Answer: BFS (Breadth-First Search)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> What is the maximum number of edges in an undirected bipartite graph with V vertices?</summary>
+          <div class="ans">
+            <p>Maximized when vertices are split as evenly as possible between the two partitions: ⌊V/2⌋ in one, ⌈V/2⌉ in the other (equal halves only when V is even; for odd V they differ by one). Max edges = ⌊V/2⌋ × ⌈V/2⌉ = ⌊V²/4⌋.</p>
+            <p class="final">Answer: ⌊V²/4⌋</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> How can you detect a cycle in a directed graph, and how does that differ from cycle detection in an undirected graph?</summary>
+          <div class="ans">
+            <p>Directed: use DFS with a three-color / recursion-stack scheme — if you find an edge to a node currently on the recursion stack (a back edge to a "gray" node), a cycle exists.</p>
+            <p>Undirected: a different check is needed, because every edge is bidirectional and would otherwise falsely flag the edge straight back to your own parent as a cycle. Instead, during DFS, a cycle exists only if you reach an already-visited neighbor that is NOT the immediate parent you arrived from.</p>
+            <p class="final">Answer: Directed — DFS back edge to a node on the recursion stack. Undirected — DFS reaches a visited neighbor that isn't the parent.</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> What is the time complexity to check if an edge exists using an adjacency list?</summary>
+          <div class="ans">
+            <p>You must scan the list for the vertex, which takes time proportional to the degree of the vertex.</p>
+            <p class="final">Answer: O(degree)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="revision">
+      <div class="topic-head"><span class="idx">10</span><h2>Revision Sheet</h2></div>
+      <div class="topic-kicker">EVERYTHING ON ONE SCREEN — LAST-MINUTE PASS</div>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Recursion</span>
+          <p>Master theorem cases: T(n) = aT(n/b) + f(n). Stack space complexity is O(depth).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Arrays</span>
+          <p>O(1) access. Row-major: A[i][j] = Base + w*(i*cols + j). Column-major: A[i][j] = Base + w*(j*rows + i).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Linked Lists</span>
+          <p>O(n) search/access, O(1) insert/delete given pointer. Floyd's cycle detection: slow/fast pointers meet if cycle exists.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Stacks</span>
+          <p>LIFO structure. Useful for parsing, balanced parentheses. Cₙ = C(2n,n)/(n+1) counts, among other things: BSTs on n distinct keys, valid parenthesis sequences of length 2n, and stack-sortable permutations of n elements.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Queues</span>
+          <p>FIFO structure. Circular queue, one-empty-slot convention: full when (rear + 1) % N == front, empty when front == rear. (A size-counter implementation instead uses count == N / count == 0, and can hold all N slots.)</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Trees</span>
+          <p>Leaf nodes n₀ = degree-2 nodes n₂ + 1. Max nodes at height h (0-indexed): 2ʰ⁺¹ − 1. Traversals: In, Pre, Post.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">BST &amp; AVL</span>
+          <p>BST operations O(h). Inorder gives sorted order. Deletion: 0 children → delete; 1 child → replace by child; 2 children → successor/predecessor. AVL balance factor: h(L) − h(R) ∈ {−1, 0, 1}. Rotations restore balance.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Binary Heaps</span>
+          <p>Min-heap → minimum at root; extract-min is O(log n) in a min-heap. Max-heap → maximum at root; extract-max is O(log n) in a max-heap — don't invert which extreme goes with which heap. Bottom-up build-heap = O(n) — NOT n×O(log n) = O(n log n); that bound applies only to repeated single insertion. 0-indexed formulas: parent = ⌊(i−1)/2⌋, left = 2i+1, right = 2i+2. Heap sort O(n log n).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Graphs</span>
+          <p>Handshaking lemma: ∑ deg = 2|E|. BFS (Queue, shortest path in <em>unweighted</em> graph only; connected components in an undirected graph). DFS (Stack; cycle detection — undirected: visited neighbor ≠ parent, directed: back edge to a recursion-stack node). Weighted shortest path: Dijkstra (non-negative weights) / Bellman-Ford (negative weights allowed). Tree has V−1 edges.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Complexities</span>
+          <p>Hash tables expected O(1) search/insert. Sorting: Merge/Heap O(n log n), Quick expected O(n log n), worst O(n²).</p>
+        </div>
+      </div>
+
+      <div class="card pyq" style="margin-top:26px;">
+        <span class="label">BST deletion — the 3 cases, canonical form</span>
+        <div class="eq">0 children (leaf)  →  delete the node directly
+1 child            →  replace the node with that single child
+2 children         →  replace with inorder successor (or predecessor),
+                       then delete THAT node from its new position
+                       (which now has at most 1 child — reduces to a case above)</div>
+        <p><strong>In-order successor = minimum of the right subtree</strong> (go right once, then left as far as possible). In-order predecessor = maximum of the left subtree (go left once, then right as far as possible). Either choice yields a valid BST — GATE sometimes asks which one a trace used, not which is "more correct."</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">Why build-heap is O(n), not O(n log n)</span>
+        <p>Wrong intuition: "n insertions × O(log n) each = O(n log n)." That reasoning only applies to building a heap via <strong>repeated single insertion</strong>.</p>
+        <p><strong>Bottom-up build-heap</strong> (heapify-down from the last non-leaf node up to the root) is O(n) instead, because most nodes sit near the leaves and have very little sift-down work to do — only a handful of nodes near the root pay the full O(log n) cost.</p>
+        <div class="eq">repeated insert         → O(n log n)
+bottom-up build-heap    → O(n)</div>
+      </div>
+
+      <div class="card note" style="margin-top:26px;">
+        <span class="label">How to use this sheet</span>
+        <p>Use this final summary to self-test before the exam. If any formula or concept feels fuzzy, revisit the corresponding section. Data structures questions in GATE often mix concepts (e.g., heaps using arrays, DFS using stacks), so structural understanding is key.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — rapid-fire mix (original)</h3><span class="pcount">6 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Assuming all keys are distinct, what is the pre-order traversal of a BST if the post-order is 2, 4, 3, 7, 9, 8, 5?</summary>
+          <div class="ans">
+            <p>Root is last in post-order: 5. BST property splits into left {2,4,3} and right {7,9,8}. Reconstructing yields pre-order: 5, 3, 2, 4, 8, 7, 9. (This reconstruction relies on all keys being distinct — with duplicate keys, whether equal values go left or right depends on the implementation's convention, and reconstruction from a single traversal can become ambiguous.)</p>
+            <p class="final">Answer: 5, 3, 2, 4, 8, 7, 9 (assumes distinct keys)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> In an adjacency list representation of a directed graph, how do you find the in-degree of all vertices?</summary>
+          <div class="ans">
+            <p>You must traverse all lists of all vertices. The in-degree of vertex V is the number of times V appears in all adjacency lists combined, taking O(V+E) time overall.</p>
+            <p class="final">Answer: Scan all adjacency lists, counting occurrences</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> What is the relationship between the number of leaves (L) and internal nodes with 2 children (I) in a strictly binary tree?</summary>
+          <div class="ans">
+            <p>In any binary tree, the number of leaf nodes n₀ is exactly one more than the number of nodes with two children n₂. Thus, L = I + 1.</p>
+            <p class="final">Answer: L = I + 1</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A circular queue of size N=5 (using the one-empty-slot convention) has front=2 and rear=1. Is the queue full or empty?</summary>
+          <div class="ans">
+            <p>Under the one-empty-slot convention (no separate count variable, one slot deliberately left unused to disambiguate full from empty), the condition for full is (rear + 1) % N == front. (1 + 1) % 5 = 2, which equals front. So the queue is full. (This formula is specific to that convention — an implementation using a size counter instead would check <code>count == N</code>, with no such sacrificed slot.)</p>
+            <p class="final">Answer: Full (under the one-empty-slot convention)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A min-heap of n elements is given, with no other information about how it was built. What is the worst-case time to find the median if we inspect all heap elements and use a linear-time selection algorithm (e.g. median-of-medians)?</summary>
+          <div class="ans">
+            <p>A min-heap only guarantees the root is the smallest — it maintains no order among the rest of the elements, so there's no way to locate the median faster than looking at all n elements. Once all n values are available (e.g. by an O(n) traversal of the underlying array), a linear-time selection algorithm finds the median (the n/2-th order statistic) in O(n) worst-case time, without needing to fully sort.</p>
+            <p class="final">Answer: O(n) — O(n) to read all elements + O(n) for linear-time selection</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5b</span> Same min-heap of n elements — but this time, find the median by repeatedly extracting the minimum until reaching the middle element. What is the time complexity now?</summary>
+          <div class="ans">
+            <p>Each extract-min on a heap of current size k costs O(log k). To reach the median you must extract roughly n/2 elements, and each of those extractions costs up to O(log n), so the total cost is the sum of n/2 individual O(log n) operations.</p>
+            <p class="final">Answer: O(n log n) — this method is correct but asymptotically worse than the O(n) selection approach in Q5</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      Blueprint Notes — Data Structures for GATE CSE · built for revision, not first-read · official syllabus: recursion, arrays, stacks, queues, linked lists, trees, binary search trees, binary heaps, graphs.
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

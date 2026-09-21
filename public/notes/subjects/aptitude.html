@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>General Aptitude — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'aptitude', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // General Aptitude</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">6 sheets · full GA syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#verbal"><span class="num">01</span> Verbal Aptitude</a></div>
+      <div class="navgroup"><a class="navlink" href="#numerical"><span class="num">02</span> Numerical &amp; Data Interpretation</a></div>
+      <div class="navgroup"><a class="navlink" href="#combinatorics"><span class="num">03</span> P&amp;C, Mensuration &amp; Probability</a></div>
+      <div class="navgroup"><a class="navlink" href="#analytical"><span class="num">04</span> Analytical Aptitude</a></div>
+      <div class="navgroup"><a class="navlink" href="#spatial"><span class="num">05</span> Spatial Aptitude</a></div>
+      <div class="navgroup"><a class="navlink" href="#revision"><span class="num">06</span> Revision Sheet</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Schematic notes · GATE CSE 2027</span>
+      <h1>15 marks that are <em>almost free</em> if you drill them right.</h1>
+      <p>General Aptitude is common to every GATE paper and worth 15 of the 100 marks — Verbal, Numerical/Data Interpretation, Analytical, and Spatial Aptitude. None of it needs new theory beyond school-level English and maths; it rewards speed, pattern recognition, and not falling for the wording traps GATE builds in. Six sheets, worked examples, and the exact traps to watch for.</p>
+      <div class="chips">
+        <span class="chip">01 Verbal Aptitude</span>
+        <span class="chip">02 Numerical &amp; DI</span>
+        <span class="chip">03 P&amp;C / Mensuration / Prob.</span>
+        <span class="chip">04 Analytical</span>
+        <span class="chip">05 Spatial</span>
+        <span class="chip">06 Revision</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g fill="none" stroke="#2a2b33" stroke-width="1.4">
+          <rect x="30" y="30" width="60" height="60" rx="4"/>
+          <rect x="120" y="30" width="60" height="60" rx="4" transform="rotate(15 150 60)"/>
+          <circle cx="230" cy="60" r="30"/>
+        </g>
+        <g stroke="#cba36b" stroke-width="1.8" fill="none">
+          <path d="M40 150 L70 130 L100 155 L130 120 L160 145 L190 110 L220 140 L250 125" stroke-dasharray="0"/>
+        </g>
+        <g fill="#d98a5f">
+          <circle cx="40" cy="150" r="3"/><circle cx="70" cy="130" r="3"/><circle cx="100" cy="155" r="3"/>
+          <circle cx="130" cy="120" r="3"/><circle cx="160" cy="145" r="3"/><circle cx="190" cy="110" r="3"/>
+          <circle cx="220" cy="140" r="3"/><circle cx="250" cy="125" r="3"/>
+        </g>
+        <g font-family="JetBrains Mono" font-size="10" fill="#6f6a60">
+          <text x="40" y="200">A → B → C</text>
+          <text x="185" y="200">15 marks</text>
+        </g>
+      </svg>
+    </section>
+
+    <section class="topic" id="verbal">
+      <div class="topic-head"><span class="idx">01</span><h2>Verbal Aptitude</h2></div>
+      <div class="topic-kicker">GRAMMAR · VOCABULARY · READING COMPREHENSION · NARRATIVE SEQUENCING</div>
+
+      <h3 class="sub">Grammar — the recurring GATE error types</h3>
+      <p>GATE's "error spotting" and "fill in the blank" questions cycle through a small set of grammar traps every year. Learn to spot these six and you cover most of the grammar marks:</p>
+      <table>
+        <tr><th>Error type</th><th>What to check</th></tr>
+        <tr><td>Subject–verb agreement</td><td>Singular/plural match, ignore intervening phrases</td></tr>
+        <tr><td>Preposition usage</td><td>Fixed pairs — "married to", "different from", "consists of"</td></tr>
+        <tr><td>Tense consistency</td><td>Don't switch tense mid-sentence without a time cue</td></tr>
+        <tr><td>Articles (a/an/the)</td><td>"a" before consonant sound, "an" before vowel sound</td></tr>
+        <tr><td>Parallelism</td><td>Items in a list/comparison must share grammatical form</td></tr>
+        <tr><td>Modifier placement</td><td>Modifier must sit next to the word it describes</td></tr>
+      </table>
+
+      <div class="card note">
+        <span class="label">Subject–verb agreement trap</span>
+        <p>GATE loves to bury the real subject behind a prepositional phrase: "The list of items <u>is</u> long" — not "are" — because the subject is "list" (singular), not "items". Cross out the phrase between subject and verb before deciding.</p>
+      </div>
+
+      <h3 class="sub">Vocabulary — words, idioms, phrases in context</h3>
+      <p>Two question styles dominate: pick the word closest in meaning (synonym) or opposite in meaning (antonym) to a given word, and complete a sentence with the option that fits the idiom or contextual meaning. Build recognition rather than rote lists — read the sentence twice, decide the tone (positive/negative/neutral) the blank needs, then eliminate options that clash with that tone before checking exact meaning.</p>
+
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Common confusable pairs</h4>
+          <p>affect/effect, imply/infer, compliment/complement, stationary/stationery, principal/principle, elicit/illicit — GATE tests these directly as "choose the correct word."</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Idiom-in-context strategy</h4>
+          <p>Don't translate literally. "Once in a blue moon" = rarely; "cut corners" = do something poorly to save time/cost. Match the idiom's real-world meaning to the sentence's logic, not its individual words.</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Reading comprehension</h3>
+      <p>Short passage (usually 100–250 words) followed by 1–2 questions on the main idea, an inference, or the author's tone/attitude. Read the questions first, then the passage — this tells you what to look for and saves a full re-read. Distinguish three answer types:</p>
+      <ul>
+        <li><strong>Stated fact</strong> — answer is directly in the text, just paraphrased.</li>
+        <li><strong>Inference</strong> — answer follows logically from the text but isn't stated word-for-word; avoid options that go beyond what the passage supports.</li>
+        <li><strong>Tone/attitude</strong> — judged from word choice (critical, neutral, appreciative, skeptical), not from the topic itself.</li>
+      </ul>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>The most common wrong option in RC questions is "true in the real world but not supported by this specific passage." GATE RC answers must be justifiable using only the given text — outside knowledge, however correct, is not a valid basis for choosing an option.</p>
+      </div>
+
+      <h3 class="sub">Narrative sequencing</h3>
+      <p>Four or five jumbled sentences must be arranged into a coherent paragraph. Find the sentence that introduces the topic (usually has no pronoun referring backward), then chain the rest using pronoun references, connecting words (however, therefore, meanwhile), and logical/chronological order.</p>
+
+      <div class="card formula">
+        <span class="label">Sequencing shortcut</span>
+        <p>Scan for pronouns (it, this, they) and connectors (but, so, thus) first — a sentence starting with one of these almost never opens the paragraph, which quickly eliminates 1–2 of the 4–5 ordering options.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Choose the correct sentence: (a) "Neither of the answers are correct." (b) "Neither of the answers is correct."</summary>
+          <div class="ans">
+            <p>In this sentence, "neither" is treated as singular, so the verb is "is," regardless of the plural noun phrase that follows it ("of the answers") — the verb must agree with "neither," not "answers."</p>
+            <p class="final">Answer: (b) "Neither of the answers is correct."</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Fill in the blank: "The committee ___ its decision yesterday." Choose between "announced" and "have announced".</summary>
+          <div class="ans">
+            <p>"Announced" is required because "yesterday" signals simple past tense, not present perfect ("have announced" would need a present-perfect context, not a specific past time marker like "yesterday"). "Committee" is also being treated as a singular unit here — though collective nouns aren't universally singular across English varieties; British English commonly permits plural agreement when the group is being treated as individual members rather than one unit.</p>
+            <p class="final">Answer: "announced"</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Pick the word closest in meaning to "frugal."</summary>
+          <div class="ans">
+            <p>"Frugal" means economical or careful with money/resources, avoiding waste — closest to "thrifty," not "wealthy" or "generous," which are common distractor options.</p>
+            <p class="final">Answer: Thrifty</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A passage states research shows a correlation between two variables but never claims causation. Which conclusion is safe to pick as the answer?</summary>
+          <div class="ans">
+            <p>Any option asserting that one variable "causes" the other goes beyond what the passage supports — correlation-only text supports only a correlation-based conclusion.</p>
+            <p class="final">Answer: The conclusion that states correlation only, not causation</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Arrange into a coherent paragraph: (P) However, the results were inconclusive. (Q) Scientists ran the experiment three times. (R) This raised further questions. (S) They wanted to confirm the initial finding.</summary>
+          <div class="ans">
+            <p>Q introduces the topic with no backward pronoun. S explains why (uses "they" referring to scientists). P contrasts with "however." R follows P using "this" to refer to the inconclusive result.</p>
+            <p class="final">Answer: Q – S – P – R</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="numerical">
+      <div class="topic-head"><span class="idx">02</span><h2>Numerical &amp; Data Interpretation</h2></div>
+      <div class="topic-kicker">RATIOS · PERCENTAGES · POWERS, EXPONENTS &amp; LOGARITHMS · DATA INTERPRETATION</div>
+
+      <h3 class="sub">Ratios, percentages, and the "shortcut vs setup" decision</h3>
+      <p>Almost every numerical-computation question is solvable two ways: set up an equation, or use a ratio/percentage shortcut. GATE's 1-mark time budget (~1 minute) rewards the shortcut — but only once you trust it, so practice the equation method first to build intuition, then compress to the shortcut.</p>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Percentage change chaining</span>
+          <div class="eq">Net % change (two successive changes a%, b%)
+  = a + b + (a·b)/100</div>
+          <p>Works for combinations of increase/decrease — use negative values for decreases. E.g. +20% then −10% → 20 − 10 − 2 = +8% net, not +10%.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Ratio scaling</span>
+          <div class="eq">A:B = 2:3, B:C = 4:5
+⇒ A:B:C = (2×4):(3×4):(3×5) = 8:12:15</div>
+          <p>Scale each ratio so the shared term (B) matches before combining.</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Powers, exponents, and logarithms</h3>
+      <table>
+        <tr><th>Identity</th><th>Rule</th></tr>
+        <tr><td>aᵐ · aⁿ</td><td>a^(m+n)</td></tr>
+        <tr><td>aᵐ / aⁿ</td><td>a^(m−n)</td></tr>
+        <tr><td>(aᵐ)ⁿ</td><td>a^(mn)</td></tr>
+        <tr><td>logₐ(mn)</td><td>logₐm + logₐn</td></tr>
+        <tr><td>logₐ(m/n)</td><td>logₐm − logₐn</td></tr>
+        <tr><td>logₐ(mⁿ)</td><td>n·logₐm</td></tr>
+        <tr><td>logₐb</td><td>1 / logᵦa (base-change)</td></tr>
+      </table>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>logₐ(m+n) is <strong>not</strong> logₐm + logₐn — that identity only applies to products, never to sums. This is the single most common log-identity mistake GATE options are designed to catch.</p>
+      </div>
+
+      <h3 class="sub">Data interpretation — graphs, plots, maps, tables</h3>
+      <p>DI questions give a bar graph, pie chart, line plot, 2D/3D plot, map, or table and ask 1–2 questions requiring you to read values and compute a ratio, percentage, or difference. The data itself is rarely tricky — the time cost is in reading the chart correctly.</p>
+      <ul>
+        <li><strong>Pie charts:</strong> convert the needed slice's percentage or angle to an absolute value first (angle/360 × total, or %/100 × total) before comparing across slices.</li>
+        <li><strong>Bar/line graphs with two axes:</strong> check units on each axis separately — GATE sometimes pairs a left axis in one unit with a right axis in another.</li>
+        <li><strong>Tables:</strong> scan the row/column headers fully before reading values — misreading which row is "2024" vs "2025" is the most common self-inflicted error.</li>
+      </ul>
+
+      <div class="card note">
+        <span class="label">Estimation over precision</span>
+        <p>DI options are usually spread far enough apart that rounding to 1–2 significant figures gets you to the right choice faster than exact computation — don't multiply out exact decimals when an estimate clearly separates the options.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A price is increased by 25% and then decreased by 20%. What is the net percentage change?</summary>
+          <div class="ans">
+            <p>Net change = a + b + ab/100 = 25 + (−20) + (25×−20)/100 = 25 − 20 − 5 = 0.</p>
+            <p class="final">Answer: 0% (no net change)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> If A:B = 3:4 and B:C = 8:9, find A:B:C.</summary>
+          <div class="ans">
+            <p>Scale so B matches: A:B = 3:4 = 6:8 (×2). Now B:C = 8:9 already has B=8. So A:B:C = 6:8:9.</p>
+            <p class="final">Answer: 6 : 8 : 9</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Simplify log₂(32) − log₂(4).</summary>
+          <div class="ans">
+            <p>logₐ(m/n) = logₐm − logₐn, so this equals log₂(32/4) = log₂(8) = 3 (since 2³=8).</p>
+            <p class="final">Answer: 3</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A pie chart shows "Transport" as a 90° slice of a total budget of ₹2,40,000. What is the transport spend?</summary>
+          <div class="ans">
+            <p>Fraction of circle = 90/360 = 1/4. Spend = (1/4) × 2,40,000 = 60,000.</p>
+            <p class="final">Answer: ₹60,000</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A quantity grows from 200 to 250. What percentage increase is this?</summary>
+          <div class="ans">
+            <p>% increase = (change/original) × 100 = (50/200) × 100 = 25%.</p>
+            <p class="final">Answer: 25%</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="combinatorics">
+      <div class="topic-head"><span class="idx">03</span><h2>Permutations, Mensuration &amp; Probability</h2></div>
+      <div class="topic-kicker">PERMUTATIONS &amp; COMBINATIONS · MENSURATION &amp; BASIC GEOMETRY · ELEMENTARY PROBABILITY &amp; STATISTICS</div>
+
+      <h3 class="sub">Permutations vs combinations — the one question that decides everything</h3>
+      <p>Before touching a formula, ask: <strong>does order matter?</strong> Arranging (order matters) → permutation. Selecting/grouping (order doesn't matter) → combination. Almost every GATE P&amp;C mistake comes from skipping this check.</p>
+      <div class="eq">nPr = n! / (n−r)!        — arrangements of r items from n
+nCr = n! / (r! (n−r)!)   — selections of r items from n
+nCr = nPr / r!</div>
+
+      <div class="card formula">
+        <span class="label">Circular arrangement</span>
+        <p>n distinct people around a circle: (n−1)! arrangements (fixing one person removes rotational duplicates). If clockwise and counter-clockwise are considered identical (e.g. beads on a necklace), divide by 2 as well: (n−1)!/2.</p>
+      </div>
+
+      <h3 class="sub">Mensuration &amp; basic geometry</h3>
+      <table>
+        <tr><th>Shape</th><th>Area</th><th>Perimeter / Surface</th></tr>
+        <tr><td>Rectangle</td><td>l × b</td><td>2(l+b)</td></tr>
+        <tr><td>Triangle</td><td>½ × base × height</td><td>sum of sides</td></tr>
+        <tr><td>Circle</td><td>πr²</td><td>2πr</td></tr>
+        <tr><td>Trapezium</td><td>½ × (a+b) × h</td><td>sum of sides</td></tr>
+        <tr><td>Cylinder</td><td>—</td><td>2πr(r+h) total surface</td></tr>
+        <tr><td>Sphere</td><td>—</td><td>4πr² surface</td></tr>
+      </table>
+      <div class="eq">Cylinder volume = πr²h        Cone volume = (1/3)πr²h        Sphere volume = (4/3)πr³</div>
+
+      <h3 class="sub">Elementary probability &amp; statistics</h3>
+      <div class="eq">P(event) = (favourable outcomes) / (total outcomes)
+P(A or B) = P(A) + P(B) − P(A and B)
+P(A and B) = P(A) × P(B)   — only if A, B independent</div>
+
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Mean, median, mode</h4>
+          <p>Mean = sum/count. Median = middle value when sorted (average of two middles if n is even). Mode = most frequent value. GATE often asks which measure is least affected by outliers — the median.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Complement trick</h4>
+          <p>"At least one" probability questions are almost always faster via the complement: P(at least one) = 1 − P(none).</p>
+        </div>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>"Selecting a committee of 3 from 5 men and 4 women" is a combination problem (order doesn't matter within the committee) — but if the question instead asks to assign 3 distinct roles (President, Secretary, Treasurer) to 3 of those people, it becomes a permutation. Re-read the question stem for "arrange/assign roles" vs "select/choose a group" every time.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> In how many ways can 3 books be chosen from 7 distinct books?</summary>
+          <div class="ans">
+            <p>Order doesn't matter (a selection, not an arrangement) → combination. 7C3 = 7!/(3!4!) = (7×6×5)/(3×2×1) = 35.</p>
+            <p class="final">Answer: 35</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> 6 people are to be seated around a circular table. How many distinct arrangements are possible?</summary>
+          <div class="ans">
+            <p>Circular arrangement of n distinct items = (n−1)!. Here n=6, so 5! = 120.</p>
+            <p class="final">Answer: 120</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A cylindrical tank has radius 7 m and height 10 m. Find its volume. (use π ≈ 22/7)</summary>
+          <div class="ans">
+            <p>Volume = πr²h = (22/7) × 7² × 10 = (22/7) × 49 × 10 = 22 × 7 × 10 = 1540.</p>
+            <p class="final">Answer: 1540 m³</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Two fair coins are tossed. What is the probability of getting at least one head?</summary>
+          <div class="ans">
+            <p>Use the complement: P(at least one head) = 1 − P(no heads) = 1 − P(both tails) = 1 − (1/2×1/2) = 1 − 1/4.</p>
+            <p class="final">Answer: 3/4</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Data set: 4, 8, 6, 5, 3, 8, 9. Find the median.</summary>
+          <div class="ans">
+            <p>Sort: 3, 4, 5, 6, 8, 8, 9 (7 values). The median is the 4th (middle) value.</p>
+            <p class="final">Answer: 6</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="analytical">
+      <div class="topic-head"><span class="idx">04</span><h2>Analytical Aptitude</h2></div>
+      <div class="topic-kicker">LOGIC: DEDUCTION &amp; INDUCTION · ANALOGY · NUMERICAL RELATIONS &amp; REASONING</div>
+
+      <h3 class="sub">Deduction — statements &amp; conclusions</h3>
+      <p>Given one or more statements, decide which conclusion(s) necessarily follow using only formal logic — not real-world plausibility. This is the section where "sounds true" and "logically follows" diverge most often, and GATE options are built specifically to separate the two.</p>
+
+      <div class="card formula">
+        <span class="label">Syllogism validity — the only thing that matters</span>
+        <p>A conclusion is valid only if it follows from the given premises by strict logical necessity, regardless of whether it matches real-world fact. "All roses are flowers. Some flowers fade quickly." does NOT let you conclude "some roses fade quickly" — the middle term ("flowers") isn't distributed correctly across both premises.</p>
+      </div>
+
+      <table>
+        <tr><th>Statement form</th><th>Valid conclusion pattern</th></tr>
+        <tr><td>All A are B; All B are C</td><td>All A are C</td></tr>
+        <tr><td>No A are B; All C are A</td><td>No C are B</td></tr>
+        <tr><td>Some A are B; All B are C</td><td>Some A are C</td></tr>
+        <tr><td>All A are B; No B are C</td><td>No A are C</td></tr>
+      </table>
+
+      <h3 class="sub">Induction — pattern &amp; sequence completion</h3>
+      <p>Given a sequence of numbers, letters, or figures, identify the underlying rule (arithmetic step, geometric ratio, alternating pattern, digit manipulation) and extend it. Check differences, then ratios, then "difference of differences," in that order, before assuming an irregular pattern.</p>
+      <div class="eq">2, 6, 12, 20, 30, ?
+Differences: 4, 6, 8, 10, 12 → each difference itself increases by 2
+Next term = 30 + 12 = 42</div>
+
+      <h3 class="sub">Analogy</h3>
+      <p>A:B :: C:? — first name the exact relationship between A and B in one precise phrase (not just "related to"), then find the option that shares that identical relationship with C. Common relationship types: part-to-whole, cause-to-effect, tool-to-user, degree/intensity, category membership.</p>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Analogy distractors often share a surface-level theme with A:B but not the precise relationship. "Doctor:Hospital :: Teacher:?" — the relationship is "person:workplace," so "School" is correct; "Student" shares the theme (education) but is the wrong relationship type (person:person, not person:place).</p>
+      </div>
+
+      <h3 class="sub">Numerical relations &amp; reasoning</h3>
+      <p>Blood relations, direction sense, seating arrangements, and coded relationships. Draw a quick diagram (family tree, compass directions, seating row/circle) rather than tracking relationships in your head — this is the single biggest speed and accuracy lever in this sub-section.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> "All engineers are problem-solvers. All problem-solvers are analytical." What follows?</summary>
+          <div class="ans">
+            <p>This is a valid "All A are B; All B are C ⟹ All A are C" chain — the middle term "problem-solvers" is fully distributed in both statements.</p>
+            <p class="final">Answer: All engineers are analytical</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Find the next number: 3, 8, 15, 24, 35, ?</summary>
+          <div class="ans">
+            <p>Differences: 5, 7, 9, 11 — each increases by 2, so the next difference is 13. Next term = 35 + 13 = 48. (Note: also fits n² + 2n, confirming the pattern.)</p>
+            <p class="final">Answer: 48</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Complete the analogy: Pen : Write :: Knife : ?</summary>
+          <div class="ans">
+            <p>The relationship is tool:function-it-performs. A knife's core function is to cut.</p>
+            <p class="final">Answer: Cut</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Pointing to a photograph, a man says "She is the daughter of my grandfather's only son." How is the woman related to the man?</summary>
+          <div class="ans">
+            <p>Grandfather's only son = the man's father (since it's his own grandfather). Daughter of the man's father = the man's sister.</p>
+            <p class="final">Answer: Sister</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A person walks 5 km North, then 3 km East, then 5 km South. How far is he from the starting point, and in which direction?</summary>
+          <div class="ans">
+            <p>The North and South legs cancel out (5 km each, opposite directions), leaving only the 3 km East displacement.</p>
+            <p class="final">Answer: 3 km, East</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="spatial">
+      <div class="topic-head"><span class="idx">05</span><h2>Spatial Aptitude</h2></div>
+      <div class="topic-kicker">TRANSFORMATION OF SHAPES · PAPER FOLDING &amp; CUTTING · ASSEMBLING &amp; GROUPING · 2D/3D VISUALIZATION</div>
+
+      <h3 class="sub">Transformation of shapes</h3>
+      <p>Translation (slide), rotation (turn about a point), mirroring/reflection (flip about a line), and scaling (resize) — GATE shows a shape, applies one or more transformations, and asks which option matches the result. Track transformations one at a time rather than trying to visualize the combined result in one step.</p>
+
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Mirror vs rotation — the fastest way to tell them apart</h4>
+          <p>A 180° rotation and a mirror reflection can look similar at a glance. Test with an asymmetric feature (a dot in one corner, a notch on one edge): rotation moves it to the diagonally opposite position keeping the same "handedness"; mirroring flips handedness (left-right reverses) as if seen in a mirror.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Rotation angle check</h4>
+          <p>For rotational-symmetry questions, count how many identical positions a shape passes through in one full 360° turn — that count tells you the smallest rotation angle that maps the shape onto itself (360°/count).</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Paper folding &amp; cutting</h3>
+      <p>A square/rectangular paper is folded one or more times, then a cut or hole-punch is made, and you must predict the unfolded pattern. Work backwards from the last fold: unfold one step at a time, mirroring the cut across each fold line as you go, rather than trying to picture the fully unfolded sheet in one jump.</p>
+
+      <div class="card note">
+        <span class="label">Symmetry rule for folded cuts</span>
+        <p>Every fold line becomes an axis of symmetry in the final unfolded pattern. If a paper is folded twice (into quarters) and a single hole is punched, the unfolded sheet will show 4 holes arranged with mirror symmetry across both fold lines.</p>
+      </div>
+
+      <h3 class="sub">Assembling &amp; grouping</h3>
+      <p>Given several 2D pieces, identify whether they can assemble into a target shape (jigsaw-style), or given a set of 3D-looking objects/patterns, group them by a shared visual rule. Check piece edges for matching length and angle before checking orientation — mismatched edges eliminate options fastest.</p>
+
+      <h3 class="sub">2D/3D visualization</h3>
+      <p>Classic question types: identify which 3D solid results from folding a given 2D net (unfolded surface pattern), or which of several answer choices could NOT be a rotation of a given 3D cube/solid.</p>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>For "which cube can be formed by folding this net" questions, faces that are adjacent in the 2D net are also adjacent in the 3D cube — but faces that end up opposite each other in the cube are usually NOT adjacent in the net (for a standard cross-shaped net, opposite-face pairs are separated by exactly one square in a straight line of four).</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A shape has 5-fold rotational symmetry (like a regular pentagon). What is the smallest angle it can be rotated by and still look identical?</summary>
+          <div class="ans">
+            <p>5-fold symmetry means the shape maps onto itself at 5 equally spaced positions in a full 360° turn: 360°/5.</p>
+            <p class="final">Answer: 72°</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A square sheet of paper is folded once in half (bottom to top), then a single hole is punched through both layers near the folded edge. How many holes appear when unfolded?</summary>
+          <div class="ans">
+            <p>One fold means two layers were punched through together, so unfolding reveals both holes, mirrored across the single fold line.</p>
+            <p class="final">Answer: 2 holes</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> An "F"-shaped figure is rotated 180°. Compared to a mirror image of the same "F", how do the two results differ?</summary>
+          <div class="ans">
+            <p>A 180° rotation preserves handedness (the "F" is upside-down but not flipped left-right), while a mirror reflection reverses handedness (left-right flipped) — the two results are visibly different from each other.</p>
+            <p class="final">Answer: The rotated figure is upside-down but not left-right reversed; the mirrored figure is left-right reversed</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> The net below folds into a cube. If face C is the "front," which labeled face becomes the "back" (opposite) face?
+<pre style="margin-top:8px;font-family:monospace;line-height:1.3;">
+        B
+    A   C   D   E
+        F
+</pre>
+(A central square C has B, F, A, D attached to its top/bottom/left/right respectively; E is attached to the right of D, extending that arm into a straight run of four: A–C–D–E.)</summary>
+          <div class="ans">
+            <p>The four squares A, C, D, E form a straight run that folds into a closed loop of side faces (front/right/back/left). With C as front, its immediate neighbors in the strip (A and D) become the left and right faces, and the face two steps away in the loop — E — wraps around to become the back, directly opposite C. (B and F, attached above/below C, become the top and bottom faces, opposite each other.)</p>
+            <p class="final">Answer: E is opposite C (back face); B and F are the other opposite pair (top/bottom)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Two straight edges (from separate pieces of a larger geometric assembly) are required to coincide completely along the same boundary segment — i.e. fully overlap, not just meet end-to-end to jointly span a longer run. What necessary condition must their lengths satisfy?</summary>
+          <div class="ans">
+            <p>For two straight edges to coincide completely along the same boundary segment (fully overlapping, not just meeting end-to-end to jointly span a longer run), equal length is a necessary (not sufficient) condition — edges of different lengths simply cannot fully overlap. Note that if the edges were instead allowed to sit end-to-end (e.g. a 4 cm edge followed by a 3 cm edge forming a 7 cm run), equal length would not be required at all — that's a different geometric relationship. Equal length alone doesn't guarantee the edges actually coincide in a real assembly; it's necessary but not sufficient, since other geometric factors (position, orientation, profile) also have to match.</p>
+            <p class="final">Answer: The two edges must have equal length (necessary, not sufficient, condition)</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="revision">
+      <div class="topic-head"><span class="idx">06</span><h2>Revision Sheet</h2></div>
+      <div class="topic-kicker">EVERYTHING ON ONE SCREEN — LAST-MINUTE PASS</div>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Subject–verb agreement</span>
+          <p>Cross out phrases between subject and verb — the verb agrees with the real subject only. "Neither/either" is always singular.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">RC answer discipline</span>
+          <p>Only what the passage directly states or strictly implies counts — outside knowledge, however true, is not a valid basis for the answer.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Successive % change</span>
+          <p>Net % change = a + b + ab/100 (use negative values for decreases). Never just add a and b.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Log identities</span>
+          <p>log(mn)=log m+log n; log(m/n)=log m−log n; log(mⁿ)=n·log m. log(m+n) has NO simplification.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Permutation vs combination</span>
+          <p>Order matters (arrange/assign roles) ⟹ nPr. Order doesn't matter (select/choose) ⟹ nCr = nPr/r!.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Circular arrangement</span>
+          <p>n distinct items around a circle: (n−1)! arrangements. Divide by 2 more if clockwise/counter-clockwise are identical.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">"At least one" probability</span>
+          <p>Always faster via the complement: P(at least one) = 1 − P(none).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Syllogism validity</span>
+          <p>A conclusion is valid only if it follows by strict logical necessity from the premises — real-world truth is irrelevant to validity.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Sequence patterns</span>
+          <p>Check in order: constant difference → constant ratio → difference-of-differences → digit/positional manipulation.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Rotation vs mirror</span>
+          <p>Rotation preserves handedness (turns in place); mirroring reverses handedness (left-right flips). Test with an asymmetric feature.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Folded-paper symmetry</span>
+          <p>Every fold line becomes an axis of symmetry in the unfolded result — n folds through a punch point can multiply hole count by up to 2ⁿ.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Cube net opposite faces</span>
+          <p>In a straight line of four squares in a net, the first and last square become opposite faces once folded into a cube.</p>
+        </div>
+      </div>
+
+      <div class="card note" style="margin-top:26px;">
+        <span class="label">How to use this sheet</span>
+        <p>Read sections 01–05 once for understanding, then loop back to this page alone for every later revision pass — if any card doesn't immediately make sense, that's the section to reopen. General Aptitude rewards drilling speed under time pressure more than depth of theory — once the rules above are automatic, the main gain left is timed practice sets.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — rapid-fire mix (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Choose the correct option: "Each of the students ___ given a certificate." (has / have)</summary>
+          <div class="ans">
+            <p>"Each" is always singular regardless of the plural noun that follows it ("of the students").</p>
+            <p class="final">Answer: has</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A shirt's price is discounted by 30% and then by an additional 10% on the discounted price. What is the overall discount?</summary>
+          <div class="ans">
+            <p>Net change = a + b + ab/100 with a=−30, b=−10: −30 − 10 + (−30×−10)/100 = −40 + 3 = −37.</p>
+            <p class="final">Answer: 37% overall discount</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> How many distinct 4-letter arrangements can be made from the letters of the word "GATE" (no repeats)?</summary>
+          <div class="ans">
+            <p>4 distinct letters, arranging all 4: 4P4 = 4! = 24.</p>
+            <p class="final">Answer: 24</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> "All squares are rectangles. This shape is a rectangle." Can you validly conclude "this shape is a square"?</summary>
+          <div class="ans">
+            <p>No — the premise only tells us squares are a subset of rectangles, not that all rectangles are squares. Concluding "square" from "rectangle" reverses the valid direction of the implication.</p>
+            <p class="final">Answer: No, that conclusion is not valid</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Find the next term: 1, 4, 9, 16, 25, ?</summary>
+          <div class="ans">
+            <p>These are perfect squares: 1², 2², 3², 4², 5² — next is 6².</p>
+            <p class="final">Answer: 36</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      Blueprint Notes — General Aptitude for GATE CSE · built for revision, not first-read · official syllabus: verbal aptitude, quantitative aptitude, analytical aptitude, spatial aptitude (15 marks, common to all GATE papers).
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

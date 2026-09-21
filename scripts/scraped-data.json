@@ -1,0 +1,937 @@
+[
+  {
+    "id": "question87129",
+    "number": "2.8.2",
+    "year": 1989,
+    "url": "https://gateoverflow.in/87129/gate-cse-1989-question-3-vi",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nWhich of the following graphs is/are planar?\n"
+  },
+  {
+    "id": "question441",
+    "number": "3.1.10",
+    "year": 2008,
+    "url": "https://gateoverflow.in/441/gate-cse-2008-question-29-30",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\left(\\forall x \\text{ fsa}\\left(x\\right) \\right) \\implies \\left( \\exists y \\text{ pda}\\left(y\\right) \\wedge \\text{equivalent}\\left(x,y\\right)\\right)$"
+      },
+      {
+        "label": "B",
+        "html": "$\\neg \\forall y \\left(\\exists x \\text{ fsa}\\left(x\\right) &nbsp;\\implies \\text{pda}\\left(y\\right) \\wedge \\text{equivalent}\\left(x,y\\right)\\right)$"
+      },
+      {
+        "label": "C",
+        "html": "$\\forall x \\exists y \\left(\\text{fsa}\\left(x\\right) \\wedge \\text{pda}\\left(y\\right) \\wedge \\text{equivalent}\\left(x,y\\right)\\right)$"
+      },
+      {
+        "label": "D",
+        "html": "$\\forall x \\exists y \\left(\\text{fsa}\\left(y\\right) \\wedge \\text{pda}\\left(x\\right) \\wedge \\text{equivalent}\\left(x,y\\right)\\right)$"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nLet $\\text{fsa}$ and $\\text{pda}$ be two predicates such that $\\text{fsa}(x)$ means $x$ is a finite state automaton and $\\text{pda}(y)$ means that $y$ is a pushdown automaton. Let $\\text{equivalent}$"
+  },
+  {
+    "id": "question80",
+    "number": "3.1.17",
+    "year": 2013,
+    "url": "https://gateoverflow.in/80/gate-cse-2013-question-47",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "$∀ x(∃ z(¬β )→∀ y(α))$"
+      },
+      {
+        "label": "B",
+        "html": "$∀x(∀ z(β )→∃ y(¬α))$"
+      },
+      {
+        "label": "C",
+        "html": "$∀x(∀ y(α)→∃z(¬β ))$"
+      },
+      {
+        "label": "D",
+        "html": "$∀x(∃ y(¬α)→∃z(¬β ))$"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nWhich one of the following is NOT logically equivalent to $¬∃x(∀ y (α)∧∀z(β ))$ ?\n\n\n\t$∀ x(∃ z(¬β )→∀ y(α))$\n\t$∀x(∀ z(β )→∃ y(¬α))$\n\t$∀x(∀ y(α)→∃z(¬β ))$\n\t$∀x(∃ y(¬α)→∃z(¬β ))$\n\n"
+  },
+  {
+    "id": "question786",
+    "number": "1.31.18",
+    "year": 2012,
+    "url": "https://gateoverflow.in/786/gate-cse-2012-question-29",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "$T' = T$ with total weight $t' = t^2 $"
+      },
+      {
+        "label": "B",
+        "html": "$T' = T$ with total weight $t' &lt; t^2$"
+      },
+      {
+        "label": "C",
+        "html": "$T' \\neq T$ but total weight $t' = t^2$"
+      },
+      {
+        "label": "D",
+        "html": "None of the above"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nLet $G$ be a weighted graph with edge weights greater than one and $G'$ be the graph constructed by squaring the weights of edges in $G$. Let $T$ and $T'$ be the minimum spanning trees of $G$ and $G'"
+  },
+  {
+    "id": "question578",
+    "number": "2.3.3",
+    "year": 1992,
+    "url": "https://gateoverflow.in/578/gate-cse-1992-question-3-i",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nWrite short answers to the following:\n\n\n\tWhich of the following macros can put a macro assembler into an infinite loop?\n\n\n\n\t\n\t\t\n\t\t\t\n\t\t\t.MACRO M1,X\n.IF EQ,X\nM1 X+1\n.ENDC\n.IF NE,X\n.WORD X\n.ENDC\n.ENDM\n\n"
+  },
+  {
+    "id": "question595",
+    "number": "6.1.2",
+    "year": 1992,
+    "url": "https://gateoverflow.in/595/gate-cse-1992-question-16",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nWhich of the following three statements are true? Prove your answer.\n\n\n\tThe union of two recursive languages is recursive.\n\tThe language $\\{O^n \\mid n\\text{ is a prime} \\}$ is not regular.\n\tRegular l"
+  },
+  {
+    "id": "question333224",
+    "number": "6.18.18",
+    "year": 2020,
+    "url": "https://gateoverflow.in/333224/gate-cse-2020-question-7",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "$((0+1)^*1(0+1)^*1)^*10^*$"
+      },
+      {
+        "label": "B",
+        "html": "$(0^*10^*10^*)^*0^*1$"
+      },
+      {
+        "label": "C",
+        "html": "$10^*(0^*10^*10^*)^*$"
+      },
+      {
+        "label": "D",
+        "html": "$(0^*10^*10^*)^*10^*$"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nWhich one of the following regular expressions represents the set of all binary strings with an odd number of $1’$s?\n\n\n\t$((0+1)^*1(0+1)^*1)^*10^*$\n\t$(0^*10^*10^*)^*0^*1$\n\t$10^*(0^*10^*10^*)^*$\n\t$(0^*"
+  },
+  {
+    "id": "question3346",
+    "number": "6.7.42",
+    "year": 2008,
+    "url": "https://gateoverflow.in/3346/gate-it-2008-question-36",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "$L_1 = L_2$"
+      },
+      {
+        "label": "B",
+        "html": "$L_1 \\subset&nbsp;L_2$"
+      },
+      {
+        "label": "C",
+        "html": "$L_1 \\cap &nbsp;L_{2}^{C}&nbsp;=&nbsp;\\varnothing&nbsp;$"
+      },
+      {
+        "label": "D",
+        "html": "$L_1&nbsp;\\cup L_2 \\neq&nbsp; L_1$"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nConsider the following two finite automata. $M_1$ accepts $L_1$ and $M_2$ accepts $L_2$.$M_1$$M_2$ Which one of the following is TRUE?$L_1 = L_2$$L_1 \\subset L_2$$L_1 \\cap  L_{2}^{C} = \\varnothing $$"
+  },
+  {
+    "id": "question2515",
+    "number": "6.9.4",
+    "year": 1994,
+    "url": "https://gateoverflow.in/2515/gate-cse-1994-question-19",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\n\n\tGiven a set:\n\n\n$$S = \\left\\{x \\mid \\text{ there is an x-block of 5's in the decimal expansion of } \\pi\\right\\}$$\n(Note: $x$-$block$ is a maximal block of $x$ successive $5$'s)\nWhich of the followin"
+  },
+  {
+    "id": "question703",
+    "number": "1.25.1",
+    "year": 2001,
+    "url": "https://gateoverflow.in/703/gate-cse-2001-question-1-10-ugcnet-dec2012-iii-36",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "It cannot have subroutine call instruction"
+      },
+      {
+        "label": "B",
+        "html": "It cannot have nested subroutines call"
+      },
+      {
+        "label": "C",
+        "html": "Interrupts are not possible"
+      },
+      {
+        "label": "D",
+        "html": "All subroutine calls and interrupts are possible"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nSuppose a processor does not have any stack pointer registers, which of the following statements is true?\n\n\n\tIt cannot have subroutine call instruction\n\tIt cannot have nested subroutines call\n\tInterr"
+  },
+  {
+    "id": "question1339",
+    "number": "3.21.24",
+    "year": 2009,
+    "url": "https://gateoverflow.in/1339/gate-cse-2009-question-55",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "<p>Find the names of all suppliers who have supplied a non-blue part.</p>"
+      },
+      {
+        "label": "B",
+        "html": "<p>Find the names of all suppliers who have not supplied a non-blue part.</p>"
+      },
+      {
+        "label": "C",
+        "html": "<p>Find the names of all suppliers who have supplied only non-blue part.</p>"
+      },
+      {
+        "label": "D",
+        "html": "<p>Find the names of all suppliers who have not supplied only blue parts.</p>"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nConsider the following relational schema:\n\n$\\text{Suppliers}(\\underline{\\text{sid:integer}},\\text{ sname:string, city:string, street:string})$ \n\n$\\text{Parts}(\\underline{\\text{pid:integer}}, \\text{ p"
+  },
+  {
+    "id": "question3721",
+    "number": "3.25.23",
+    "year": 2004,
+    "url": "https://gateoverflow.in/3721/gate-it-2004-question-77",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "$S$ is serializable only as $T1, T2$"
+      },
+      {
+        "label": "B",
+        "html": "$S$ is serializable only as $T2, T1$"
+      },
+      {
+        "label": "C",
+        "html": "$S$ is serializable both as $T1, T2$ and $T2, T1$"
+      },
+      {
+        "label": "D",
+        "html": "$S$ is not serializable either as $T1,T2$ or as $T2,T1$"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nConsider the following schedule $S$ of transactions $T1$ and $T2:$\n\n$${\\begin{array}{l|l}\n\\textbf{T1}&    \\textbf{T2} \\\\\\hline\n\\text{Read(A)} \\\\\n\\text{A = A – 10}\\\\\n&   \\text{Read(A) }\\\\  \n&  \\text{T"
+  },
+  {
+    "id": "question413601",
+    "number": "3.6.49",
+    "year": 2024,
+    "url": "https://gateoverflow.in/413601/gate-data-science-and-artificial-intelligence-2024-sample-paper-question-26",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\mathrm{XY} -&gt;&nbsp;\\mathrm{Z}$ and $\\mathrm{Z} -&gt;&nbsp;\\mathrm{Y}$"
+      },
+      {
+        "label": "B",
+        "html": "$\\mathrm{YZ} -&gt;&nbsp;\\mathrm{X}$ and $\\mathrm{X} -&gt;&nbsp;&gt;\\mathrm{Y}$"
+      },
+      {
+        "label": "C",
+        "html": "$\\mathrm{Y} -&gt;&nbsp;\\mathrm{X}$ and $\\mathrm{Y} -&gt;&gt;\\mathrm{X}$"
+      },
+      {
+        "label": "D",
+        "html": "$\\mathrm{XZ}-&gt;\\mathrm{Y}$ and $\\mathrm{Y}-&gt;\\mathrm{X}$<p>&nbsp;</p>"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nGiven the following relation instances $$\\begin{array}{|ll|ll||ll|}\\hline & \\textbf{X} &  & \\textbf{Y } &  \\textbf{ Z} \\\\\\hline & \\text{1} & & \\text{4} & \\text{ 2} \\\\\\hline   & \\text{1} & & \\text{5} "
+  },
+  {
+    "id": "question2113",
+    "number": "5.15.6",
+    "year": 2011,
+    "url": "https://gateoverflow.in/2113/gate-cse-2011-question-11",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nA computer handles several interrupt sources of which of the following are relevant for this question.Interrupt from CPU temperature sensor (raises interrupt if CPU temperature is too high)Interrupt "
+  },
+  {
+    "id": "question1758",
+    "number": "2.24.18",
+    "year": 2012,
+    "url": "https://gateoverflow.in/1758/gate-cse-2012-question-36",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nConsider the program given below, in a block-structured pseudo-language with lexical scoping and nesting of procedures permitted.\n\nProgram main; \n  Var ...\n  \n  Procedure A1;\n    Var ... \n    Call A2"
+  },
+  {
+    "id": "question2756",
+    "number": "3.5.2",
+    "year": 1996,
+    "url": "https://gateoverflow.in/2756/gate-cse-1996-question-2-14",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nA binary search tree is used to locate the number $43$. Which of the following probe sequences are possible and which are not? Explain.\n\n$\\begin{array}{llllll} \\text{(a)}  &  \\text{61} & \\text{52} & "
+  },
+  {
+    "id": "question40307",
+    "number": "8.8.18",
+    "year": 2014,
+    "url": "https://gateoverflow.in/40307/gate2014-ae-ga-7",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "} &amp; \\text{6} &amp;\\text{2} &amp;\\text{5} &amp;\\text{1} &amp;\\text{3} &amp;\\text{4} \\\\\\hline \\text{"
+      },
+      {
+        "label": "B",
+        "html": "} &amp; \\text{2} &amp;\\text{6} &amp; \\text{5}&amp; \\text{1} &amp;\\text{3} &amp;\\text{4}\\\\\\hline \\text{"
+      },
+      {
+        "label": "C",
+        "html": "} &amp; \\text{4} &amp;\\text{2} &amp; \\text{6} &amp; \\text{3} &amp;\\text{1} &amp;\\text{5}\\\\\\hline \\text{"
+      },
+      {
+        "label": "D",
+        "html": "} &amp; \\text{2} &amp;\\text{4} &amp; \\text{6} &amp; \\text{1} &amp;\\text{3} &amp;\\text{5}\\\\\\hline \\end{array}$$</div>"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nAnuj, Bhola, Chandan, Dilip, Eswar and Faisal live on different floors in a six-storeyed building (the ground floor is numbered $1$, the floor above it $2$, and so on) Anuj lives on an even-numbered "
+  },
+  {
+    "id": "question83991",
+    "number": "1.2.2",
+    "year": 1990,
+    "url": "https://gateoverflow.in/83991/gate-cse-1990-question-2-ii",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nMatch the pairs in the following questions:$$\\begin{array}{|ll|ll|}\\hline (a) & \\text{Strassen's matrix multiplication algorithm} & (p) & \\text{Greedy method} \\\\\\hline  (b) & \\text{Kruskal's minimum "
+  },
+  {
+    "id": "question2739",
+    "number": "2.12.13",
+    "year": 1996,
+    "url": "https://gateoverflow.in/2739/gate-cse-1996-question-2-7",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nThe grammar whose productions are\n\n\n$\\langle\\text{stmt}\\rangle \\to\\text{ if id then } \\langle\\text{stmt}\\rangle$\n$\\langle\\text{stmt}\\rangle\\to\\text{ if id then } \\langle\\text{stmt}\\rangle\\text{ else "
+  },
+  {
+    "id": "question1513",
+    "number": "3.3.16",
+    "year": 1999,
+    "url": "https://gateoverflow.in/1513/gate-cse-1999-question-14",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nShow that the formula $\\left[(\\sim p \\vee q) \\Rightarrow (q \\Rightarrow p)\\right]$ is not a tautology.\n\nLet $A$ be a tautology and $B$ any other formula. Prove that $(A \\vee B)$ is a tautology.\n"
+  },
+  {
+    "id": "question3915",
+    "number": "3.3.20",
+    "year": 2002,
+    "url": "https://gateoverflow.in/3915/gate-cse-2002-question-5b",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nDetermine whether each of the following is a tautology, a contradiction, or neither (\"$\\lor$\" is disjunction, \"$\\land$\" is conjunction, \"$\\rightarrow$\" is implication, \"$\\neg$\" is negation, and \"$\\le"
+  },
+  {
+    "id": "question594",
+    "number": "3.3.7",
+    "year": 1992,
+    "url": "https://gateoverflow.in/594/gate-cse-1992-question-15-a",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nUse Modus ponens $(A, A → B |= B)$ or resolution to show that the following set is inconsistent:\n\n\n\t$Q(x) \\rightarrow P (x) \\vee \\sim R (a)$\n\t$R (a) \\vee \\sim Q(a)$\n\t$Q(a)$\n\t$\\sim P (y)$\n\n\nwhere $x$ "
+  },
+  {
+    "id": "question2274",
+    "number": "4.12.10",
+    "year": 1997,
+    "url": "https://gateoverflow.in/2274/gate-cse-1997-question-14",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nLet $R$ be a reflexive and transitive relation on a set $A$. Define a new relation $E$ on $A$ as\n\n$E=\\{(a, b) \\mid (a, b) \\in R \\text{ and } (b, a) \\in R \\}$\n\nProve that $E$ is an equivalence relatio"
+  },
+  {
+    "id": "question745",
+    "number": "4.3.10",
+    "year": 2001,
+    "url": "https://gateoverflow.in/745/gate-cse-2001-question-4",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nConsider the function $h: N \\times N \\rightarrow N$ so that $h(a,b) = (2a +1)2^b - 1$, where $N=\\{0,1,2,3,\\dots\\}$ is the set of natural numbers.\n\n\n\tProve that the function $h$ is an injection (one-o"
+  },
+  {
+    "id": "question94353",
+    "number": "4.4.1",
+    "year": 1988,
+    "url": "https://gateoverflow.in/94353/gate-cse-1988-question-2xviii",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nShow that if $G$ is a group such that $(a* b)^2 = a^2*b^2$ for all $a, b$ belonging to $G$, then $G$ is an abelian.\n"
+  },
+  {
+    "id": "question84039",
+    "number": "4.4.2",
+    "year": 1990,
+    "url": "https://gateoverflow.in/84039/gate-cse-1990-question-2-x",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nMatch the pairs in the following questions:$$\\begin{array}{|ll|ll|}\\hline (a) & \\text{Groups} & (p) & \\text{Associativity} \\\\\\hline  (b) & \\text{Semigroups} & (q) & \\text{Identity} \\\\\\hline   (c) & \\"
+  },
+  {
+    "id": "question488084",
+    "number": "6.11.1",
+    "year": 2023,
+    "url": "https://gateoverflow.in/488084/gate-2023-stats-exam-q-13",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "&amp; Only (I)"
+      },
+      {
+        "label": "B",
+        "html": "&amp; Only (II)"
+      },
+      {
+        "label": "C",
+        "html": "&amp; Both (I) and (II)"
+      },
+      {
+        "label": "D",
+        "html": "&amp; Neither (I) nor (II)"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nConsider the following statements.    (I) Let $ A $ and $ B $ be two $ n \\times n $ real matrices. If $ B $ is invertible, then $ \\mathrm{rank}(BA) = \\mathrm{rank}(A) $.        (II) Let $ A $ be an $"
+  },
+  {
+    "id": "question488152",
+    "number": "7.11.2",
+    "year": 2017,
+    "url": "https://gateoverflow.in/488152/gate-cse-2017-set-1-question-37",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nLet X be a Gaussian random variable with mean 0 and variance σ2. Let Y = max(X, 0) where max(a,b) is the maximum of a and b. The median of Y is __________.\n"
+  },
+  {
+    "id": "question587",
+    "number": "1.1.1",
+    "year": 1992,
+    "url": "https://gateoverflow.in/587/gate-cse-1992-question-8",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nLet $T$ be a Depth First Tree of a undirected graph $G$. An array $P$ indexed by the vertices of $G$ is given. $P[V]$ is the parent of vertex $V$, in $T$. Parent of the root is the root itself.\n\nGive"
+  },
+  {
+    "id": "question94363",
+    "number": "1.43.1",
+    "year": 1988,
+    "url": "https://gateoverflow.in/94363/gate-cse-1988-question-6i",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nGiven below is the sketch of a program that represents the path in a two-person game tree by the sequence of active procedure calls at any time. The program assumes that the payoffs are real number i"
+  },
+  {
+    "id": "question87080",
+    "number": "1.43.2",
+    "year": 1989,
+    "url": "https://gateoverflow.in/87080/gate-cse-1989-question-2-iii",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "} &amp; \\text{$O (\\log n)$} &amp; \\text{(p)} &amp; \\text{Heapsort} \\\\\\hline &nbsp;\\text{"
+      },
+      {
+        "label": "B",
+        "html": "} &amp; \\text{$O (n)$} &amp; \\text{(q)}&amp; \\text{Depth-first search} \\\\\\hline &nbsp;&nbsp;\\text{"
+      },
+      {
+        "label": "C",
+        "html": "}&amp; \\text{$O (n \\log n)$} &amp; \\text{(r)} &nbsp;&amp; \\text{Binary search} \\\\\\hline &nbsp;\\text{"
+      },
+      {
+        "label": "D",
+        "html": "} &amp; \\text{$O (n^2)$} &amp;\\text{(s)} &nbsp;&amp; \\text{Selection of the $k^{th}$ smallest element} \\\\&amp; \\text{} &amp; &amp; \\text{in a set of n elements} &nbsp;&nbsp;&nbsp;\\\\\\hline \\end{array}$$</div>"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nMatch the pairs in the following:$$\\begin{array}{|ll|ll|}\\hline \\text{(A)} & \\text{$O (\\log n)$} & \\text{(p)} & \\text{Heapsort} \\\\\\hline  \\text{(B)} & \\text{$O (n)$} & \\text{(q)}& \\text{Depth-first s"
+  },
+  {
+    "id": "question2482",
+    "number": "2.12.9",
+    "year": 1994,
+    "url": "https://gateoverflow.in/2482/gate-cse-1994-question-3-5",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nMatch the following items$$\\begin{array}{|ll|ll|}\\hline \\text{(i)} & \\text{Backus-Naur form} & \\text{(a)} & \\text{Regular expressions} \\\\\\hline  \\text{(ii)} & \\text{Lexical analysis} & \\text{(b)}& \\t"
+  },
+  {
+    "id": "question43583",
+    "number": "2.13.3",
+    "year": 1992,
+    "url": "https://gateoverflow.in/43583/gate-cse-1992-question-11b",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nWrite $3$ address intermediate code (quadruples) for the following boolean expression in the sequence as it would be generated by a compiler. Partial evaluation of boolean expressions is not permitte"
+  },
+  {
+    "id": "question1514",
+    "number": "2.21.10",
+    "year": 1999,
+    "url": "https://gateoverflow.in/1514/gate-cse-1999-question-15",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nWhat will be the output of the following program assuming that parameter passing is\n\n\n\t\n\tcall by value\n\t\n\t\n\tcall by reference\n\t\n\t\n\tcall by copy restore\n\t\n\n\nprocedure P{x, y, z}; \nbegin \n    y:y+1; \n "
+  },
+  {
+    "id": "question85981",
+    "number": "2.21.4",
+    "year": 1990,
+    "url": "https://gateoverflow.in/85981/gate-cse-1990-question-11a",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nWhat does the following program output?\n\nprogram module (input, output);\nvar\n    a:array [1...5] of integer;\n    i, j: integer;\nprocedure unknown (var b: integer, var c: integer);\nvar\n    i:integer;\n"
+  },
+  {
+    "id": "question536",
+    "number": "2.21.6",
+    "year": 1991,
+    "url": "https://gateoverflow.in/536/gate-cse-1991-question-09a",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nConsider the following pseudo-code (all data items are of type integer): \n\nprocedure P(a, b, c);\n    a := 2;\n    c := a + b;\nend {P}\n\nbegin \n    x := 1;\n    y := 5;\n    z := 100;\n    P(x, x*y, z);\n  "
+  },
+  {
+    "id": "question43603",
+    "number": "2.21.7",
+    "year": 1991,
+    "url": "https://gateoverflow.in/43603/gate-cse-1991-question-09b",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nFor the following code, indicate the output if \n\n\n\tstatic scope rules\n\tdynamic scope rules\n\n\nare used\n\nvar a,b : integer;\n\nprocedure P;\n    a := 5;\n    b := 10;\nend {P};\n\nprocedure Q;\n    var a, b : "
+  },
+  {
+    "id": "question83980",
+    "number": "2.24.4",
+    "year": 1990,
+    "url": "https://gateoverflow.in/83980/gate-cse-1990-question-2-v",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nMatch the pairs in the following questions:$$\\begin{array}{|ll|ll|}\\hline (a) & \\text{Pointer data type} & (p) & \\text{Type conversion} \\\\\\hline  (b) & \\text{Activation record} & (q) & \\text{Dynamic "
+  },
+  {
+    "id": "question2772",
+    "number": "2.27.3",
+    "year": 1996,
+    "url": "https://gateoverflow.in/2772/gate-cse-1996-question-20",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nConsider the syntax-directed translation schema (SDTS) shown below:\n\n\n\t$E\\rightarrow E + E$ {print “+”}\n\t$E\\rightarrow E * E$ {print “.”}\n\t$E\\rightarrow id$ {print id.name}\n\t$E\\rightarrow (E)$\n\n\nAn L"
+  },
+  {
+    "id": "question84033",
+    "number": "2.7.2",
+    "year": 1990,
+    "url": "https://gateoverflow.in/84033/gate-cse-1990-question-2-ix",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nMatch the pairs in the following questions:$$\\begin{array}{|ll|ll|} \\hline (a) & \\text{Lexical analysis} & (p) & \\text{DAG's} \\\\\\hline  (b) & \\text{Code optimization} & (q) & \\text{Syntax trees} \\\\\\h"
+  },
+  {
+    "id": "question83993",
+    "number": "3.4.1",
+    "year": 1990,
+    "url": "https://gateoverflow.in/83993/gate-cse-1990-question-2-viii",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nMatch the pairs in the following questions:$$\\begin{array}{|ll|ll|} \\hline  (a) & \\text{A heap construction} & (p) & \\ \\Omega(n\\log_{10}n)  \\\\\\hline (b) & \\text{Constructing Hashtable with linear pro"
+  },
+  {
+    "id": "question864",
+    "number": "5.13.5",
+    "year": 2002,
+    "url": "https://gateoverflow.in/864/gate-cse-2002-question-11",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nThe following recursive function in C is a solution to the Towers of Hanoi problem.\n\nvoid move(int n, char A, char B, char C)  {\n    if (......................) {\n        move (......................"
+  },
+  {
+    "id": "question2639",
+    "number": "5.5.1",
+    "year": 1995,
+    "url": "https://gateoverflow.in/2639/gate-cse-1995-question-3",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nConsider the following high level programming segment. Give the contents of the memory locations for variables $W, X, Y$ and $Z$ after the execution of the program segment. The values of the variable"
+  },
+  {
+    "id": "question2280",
+    "number": "6.11.2",
+    "year": 1997,
+    "url": "https://gateoverflow.in/2280/gate-cse-1997-question-20",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nConstruct a finite state machine with minimum number of states, accepting all strings over $(a,b)$ such that the number of $a$'s is divisible by two and the number of $b$'s is divisible by three.\n"
+  },
+  {
+    "id": "question2765",
+    "number": "6.15.1",
+    "year": 1996,
+    "url": "https://gateoverflow.in/2765/gate-cse-1996-question-13",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nLet $Q=\\left( \\left\\{q_1,q_2 \\right\\}, \\left\\{a,b\\right \\}, \\left\\{a,b,\\bot \\right\\}, \\delta, \\bot, \\phi \\right)$ be a pushdown automaton accepting by empty stack for the language which is the set of"
+  },
+  {
+    "id": "question867",
+    "number": "6.5.13",
+    "year": 2002,
+    "url": "https://gateoverflow.in/867/gate-cse-2002-question-14",
+    "optionsFound": 3,
+    "options": [
+      {
+        "label": "A",
+        "html": "On input $w$, what is the first step that $M$ must make?"
+      },
+      {
+        "label": "B",
+        "html": "On input $w$, based on the outcome of the first step, what is the second step $M$ must make?"
+      },
+      {
+        "label": "C",
+        "html": "What key property relates the behaviour of $M$ on $w$ to the behaviour of $M'$ on $x$?"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nThe aim of the following question is to prove that the language $\\{M \\mid M$ $\\text {is the code of the Turing Machine which, irrespective of the input, halts and outputs a}$ $1\\}$, is undecidable. T"
+  },
+  {
+    "id": "question874",
+    "number": "6.7.9",
+    "year": 2002,
+    "url": "https://gateoverflow.in/874/gate-cse-2002-question-21",
+    "optionsFound": 2,
+    "options": [
+      {
+        "label": "A",
+        "html": "Give an NFA for this purpose"
+      },
+      {
+        "label": "B",
+        "html": "Give a DFA for this purpose"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nWe require a four state automaton to recognize the regular expression $(a\\mid b)^*abb$\n\n\n\tGive an NFA for this purpose\n\tGive a DFA for this purpose\n\n"
+  },
+  {
+    "id": "question87078",
+    "number": "1.1.3",
+    "year": 1989,
+    "url": "https://gateoverflow.in/87078/gate-cse-1989-question-2-ii",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "} &amp; \\text{Base addressing} &amp; \\text{(p)} &amp; \\text{Reentranecy} \\\\\\hline &nbsp;\\text{"
+      },
+      {
+        "label": "B",
+        "html": "} &amp; \\text{Indexed addressing} &amp; \\text{(q)}&amp; \\text{Accumulator} \\\\\\hline &nbsp;&nbsp;\\text{"
+      },
+      {
+        "label": "C",
+        "html": "}&amp; \\text{Stack addressing} &amp; \\text{(r)} &nbsp;&amp; \\text{Array} \\\\\\hline &nbsp;\\text{"
+      },
+      {
+        "label": "D",
+        "html": "} &amp; \\text{Implied addressing} &amp;\\text{(s)} &nbsp;&amp; \\text{Position independent} &nbsp;\\\\\\hline \\end{array}$$</div>"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nMatch the pairs in the following questions:$$\\begin{array}{|ll|ll|}\\hline \\text{(A)} & \\text{Base addressing} & \\text{(p)} & \\text{Reentranecy} \\\\\\hline  \\text{(B)} & \\text{Indexed addressing} & \\tex"
+  },
+  {
+    "id": "question692",
+    "number": "3.2.8",
+    "year": 2000,
+    "url": "https://gateoverflow.in/692/gate-cse-2000-question-21",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\n(a) Suppose you are given an empty $B^+$ tree where each node (leaf and internal) can store up to $5$ key values. Suppose values $1, 2,\\ldots 10$ are inserted, in order, into the tree. Show the tree "
+  },
+  {
+    "id": "question2493",
+    "number": "3.3.1",
+    "year": 1994,
+    "url": "https://gateoverflow.in/2493/gate-cse-1994-question-3-7",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nAn instance of a relational scheme $R(A, B, C)$ has distinct values for attribute $A$. Can you conclude that $A$ is a candidate key for $R?$\n"
+  },
+  {
+    "id": "question83977",
+    "number": "3.6.6",
+    "year": 1990,
+    "url": "https://gateoverflow.in/83977/gate-cse-1990-question-2-iv",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nMatch the pairs in the following questions:$$\\begin{array}{|ll|ll|}\\hline (a) & \\text{Secondary index} & (p) & \\text{Function dependency} \\\\\\hline  (b) & \\text{Non-procedural query language} & (q) & "
+  },
+  {
+    "id": "question2665",
+    "number": "3.6.9",
+    "year": 1995,
+    "url": "https://gateoverflow.in/2665/gate-cse-1995-question-26",
+    "optionsFound": 2,
+    "options": [
+      {
+        "label": "A",
+        "html": "Show that the scheme $R$ is in $3\\text{NF}$ but not in $\\text{BCNF}$."
+      },
+      {
+        "label": "B",
+        "html": "Determine the minimal keys of relation $R$.&nbsp;"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nConsider the relation scheme $R(A, B, C)$ with the following functional dependencies:\n\n\n\t$A, B \\rightarrow C,$\n\t$C \\rightarrow A$\n\n\n\n\tShow that the scheme $R$ is in $3\\text{NF}$ but not in $\\text{BCN"
+  },
+  {
+    "id": "question94358",
+    "number": "4.21.2",
+    "year": 1988,
+    "url": "https://gateoverflow.in/94358/gate-cse-1988-question-3a-b",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\n   \n\nThe Karnaugh map of a function of $(A, B, C)$ is shown on the left hand side of the above figure.\n\nThe reduced form of the same map is shown on the right hand side, in which the variable $C$ is "
+  },
+  {
+    "id": "question26437",
+    "number": "4.26.1",
+    "year": 1991,
+    "url": "https://gateoverflow.in/26437/gate-cse-1991-question-5-b",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nFind the minimum sum of products form of the logic function $ f(A,B,C,D) = \\Sigma_{m}(0,2,8,10,15)+ \\Sigma _{d}(3,11,12,14)$ where $m$ and $d$ represent minterm and don't care term respectively.\n"
+  },
+  {
+    "id": "question17407",
+    "number": "4.27.14",
+    "year": 1992,
+    "url": "https://gateoverflow.in/17407/gate1992-04-b",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nA priority encoder accepts three input signals $\\text{(A, B and C)}$ and produces a two-bit output $(X_1, X_0 )$ corresponding to the highest priority active input signal. Assume $A$ has the highest "
+  },
+  {
+    "id": "question83859",
+    "number": "5.25.4",
+    "year": 1990,
+    "url": "https://gateoverflow.in/83859/gate-cse-1990-question-2-iii",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nMatch the pairs:$$\\begin{array}{|ll|ll|}\\hline (a) & \\text{Critical region} & (p) & \\text{Hoare's monitor} \\\\ (b) & \\text{Wait/Signal} & (q) & \\text{Mutual exclusion} \\\\   (c) & \\text{Working Set} & "
+  },
+  {
+    "id": "question2656",
+    "number": "5.25.9",
+    "year": 1995,
+    "url": "https://gateoverflow.in/2656/gate-cse-1995-question-19",
+    "optionsFound": 0,
+    "options": [],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nConsider the following program segment for concurrent processing using semaphore operators $P$ and $V$ for synchronization. Draw the precedence graph for the statements $S_1$ to $S_9$. \n\nvar\na,b,c,d,"
+  },
+  {
+    "id": "question87081",
+    "number": "5.33.1",
+    "year": 1989,
+    "url": "https://gateoverflow.in/87081/gate-cse-1989-question-2-iv",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "Virtual Memory&nbsp; &nbsp; &nbsp;→&nbsp; &nbsp; &nbsp; R. Address Translation"
+      },
+      {
+        "label": "B",
+        "html": "Shared Memory&nbsp; &nbsp; →&nbsp; &nbsp; &nbsp;S. Mutual Exclusion"
+      },
+      {
+        "label": "C",
+        "html": "Look Ahead Buffer →&nbsp; &nbsp;P. Temporal Locality"
+      },
+      {
+        "label": "D",
+        "html": "Look aside buffer →&nbsp; &nbsp; Q. Spatial Locality."
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nMatch the pairs in the following:$$\\begin{array}{|ll|ll|}\\hline \\text{(A)} & \\text{Virtual memory} & \\text{(p)} & \\text{ Temporal Locality} \\\\\\hline  \\text{(B)} & \\text{Shared memory} & \\text{(q)}& \\"
+  },
+  {
+    "id": "question749",
+    "number": "5.5.1",
+    "year": 2001,
+    "url": "https://gateoverflow.in/749/gate-cse-2001-question-8",
+    "optionsFound": 4,
+    "options": [
+      {
+        "label": "A",
+        "html": "What is the total capacity of the desk?"
+      },
+      {
+        "label": "B",
+        "html": "What is the data transfer rate?"
+      },
+      {
+        "label": "C",
+        "html": "What is the percentage of time the CPU is required for this disk I/O for byte-wise interrupts driven transfer?"
+      },
+      {
+        "label": "D",
+        "html": "What is the maximum percentage of time the CPU is held up for this disk I/O for cycle-stealing DMA transfer?"
+      }
+    ],
+    "answer": null,
+    "scraped": true,
+    "rawBodySnippet": "\nConsider a disk with the following specifications: 20 surfaces, 1000 tracks/surface, 16 sectors/track, data density 1 KB/sector, rotation speed 3000 rpm. The operating system initiates the transfer b"
+  }
+]

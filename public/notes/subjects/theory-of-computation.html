@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theory of Computation — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'theory-of-computation', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // Theory of Computation</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">7 sheets · full syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#automata"><span class="num">01</span> Regular Expressions &amp; Finite Automata</a></div>
+      <div class="navgroup"><a class="navlink" href="#regular-languages"><span class="num">02</span> Regular Languages, Closure &amp; Pumping Lemma</a></div>
+      <div class="navgroup"><a class="navlink" href="#cfg"><span class="num">03</span> Context-Free Grammars</a></div>
+      <div class="navgroup"><a class="navlink" href="#pda"><span class="num">04</span> Pushdown Automata &amp; CFL Properties</a></div>
+      <div class="navgroup"><a class="navlink" href="#turing"><span class="num">05</span> Turing Machines</a></div>
+      <div class="navgroup"><a class="navlink" href="#decidability"><span class="num">06</span> Decidability &amp; Undecidability</a></div>
+      <div class="navgroup"><a class="navlink" href="#revision"><span class="num">07</span> Revision Sheet</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Schematic notes · GATE CSE 2027</span>
+      <h1>The hierarchy of machines that decide <em>what's even computable</em>.</h1>
+      <p>The official GATE syllabus compresses this subject into one line — "Regular expressions and finite automata. Context-free grammars and push-down automata. Regular and context-free languages, pumping lemma. Turing machines and undecidability." Seven sheets unpack every clause of that line: DFA/NFA construction and minimization, CFGs and PDAs, both pumping lemmas, Turing machines, and the decidability results GATE loves to test. High-weightage (7–8 marks) and mostly construction/proof-style questions, not memorization.</p>
+      <div class="chips">
+        <span class="chip">01 Automata &amp; Regex</span>
+        <span class="chip">02 Regular Languages &amp; Pumping</span>
+        <span class="chip">03 CFGs</span>
+        <span class="chip">04 PDA &amp; CFL Properties</span>
+        <span class="chip">05 Turing Machines</span>
+        <span class="chip">06 Decidability</span>
+        <span class="chip">07 Revision</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g fill="none" stroke="#2a2b33" stroke-width="1.4">
+          <circle cx="60" cy="110" r="24"/>
+          <circle cx="150" cy="60" r="24"/>
+          <circle cx="150" cy="160" r="24"/>
+          <circle cx="240" cy="110" r="24"/>
+          <circle cx="240" cy="110" r="19"/>
+        </g>
+        <g stroke="#cba36b" stroke-width="1.5" fill="none" marker-end="url(#tocarrow)">
+          <path d="M84 105 L126 68"/>
+          <path d="M84 115 L126 152"/>
+          <path d="M174 60 L216 105"/>
+          <path d="M174 160 L216 115"/>
+        </g>
+        <defs>
+          <marker id="tocarrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 z" fill="#cba36b"/>
+          </marker>
+        </defs>
+        <g font-family="JetBrains Mono" font-size="11" fill="#6f6a60">
+          <text x="48" y="114" fill="#d98a5f">q0</text>
+          <text x="138" y="64">q1</text>
+          <text x="138" y="164">q2</text>
+          <text x="228" y="114" fill="#82b79a">q3</text>
+          <text x="15" y="200">a,b</text>
+        </g>
+      </svg>
+    </section>
+
+    <section class="topic" id="automata">
+      <div class="topic-head"><span class="idx">01</span><h2>Regular Expressions &amp; Finite Automata</h2></div>
+      <div class="topic-kicker">DFA · NFA · ε-NFA · SUBSET CONSTRUCTION · MINIMIZATION · REGEX ↔ FA EQUIVALENCE</div>
+
+      <h3 class="sub">DFA — the formal definition</h3>
+      <p>A deterministic finite automaton is a 5-tuple <strong>(Q, Σ, δ, q₀, F)</strong>: a finite set of states Q, an input alphabet Σ, a <em>total</em> transition function δ: Q×Σ→Q, a start state q₀, and a set of accepting states F. "Deterministic" means exactly one transition per (state, symbol) pair — no missing transitions, no choices.</p>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 420 160" width="420">
+          <defs>
+            <marker id="a1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#cba36b"/></marker>
+          </defs>
+          <g fill="none" stroke="#cba36b" stroke-width="1.6">
+            <circle cx="60" cy="80" r="26"/>
+            <circle cx="210" cy="80" r="26"/>
+            <circle cx="360" cy="80" r="26"/>
+            <circle cx="360" cy="80" r="21"/>
+          </g>
+          <path d="M10,80 L34,80" stroke="#cba36b" stroke-width="1.6" marker-end="url(#a1)" fill="none"/>
+          <path d="M86,80 L184,80" stroke="#cba36b" stroke-width="1.6" marker-end="url(#a1)" fill="none"/>
+          <path d="M236,80 L334,80" stroke="#cba36b" stroke-width="1.6" marker-end="url(#a1)" fill="none"/>
+          <path d="M60,54 C 30,10 90,10 60,54" stroke="#a8a196" stroke-width="1.3" fill="none" marker-end="url(#a1)"/>
+          <path d="M360,54 C 330,10 390,10 360,54" stroke="#a8a196" stroke-width="1.3" fill="none" marker-end="url(#a1)"/>
+          <g font-family="JetBrains Mono" font-size="12" fill="#f2ede4">
+            <text x="52" y="85">q0</text>
+            <text x="202" y="85">q1</text>
+            <text x="352" y="85">q2</text>
+          </g>
+          <g font-family="JetBrains Mono" font-size="11" fill="#d98a5f">
+            <text x="125" y="70">a</text>
+            <text x="275" y="70">b</text>
+            <text x="45" y="20">b</text>
+            <text x="345" y="20">a,b</text>
+          </g>
+        </svg>
+        <div class="diagram-cap">DFA accepting all strings over {a,b} ending in "ab" — q2 is the only accepting (double-circled) state</div>
+      </div>
+
+      <h3 class="sub">NFA and the subset construction (NFA → DFA)</h3>
+      <p>An NFA relaxes δ to allow zero, one, or multiple transitions per (state, symbol) pair, plus optional ε-transitions (moves that consume no input). Every NFA has an equivalent DFA — this is a core GATE result, not just intuition. The standard construction:</p>
+      <ol>
+        <li>Each DFA state = a <em>set</em> of NFA states (a subset of Q).</li>
+        <li>Start state of the DFA = ε-closure of the NFA's start state.</li>
+        <li>For each DFA state S and symbol a: new state = ε-closure(⋃ over q∈S of δ(q,a)).</li>
+        <li>A DFA state is accepting if it contains at least one NFA accepting state.</li>
+      </ol>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Subset construction can produce up to 2ⁿ DFA states for an n-state NFA in the worst case — GATE frequently asks for the <em>minimum number of states</em> in the resulting DFA, which requires actually building the reachable subsets (unreachable subsets don't count) rather than assuming the full 2ⁿ blow-up.</p>
+      </div>
+
+      <h3 class="sub">Minimization — merging equivalent states</h3>
+      <p>Two states are equivalent (mergeable) if, for every possible input string, they either both lead to acceptance or both lead to rejection. These are related but distinct ideas: the <strong>Myhill–Nerode theorem</strong> is the theoretical characterization — it defines an equivalence relation on strings and proves that a regular language has a <em>unique</em> minimal DFA whose states correspond exactly to the equivalence classes of that relation. The <strong>table-filling algorithm</strong> is the concrete procedure used to actually compute state-equivalence on a given DFA: it starts by marking accepting vs. non-accepting states as distinguishable, then iteratively marks any pair whose transitions lead to an already-distinguished pair, until no new pairs are marked. In short — Myhill–Nerode tells you a minimal DFA exists and is unique; table-filling is how you find it.</p>
+
+      <h3 class="sub">Regular expressions ↔ finite automata</h3>
+      <p>Kleene's theorem: a language is regular <strong>if and only if</strong> some finite automaton accepts it <strong>if and only if</strong> some regular expression describes it. All three views are interchangeable, and GATE tests conversions in every direction.</p>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — four related-but-different representations, don't conflate the terms</span>
+        <table>
+          <tr><th>Representation</th><th>What it is</th><th>Allows ε-transitions?</th></tr>
+          <tr><td>Regular expression</td><td>A symbolic pattern built from union, concatenation, and Kleene star over the alphabet</td><td>N/A — not an automaton at all</td></tr>
+          <tr><td>ε-NFA</td><td>A nondeterministic finite automaton whose transition function may include moves on ε (consuming no input) in addition to alphabet symbols</td><td>✅ Yes — this is exactly what distinguishes it from a plain NFA</td></tr>
+          <tr><td>NFA</td><td>A nondeterministic finite automaton with zero, one, or multiple transitions per (state, symbol) pair, but conventionally no ε-moves unless explicitly called an "ε-NFA"</td><td>❌ Not by the strict definition — though many textbooks and problems use "NFA" loosely to mean "NFA, possibly with ε-transitions"; watch the question's exact wording</td></tr>
+          <tr><td>DFA</td><td>Exactly one transition per (state, symbol) pair for every state and every symbol — no nondeterminism, no ε-moves</td><td>❌ Never — a DFA's transition function is total and single-valued by definition</td></tr>
+        </table>
+        <p>The standard construction path is: regular expression → ε-NFA (Thompson's construction, the natural way to build an NFA from regex operators like union and concatenation, since splicing two machines together is cleanest via ε-links) → NFA (eliminate ε-transitions via ε-closure, if a strict ε-free NFA is needed as an intermediate step) → DFA (subset construction). All four represent the exact same class of languages (regular languages) — the differences are purely about how nondeterminism and empty moves are permitted in the machine, not about expressive power. When a GATE question mixes "NFA" and "ε-NFA" terminology loosely, check whether ε-transitions are actually present in the diagram/definition given — that determines which construction step applies, regardless of which label the question uses.</p>
+      </div>
+
+      <table>
+        <tr><th>Regex operator</th><th>Meaning</th></tr>
+        <tr><td>∪ (or +)</td><td>Union / alternation</td></tr>
+        <tr><td>· (concatenation)</td><td>One expression followed by another</td></tr>
+        <tr><td>*</td><td>Kleene star — zero or more repetitions</td></tr>
+        <tr><td>+</td><td>One or more repetitions (r+ = rr*)</td></tr>
+        <tr><td>?</td><td>Zero or one occurrence</td></tr>
+      </table>
+
+      <div class="card note">
+        <span class="label">ε vs ∅ — don't confuse these</span>
+        <p>ε denotes the empty string (a string of length 0, which is itself a valid match) — the language {ε} is nonempty, it contains exactly one string. ∅ denotes the empty language (a set with no strings at all, not even ε). L·∅ = ∅ for any L, but L·{ε} = L.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> How many states does the minimal DFA need to accept all binary strings divisible by 3 (treating the string as a binary number)?</summary>
+          <div class="ans">
+            <p>Track the remainder mod 3 as you read bits left to right: state transitions are r → 2r mod 3 on '0' and r → (2r+1) mod 3 on '1'. There are exactly 3 possible remainders (0,1,2), each needing its own state, and none can be merged since they behave differently on future input.</p>
+            <p class="final">Answer: 3 states</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> An NFA has 4 states. What is the maximum number of states in the DFA produced by subset construction, before minimization?</summary>
+          <div class="ans">
+            <p>Subset construction can produce up to 2ⁿ states for an n-state NFA in the worst case (one DFA state per possible subset of NFA states, including the empty "dead" subset). This bound is on the DFA subset construction directly outputs — it is not a bound on the minimal DFA equivalent to the NFA, which can (and typically does) have fewer states after minimization.</p>
+            <p class="final">Answer: 2⁴ = 16 states (worst case, before minimization)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Is the regular expression (a∪b)* equal to the regular expression a*b*(a∪b)*? Justify briefly.</summary>
+          <div class="ans">
+            <p>(a∪b)* already generates every possible string over {a,b}, since it can produce any sequence of a's and b's in any order and any count including zero. Prepending a*b*  doesn't add any string that wasn't already generated by (a∪b)* alone — both describe the same language, Σ*.</p>
+            <p class="final">Answer: Yes, both describe Σ* (all strings over {a,b})</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> During DFA minimization by the table-filling method, two states p and q are both non-accepting, and on every input symbol they transition to the same next state. Are p and q distinguishable?</summary>
+          <div class="ans">
+            <p>They start in the same class (both non-accepting), and every transition from p and q leads to an identical next state — so no future input can ever tell them apart. They are equivalent and should be merged.</p>
+            <p class="final">Answer: No, they are equivalent (mergeable)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Convert the regular expression (ab)* into a description of the language it generates.</summary>
+          <div class="ans">
+            <p>(ab)* means the block "ab" repeated zero or more times: ε, ab, abab, ababab, and so on — never a lone 'a' or lone 'b' without its pair.</p>
+            <p class="final">Answer: {ε, ab, abab, ababab, ...} — even-length strings alternating a,b starting with a</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="regular-languages">
+      <div class="topic-head"><span class="idx">02</span><h2>Regular Languages, Closure &amp; Pumping Lemma</h2></div>
+      <div class="topic-kicker">CLOSURE PROPERTIES · PUMPING LEMMA (REGULAR) · DECISION PROPERTIES</div>
+
+      <h3 class="sub">Closure properties of regular languages</h3>
+      <p>Regular languages are closed under: union, intersection, concatenation, Kleene star, complementation, and reversal — meaning applying any of these operations to regular language(s) always produces another regular language. This closure is exactly why you can build a DFA for a complex condition by combining simpler DFAs (product construction for intersection/union; for complement, first make the DFA complete by adding a sink state for any missing transitions, then swap accept/non-accept states — swapping alone only works if the DFA was already complete).</p>
+
+      <div class="card formula">
+        <span class="label">Product construction (for intersection or union)</span>
+        <div class="eq">Given DFA₁=(Q1,Σ,δ1,q1,F1) and DFA₂=(Q2,Σ,δ2,q2,F2):
+New states = Q1 × Q2 (pairs)
+δ((p,q), a) = (δ1(p,a), δ2(q,a))
+Intersection: accept if BOTH components are accepting
+Union: accept if EITHER component is accepting</div>
+      </div>
+
+      <h3 class="sub">The Pumping Lemma for regular languages</h3>
+      <p>If L is regular, there exists a pumping length p such that every string w∈L with |w|≥p can be split as w = xyz where:</p>
+      <ul>
+        <li><strong>|xy| ≤ p</strong> (the pumped part occurs within the first p characters)</li>
+        <li><strong>|y| ≥ 1</strong> (something is actually being pumped)</li>
+        <li><strong>xyⁱz ∈ L for all i ≥ 0</strong> (pumping y any number of times, including zero, keeps the string in L)</li>
+      </ul>
+      <p>Used almost exclusively as a <strong>proof-by-contradiction tool to show a language is NOT regular</strong>: assume L is regular, take the pumping length p, choose a specific string w∈L with |w|≥p, show that <em>every</em> valid split x,y,z fails the pumping condition for some i, and conclude L can't be regular.</p>
+
+      <div class="card formula">
+        <span class="label">Classic non-regular proof: L = {aⁿbⁿ : n ≥ 0}</span>
+        <div class="eq">Assume L is regular with pumping length p.
+Choose w = a^p b^p  (length 2p ≥ p, so pumping lemma applies)
+Since |xy| ≤ p, xy consists entirely of a's.
+So y = a^k for some k ≥ 1.
+Pump with i=2: xy²z = a^(p+k) b^p — now #a's ≠ #b's.
+This string is NOT in L, contradicting the pumping lemma.
+∴ L is not regular.</div>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>The pumping lemma gives a <strong>necessary</strong> condition for regularity, not a sufficient one — a language can satisfy the pumping lemma's conditions and still fail to be regular (rare "pumping-lemma-proof" languages exist). GATE never asks you to prove a language IS regular using the pumping lemma; it's a one-directional tool for disproving regularity only.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Is L = {aⁿbᵐ : n,m ≥ 0} (any number of a's followed by any number of b's) regular?</summary>
+          <div class="ans">
+            <p>Yes — this is exactly the language of the regular expression a*b*, so it's regular by definition (no pumping lemma needed to prove regularity — you just exhibit the regex or DFA).</p>
+            <p class="final">Answer: Yes, regular (regex: a*b*)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Is L = {ww : w ∈ {a,b}*} (strings that are some string repeated twice) regular?</summary>
+          <div class="ans">
+            <p>Assume L is regular and let p be its pumping length. Choose s = a^p b a^p b, which belongs to L because s = (a^p b)(a^p b). For any decomposition s = xyz with |xy| ≤ p and |y| > 0, y consists only of a's from the first block, say y = a^k where k ≥ 1. Pumping changes only the first block of a's. For an appropriate pumping value (i = 0 or i = 2), the resulting string no longer consists of two identical halves, contradicting the pumping lemma. Therefore L is not regular.</p>
+            <p class="final">Answer: No, L is not regular.</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Regular languages L1 and L2 are given. Is L1 ∩ L2 guaranteed to be regular?</summary>
+          <div class="ans">
+            <p>Yes — regular languages are closed under intersection (via the product construction combining DFAs for L1 and L2), so the intersection of any two regular languages is always regular.</p>
+            <p class="final">Answer: Yes, always regular</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Is the complement of a regular language always regular?</summary>
+          <div class="ans">
+            <p>Yes — but the standard construction needs one careful step first. Given a DFA for L, you can only get a DFA for the complement by swapping accepting and non-accepting states IF the DFA is <strong>complete</strong> (has a defined transition for every symbol from every state). If the DFA is partial (some state is missing a transition for some input symbol), you must first make it complete — add one new "sink"/"dead" state, and redirect every missing transition to it (with the sink looping to itself on all symbols) — before swapping accept/non-accept. Skipping this step on a partial DFA gives a wrong construction: strings that would have been "rejected" by falling off an undefined transition need to become accepting in the complement, but there's no state for them to land on and accept from until the sink state is added. (Note: this trick specifically requires a DFA, not an NFA, since NFAs don't complement this simply.)</p>
+            <p class="final">Answer: Yes, always regular — construction: first make the DFA complete (add a sink state for any missing transitions), THEN swap accepting/non-accepting states</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Can the pumping lemma be used to PROVE that a language is regular?</summary>
+          <div class="ans">
+            <p>No — the pumping lemma states a necessary condition that all regular languages satisfy, but satisfying it doesn't guarantee regularity. It can only be used to disprove regularity, by showing a language fails the condition.</p>
+            <p class="final">Answer: No — it's a one-way tool, used only to disprove regularity</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="cfg">
+      <div class="topic-head"><span class="idx">03</span><h2>Context-Free Grammars</h2></div>
+      <div class="topic-kicker">CFG DEFINITION · DERIVATIONS &amp; PARSE TREES · AMBIGUITY · CHOMSKY &amp; GREIBACH NORMAL FORMS</div>
+
+      <h3 class="sub">CFG — the formal definition</h3>
+      <p>A context-free grammar is a 4-tuple <strong>(V, Σ, R, S)</strong>: a set of variables/non-terminals V, a set of terminals Σ, a set of production rules R of the form <code>A → α</code> (A is a single non-terminal, α is any string of terminals/non-terminals), and a start symbol S. "Context-free" means the left side of every rule is a single non-terminal — no surrounding context is checked before applying a rule.</p>
+
+      <div class="card formula">
+        <span class="label">Classic CFG: balanced parentheses</span>
+        <div class="eq">S → ( S ) S  |  ε
+// Derives: ε, (), ()(), (()), (())(), ...
+// Every derivation keeps parentheses balanced by construction</div>
+      </div>
+
+      <h3 class="sub">Leftmost/rightmost derivation &amp; parse trees</h3>
+      <p>A <strong>leftmost derivation</strong> always expands the leftmost non-terminal first; a <strong>rightmost derivation</strong> always expands the rightmost one. Both can produce the same final string via different rule-application orders, but each string has (in an unambiguous grammar) exactly one <em>parse tree</em> — the derivation order is just a different traversal of that same tree.</p>
+
+      <h3 class="sub">Ambiguity</h3>
+      <p>A grammar is <strong>ambiguous</strong> if some string in its language has two or more distinct parse trees (not just two derivation orders of the same tree). Ambiguity is a property of the grammar, not the language — the same language can often be described by both an ambiguous and an unambiguous grammar.</p>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>The classic example: <code>E → E+E | E*E | id</code> is ambiguous — the string <code>id+id*id</code> has two different parse trees depending on whether + or * is grouped first, since the grammar encodes no precedence. Fixing this requires a layered grammar (E→E+T|T, T→T*F|F, F→id) that bakes precedence into the rule structure itself. GATE frequently asks you to identify ambiguity by finding two distinct parse trees for one specific string, not just eyeball the rules.</p>
+      </div>
+
+      <h3 class="sub">Chomsky Normal Form (CNF) &amp; Greibach Normal Form (GNF)</h3>
+      <table>
+        <tr><th>Normal form</th><th>Every rule looks like</th><th>Use</th></tr>
+        <tr><td>CNF</td><td>A → BC or A → a (plus S→ε if ε∈L)</td><td>Enables CYK parsing algorithm; parse trees are binary</td></tr>
+        <tr><td>GNF</td><td>A → aα (a terminal, then zero or more non-terminals)</td><td>Every derivation step consumes exactly one input symbol</td></tr>
+      </table>
+      <p>Every context-free language (except possibly needing an explicit S→ε for ε) can be converted to an equivalent CNF or GNF grammar — the conversion process (eliminating ε-productions, unit productions, then restructuring) is a standard multi-step GATE question.</p>
+
+      <div class="card note">
+        <span class="label">CNF derivation length shortcut</span>
+        <p>For a CNF grammar (no ε-productions), a parse tree deriving a string of length n uses exactly <strong>2n−1 production applications</strong> — n−1 applications of A→BC rules to build the binary tree structure (each one adds one non-terminal, net) plus n applications of A→a rules to replace each of the n leaves with a terminal. Be precise about what's being counted here: "derivation steps" is ambiguous by itself — it could mean production applications (what this 2n−1 count refers to), sentential-form transitions in a specific derivation order (same number, since each production application corresponds to exactly one sentential-form transition in a leftmost or rightmost derivation), or informally "parse-tree expansion operations" (also the same count, for a CNF tree). The formula 2n−1 is correct under all of these readings for CNF specifically, but state which one you mean when the question is ambiguous.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Give a CFG for L = {aⁿbⁿ : n ≥ 0}.</summary>
+          <div class="ans">
+            <p>Each 'a' must be matched by a corresponding 'b' on the outside — a self-embedding rule handles this naturally: S→aSb wraps one more a...b pair around a smaller instance, with S→ε as the base case.</p>
+            <p class="final">Answer: S → aSb | ε</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Is the grammar S → aS | Sa | a ambiguous? Check the string "aaa".</summary>
+          <div class="ans">
+            <p>Yes. Deriving "aaa" by always expanding via <code>S → aS</code> gives a right-branching tree; always expanding via <code>S → Sa</code> gives a left-branching tree. These are two genuinely different tree <em>shapes</em> for the same string — not just two orders of writing down the same tree:</p>
+            <div class="eq">Tree 1 (via S → aS, right-branching):     Tree 2 (via S → Sa, left-branching):
+
+        S                                        S
+       / \                                      / \
+      a   S                                    S   a
+         / \                                  / \
+        a   S                                S   a
+            |                                |
+            a                                a</div>
+            <p>In Tree 1, every S expands as (terminal a) followed by (S) — recursion nests to the right, so the tree leans right. In Tree 2, every S expands as (S) followed by (terminal a) — recursion nests to the left, so the tree leans left. Both trees have "aaa" as their yield (read the leaves left to right), but they are structurally distinct trees — which is exactly what "ambiguous" means: more than one parse tree for the same string, not merely more than one derivation order of one tree.</p>
+            <p class="final">Answer: Yes, ambiguous — "aaa" has (at least) these two distinct parse trees</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> How many production applications are used in a CNF parse tree deriving a string of length 6?</summary>
+          <div class="ans">
+            <p>Using the CNF derivation-length formula 2n−1 with n=6: 2×6−1 = 11.</p>
+            <p class="final">Answer: 11 production applications</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Which of these are NOT in Chomsky Normal Form (select all that apply): (a) A → BC (b) A → a (c) A → aB (d) A → BCD?</summary>
+          <div class="ans">
+            <p>CNF only allows A→BC (exactly two non-terminals) or A→a (exactly one terminal). Option (c) mixes a terminal with a non-terminal on the right side (not CNF form, though it is valid GNF form), and (d) has three non-terminals (too many for CNF).</p>
+            <p class="final">Answer: (c) and (d) are not CNF</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Does every context-free language have an unambiguous grammar?</summary>
+          <div class="ans">
+            <p>No — some context-free languages are "inherently ambiguous," meaning every possible grammar for that language is ambiguous. This is a distinct, stronger claim than just "this particular grammar is ambiguous."</p>
+            <p class="final">Answer: No — some CFLs are inherently ambiguous</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="pda">
+      <div class="topic-head"><span class="idx">04</span><h2>Pushdown Automata &amp; CFL Properties</h2></div>
+      <div class="topic-kicker">PDA DEFINITION · CFG ↔ PDA EQUIVALENCE · DPDA VS NPDA · PUMPING LEMMA (CFL) · CLOSURE PROPERTIES</div>
+
+      <h3 class="sub">PDA — a finite automaton plus a stack</h3>
+      <p>A pushdown automaton extends an NFA with an unbounded stack, giving it exactly enough extra memory to handle nested/matching structure (like balanced parentheses) that finite automata can't track. Transitions can read an input symbol (or ε), pop a stack symbol, and push a string of stack symbols — all in one move.</p>
+
+      <div class="card formula">
+        <span class="label">Fundamental equivalence result</span>
+        <p>A language is context-free <strong>if and only if</strong> some PDA accepts it. Every CFG can be mechanically converted into an equivalent PDA (and vice versa) — this equivalence is exactly parallel to the regex↔DFA equivalence one level down the Chomsky hierarchy.</p>
+      </div>
+
+      <h3 class="sub">Two acceptance modes — and why they matter</h3>
+      <table>
+        <tr><th>Mode</th><th>Accepts when...</th></tr>
+        <tr><td>Final state</td><td>Input is fully consumed AND the PDA is in an accepting state (stack contents irrelevant)</td></tr>
+        <tr><td>Empty stack</td><td>Input is fully consumed AND the stack is completely empty (accepting states irrelevant)</td></tr>
+      </table>
+      <p>These two modes are provably equivalent in expressive power — any PDA using one mode can be converted to an equivalent PDA using the other — but a given PDA's specific behavior depends on which mode it's defined to use.</p>
+
+      <h3 class="sub">Deterministic PDA (DPDA) vs. nondeterministic PDA (NPDA) — NOT equally powerful</h3>
+      <div class="card pyq">
+        <span class="label">GATE trap — the single most important PDA fact</span>
+        <p>Unlike finite automata (where NFA = DFA in power), <strong>DPDAs are strictly weaker than NPDAs</strong>. Deterministic context-free languages (DCFLs) are a proper subset of context-free languages. The classic example: L = {wwᴿ : w∈{a,b}*} (even-length palindromes) is context-free (accepted by an NPDA that nondeterministically "guesses" the midpoint) but has no DPDA — a deterministic machine can never be sure it has found the exact middle of the string without lookahead it isn't given.</p>
+      </div>
+
+      <h3 class="sub">The Pumping Lemma for context-free languages</h3>
+      <p>If L is context-free, there's a pumping length p such that every string w∈L with |w|≥p can be split as <strong>w = uvxyz</strong> where:</p>
+      <ul>
+        <li><strong>|vxy| ≤ p</strong> (the pumped region is bounded)</li>
+        <li><strong>|vy| ≥ 1</strong> (at least one of v, y is nonempty — something is pumped)</li>
+        <li><strong>uvⁱxyⁱz ∈ L for all i ≥ 0</strong> (v and y are pumped together, the SAME number of times)</li>
+      </ul>
+      <p>Same proof-by-contradiction usage as the regular pumping lemma, but with two pumped pieces (v and y) instead of one — used to show a language is not even context-free.</p>
+
+      <div class="card formula">
+        <span class="label">Classic non-CFL proof: L = {aⁿbⁿcⁿ : n ≥ 0}</span>
+        <div class="eq">Choose w = a^p b^p c^p.
+Any window vxy of length ≤ p can span at most 2 of the 3 letter-blocks (a's, b's, c's).
+Pumping v and y (i=2) increases the count of at most 2 letters, breaking the a=b=c equality.
+∴ L is not context-free.</div>
+      </div>
+
+      <h3 class="sub">Closure properties of context-free languages</h3>
+      <table>
+        <tr><th>Operation</th><th>Closed?</th></tr>
+        <tr><td>Union</td><td>✅ Yes</td></tr>
+        <tr><td>Concatenation</td><td>✅ Yes</td></tr>
+        <tr><td>Kleene star</td><td>✅ Yes</td></tr>
+        <tr><td>Reversal</td><td>✅ Yes</td></tr>
+        <tr><td>Intersection (CFL ∩ CFL)</td><td>❌ No, not in general</td></tr>
+        <tr><td>Complement</td><td>❌ No, not in general</td></tr>
+        <tr><td>Difference (CFL − CFL)</td><td>❌ No, not in general</td></tr>
+      </table>
+
+      <div class="card formula">
+        <span class="label">The one exception that matters most: CFL ∩ Regular = CFL</span>
+        <p>Even though intersection of two arbitrary CFLs can fail to be context-free, intersecting a CFL with a <strong>regular</strong> language always stays context-free. This asymmetry — closed under intersection-with-regular, but not under general intersection or complement — is exactly why the non-closure results above don't contradict this one: a regular language's DFA has no stack of its own to create the cross-checking power that breaks CFL closure. GATE uses this exception constantly, e.g. to build a PDA for "L is context-free, restricted to strings matching some regex" without needing to re-derive a grammar from scratch.</p>
+      </div>
+
+      <div class="card note">
+        <span class="label">Why union/concatenation/star/reversal survive but intersection/complement don't</span>
+        <p>Union, concatenation, and star can each be implemented by combining PDAs "in parallel" or "in sequence" without ever needing the two machines' stacks to interact — one PDA nondeterministically simulates whichever branch is relevant. Reversal just runs the grammar's derivations backward. Intersection (of two genuine CFLs) would require synchronizing <em>two independent stacks</em> at once, which a single-stack PDA fundamentally cannot do — that's the structural reason the closure breaks, not just an accident of the standard counterexamples.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Is L = {aⁿbⁿcⁿ : n ≥ 0} context-free?</summary>
+          <div class="ans">
+            <p>No — proved not context-free via the CFL pumping lemma, since any bounded-length pumped window can only touch two of the three letter blocks, so pumping unbalances the counts.</p>
+            <p class="final">Answer: No, not context-free</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Is L = {wwᴿ : w ∈ {a,b}*} (even palindromes) accepted by a deterministic PDA?</summary>
+          <div class="ans">
+            <p>No — while L is context-free (an NPDA can nondeterministically guess the midpoint and then match the reversal against the stack), no deterministic PDA can identify the exact midpoint without unbounded lookahead, so no DPDA accepts this language.</p>
+            <p class="final">Answer: No — context-free but not deterministic context-free</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> L1 and L2 are both context-free. Is L1 ∩ L2 guaranteed to be context-free?</summary>
+          <div class="ans">
+            <p>No — CFLs are NOT closed under intersection in general (only intersection with a regular language is guaranteed to stay context-free). A counterexample: {aⁿbⁿcᵐ} ∩ {aᵐbⁿcⁿ} = {aⁿbⁿcⁿ}, which is not context-free even though both operands are.</p>
+            <p class="final">Answer: No, not guaranteed</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Give a PDA sketch (informal) for L = {aⁿbⁿ : n≥0}.</summary>
+          <div class="ans">
+            <p>Push a marker onto the stack for every 'a' read. On seeing the first 'b', switch to popping one marker per 'b' read. Accept if the stack is empty exactly when the input ends — any mismatch in count leaves the stack non-empty or forces a pop on an empty stack.</p>
+            <p class="final">Answer: Push X for each 'a'; pop one X per 'b'; accept on empty stack at end of input</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Is a context-free language intersected with a regular language guaranteed to be context-free?</summary>
+          <div class="ans">
+            <p>Yes — this specific case IS closed, via a product construction combining a PDA (for the CFL) with a DFA (for the regular language), tracking both machines' states/stack together.</p>
+            <p class="final">Answer: Yes, always context-free</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="turing">
+      <div class="topic-head"><span class="idx">05</span><h2>Turing Machines</h2></div>
+      <div class="topic-kicker">TM DEFINITION · DESIGN &amp; TRACING · VARIANTS · CHURCH-TURING THESIS</div>
+
+      <h3 class="sub">TM — a finite automaton plus an infinite tape</h3>
+      <p>A Turing machine replaces the PDA's stack with an infinite, two-way read/write tape, giving it unrestricted memory access (not just last-in-first-out). Formally a 7-tuple <strong>(Q, Σ, Γ, δ, q₀, q_accept, q_reject)</strong> where Γ⊇Σ is the tape alphabet (including a blank symbol), and δ: Q×Γ → Q×Γ×{L,R} — read a symbol, write a symbol, move the head left or right, change state.</p>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 400 90" width="400">
+          <g font-family="JetBrains Mono" font-size="13">
+            <rect x="10" y="10" width="36" height="36" fill="#16171c" stroke="#2a2b33"/>
+            <rect x="46" y="10" width="36" height="36" fill="#16171c" stroke="#2a2b33"/>
+            <rect x="82" y="10" width="36" height="36" fill="#1c1d24" stroke="#cba36b" stroke-width="2"/>
+            <rect x="118" y="10" width="36" height="36" fill="#16171c" stroke="#2a2b33"/>
+            <rect x="154" y="10" width="36" height="36" fill="#16171c" stroke="#2a2b33"/>
+            <rect x="190" y="10" width="36" height="36" fill="#16171c" stroke="#2a2b33"/>
+            <text x="24" y="34" fill="#a8a196">a</text>
+            <text x="60" y="34" fill="#a8a196">a</text>
+            <text x="94" y="34" fill="#cba36b">b</text>
+            <text x="132" y="34" fill="#a8a196">b</text>
+            <text x="168" y="34" fill="#a8a196">⊔</text>
+            <text x="204" y="34" fill="#a8a196">⊔</text>
+          </g>
+          <path d="M100,58 L100,70" stroke="#d98a5f" stroke-width="2"/>
+          <text x="85" y="85" font-family="JetBrains Mono" font-size="11" fill="#d98a5f">head, state q</text>
+        </svg>
+        <div class="diagram-cap">TM tape — head reads/writes the cell under it, then moves L or R; the tape is infinite in both directions</div>
+      </div>
+
+      <h3 class="sub">Designing a TM — the "aⁿbⁿcⁿ" workhorse example</h3>
+      <p>This exact language (not context-free, as shown in section 04) is a standard first TM design exercise, because it demonstrates why unrestricted tape access is strictly more powerful than a stack:</p>
+      <div class="eq">Repeat:
+  Scan right, find the leftmost unmarked 'a', mark it (e.g. replace with X), remember its position
+  Scan right past remaining a's/b's, find the leftmost unmarked 'b', mark it (Y)
+  Scan right past remaining b's/c's, find the leftmost unmarked 'c', mark it (Z)
+  Scan back to the start
+Until: no unmarked 'a' remains
+Accept if, at that point, no unmarked 'b' or 'c' remains either (all counts matched)</div>
+
+      <h3 class="sub">TM variants — equally powerful (with one important exception)</h3>
+      <p>Multi-tape TMs, non-deterministic TMs (NTMs), and TMs with a two-way infinite tape are all <strong>equally powerful</strong> — every one of these variants recognizes exactly the same class of languages as a standard single-tape deterministic TM. But "equally powerful" is a statement about <em>computability</em> only, not about simulation cost, and the cost differs sharply by variant: converting a multi-tape TM to a single-tape TM costs at most a <strong>polynomial</strong> slowdown, but simulating an NTM deterministically can cost an <strong>exponential</strong> blowup in time in the worst case (see the GATE trap below — these are genuinely different overheads, don't conflate them). This equivalence is why "Turing-computable" is a single, robust notion rather than depending on which TM flavor you pick.</p>
+      <div class="card note">
+        <span class="label">The exception: a TM that can only move right</span>
+        <p>A TM restricted to only ever moving its head right (never left) is <strong>not</strong> in the equally-powerful group above — it's strictly weaker. Without the ability to move back and revisit earlier tape cells, such a machine can't backtrack or re-examine what it's already read/written, and its recognizable language class collapses down to the <strong>regular languages</strong> — the same class a plain DFA recognizes. Don't lump this variant in with multi-tape/NTM/two-way-infinite-tape; it is the one common "TM variant" question where the power genuinely changes.</p>
+      </div>
+
+      <div class="card formula">
+        <span class="label">The Church–Turing thesis</span>
+        <p>Any function that is "effectively computable" by some intuitive step-by-step algorithmic process can be computed by a Turing machine. This is a <strong>thesis</strong>, not a theorem — it can't be formally proven since "effectively computable" isn't a rigorous mathematical object on its own, but every alternative model of computation proposed so far (lambda calculus, RAM machines, etc.) has been proven exactly equivalent in power to the TM.</p>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>"Non-deterministic TM is more powerful than deterministic TM" is FALSE — unlike the DPDA/NPDA case (which genuinely differ in power), NTMs and DTMs recognize exactly the same class of languages. Non-determinism only affects potential speed (an NTM can be simulated by a DTM with an exponential blowup in the worst case, relevant to complexity theory), never which languages are recognizable at all. Separately: "a TM that can only move right is just as powerful as a standard TM" is also FALSE — that restriction genuinely reduces power to regular languages, unlike multi-tape or non-determinism.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Is a 3-tape TM strictly more powerful (recognizes more languages) than a 1-tape TM?</summary>
+          <div class="ans">
+            <p>No — every multi-tape TM can be simulated by a single-tape TM (by interleaving the tape contents on one tape), so they recognize exactly the same class of languages. Multi-tape only helps with speed, not with what's computable at all.</p>
+            <p class="final">Answer: No, same power (just potentially faster)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Is L = {aⁿbⁿcⁿ : n≥0}, which is not context-free, decidable by some Turing machine?</summary>
+          <div class="ans">
+            <p>Yes — this language sits above context-free but is still well within what a TM can decide (the tape-marking algorithm sketched in this section decides it in linear-ish time, always halting with an accept/reject answer).</p>
+            <p class="final">Answer: Yes, decidable</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Does a non-deterministic TM recognize a strictly larger class of languages than a deterministic TM?</summary>
+          <div class="ans">
+            <p>No — NTMs and DTMs are exactly equivalent in recognizing power (any NTM can be simulated by a DTM, generally with an exponential time overhead). This is unlike the DPDA vs NPDA situation one level down the hierarchy.</p>
+            <p class="final">Answer: No, exactly the same power</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Can the Church-Turing thesis be formally proven?</summary>
+          <div class="ans">
+            <p>No — it's a thesis (a claim connecting an informal notion, "effective computability," to a formal one, "Turing-computable"), not a theorem, precisely because one side of the equivalence isn't a rigorously defined mathematical object.</p>
+            <p class="final">Answer: No — it's a thesis, not a provable theorem</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> A TM's transition function is defined as δ: Q×Γ → Q×Γ×{L,R}. What three things does the machine decide in a single step?</summary>
+          <div class="ans">
+            <p>Given the current state and the symbol under the head, δ determines: the new state to enter, the symbol to write over the current cell, and which direction to move the head.</p>
+            <p class="final">Answer: Next state, symbol to write, and direction (L or R) to move</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="decidability">
+      <div class="topic-head"><span class="idx">06</span><h2>Decidability &amp; Undecidability</h2></div>
+      <div class="topic-kicker">RECURSIVE VS RE · HALTING PROBLEM · REDUCTIONS · PCP · RICE'S THEOREM</div>
+
+      <h3 class="sub">Recursive vs. recursively enumerable — the key distinction</h3>
+      <table>
+        <tr><th>Class</th><th>Definition</th><th>On a "no" input...</th></tr>
+        <tr><td>Recursive (decidable)</td><td>Some TM always halts, correctly accepting or rejecting</td><td>Halts and rejects</td></tr>
+        <tr><td>Recursively enumerable (Turing-recognizable)</td><td>Some TM halts and accepts every string in L, but may loop forever on strings not in L</td><td>May run forever (no guaranteed "reject" signal)</td></tr>
+      </table>
+      <div class="card formula">
+        <span class="label">The defining closure result</span>
+        <p>A language L is recursive <strong>if and only if</strong> both L and its complement L̄ are recursively enumerable. This single fact underlies most decidability proofs: if you can show a language and its complement are each RE, you get decidability for free.</p>
+      </div>
+
+      <h3 class="sub">The Halting Problem — the canonical undecidable problem</h3>
+      <p>HALT = {⟨M,w⟩ : TM M halts on input w} is undecidable — no TM can, for every possible (M,w) pair, correctly determine in finite time whether M halts on w. The classic proof is diagonalization: assume a TM H decides HALT, construct a TM D that runs H on itself and does the opposite of what H predicts, then show D contradicts itself when run on its own description.</p>
+
+      <h3 class="sub">Reductions — proving new problems undecidable</h3>
+      <p>To show a new problem P is undecidable, reduce a known undecidable problem (usually HALT) to P: show that if P were decidable, you could use that decider to build a decider for HALT — contradiction. The reduction must go in this specific direction (known-undecidable → new problem), and GATE frequently tests whether you have the direction right.</p>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>A reduction from A to B (A ≤ B) shows: <strong>if B is decidable, then A is decidable</strong> (equivalently: if A is undecidable, then B is undecidable). Students often reduce in the wrong direction — remember, you're using a hypothetical decider for the new problem B to build a decider for the already-known-undecidable A, which is what generates the contradiction.</p>
+      </div>
+
+      <h3 class="sub">The Post Correspondence Problem (PCP) — another canonical undecidable problem</h3>
+      <p>Given two lists of strings A = (a₁,...,aₙ) and B = (b₁,...,bₙ) of equal length, PCP asks: does there exist a sequence of indices i₁,i₂,...,iₖ (repeats allowed, k≥1) such that a_{i₁}a_{i₂}...a_{iₖ} = b_{i₁}b_{i₂}...b_{iₖ}? In other words, can you pick tiles (each labeled with a top string from A and a bottom string from B) and lay them in some order so the concatenated top and bottom strings match exactly.</p>
+      <div class="card formula">
+        <span class="label">PCP is undecidable</span>
+        <p>There is no algorithm that decides, for an arbitrary pair of lists, whether a matching sequence exists. GATE doesn't expect you to reproduce the proof (it's a reduction from the Turing machine acceptance problem) — just to recognize PCP by name as a standard undecidable problem, and to know it's commonly used itself as the known-undecidable source problem when proving that certain grammar/language questions (like CFG ambiguity, or whether two CFGs' languages intersect) are undecidable, via a reduction FROM PCP.</p>
+      </div>
+
+      <h3 class="sub">Rice's theorem</h3>
+      <p>Any <strong>non-trivial property of the language recognized by a Turing machine</strong> (i.e., a property that's true for some RE languages and false for others — not about the machine's structure/code, only about the language it recognizes) is undecidable. This single theorem instantly settles a huge number of "is this property decidable" questions without needing a custom reduction each time.</p>
+      <table>
+        <tr><th>Question</th><th>Decidable?</th><th>Why</th></tr>
+        <tr><td>Does TM M have exactly 5 states?</td><td>Yes</td><td>Syntactic property of M's description, not a property of L(M) — Rice's theorem doesn't apply</td></tr>
+        <tr><td>Does TM M accept at least one string?</td><td>No</td><td>Non-trivial property of L(M) — Rice's theorem applies directly</td></tr>
+        <tr><td>Is L(M) empty?</td><td>No</td><td>Non-trivial semantic property — undecidable by Rice's theorem</td></tr>
+        <tr><td>Is L(M) regular?</td><td>No</td><td>Non-trivial semantic property — undecidable by Rice's theorem</td></tr>
+      </table>
+
+      <div class="card note">
+        <span class="label">Decidable problems GATE also expects you to know</span>
+        <p>For <strong>regular languages</strong> (given DFAs/NFAs/regex), every standard question is decidable — membership, emptiness, finiteness, equivalence, inclusion, and universality all have known algorithms (minimize and compare, build a product automaton, etc.). This is a lower-hierarchy result, unaffected by Rice's theorem, which only concerns Turing machines/RE languages.</p>
+        <p>For <strong>context-free languages</strong> (given CFGs/PDAs), only some of these carry over — don't assume the whole list transfers up a level. <strong>Membership and emptiness are decidable for CFLs, but equivalence, inclusion, and universality are undecidable in general.</strong></p>
+        <table>
+          <tr><th>Problem</th><th>Regular</th><th>Context-free</th></tr>
+          <tr><td>Membership</td><td>Decidable</td><td>Decidable</td></tr>
+          <tr><td>Emptiness</td><td>Decidable</td><td>Decidable</td></tr>
+          <tr><td>Finiteness</td><td>Decidable</td><td>Decidable</td></tr>
+          <tr><td>Equivalence</td><td>Decidable</td><td>Undecidable</td></tr>
+          <tr><td>Inclusion</td><td>Decidable</td><td>Undecidable</td></tr>
+          <tr><td>Universality</td><td>Decidable</td><td>Undecidable</td></tr>
+        </table>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Is it decidable whether two given DFAs accept the same language? Does the same hold for two given CFGs?</summary>
+          <div class="ans">
+            <p>Yes — DFA equivalence is decidable (e.g., minimize both DFAs and compare, or build a DFA for the symmetric difference and check it accepts nothing). This is a lower-hierarchy decidability result, unaffected by Rice's theorem, which only concerns Turing machines/RE languages.</p>
+            <p>The same question for two CFGs does NOT hold — CFG (context-free language) equivalence is <strong>undecidable</strong> in general, even though CFG membership and emptiness are still decidable. Don't assume decidability carries over uniformly from regular to context-free just because both sit below the Turing-machine level.</p>
+            <p class="final">Answer: DFA equivalence — Yes, decidable. CFG equivalence — No, undecidable.</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Is it decidable whether a given Turing machine M accepts the empty language (L(M)=∅)?</summary>
+          <div class="ans">
+            <p>No — "L(M) is empty" is a non-trivial semantic property of the language M recognizes (true for some TMs, false for others), so Rice's theorem makes it undecidable.</p>
+            <p class="final">Answer: No, undecidable (by Rice's theorem)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Is L recursive if both L and its complement are recursively enumerable?</summary>
+          <div class="ans">
+            <p>Yes — this is exactly the defining characterization: L is recursive if and only if L and L̄ are both RE.</p>
+            <p class="final">Answer: Yes, L is recursive</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Is it decidable whether a given Turing machine's description contains exactly 10 states?</summary>
+          <div class="ans">
+            <p>Yes — this is a purely syntactic property of the machine's own description (easily checked by counting), not a semantic property of the language it recognizes, so Rice's theorem does not apply and it's straightforwardly decidable.</p>
+            <p class="final">Answer: Yes, decidable (syntactic, not a language property)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> To prove a new problem P is undecidable via reduction from HALT, which direction must the reduction go?</summary>
+          <div class="ans">
+            <p>You must show HALT ≤ P (reduce HALT to P): assume a decider for P exists, and use it to build a decider for HALT. Since HALT is already known undecidable, this is a contradiction, proving P is undecidable too.</p>
+            <p class="final">Answer: Reduce HALT to P (HALT ≤ P), not the other way around</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="topic" id="revision">
+      <div class="topic-head"><span class="idx">07</span><h2>Revision Sheet</h2></div>
+      <div class="topic-kicker">EVERYTHING ON ONE SCREEN — LAST-MINUTE PASS</div>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Chomsky hierarchy (power)</span>
+          <p>Regular ⊂ Context-free ⊂ Recursive ⊂ Recursively enumerable — each strictly more powerful than the last.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">NFA = DFA in power</span>
+          <p>Subset construction converts any NFA to an equivalent DFA (up to 2ⁿ states) — same expressive power, only worst-case state count differs.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Kleene's theorem</span>
+          <p>Regular ⟺ some FA accepts it ⟺ some regex describes it. All three are interchangeable.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Pumping lemma = disproof tool only</span>
+          <p>Both the regular and CFL pumping lemmas prove a language is NOT in that class. Neither can ever prove membership.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Regular PL split</span>
+          <p>w=xyz, |xy|≤p, |y|≥1, xyⁱz∈L for all i≥0.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">CFL PL split</span>
+          <p>w=uvxyz, |vxy|≤p, |vy|≥1, uvⁱxyⁱz∈L for all i≥0 — TWO pieces pumped together.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">DPDA ⊊ NPDA (unlike NFA=DFA)</span>
+          <p>Deterministic PDAs are strictly weaker. wwᴿ is context-free but not deterministic context-free.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">NTM = DTM in power</span>
+          <p>Unlike DPDA/NPDA, non-determinism never adds recognizing power to a Turing machine — only affects speed.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">CFL closure</span>
+          <p>Closed under union, concatenation, star, reversal, and intersection-with-regular. NOT closed under CFL∩CFL, complement, or difference.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">CFL decidability — don't over-extend from regular</span>
+          <p>Membership, emptiness, and finiteness ARE decidable for CFLs. Equivalence, inclusion, and universality are UNDECIDABLE for CFLs — unlike for regular languages, where all six are decidable.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">PCP</span>
+          <p>The Post Correspondence Problem (matching tile sequences from two string lists) is undecidable — a second named canonical undecidable problem alongside HALT, often used as a reduction source.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">CNF derivation length</span>
+          <p>A CNF parse tree derives a length-n string using exactly 2n−1 production applications.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Recursive vs RE</span>
+          <p>Recursive = TM always halts (accept or reject). RE = TM halts and accepts on "yes," may loop forever on "no."</p>
+        </div>
+        <div class="card formula">
+          <span class="label">L recursive ⟺ L, L̄ both RE</span>
+          <p>The single most reusable decidability fact — check both directions to get decidability for free.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Rice's theorem</span>
+          <p>Any non-trivial property of L(M) is undecidable. Syntactic properties of M's own description (state count, etc.) are NOT covered — those are decidable.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Reduction direction</span>
+          <p>To prove P undecidable: reduce a KNOWN-undecidable problem (e.g. HALT) TO P. Never the reverse direction.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">ε vs ∅</span>
+          <p>ε = empty string (a valid, zero-length match). ∅ = empty language (no strings at all, not even ε).</p>
+        </div>
+      </div>
+
+      <div class="card note" style="margin-top:26px;">
+        <span class="label">How to use this sheet</span>
+        <p>Read sections 01–06 once for understanding, then loop back to this page alone for every later revision pass — if any card doesn't immediately make sense, that's the section to reopen. TOC rewards being able to construct (a DFA, a CFG, a pumping-lemma proof) on the spot far more than recalling definitions — the fastest prep from here is working fresh construction problems, not re-reading theory.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — rapid-fire mix (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Is L = {a^n : n is a perfect square} regular?</summary>
+          <div class="ans">
+            <p>No — using the pumping lemma with pumping length p, choose w = a^(p²) (this is valid regardless of whether p itself is a perfect square, since p² always is). For any decomposition satisfying |xy| ≤ p and |y| > 0, y = a^k with 1 ≤ k ≤ p. Pumping down once (i = 0) gives length p² − k. Since (p−1)² = p² − 2p + 1 and 1 ≤ k ≤ p, we get p² − 2p + 1 < p² − k < p², so p² − k lies strictly between the consecutive perfect squares (p−1)² and p², and is therefore not itself a perfect square — contradicting the pumping lemma.</p>
+            <p class="final">Answer: No, not regular</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A grammar has the rule set S→aSb|bSa|SS|ε. Is the language generated context-free?</summary>
+          <div class="ans">
+            <p>Yes trivially — anything generated by a CFG is by definition context-free; the question of interest here would be ambiguity or exactly which strings it generates, not whether it's context-free (it is, by construction).</p>
+            <p class="final">Answer: Yes, context-free by definition</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Is the language L = {⟨M⟩ : M is a TM that halts on the empty string} decidable?</summary>
+          <div class="ans">
+            <p>No — this is essentially the halting problem restricted to a fixed input (empty string), and it's still undecidable via a reduction from the general halting problem.</p>
+            <p class="final">Answer: No, undecidable</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> True or false: every regular language is also context-free.</summary>
+          <div class="ans">
+            <p>True — the Chomsky hierarchy is a strict containment, regular ⊂ context-free, so every regular language can also be generated by some CFG (in fact, every regular language has a right-linear/left-linear grammar, which is a restricted CFG).</p>
+            <p class="final">Answer: True</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Is checking whether a given CFG is ambiguous decidable?</summary>
+          <div class="ans">
+            <p>No — determining whether an arbitrary CFG is ambiguous is undecidable in general (a well-known undecidable problem in the theory, distinct from but related to Rice's-theorem-style results at the Turing machine level).</p>
+            <p class="final">Answer: No, undecidable in general</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      Blueprint Notes — Theory of Computation for GATE CSE · built for revision, not first-read · official syllabus: "Regular expressions and finite automata. Context-free grammars and push-down automata. Regular and context-free languages, pumping lemma. Turing machines and undecidability."
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

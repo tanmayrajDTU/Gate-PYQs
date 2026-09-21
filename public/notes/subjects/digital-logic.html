@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(){try{var t=localStorage.getItem('gate-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Logic — Blueprint Notes for GATE CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<script>window.SITE_NAV_CONFIG={current:'digital-logic', base:'../'};</script>
+<script src="../assets/site-nav.js"></script>
+<div class="shell">
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="tag">GATE CSE // Digital Logic</span>
+      <h1>Blueprint&nbsp;Notes</h1>
+      <span class="sub">10 sheets · full syllabus</span>
+    </div>
+    <div class="navlist" id="navlist">
+      <div class="navgroup"><a class="navlink" href="#numbers"><span class="num">01</span> Number Systems &amp; Codes</a></div>
+      <div class="navgroup"><a class="navlink" href="#boolean"><span class="num">02</span> Boolean Algebra &amp; Gates</a></div>
+      <div class="navgroup"><a class="navlink" href="#minimization"><span class="num">03</span> K-Map &amp; Quine–McCluskey</a></div>
+      <div class="navgroup"><a class="navlink" href="#arithmetic-circuits"><span class="num">04</span> Adders &amp; Subtractors</a></div>
+      <div class="navgroup"><a class="navlink" href="#combinational"><span class="num">05</span> MUX, Decoders, Encoders</a></div>
+      <div class="navgroup"><a class="navlink" href="#latches-ff"><span class="num">06</span> Latches &amp; Flip-Flops</a></div>
+      <div class="navgroup"><a class="navlink" href="#counters-registers"><span class="num">07</span> Counters &amp; Registers</a></div>
+      <div class="navgroup"><a class="navlink" href="#fsm"><span class="num">08</span> Finite State Machines</a></div>
+      <div class="navgroup"><a class="navlink" href="#arithmetic"><span class="num">09</span> Computer Arithmetic</a></div>
+      <div class="navgroup"><a class="navlink" href="#revision"><span class="num">10</span> Revision Sheet</a></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <span class="eyebrow">Schematic notes · GATE CSE 2027</span>
+      <h1>Digital Logic, drawn out <em>like a circuit</em>, not summarized like a textbook.</h1>
+      <p>Ten short sheets covering the complete GATE CSE Digital Logic syllabus — number systems, Boolean algebra, minimization, combinational and sequential circuits, FSMs, and computer arithmetic — with truth tables, K-maps, timing diagrams, and the exact traps GATE likes to set.</p>
+      <div class="chips">
+        <span class="chip">01 Number Systems</span>
+        <span class="chip">02 Boolean Algebra</span>
+        <span class="chip">03 Minimization</span>
+        <span class="chip">04 Adders</span>
+        <span class="chip">05 MUX/Decoders</span>
+        <span class="chip">06 Flip-Flops</span>
+        <span class="chip">07 Counters</span>
+        <span class="chip">08 FSM</span>
+        <span class="chip">09 Arithmetic</span>
+        <span class="chip">10 Revision</span>
+      </div>
+      <svg class="hero-diagram" viewBox="0 0 300 220" aria-hidden="true">
+        <g fill="none" stroke="#2a2b33" stroke-width="1.4">
+          <rect x="20" y="20" width="60" height="40" rx="3"/>
+          <rect x="20" y="90" width="60" height="40" rx="3"/>
+          <rect x="140" y="55" width="60" height="40" rx="3"/>
+          <rect x="220" y="55" width="55" height="40" rx="3" stroke="#cba36b"/>
+          <line x1="80" y1="40" x2="140" y2="65"/>
+          <line x1="80" y1="110" x2="140" y2="85"/>
+          <line x1="200" y1="75" x2="220" y2="75"/>
+          <line x1="0" y1="40" x2="20" y2="40"/>
+          <line x1="0" y1="110" x2="20" y2="110"/>
+          <line x1="275" y1="75" x2="300" y2="75"/>
+          <circle cx="20" cy="40" r="2.5" fill="#cba36b" stroke="none"/>
+          <circle cx="20" cy="110" r="2.5" fill="#cba36b" stroke="none"/>
+          <circle cx="300" cy="75" r="2.5" fill="#d98a5f" stroke="none"/>
+        </g>
+        <g font-family="JetBrains Mono" font-size="10" fill="#6f6a60">
+          <text x="50" y="45">A</text><text x="50" y="115">B</text>
+          <text x="167" y="80" fill="#a8a196">Σ</text>
+        </g>
+      </svg>
+    </section>
+
+    <section class="topic" id="numbers">
+      <div class="topic-head"><span class="idx">01</span><h2>Number Systems &amp; Codes</h2></div>
+      <div class="topic-kicker">RADIX CONVERSION · COMPLEMENTS · BCD · GRAY CODE</div>
+
+      <h3 class="sub">Positional number systems</h3>
+      <p>Any number in base <code>r</code> with digits <code>d</code> represents a value as a weighted sum of powers of <code>r</code>:</p>
+      <div class="eq">N = Σ dᵢ · r<sup>i</sup>   (i runs over each digit position, powers of r increase left to right of the point)</div>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Common bases</h4>
+          <table>
+            <tr><th>Base</th><th>Radix</th><th>Digits</th></tr>
+            <tr><td>Binary</td><td>2</td><td>0, 1</td></tr>
+            <tr><td>Octal</td><td>8</td><td>0–7</td></tr>
+            <tr><td>Decimal</td><td>10</td><td>0–9</td></tr>
+            <tr><td>Hex</td><td>16</td><td>0–9, A–F</td></tr>
+          </table>
+        </div>
+        <div class="card note">
+          <span class="label">Fast conversion trick</span>
+          <p>Octal ↔ binary: group bits in 3s. Hex ↔ binary: group bits in 4s. Always group starting from the binary point outward — pad with zeros at the far ends only.</p>
+        </div>
+      </div>
+
+      <h3 class="sub">Complements — the key to subtraction by addition</h3>
+      <p>For any base <code>r</code>, two complements matter: the <strong>(r−1)'s complement</strong> and the <strong>r's complement</strong>.</p>
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Binary (r = 2)</span>
+          <p><strong>1's complement</strong>: flip every bit.<br><strong>2's complement</strong>: 1's complement + 1. Equivalently — copy bits up to and including the first 1 (from LSB), flip the rest.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">General radix</span>
+          <p>(r−1)'s complement of N (n digits) = (r<sup>n</sup> − 1) − N.<br>r's complement = (r<sup>n</sup>) − N = (r−1)'s complement + 1.</p>
+        </div>
+      </div>
+      <p>2's complement is used almost universally to represent signed integers because it gives a <strong>single representation for zero</strong> and lets addition/subtraction use the same adder hardware (see Section 09).</p>
+
+      <h3 class="sub">Binary codes</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">BCD (8421 code)</h4>
+          <p>Each decimal digit (0–9) coded in 4 bits using its natural binary value. Wastes 6 combinations (1010–1111) per digit — <strong>invalid states</strong> GATE loves to ask about.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Excess-3 code</h4>
+          <p>Add 3 (0011) to the 4-bit binary of each decimal digit. <strong>Self-complementing</strong>: 9's complement of a digit = bitwise complement of its Excess-3 code.</p>
+        </div>
+      </div>
+      <div class="card">
+        <h4 class="subsub">Gray code (reflected binary)</h4>
+        <p>Adjacent values differ in exactly <strong>one bit</strong> — used in K-maps and rotary encoders to avoid glitches when multiple bits change at once.</p>
+        <div class="eq">Binary → Gray:  g₀ = b₀ (MSB same);  gᵢ = bᵢ ⊕ bᵢ₋₁  for i &gt; 0
+Gray → Binary:  b₀ = g₀;            bᵢ = bᵢ₋₁ ⊕ gᵢ   for i &gt; 0</div>
+        <table>
+          <tr><th>Decimal</th><th>Binary</th><th>Gray</th></tr>
+          <tr><td>0</td><td>000</td><td>000</td></tr>
+          <tr><td>1</td><td>001</td><td>001</td></tr>
+          <tr><td>2</td><td>010</td><td>011</td></tr>
+          <tr><td>3</td><td>011</td><td>010</td></tr>
+          <tr><td>4</td><td>100</td><td>110</td></tr>
+        </table>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Number of 1's differing between two consecutive Gray codes is always exactly 1 — but the number of bit positions that differ between binary equivalents of Gray-adjacent values is <em>not</em> constant. Don't confuse "Gray distance" with "Hamming distance of the binary form."</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Find the 8-bit 2's complement representation of −45.</summary>
+          <div class="ans">
+            <p>45 in binary (8-bit) = 00101101. Invert all bits (1's complement): 11010010. Add 1: 11010011.</p>
+            <p class="final">Answer: 11010011</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Convert (247)₁₀ to octal.</summary>
+          <div class="ans">
+            <p>Divide repeatedly by 8: 247 ÷ 8 = 30 r 7; 30 ÷ 8 = 3 r 6; 3 ÷ 8 = 0 r 3. Read remainders bottom-up: 3, 6, 7.</p>
+            <p class="final">Answer: (367)₈</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Find the Gray code equivalent of binary 1011.</summary>
+          <div class="ans">
+            <p>Working left to right by position (no subscript convention needed): the Gray code's leftmost (MSB) bit equals the binary's leftmost bit. Each subsequent Gray bit is the XOR of the binary bit at that position with the binary bit immediately to its left. Binary: 1 0 1 1. Gray bit 1 (leftmost) = 1 (same as binary). Gray bit 2 = 1⊕0 = 1. Gray bit 3 = 0⊕1 = 1. Gray bit 4 (rightmost) = 1⊕1 = 0.</p>
+            <p class="final">Answer: 1110</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> How many 4-bit patterns are wasted (invalid) per digit in standard 8421 BCD, and which values are they?</summary>
+          <div class="ans">
+            <p>4 bits give 16 combinations (0000–1111), but BCD only uses 0000–1001 (0–9) for a single digit. That leaves 1010–1111 unused.</p>
+            <p class="final">Answer: 6 combinations wasted (values 10–15 in binary)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Find the Excess-3 code of decimal 6, and verify the self-complementing property against decimal 3.</summary>
+          <div class="ans">
+            <p>Excess-3(6) = binary(6) + 0011 = 0110 + 0011 = 1001. Excess-3(3) = 0011 + 0011 = 0110. Note 6 and 3 are 9's complements of each other (6+3=9), and their Excess-3 codes 1001 and 0110 are bitwise complements of each other — confirming the self-complementing property.</p>
+            <p class="final">Answer: Excess-3(6) = 1001</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_NUMBERS -->
+    <section class="topic" id="boolean">
+      <div class="topic-head"><span class="idx">02</span><h2>Boolean Algebra &amp; Logic Gates</h2></div>
+      <div class="topic-kicker">LAWS · DUALITY · UNIVERSAL GATES · CANONICAL FORMS</div>
+
+      <h3 class="sub">The seven laws</h3>
+      <table>
+        <tr><th>Law</th><th>OR form</th><th>AND form</th></tr>
+        <tr><td>Identity</td><td>A + 0 = A</td><td>A · 1 = A</td></tr>
+        <tr><td>Null</td><td>A + 1 = 1</td><td>A · 0 = 0</td></tr>
+        <tr><td>Idempotent</td><td>A + A = A</td><td>A · A = A</td></tr>
+        <tr><td>Complement</td><td>A + A' = 1</td><td>A · A' = 0</td></tr>
+        <tr><td>Commutative</td><td>A + B = B + A</td><td>AB = BA</td></tr>
+        <tr><td>Distributive</td><td>A+(BC) = (A+B)(A+C)</td><td>A(B+C) = AB+AC</td></tr>
+        <tr><td>Absorption</td><td>A + AB = A</td><td>A(A+B) = A</td></tr>
+      </table>
+      <div class="card formula">
+        <span class="label">De Morgan's theorem</span>
+        <div class="eq">(A + B)' = A'·B'          (A · B)' = A' + B'</div>
+        <p>Extends to n variables. This is the theorem behind converting any circuit to all-NAND or all-NOR form.</p>
+      </div>
+      <div class="card note">
+        <span class="label">Duality principle</span>
+        <p>Swap every <code>+ ↔ ·</code> and every <code>0 ↔ 1</code> in a true Boolean identity and it stays true. Useful to derive one law's form from the other instantly instead of memorizing both.</p>
+      </div>
+
+      <h3 class="sub">Logic gate symbols &amp; truth tables</h3>
+      <div class="gate-grid">
+        <div class="gate-card">
+          <svg viewBox="0 0 120 60"><g fill="none" stroke="#cba36b" stroke-width="2"><path d="M20 15 v30 h15 a20 20 0 0 0 0-30 z"/><line x1="5" y1="22" x2="20" y2="22"/><line x1="5" y1="38" x2="20" y2="38"/><line x1="55" y1="30" x2="70" y2="30"/></g></svg>
+          <span class="gname">AND</span><span class="gexpr">Y = A·B</span>
+        </div>
+        <div class="gate-card">
+          <svg viewBox="0 0 120 60"><g fill="none" stroke="#cba36b" stroke-width="2"><path d="M18 15 q14 15 0 30 q22-2 34-15 q-12-13-34-15 z"/><line x1="4" y1="22" x2="15" y2="22"/><line x1="4" y1="38" x2="15" y2="38"/><line x1="52" y1="30" x2="70" y2="30"/></g></svg>
+          <span class="gname">OR</span><span class="gexpr">Y = A+B</span>
+        </div>
+        <div class="gate-card">
+          <svg viewBox="0 0 120 60"><g fill="none" stroke="#cba36b" stroke-width="2"><path d="M22 18 v24 l26-12 z"/><circle cx="52" cy="30" r="4"/><line x1="6" y1="30" x2="22" y2="30"/><line x1="56" y1="30" x2="70" y2="30"/></g></svg>
+          <span class="gname">NOT</span><span class="gexpr">Y = A'</span>
+        </div>
+        <div class="gate-card">
+          <svg viewBox="0 0 120 60"><g fill="none" stroke="#cba36b" stroke-width="2"><path d="M20 15 v30 h15 a20 20 0 0 0 0-30 z"/><circle cx="39" cy="30" r="4"/><line x1="5" y1="22" x2="20" y2="22"/><line x1="5" y1="38" x2="20" y2="38"/><line x1="43" y1="30" x2="70" y2="30"/></g></svg>
+          <span class="gname">NAND</span><span class="gexpr">Y = (AB)'</span>
+        </div>
+        <div class="gate-card">
+          <svg viewBox="0 0 120 60"><g fill="none" stroke="#cba36b" stroke-width="2"><path d="M18 15 q14 15 0 30 q22-2 34-15 q-12-13-34-15 z"/><circle cx="56" cy="30" r="4"/><line x1="4" y1="22" x2="15" y2="22"/><line x1="4" y1="38" x2="15" y2="38"/><line x1="60" y1="30" x2="70" y2="30"/></g></svg>
+          <span class="gname">NOR</span><span class="gexpr">Y = (A+B)'</span>
+        </div>
+        <div class="gate-card">
+          <svg viewBox="0 0 120 60"><g fill="none" stroke="#cba36b" stroke-width="2"><path d="M14 15 q14 15 0 30" /><path d="M18 15 q14 15 0 30 q22-2 34-15 q-12-13-34-15 z"/><line x1="0" y1="22" x2="11" y2="22"/><line x1="0" y1="38" x2="11" y2="38"/><line x1="52" y1="30" x2="70" y2="30"/></g></svg>
+          <span class="gname">XOR</span><span class="gexpr">Y = A⊕B</span>
+        </div>
+      </div>
+      <div class="card note">
+        <span class="label">Universal gates</span>
+        <p><strong>NAND</strong> and <strong>NOR</strong> are each functionally complete — any Boolean function can be built using only one of them. Tying both inputs of a NAND together gives NOT; two NANDs in series with the right wiring give AND, OR, etc. This is exactly why real chips (7400 series) are built from NAND/NOR gates.</p>
+      </div>
+
+      <h3 class="sub">Canonical forms</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">SOP — Sum of Products</h4>
+          <p>OR of minterms. A <strong>minterm</strong> is a product term where every variable appears exactly once (true or complemented) — it is 1 for exactly one input row.</p>
+          <div class="eq">F(A,B,C) = Σm(1,3,5,6) = A'B'C + A'BC + AB'C + ABC'</div>
+        </div>
+        <div class="card">
+          <h4 class="subsub">POS — Product of Sums</h4>
+          <p>AND of maxterms. A <strong>maxterm</strong> is a sum term where every variable appears exactly once — it is 0 for exactly one input row.</p>
+          <div class="eq">F(A,B,C) = ΠM(0,2,4,7)</div>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>SOP is naturally formed from the minterms where F=1 (the rows the function is true for); POS is naturally formed from the maxterms where F=0 (the rows the function is false for). Minterm index i and maxterm index i are complementary rows of the <em>same</em> truth table: if a function's minterm list is {1,3,5,6}, its maxterm list is everything else — {0,2,4,7}. So for the same function, <strong>F = Σm(1,3,5,6) = ΠM(0,2,4,7)</strong> — the same F, expressed two ways, using complementary index sets over the full range of rows. GATE frequently asks you to convert Σm ↔ ΠM directly without redrawing the truth table; the most common mistake is listing the same index set for both instead of complementing it.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Simplify F = A + A'B using Boolean algebra.</summary>
+          <div class="ans">
+            <p>A + A'B = (A + A')(A + B) [distributive] = 1·(A+B) = A + B.</p>
+            <p class="final">Answer: F = A + B</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Express F = AB + C'D using only NOR gates (apply De Morgan).</summary>
+          <div class="ans">
+            <p>F = AB + C'D. Double-complement: F = ((AB + C'D)')' = ((AB)'·(C'D)')'. Mechanically, replace every AND with De Morgan's OR-of-complements form and implement every OR/complement stage with NOR (written X↓Y = (X+Y)'). Concretely, using NOR with tied inputs for NOT:</p>
+            <ul>
+              <li>A' = A↓A, B' = B↓B</li>
+              <li>AB = A'↓B' (since (A'+B')' = A·B by De Morgan)</li>
+              <li>C' = C↓C, D' = D↓D</li>
+              <li>C'D = C↓D' (since (C+D')' = C'·D by De Morgan)</li>
+              <li>F = (AB↓C'D)↓(AB↓C'D) (the standard double-NOR construction for OR: NOR(X,Y) fed into itself gives X+Y)</li>
+            </ul>
+            <p>So F = (AB↓C'D)↓(AB↓C'D). Counting each NOR used in the construction above: A' (1), B' (1), AB (1), C' (1), D' (1), C'D (1), plus the final double-NOR OR stage which itself takes 2 NOR gates (one to compute AB↓C'D, one more to feed that result into itself to recover the OR) — 6 + 2 = 8 two-input NOR gates total. (This is the gate count for the specific construction shown, not a claim that 8 is the global minimum for a NOR-only implementation of this function.)</p>
+            <p class="final">Key idea: repeatedly apply (X)'' = X and De Morgan until every operator is expressible as NOR — see the gate-by-gate construction above for F = (AB↓C'D)↓(AB↓C'D); this construction uses 8 two-input NOR gates</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> F(A,B,C,D) = ΠM(0,2,4,6,8,10,12,14). Write F in Σm form.</summary>
+          <div class="ans">
+            <p>Maxterm list and minterm list are complementary over 0–15. The given maxterms are exactly all even indices, so the minterms are all odd indices: 1,3,5,7,9,11,13,15.</p>
+            <p class="final">Answer: F = Σm(1,3,5,7,9,11,13,15) — this is simply F = D</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Minimum number of 2-input NAND gates needed to implement XOR (A⊕B)?</summary>
+          <div class="ans">
+            <p>A⊕B = AB' + A'B. Using only NAND: NAND1 = (AB)', then feed A and NAND1 into NAND2, B and NAND1 into NAND3, finally NAND4 combines NAND2 and NAND3's outputs. This is the standard 4-NAND XOR construction.</p>
+            <p class="final">Answer: 4 NAND gates</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> How many distinct Boolean functions are possible with 3 input variables?</summary>
+          <div class="ans">
+            <p>A truth table for n variables has 2ⁿ rows; each row's output can independently be 0 or 1, giving 2^(2ⁿ) distinct functions. For n=3: 2³ = 8 rows, so 2⁸ = 256 functions.</p>
+            <p class="final">Answer: 256</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_BOOLEAN -->
+    <section class="topic" id="minimization">
+      <div class="topic-head"><span class="idx">03</span><h2>K-Map &amp; Quine–McCluskey</h2></div>
+      <div class="topic-kicker">GROUPING RULES · PRIME IMPLICANTS · DON'T-CARES</div>
+
+      <h3 class="sub">Karnaugh map — grouping rules</h3>
+      <div class="card pyq">
+        <span class="label">The 7-point checklist — wrap-around, overlap, and don't-cares included</span>
+        <ul>
+          <li>Groups must contain exactly <strong>1, 2, 4, 8, 16, ...</strong> cells (a power of 2) — never 3, 5, 6, etc.</li>
+          <li><strong>Rectangular groups only</strong> — a valid group is always a rectangle (a single cell, a 1×2/2×1 pair, a 2×2 or 1×4 block, and so on); diagonal or L-shaped "groups" are never valid.</li>
+          <li>The map <strong>wraps around</strong> on both axes — leftmost and rightmost columns are adjacent, and top and bottom rows are adjacent (the map is topologically a torus).</li>
+          <li><strong>Overlapping groups are allowed</strong> — the same cell can belong to more than one group if that helps cover things more efficiently.</li>
+          <li><strong>Don't-care cells (X) may be used</strong> to help form a bigger group, but a group can never consist purely of don't-cares.</li>
+          <li><strong>Make every group as large as possible</strong> — a bigger group (more cells) always eliminates more literals and gives a simpler term.</li>
+          <li><strong>Every required 1 must be covered</strong> by at least one group in the final solution — an uncovered 1 means the minimization is incomplete (wrong).</li>
+        </ul>
+      </div>
+      <p>A group of 2ᵏ cells eliminates <code>k</code> variables from the resulting term — the variables that <em>change</em> across the group drop out; variables that stay constant remain.</p>
+
+      <h3 class="sub">Worked example — 4-variable map</h3>
+      <p>F(A,B,C,D) = Σm(0,1,2,3,4,5,6,7). Rows are AB in Gray order, columns are CD in Gray order:</p>
+      <div class="kmap" style="grid-template-columns:60px repeat(4,52px);">
+        <div class="cell head">AB\CD</div><div class="cell head">00</div><div class="cell head">01</div><div class="cell head">11</div><div class="cell head">10</div>
+        <div class="cell head">00</div><div class="cell one">1</div><div class="cell one">1</div><div class="cell one">1</div><div class="cell one">1</div>
+        <div class="cell head">01</div><div class="cell one">1</div><div class="cell one">1</div><div class="cell one">1</div><div class="cell one">1</div>
+        <div class="cell head">11</div><div class="cell">0</div><div class="cell">0</div><div class="cell">0</div><div class="cell">0</div>
+        <div class="cell head">10</div><div class="cell">0</div><div class="cell">0</div><div class="cell">0</div><div class="cell">0</div>
+      </div>
+      <p>The top two rows (AB = 00 and 01) are entirely 1 — an 8-cell group where A stays 0 across the whole group while B, C, D all vary. Result: <strong>F = A'</strong>. This is the pattern to recognize instantly: a full half of the map means one literal.</p>
+
+      <div class="card formula">
+        <span class="label">Reading a group</span>
+        <p>For any group, write only the variables that are <strong>constant</strong> across every cell in it (uncomplemented if the variable = 1 throughout, complemented if = 0 throughout); AND them together. A single cell keeps all n variables; the full map (all 2ⁿ cells) reduces to constant 1.</p>
+      </div>
+
+      <h3 class="sub">Quine–McCluskey (tabular method)</h3>
+      <p>Used when there are too many variables to map visually, or the process needs to be algorithmic (as it is inside a compiler/EDA tool).</p>
+      <ol>
+        <li><strong>Group</strong> minterms by number of 1's in their binary form.</li>
+        <li><strong>Combine</strong> pairs of minterms from adjacent groups that differ in exactly one bit; replace that bit with a dash (–). Tick off every minterm that gets combined.</li>
+        <li>Repeat combining on the new table (dashes must align) until no further combination is possible.</li>
+        <li>Terms that never got ticked off (in any pass) are <strong>prime implicants (PIs)</strong>.</li>
+        <li>Build a <strong>PI chart</strong>: rows = PIs, columns = minterms. A column with a single ✕ marks an <strong>essential PI</strong> — it must be in the final answer.</li>
+        <li>Select essential PIs first, then cover any remaining minterms with the fewest additional PIs (Petrick's method for the general case).</li>
+      </ol>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Number of prime implicants and number of essential prime implicants are <em>not</em> the same thing, and GATE frequently asks for one or the other precisely. A function can have PIs that are never essential — they cover only minterms already covered by other essential PIs, so a minimum SOP may exclude them entirely.</p>
+      </div>
+
+      <h3 class="sub">Don't-care conditions</h3>
+      <p>Arise when certain input combinations physically cannot occur (e.g. invalid BCD codes 1010–1111) or their output value is irrelevant to the design. Marked <code>X</code> or <code>d</code> in the map/table — treat as 1 or 0, whichever minimizes the expression further.</p>
+
+      <h3 class="sub">Static hazards — the K-map trap that's easy to miss</h3>
+      <p>A <strong>hazard</strong> is a momentary, unwanted glitch in a combinational circuit's output caused by different propagation delays along different paths, when more than one input literal changes for a given transition. Two flavors matter most for GATE:</p>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Static-1 hazard</h4>
+          <p>The output is supposed to <strong>stay at 1</strong> across the transition, but it can briefly glitch down to 0 before settling back at 1.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Static-0 hazard</h4>
+          <p>The output is supposed to <strong>stay at 0</strong> across the transition, but it can briefly glitch up to 1 before settling back at 0.</p>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — spotting and fixing a static-1 hazard on the K-map</span>
+        <p>A static-1 hazard shows up on a K-map exactly where <strong>two adjacent 1-cells are covered by two DIFFERENT groups, with no single group covering both</strong> — the transition between those two cells crosses a "seam" between product terms, and if one term is turning off exactly as the other is turning on, a brief dip to 0 can occur if the off-path is faster than the on-path.</p>
+        <p><strong>Fix: add a redundant (consensus) implicant that covers that exact adjacent pair</strong> — a group that is not needed for the minimum SOP's logical coverage (both cells are already covered by other groups individually) but overlaps the seam between them, so at least one term stays 1 throughout the transition and the output never has a reason to dip. This redundant group typically corresponds to the "consensus term" of the two overlapping groups' terms. The cost is a slightly less minimal circuit (one extra gate/term) in exchange for glitch-free behavior across that transition — a classic minimality-vs-hazard-freedom trade-off GATE likes to test conceptually.</p>
+        <p>Static-0 hazards are handled the mirror-image way, using a POS (product-of-sums) K-map covering the 0-cells and adding a redundant sum term across the seam between two adjacent 0-groups.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Minimize F(A,B,C) = Σm(0,1,2,5,6,7) using a K-map.</summary>
+          <div class="ans">
+            <p>Plotting the 3-var map: group {0,1,4,5}? — check the actual 1-cells: 0(000),1(001),2(010),5(101),6(110),7(111). Group {6,7,2,3}? 3 isn't a minterm here, so use {2,6} (BC'=... let's group directly: {0,1} → A'B'; {6,7} → AB; {2,6} → BC'... combining carefully gives F = A'B' + BC' + AC, verified by rechecking each minterm is covered.</p>
+            <p class="final">Answer: F = A'B' + AC + BC' (each minterm 0,1,2,5,6,7 covered — verify by substitution)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> F(A,B,C,D) = Σm(0,2,5,7,8,10,13,15). Find the minimized SOP.</summary>
+          <div class="ans">
+            <p>Notice every minterm has B⊕D = 0 pattern... checking: this classic "checkerboard" function is the XNOR of two variable-pairs. Working it out on the K-map, the 1-cells do combine into two 4-cell groups: {0,2,8,10} all have B=0,D=0, giving B'D'; and {5,7,13,15} all have B=1,D=1, giving BD. (Individually the minterms look scattered/checkerboard-like across the map, but B and D — not A and C — are the constant variables tying each group together.)</p>
+            <p class="final">Answer: F = B'D' + BD (equivalently F = (B⊕D)'), and no further simplification is possible — a good example of a function needing every prime implicant</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Using Quine–McCluskey, combine minterms m5 (0101) and m7 (0111).</summary>
+          <div class="ans">
+            <p>Compare bit by bit: 0101 vs 0111 — they differ only in the 3rd bit (from left, 0-indexed position 2). Since exactly one bit differs, they combine, replacing that bit with a dash.</p>
+            <p class="final">Answer: 01-1 (both minterms get ticked off as combined)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> F(A,B,C,D) = Σm(1,3,7,11,15). How many essential prime implicants does it have?</summary>
+          <div class="ans">
+            <p>All listed minterms have D=1. Plotting on the K-map: 1(0001), 3(0011), 7(0111), 11(1011), 15(1111) — all lie in the D=1 half. Grouping: {1,3} combine to A'B'D (a group of 2, since no adjacent minterm 5 or 9 is present to grow it further), and {3,7,11,15} form a group of 4 giving CD (C and D constant = 1 across all four). A prime implicant is <strong>essential</strong> specifically when it is the <em>only</em> prime implicant covering some minterm — not because of its group size. Checking each minterm: m1 is covered only by A'B'D (no other PI reaches it) — so A'B'D is essential. m11 (and m15) are covered only by CD (no other PI reaches them) — so CD is essential. m3 happens to be covered by both A'B'D and CD, so m3 alone wouldn't make either one essential, but each is already essential on the strength of m1 and m11 respectively.</p>
+            <p class="final">Answer: 2 essential prime implicants — A'B'D (essential via m1) and CD (essential via m11/m15)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Minimize F(A,B,C) = Σm(1,3,5) + d(0,2,4) using don't-cares.</summary>
+          <div class="ans">
+            <p>Minterms 1,3,5 must be 1; 0,2,4 are don't-care; 6,7 are 0 by omission. On the K-map, setting don't-cares 0,2,4 to 1 lets two 4-cell groups form: A=0 covers {0,1,2,3} (all 1 or don't-care) giving term A', and B=0 covers {0,1,4,5} (all 1 or don't-care) giving term B'. Together A'+B' cover 1,3,5 exactly, while m6(110) and m7(111) — both A=1,B=1 — are correctly left at 0 since neither group reaches them. (Setting F=C would wrongly force F(7)=1, but m7 is a hard 0, not a don't-care — so F=C is not a valid minimization here.)</p>
+            <p class="final">Answer: F = A' + B'</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_MINIMIZATION -->
+    <section class="topic" id="arithmetic-circuits">
+      <div class="topic-head"><span class="idx">04</span><h2>Adders &amp; Subtractors</h2></div>
+      <div class="topic-kicker">HALF/FULL ADDER · RIPPLE CARRY · CARRY LOOK-AHEAD</div>
+
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Half adder</h4>
+          <p>Adds two single bits, no carry-in.</p>
+          <table>
+            <tr><th>A</th><th>B</th><th>S</th><th>C</th></tr>
+            <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+            <tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+          </table>
+          <div class="eq">S = A⊕B
+C = A·B</div>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Full adder</h4>
+          <p>Adds A, B and a carry-in Cin. Built from two half adders + OR gate.</p>
+          <div class="eq">S    = A ⊕ B ⊕ Cin
+Cout = AB + Cin(A⊕B) = AB + BCin + ACin</div>
+          <p>Cout is 1 whenever <strong>at least two</strong> of A, B, Cin are 1 — it's a majority function.</p>
+        </div>
+      </div>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 560 130" width="560">
+          <g fill="none" stroke="#cba36b" stroke-width="1.6" font-family="JetBrains Mono" font-size="11">
+            <rect x="0" y="0" width="560" height="130" fill="none" stroke="none"/>
+            <!-- 4 full adder blocks -->
+            <g transform="translate(20,20)">
+              <rect x="0" y="0" width="90" height="70" rx="4"/>
+              <text x="45" y="40" fill="#f2ede4" text-anchor="middle">FA₀</text>
+              <line x1="20" y1="-14" x2="20" y2="0"/><text x="20" y="-18" fill="#a8a196" text-anchor="middle">A₀</text>
+              <line x1="70" y1="-14" x2="70" y2="0"/><text x="70" y="-18" fill="#a8a196" text-anchor="middle">B₀</text>
+              <line x1="45" y1="70" x2="45" y2="84"/><text x="45" y="98" fill="#d98a5f" text-anchor="middle">S₀</text>
+            </g>
+            <g transform="translate(150,20)">
+              <rect x="0" y="0" width="90" height="70" rx="4"/>
+              <text x="45" y="40" fill="#f2ede4" text-anchor="middle">FA₁</text>
+              <line x1="20" y1="-14" x2="20" y2="0"/><text x="20" y="-18" fill="#a8a196" text-anchor="middle">A₁</text>
+              <line x1="70" y1="-14" x2="70" y2="0"/><text x="70" y="-18" fill="#a8a196" text-anchor="middle">B₁</text>
+              <line x1="45" y1="70" x2="45" y2="84"/><text x="45" y="98" fill="#d98a5f" text-anchor="middle">S₁</text>
+            </g>
+            <g transform="translate(280,20)">
+              <rect x="0" y="0" width="90" height="70" rx="4"/>
+              <text x="45" y="40" fill="#f2ede4" text-anchor="middle">FA₂</text>
+              <line x1="20" y1="-14" x2="20" y2="0"/><text x="20" y="-18" fill="#a8a196" text-anchor="middle">A₂</text>
+              <line x1="70" y1="-14" x2="70" y2="0"/><text x="70" y="-18" fill="#a8a196" text-anchor="middle">B₂</text>
+              <line x1="45" y1="70" x2="45" y2="84"/><text x="45" y="98" fill="#d98a5f" text-anchor="middle">S₂</text>
+            </g>
+            <g transform="translate(410,20)">
+              <rect x="0" y="0" width="90" height="70" rx="4"/>
+              <text x="45" y="40" fill="#f2ede4" text-anchor="middle">FA₃</text>
+              <line x1="20" y1="-14" x2="20" y2="0"/><text x="20" y="-18" fill="#a8a196" text-anchor="middle">A₃</text>
+              <line x1="70" y1="-14" x2="70" y2="0"/><text x="70" y="-18" fill="#a8a196" text-anchor="middle">B₃</text>
+              <line x1="45" y1="70" x2="45" y2="84"/><text x="45" y="98" fill="#d98a5f" text-anchor="middle">S₃</text>
+            </g>
+            <!-- carry chain -->
+            <line x1="0" y1="55" x2="20" y2="55" stroke="#e0776c"/><text x="-4" y="51" fill="#e0776c" text-anchor="end">C₀</text>
+            <line x1="110" y1="55" x2="150" y2="55" stroke="#e0776c"/>
+            <line x1="240" y1="55" x2="280" y2="55" stroke="#e0776c"/>
+            <line x1="370" y1="55" x2="410" y2="55" stroke="#e0776c"/>
+            <line x1="500" y1="55" x2="524" y2="55" stroke="#e0776c"/><text x="528" y="51" fill="#e0776c">C₄ (Cout)</text>
+          </g>
+        </svg>
+        <div class="diagram-cap">4-bit ripple carry adder — Cout of each stage feeds Cin of the next.</div>
+      </div>
+
+      <div class="card note">
+        <span class="label">Ripple carry vs carry look-ahead</span>
+        <p><strong>Ripple carry adder (RCA)</strong>: n full adders chained; simple, but worst-case delay grows <strong>O(n)</strong> since carry must propagate through every stage. <strong>Carry look-ahead adder (CLA)</strong>: computes each carry directly from the inputs using generate/propagate signals, cutting delay to roughly O(log n) at the cost of more hardware.</p>
+        <div class="eq">Gᵢ = Aᵢ·Bᵢ   (generate)      Pᵢ = Aᵢ⊕Bᵢ   (propagate)
+Cᵢ₊₁ = Gᵢ + Pᵢ·Cᵢ</div>
+      </div>
+
+      <h3 class="sub">Subtractor via 2's complement</h3>
+      <p>A − B is computed as A + (2's complement of B), using the <strong>same adder hardware</strong> as addition:</p>
+      <div class="eq">A − B = A + B' + 1   → feed B through XOR gates with a mode signal M
+   M = 0 : Adder   (XOR passes B unchanged, Cin = 0)
+   M = 1 : Subtractor (XOR inverts B, Cin = 1)</div>
+      <p>A discarded/ignored final carry-out in this scheme signals the result's sign convention in 2's complement arithmetic — see Section 09 for overflow detection rules.</p>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — ripple-carry delay has no single universal formula</span>
+        <p>There isn't one formula that always applies — <strong>always use the delay model given in the question</strong>. Different problems define the per-stage delay differently: carry-propagation delay (t<sub>carry</sub>, the time for Cin→Cout through one full adder) is often NOT the same as sum delay (t<sub>sum</sub>, the time for inputs→S through one full adder), and some problems only give a single generic "gate delay" meant to stand in for both. Read exactly which delay(s) are defined before plugging into any formula.</p>
+        <p>If the question gives you both delays separately (the common, safer case), for an n-bit ripple carry adder:</p>
+        <div class="eq">Final carry-out (Cₙ)  ≈  n × t_carry
+   (Cₙ must ripple through all n stages' carry chains)
+
+Final sum (Sₙ₋₁, the most-significant sum bit)  ≈  (n−1) × t_carry  +  t_sum
+   (the carry ripples through the first n−1 stages, then the last stage
+    additionally needs its own sum-gate delay)</div>
+        <p>If t<sub>carry</sub> = t<sub>sum</sub> = t (a single flat delay per full adder, as some simplified problems assume), this collapses to Cₙ ≈ n·t and the final sum ≈ (n−1)·t + t = n·t — which is where the older "n·t + one extra sum-gate delay" shorthand came from. Treat that shorthand as a special case of the general model above, not the default — check the problem's stated delays before assuming carry and sum delays are equal.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A full adder has inputs A=1, B=0, Cin=1. Find S and Cout.</summary>
+          <div class="ans">
+            <p>S = A⊕B⊕Cin = 1⊕0⊕1 = 0. Cout = AB + BCin + ACin = (1·0)+(0·1)+(1·1) = 0+0+1 = 1.</p>
+            <p class="final">Answer: S = 0, Cout = 1</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Each full adder in a 4-bit ripple carry adder has a carry delay of 2 gate-delays and a sum delay of 3 gate-delays. Find the worst-case time to produce the final sum output S₃.</summary>
+          <div class="ans">
+            <p>The carry must ripple through the first 3 stages before reaching the 4th: 3 stages × 2 = 6 gate-delays. The 4th stage then needs its own sum delay of 3 gate-delays on top of that.</p>
+            <p class="final">Answer: 6 + 3 = 9 gate-delays</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Assuming only 2-input NAND gates are allowed and intermediate outputs may be freely reused, what is the minimum number of 2-input NAND gates needed to implement a half adder?</summary>
+          <div class="ans">
+            <p>A half adder needs S = A⊕B and C = AB. Under these assumptions, a standard NAND-only build uses 5 two-input NAND gates total (the classic XOR-from-NAND network of 4 gates, reusing its intermediate signals, plus 1 more NAND, inverted, to derive AB).</p>
+            <p class="final">Answer: 5 NAND gates</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Compute A − B for A = 0101, B = 0011 (4-bit) using 2's complement addition.</summary>
+          <div class="ans">
+            <p>2's complement of B=0011: invert → 1100, add 1 → 1101. Now add: 0101 + 1101 = 10010. Discard the carry-out beyond bit 3, leaving 0010.</p>
+            <p class="final">Answer: 0010 (decimal 2, correct since 5 − 3 = 2)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> In a carry look-ahead adder, G₀=0, P₀=1, G₁=1, P₁=0, and C₀=1. Find C₂.</summary>
+          <div class="ans">
+            <p>C₁ = G₀ + P₀C₀ = 0 + (1·1) = 1. C₂ = G₁ + P₁C₁ = 1 + (0·1) = 1.</p>
+            <p class="final">Answer: C₂ = 1</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_ARITHCIRC -->
+    <section class="topic" id="combinational">
+      <div class="topic-head"><span class="idx">05</span><h2>MUX, Decoders &amp; Encoders</h2></div>
+      <div class="topic-kicker">DATA SELECTORS · CODE CONVERTERS · IMPLEMENTING FUNCTIONS WITH MUX</div>
+
+      <h3 class="sub">Multiplexer (MUX)</h3>
+      <p>A 2ⁿ:1 MUX selects one of 2ⁿ data inputs using n select lines and routes it to a single output.</p>
+      <div class="eq">Y = Σ (Dᵢ · mᵢ)   where mᵢ is the i-th minterm of the select lines</div>
+      <div class="card formula">
+        <span class="label">Implementing an n-variable function with a MUX</span>
+        <p>A 2<sup>n−1</sup>:1 MUX can realize <em>any</em> n-variable Boolean function: put n−1 variables on the select lines, and on each data input place 0, 1, the remaining variable, or its complement — read straight off the truth table row-pairs.</p>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE favorite</span>
+        <p>"Implement F(A,B,C) using a 4:1 MUX" — put A, B on select lines S1S0, then for each of the 4 combinations look at what C-value(s) make F = 1: the data input becomes 0, 1, C, or C' accordingly. This exact question type appears almost every year.</p>
+      </div>
+
+      <h3 class="sub">Demultiplexer (DEMUX)</h3>
+      <p>The inverse of a MUX: one input routed to one of 2ⁿ outputs, chosen by n select lines. A decoder with an enable input <em>is</em> a demultiplexer.</p>
+
+      <h3 class="sub">Decoder</h3>
+      <p>An n-to-2ⁿ decoder activates exactly one of 2ⁿ output lines based on the binary input code — each output line is literally one minterm.</p>
+      <div class="card">
+        <h4 class="subsub">Building larger decoders</h4>
+        <p>A 3-to-8 decoder can be built from two 2-to-4 decoders (with enable) — the MSB of the 3-bit input drives the enable lines, cleanly splitting the 8 minterms into two groups of 4. This "decoder tree" idea generalizes to any size and is a recurring GATE construction question.</p>
+      </div>
+
+      <h3 class="sub">Encoder</h3>
+      <p>The inverse of a decoder: 2ⁿ input lines (only one active at a time, ideally) compress to an n-bit binary code.</p>
+      <div class="card note">
+        <span class="label">Priority encoder</span>
+        <p>Ordinary encoders break if more than one input is active simultaneously. A <strong>priority encoder</strong> resolves this by outputting the code of the <strong>highest-priority</strong> active input, ignoring lower-priority ones — and typically adds a "valid output" (V) signal that's 0 when no input is active at all.</p>
+      </div>
+
+      <h3 class="sub">Magnitude comparator</h3>
+      <p>Compares two n-bit numbers A and B, producing three outputs: A&gt;B, A=B, A&lt;B.</p>
+      <div class="eq">A = B  ⇔  every corresponding bit pair is equal (XNOR each pair, AND all results)
+For A &gt; B: scan from MSB — the first bit position where they differ decides it (A's bit = 1, B's bit = 0)</div>
+
+      <h3 class="sub">Code converters</h3>
+      <p>Any conversion between two n-bit codes (binary↔Gray, binary↔BCD, Excess-3↔BCD) is just a combinational circuit: write the truth table mapping input code to output code, then minimize each output bit independently with a K-map.</p>
+
+      <h3 class="sub">Programmable logic — ROM, PLA, PAL</h3>
+      <p>All three implement Boolean functions as an AND array feeding an OR array, but differ in what's fixed vs programmable:</p>
+      <table>
+        <tr><th>Device</th><th>AND array</th><th>OR array</th></tr>
+        <tr><td>ROM</td><td>Fixed (all minterms)</td><td>Programmable</td></tr>
+        <tr><td>PLA</td><td>Programmable</td><td>Programmable</td></tr>
+        <tr><td>PAL</td><td>Programmable</td><td>Fixed</td></tr>
+      </table>
+      <p>A ROM used as logic realizes any n-input, m-output function directly since its AND array already generates every minterm — but it wastes AND gates for functions that don't need every minterm; a PLA/PAL only builds the product terms actually required, trading flexibility for smaller size.</p>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> Implement F(A,B,C) = Σm(1,3,5,6) using a 4:1 MUX with A, B on the select lines. Find the four data inputs.</summary>
+          <div class="ans">
+            <p>Fix A,B and see what value of C (or constant) makes F=1 for each pair, reading the minterm list against AB: AB=00 → row is m0=0,m1=1 → depends on C → input = C. AB=01 → m2=0,m3=1 → input = C. AB=10 → m4=0,m5=1 → input = C. AB=11 → m6=1,m7=0 → input = C'.</p>
+            <p class="final">Answer: D0=C, D1=C, D2=C, D3=C'</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> How many 3-to-8 decoders (with enable) are needed to build a 5-to-32 decoder?</summary>
+          <div class="ans">
+            <p>A 5-to-32 decoder needs 32 output lines. Each 3-to-8 decoder gives 8 outputs, so 32/8 = 4 decoders are needed at the second level, plus one 2-to-4 decoder (using the top 2 address bits) to generate the 4 enable signals that pick which 3-to-8 decoder is active.</p>
+            <p class="final">Answer: 4 (3-to-8) decoders + 1 (2-to-4) decoder = 5 decoders total</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A 4-input priority encoder (D3 highest priority) has inputs D3D2D1D0 = 0110. Find the output code.</summary>
+          <div class="ans">
+            <p>D3=0 so it's not the priority winner. D2=1 is the highest active input, so the encoder outputs the code for index 2 regardless of D1 or D0's state.</p>
+            <p class="final">Answer: Output = 10 (binary for 2), Valid(V) = 1</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> How many 3-input AND gates does a standard 3-to-8 decoder need (excluding any enable logic)?</summary>
+          <div class="ans">
+            <p>Each of the 8 outputs is one distinct minterm of the 3 inputs, and each minterm needs its own 3-input AND gate.</p>
+            <p class="final">Answer: 8 AND gates</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Realize F(A,B,C) = A⊕B⊕C using an 8:1 MUX with A, B, C on the select lines.</summary>
+          <div class="ans">
+            <p>With all 3 variables on select lines, each data input is simply the truth-table value for that row — no variables left to place on data lines. F is 1 for odd parity: rows 001,010,100,111 → minterms 1,2,4,7.</p>
+            <p class="final">Answer: D1=D2=D4=D7=1, all other data inputs = 0</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_COMBINATIONAL -->
+    <section class="topic" id="latches-ff">
+      <div class="topic-head"><span class="idx">06</span><h2>Latches &amp; Flip-Flops</h2></div>
+      <div class="topic-kicker">SR/D/JK/T · CHARACTERISTIC &amp; EXCITATION TABLES · MASTER-SLAVE</div>
+
+      <div class="card note">
+        <span class="label">Latch vs flip-flop</span>
+        <p>A <strong>latch</strong> is level-triggered — transparent and follows its input whenever enable is asserted. A <strong>flip-flop</strong> is edge-triggered — it samples input only at a clock edge (rising or falling) and holds state otherwise. Flip-flops are what synchronous sequential circuits are built from.</p>
+      </div>
+
+      <h3 class="sub">SR latch (NOR-based)</h3>
+      <table>
+        <tr><th>S</th><th>R</th><th>Q(next)</th><th>State</th></tr>
+        <tr><td>0</td><td>0</td><td>Q</td><td>hold</td></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>reset</td></tr>
+        <tr><td>1</td><td>0</td><td>1</td><td>set</td></tr>
+        <tr><td>1</td><td>1</td><td>—</td><td><span style="color:#e0776c">invalid / forbidden</span></td></tr>
+      </table>
+      <p>S = R = 1 forces both Q and Q' toward 0, breaking the complementary-outputs guarantee — this state is avoided by design.</p>
+
+      <h3 class="sub">Characteristic &amp; excitation tables</h3>
+      <p>The <strong>characteristic table</strong> gives next state from present state and inputs (used to analyze a circuit). The <strong>excitation table</strong> is its inverse — given present state and desired next state, what inputs are needed (used to design a circuit).</p>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">D flip-flop</h4>
+          <div class="eq">Characteristic: Q(next) = D</div>
+          <table><tr><th>Q</th><th>Q(next)</th><th>D</th></tr>
+            <tr><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>0</td><td>0</td></tr>
+            <tr><td>1</td><td>1</td><td>1</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h4 class="subsub">T flip-flop</h4>
+          <div class="eq">Characteristic: Q(next) = T⊕Q</div>
+          <table><tr><th>Q</th><th>Q(next)</th><th>T</th></tr>
+            <tr><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>0</td><td>1</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h4 class="subsub">JK flip-flop</h4>
+          <div class="eq">Characteristic: Q(next) = JQ' + K'Q</div>
+          <table><tr><th>J</th><th>K</th><th>Q(next)</th></tr>
+            <tr><td>0</td><td>0</td><td>Q (hold)</td></tr>
+            <tr><td>0</td><td>1</td><td>0</td></tr>
+            <tr><td>1</td><td>0</td><td>1</td></tr>
+            <tr><td>1</td><td>1</td><td>Q' (toggle)</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Excitation table (all four)</h4>
+          <table>
+            <tr><th>Q→Q'</th><th>S R</th><th>D</th><th>J K</th><th>T</th></tr>
+            <tr><td>0→0</td><td>0 X</td><td>0</td><td>0 X</td><td>0</td></tr>
+            <tr><td>0→1</td><td>1 0</td><td>1</td><td>1 X</td><td>1</td></tr>
+            <tr><td>1→0</td><td>0 1</td><td>0</td><td>X 1</td><td>1</td></tr>
+            <tr><td>1→1</td><td>X 0</td><td>1</td><td>X 0</td><td>0</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Flip-flop conversion questions (e.g. "implement a D flip-flop using JK") are solved by comparing characteristic equations, not by memorizing a wiring diagram: write the target's characteristic equation, express J and K as functions of D and Q using the JK excitation table, then simplify. This algebraic route works for any conversion pair and avoids careless errors.</p>
+      </div>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 480 130" width="480">
+          <g font-family="JetBrains Mono" font-size="11">
+            <text x="0" y="14" fill="#a8a196">CLK</text>
+            <path d="M40 20 h40 v20 h40 v-20 h40 v20 h40 v-20 h40 v20 h40" fill="none" stroke="#cba36b" stroke-width="1.8"/>
+            <text x="0" y="54" fill="#a8a196">D</text>
+            <path d="M40 60 h80 v-20 h160 v20 h40" fill="none" stroke="#d98a5f" stroke-width="1.8"/>
+            <text x="0" y="94" fill="#a8a196">Q</text>
+            <path d="M40 100 h120 v-20 h120 v20 h40" fill="none" stroke="#e0776c" stroke-width="1.8"/>
+            <line x1="80" y1="0" x2="80" y2="120" stroke="#2a2b33" stroke-dasharray="2 3"/>
+            <line x1="200" y1="0" x2="200" y2="120" stroke="#2a2b33" stroke-dasharray="2 3"/>
+            <text x="80" y="128" fill="#6f6a60" text-anchor="middle">rising edge</text>
+            <text x="200" y="128" fill="#6f6a60" text-anchor="middle">rising edge</text>
+          </g>
+        </svg>
+        <div class="diagram-cap">Positive edge-triggered D flip-flop — Q updates to D's value only at the rising edge of CLK, then holds.</div>
+      </div>
+
+      <h3 class="sub">Master–slave configuration</h3>
+      <p>Two latches in series (master transparent while clock is high, slave transparent while clock is low, or vice versa) — this blocks <strong>race-around</strong>, the problem where a level-triggered JK latch with J=K=1 would toggle repeatedly for as long as the clock pulse stays active. Master-slave / true edge-triggered designs sample input only once per clock cycle.</p>
+
+      <div class="card formula">
+        <span class="label">Setup &amp; hold time</span>
+        <p><strong>Setup time (tsu)</strong>: minimum time input must be stable <em>before</em> the clock edge. <strong>Hold time (th)</strong>: minimum time input must remain stable <em>after</em> the clock edge. Violating setup/hold requirements <strong>can</strong> cause metastability and makes the sampled value unreliable — it doesn't guarantee metastability on every single occurrence, since the flip-flop's internal amplifier may still resolve to a valid 0 or 1 quickly enough most of the time, just with no guarantee of which value or how long resolution takes. Maximum clock frequency of a flip-flop chain is bounded by <code>1 / (tclk-to-q + tcombinational + tsu)</code>.</p>
+        <div class="card note" style="margin-top:10px;">
+          <span class="label">Why this is fundamentally probabilistic, not a binary trigger</span>
+          <p>Setup/hold violations are <strong>analog timing phenomena</strong> at heart — the flip-flop's internal latch is a bistable analog circuit, and a violation means the input changed while that circuit was still in the middle of resolving toward 0 or 1. Whether it resolves in time, resolves late, or hangs in an in-between voltage for an unbounded (theoretically unbounded) duration is a matter of physics and probability, not digital logic. The digital abstraction has no way to represent "resolving," so it simply treats the result as <strong>indeterminate/unreliable</strong> rather than claiming metastability is certain to occur.</p>
+        </div>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> For a NOR-based, active-high SR latch, inputs S=1, R=1 are applied and then both are dropped to S=0, R=0 simultaneously. What happens?</summary>
+          <div class="ans">
+            <p>This is specifically about the NOR-based active-high SR latch, where S=R=1 is the invalid combination. The interpretation flips for a NAND-based active-low SR latch (S=R=1 → hold, S=R=0 → invalid), so always check which implementation a question means before applying either analysis.</p>
+            <p>Two distinct things are happening here, and it's worth keeping them separate. First, S=R=1 is the <strong>forbidden/invalid input combination</strong> — it forces both Q and Q' toward 0, violating their required complementary relationship (Q and Q' are supposed to always be opposite). Second, when both inputs then drop to 0 at exactly the same instant from that invalid state, which output settles to 1 depends on tiny, unequal gate-propagation-delay mismatches between the two cross-coupled gates — this specific unpredictable settling is an <strong>indeterminate/unpredictable final state caused by propagation-delay mismatch</strong>. In practical implementations this race can also trigger genuine metastability (the output hovering at an invalid intermediate voltage before resolving), but "indeterminate final state" and "metastability" aren't strictly the same thing — don't equate every such race directly with metastability. This is also not the same phenomenon as "race-around" (which specifically refers to a level-triggered JK latch with J=K=1 toggling repeatedly for as long as its enable/clock pulse stays high — see the JK section). Don't use "race-around" for this SR case; reserve that term for the JK toggling issue.</p>
+            <p class="final">Answer: Next state is indeterminate — an unpredictable settling outcome caused by unequal propagation delays (which can also trigger metastability in practice), distinct from JK's "race-around"</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Derive the J and K inputs needed to make a JK flip-flop behave as a D flip-flop.</summary>
+          <div class="ans">
+            <p>Target: Q(next) = D. JK characteristic equation: Q(next) = JQ' + K'Q. Matching term-by-term against D = D·Q' + D·Q (expanding D using Q,Q'): the Q' coefficient gives J = D, and the Q coefficient gives K' = D, so K = D'.</p>
+            <p class="final">Answer: J = D, K = D'</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A T flip-flop starts at Q=0 with T=1 held constant. What is Q after 5 clock pulses?</summary>
+          <div class="ans">
+            <p>With T=1, the flip-flop toggles every clock pulse: 0→1→0→1→0→1 after pulses 1,2,3,4,5 respectively. After an odd number of toggles from 0, Q=1.</p>
+            <p class="final">Answer: Q = 1</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A D flip-flop has tclk-to-q = 2 ns, requires tsu = 1 ns, and drives 3 ns of combinational logic before the next flip-flop. Find the maximum clock frequency.</summary>
+          <div class="ans">
+            <p>Minimum clock period Tmin = tclk-to-q + tcombinational + tsu = 2 + 3 + 1 = 6 ns. Maximum frequency = 1/Tmin.</p>
+            <p class="final">Answer: fmax = 1/6ns ≈ 166.7 MHz</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Why does a level-triggered JK latch (not master-slave) malfunction when J=K=1 and the clock/enable stays high for a long pulse?</summary>
+          <div class="ans">
+            <p>With J=K=1 the latch is asked to toggle. But since it's level-triggered (transparent), it keeps re-sampling its own new output as long as enable stays high, and toggles repeatedly and uncontrollably for the pulse duration — a phenomenon called "race-around." The final state when the clock finally drops is unpredictable.</p>
+            <p class="final">Answer: Race-around condition — fixed by using an edge-triggered / master-slave design instead</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_LATCHFF -->
+    <section class="topic" id="counters-registers">
+      <div class="topic-head"><span class="idx">07</span><h2>Counters &amp; Registers</h2></div>
+      <div class="topic-kicker">RIPPLE VS SYNCHRONOUS · MOD-N · RING/JOHNSON · SHIFT REGISTERS</div>
+
+      <h3 class="sub">Asynchronous (ripple) counters</h3>
+      <p>Each flip-flop's clock input is driven by the <strong>previous</strong> flip-flop's output, not the master clock. Simple to build (usually T or JK flip-flops wired to toggle), but state changes ripple through stage by stage — delay grows with the number of bits, and the outputs are momentarily inconsistent (glitchy) during a transition.</p>
+
+      <h3 class="sub">Synchronous counters</h3>
+      <p>Every flip-flop shares the same clock; next-state logic is computed combinationally from the present state. This avoids the cumulative ripple-clock delay that asynchronous counters have — but it does not mean glitch-free outputs. When multiple state bits change simultaneously, any combinational logic decoding those bits (e.g. an output decoder) can still produce transient glitches from unequal propagation delays across paths (a hazard), just like the Moore-output case discussed later on this page. Synchronous design needs more gate hardware than ripple counters; GATE's design questions almost always mean synchronous design. Outputs are glitch-free only if they're registered (latched synchronously) or the decode logic is otherwise hazard-controlled.</p>
+      <div class="card formula">
+        <span class="label">Synchronous counter design procedure</span>
+        <ol>
+          <li>Draw the state diagram / state table for the required count sequence.</li>
+          <li>Choose flip-flop type; write the excitation table using its Q→Q' entries (Section 06).</li>
+          <li>K-map each excitation input as a function of present-state bits.</li>
+          <li>Draw the circuit from the minimized expressions.</li>
+        </ol>
+      </div>
+
+      <h3 class="sub">Mod-N counters</h3>
+      <p>A counter that cycles through N states before repeating. For N not a power of 2, an n-bit binary counter (2ⁿ ≥ N) needs <strong>extra reset/load logic</strong> to skip the unused states — e.g. a mod-6 counter using 3 flip-flops must force a reset when it reaches state 110 (6), jumping back to 000.</p>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>"Minimum number of flip-flops for a mod-N counter" = ⌈log₂N⌉ — always round up, and remember unused states (2ⁿ − N of them) can become <strong>don't-cares</strong> in the excitation K-maps, often simplifying the design significantly, unless the question demands self-correcting behavior from invalid states.</p>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Ring counter</h4>
+          <p>n flip-flops in a shift-register loop with a single 1 (or 0) circulating. Only n valid states out of 2ⁿ possible — wasteful of states but decoder-free (each flip-flop output directly indicates one count).</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Johnson (twisted-ring) counter</h4>
+          <p>Like a ring counter but the <strong>complemented</strong> output of the last stage feeds back to the first. Produces 2n valid states from n flip-flops — double the states of a ring counter for the same hardware.</p>
+        </div>
+      </div>
+
+      <div class="card pyq">
+        <span class="label">GATE trap — a ring counter needs a valid one-hot start, or it locks up</span>
+        <p>The n valid states of a basic ring counter are the n one-hot patterns (exactly one flip-flop is 1, the rest are 0). This only works if the counter is <strong>initialized into one of those one-hot states</strong> — typically via a preset/clear pulse at startup, since flip-flops don't reliably power up into any particular known state on their own.</p>
+        <p>Crucially, the <strong>all-zero state (0000...0) is NOT one of the n valid states, and is a lock-up state</strong> for the basic ring counter: once every flip-flop is 0, shifting a 0 into a 0 keeps producing 0 forever — there's no 1 anywhere in the loop to circulate, so the counter can never recover into a valid one-hot pattern on its own. Any of the 2ⁿ − n other non-one-hot states (including all-zero, and any pattern with more than one 1) are similarly invalid — a basic ring counter has no self-correcting mechanism to return to a valid state once it strays into one of these, unlike counters designed with explicit unused-state handling.</p>
+        <p>Johnson counters have their own separate, complete cycle of 2n valid states (not n) — don't apply the ring counter's n-state / all-zero-is-invalid reasoning directly to a Johnson counter without adjusting for its doubled, differently-structured state cycle.</p>
+      </div>
+
+      <h3 class="sub">Shift registers</h3>
+      <p>A chain of flip-flops (usually D-type) sharing a clock, where each stage's output feeds the next stage's input — data shifts one position per clock pulse.</p>
+      <table>
+        <tr><th>Type</th><th>Input</th><th>Output</th></tr>
+        <tr><td>SISO</td><td>Serial</td><td>Serial</td></tr>
+        <tr><td>SIPO</td><td>Serial</td><td>Parallel</td></tr>
+        <tr><td>PISO</td><td>Parallel</td><td>Serial</td></tr>
+        <tr><td>PIPO</td><td>Parallel</td><td>Parallel</td></tr>
+      </table>
+      <div class="card note">
+        <span class="label">Where ring/Johnson counters come from</span>
+        <p>Both are simply a shift register (usually SIPO or PIPO style) with its serial output wired back into its serial input — direct feedback for a ring counter, complemented feedback for a Johnson counter.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> How many flip-flops are needed for a mod-6 counter, and how many unused states result?</summary>
+          <div class="ans">
+            <p>Need ⌈log₂6⌉ = 3 flip-flops (2³=8 ≥ 6). Total states possible = 8, used states = 6, so unused = 8 − 6 = 2.</p>
+            <p class="final">Answer: 3 flip-flops, 2 unused states</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A 4-bit asynchronous (ripple) counter uses flip-flops with 20 ns propagation delay each. Find the worst-case time for the counter to settle after a clock edge.</summary>
+          <div class="ans">
+            <p>In a ripple counter each flip-flop's clock comes from the previous stage's output, so delays add stage by stage: 4 stages × 20 ns.</p>
+            <p class="final">Answer: 80 ns</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> How many valid states does a Johnson counter built with 4 flip-flops have?</summary>
+          <div class="ans">
+            <p>A Johnson (twisted-ring) counter with n flip-flops produces 2n valid states.</p>
+            <p class="final">Answer: 2 × 4 = 8 states</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A ring counter is built with 5 flip-flops. How many valid states does it have, and how many output decoding gates are needed to identify each state?</summary>
+          <div class="ans">
+            <p>A ring counter with n flip-flops has exactly n valid states (one flip-flop is 1, rest are 0, circulating). Since each flip-flop's output directly corresponds to one unique count, no separate decoding gates are needed at all.</p>
+            <p class="final">Answer: 5 valid states, 0 decoding gates needed</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> An 8-bit PISO (parallel-in serial-out) shift register is parallel-loaded in 1 clock cycle, and the first loaded bit is immediately visible at the serial output before any shift occurs. How many additional clock cycles are needed to shift all 8 bits out serially?</summary>
+          <div class="ans">
+            <p>Since the first bit is already sitting at the serial output pin right after the load cycle (no shift needed to read it), each subsequent clock pulse shifts the next bit into position. Getting the remaining 7 bits out therefore takes exactly 7 more pulses.</p>
+            <p>This is why the question must state the output-sampling assumption explicitly: if instead the convention is that the output is sampled only on a clock edge (i.e. even the first bit requires a shift pulse to appear at the output), the answer becomes 8 additional cycles. Always pin down which convention applies before answering — don't assume one silently.</p>
+            <p class="final">Answer: 7 additional clock cycles (8 total including the load), given the stated assumption that the first bit is visible immediately after loading</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_COUNTERS -->
+    <section class="topic" id="fsm">
+      <div class="topic-head"><span class="idx">08</span><h2>Finite State Machines</h2></div>
+      <div class="topic-kicker">MEALY VS MOORE · STATE MINIMIZATION · STATE ASSIGNMENT</div>
+
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Moore machine</h4>
+          <p>Output depends <strong>only on the present state</strong>. Output is written inside the state circle in the state diagram. Since output depends only on state (which is held in flip-flops and changes only at clock edges), it does not respond directly to asynchronous mid-cycle input changes — this makes Moore outputs <strong>generally less sensitive to input glitches</strong> than Mealy outputs, but usually needs more states for the same job.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Mealy machine</h4>
+          <p>Output depends on <strong>present state AND current input</strong>. Output is written on the transition arrow. Can react within the same clock cycle (faster response) and often needs fewer states — but output can glitch if input changes mid-cycle.</p>
+        </div>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap — "Moore is glitch-free" is an overstatement</span>
+        <p>Converting Mealy → Moore may require <strong>adding states</strong> (never removing), because a Moore state's output must be single-valued while the same Mealy state could produce different outputs depending on the incoming edge. Converting Moore → Mealy never needs extra states.</p>
+        <p>Don't repeat "Moore output is glitch-free" as an unqualified fact. A Moore output is decoded <em>combinationally</em> from the state bits — and combinational logic can glitch on its own, from propagation-delay skew when multiple state bits change simultaneously (a hazard), independent of any input glitch. What's actually true is narrower: Moore output doesn't react directly to <em>asynchronous input</em> changes, because it only depends on state, which updates synchronously. If the output itself is registered (latched into a flip-flop, synchronously sampled) that's a separate, stronger guarantee — "depends only on state" and "is glitch-free" are not the same claim.</p>
+      </div>
+
+      <h3 class="sub">State minimization</h3>
+      <p>Two states are <strong>equivalent</strong> if, for every input, they produce the same output and transition to equivalent next states. Minimization merges equivalent states to shrink the machine without changing its input-output behavior.</p>
+      <div class="card formula">
+        <span class="label">Partitioning method</span>
+        <ol>
+          <li>Start with one partition (0-equivalence): group states by their output alone.</li>
+          <li>Refine: split a group if, for some input, its members go to different groups in the current partition.</li>
+          <li>Repeat until the partition stops changing — each final group is one equivalent (merged) state.</li>
+        </ol>
+      </div>
+
+      <h3 class="sub">State assignment</h3>
+      <p>Once minimized states are known, each gets a unique binary code stored in flip-flops. The <strong>choice of coding</strong> (binary, Gray, one-hot) changes the resulting combinational logic size and speed even though the FSM's behavior is identical — a classic design trade-off, and a frequent conceptual GATE question rather than a compute-heavy one.</p>
+      <ul>
+        <li><strong>Binary/sequential coding</strong> — fewest flip-flops (⌈log₂(states)⌉), more complex next-state logic.</li>
+        <li><strong>One-hot coding</strong> — one flip-flop per state, but next-state/output logic is often much simpler and faster.</li>
+      </ul>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> How many states are needed in a Mealy machine to detect the overlapping sequence "101" in a serial bit stream?</summary>
+          <div class="ans">
+            <p>Track how much of the pattern has been matched so far: S0 (no match / start), S1 (matched "1"), S2 (matched "10"), and on the next 1 from S2 we output 1 and go back to S1 (since the trailing "1" could start a new overlapping match). That needs 3 states.</p>
+            <p class="final">Answer: 3 states</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> A Mealy state A produces two different outputs depending on which input triggers its transition (e.g. output 0 on input 0, output 1 on input 1). Why may state splitting be necessary when converting such a machine to Moore?</summary>
+          <div class="ans">
+            <p>In Moore, output must depend on state alone — a single value per state. If Mealy state A produces two different outputs (0 and 1) depending on the input, no single Moore state can replicate both behaviors; A must be split into two Moore states, one for each output value, so that each resulting state has a single well-defined output. The exact number of states in the final Moore machine depends on the full transition structure of the original Mealy machine, not on this splitting rule alone.</p>
+            <p class="final">Answer: A Moore state can only emit one output value, so any Mealy state with input-dependent outputs must be split into multiple Moore states — one per distinct output value it produces</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Two states S1 and S2 have identical outputs for every input, and on every input both transition to the same next state. Are they equivalent?</summary>
+          <div class="ans">
+            <p>By the equivalence definition: same output for every input, and next states are themselves equivalent (here, identical) for every input — both conditions hold.</p>
+            <p class="final">Answer: Yes, S1 and S2 are equivalent and can be merged into one state</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> An FSM has 6 states. Compare the number of flip-flops needed for binary encoding vs one-hot encoding.</summary>
+          <div class="ans">
+            <p>Binary encoding needs ⌈log₂6⌉ flip-flops. One-hot needs exactly one flip-flop per state.</p>
+            <p class="final">Answer: Binary = 3 flip-flops, One-hot = 6 flip-flops</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Why is a Moore machine's output described as less sensitive to glitches than a Mealy machine's — and is it actually glitch-free?</summary>
+          <div class="ans">
+            <p>A Moore output depends only on the current state, which is stored in flip-flops and changes only at clock edges — so it never responds directly to an asynchronous or mid-cycle input change the way a Mealy output can. A Mealy output depends directly on the current input, so it can momentarily glitch if the input changes before the next clock edge. That said, "glitch-free" overstates it: a Moore output is still typically decoded by combinational logic from the state bits, and that decoding logic can itself glitch (a static/dynamic hazard) if multiple state bits change at once with different propagation delays — the state-only dependency removes one source of glitches (raw input), not all of them.</p>
+            <p class="final">Answer: Moore output can't react to asynchronous input changes (state-only dependency), making it less glitch-prone than Mealy — but it's not automatically glitch-free, since combinational decoding of the state bits can still hazard</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_FSM -->
+    <section class="topic" id="arithmetic">
+      <div class="topic-head"><span class="idx">09</span><h2>Computer Arithmetic</h2></div>
+      <div class="topic-kicker">SIGNED REPRESENTATIONS · OVERFLOW · IEEE-754 FLOATING POINT</div>
+
+      <h3 class="sub">Signed integer representations (n bits)</h3>
+      <table>
+        <tr><th>Scheme</th><th>Range</th><th>Zero</th></tr>
+        <tr><td>Sign-magnitude</td><td>−(2ⁿ⁻¹−1) to +(2ⁿ⁻¹−1)</td><td>two (+0, −0)</td></tr>
+        <tr><td>1's complement</td><td>−(2ⁿ⁻¹−1) to +(2ⁿ⁻¹−1)</td><td>two (+0, −0)</td></tr>
+        <tr><td>2's complement</td><td>−2ⁿ⁻¹ to +(2ⁿ⁻¹−1)</td><td>one</td></tr>
+      </table>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>2's complement is asymmetric: it can represent one extra negative number (−2ⁿ⁻¹) that has no positive counterpart. For n = 8, range is −128 to +127, not −127 to +127 — this exact off-by-one is a recurring GATE numeric question.</p>
+      </div>
+
+      <h3 class="sub">Overflow detection (2's complement addition)</h3>
+      <div class="eq">Overflow occurs ⇔ Carry INTO the sign bit ≠ Carry OUT of the sign bit
+Equivalently: overflow happens only when adding two numbers of the SAME sign
+              produces a result of the OPPOSITE sign.</div>
+      <p>Adding a positive and a negative number can never overflow in 2's complement.</p>
+
+      <h3 class="sub">IEEE-754 floating point</h3>
+      <div class="two-col">
+        <div class="card">
+          <h4 class="subsub">Single precision (32-bit)</h4>
+          <p>1 sign + 8 exponent + 23 mantissa bits. Bias = 127.</p>
+        </div>
+        <div class="card">
+          <h4 class="subsub">Double precision (64-bit)</h4>
+          <p>1 sign + 11 exponent + 52 mantissa bits. Bias = 1023.</p>
+        </div>
+      </div>
+      <div class="eq">Value = (−1)^S × 1.Mantissa × 2^(Exponent − Bias)      [normalized, implicit leading 1]</div>
+      <div class="card note">
+        <span class="label">Special encodings</span>
+        <ul style="margin-bottom:0;">
+          <li>Exponent all 0s, mantissa 0 → ±0</li>
+          <li>Exponent all 0s, mantissa ≠ 0 → subnormal number (also called denormalized/denormal — older but still common terminology; no implicit leading 1)</li>
+          <li>Exponent all 1s, mantissa 0 → ±∞</li>
+          <li>Exponent all 1s, mantissa ≠ 0 → NaN</li>
+        </ul>
+      </div>
+      <div class="card pyq">
+        <span class="label">GATE trap</span>
+        <p>Floating point addition is <strong>not associative</strong> due to rounding at each step — (a+b)+c can differ from a+(b+c) in finite precision. Conceptual questions on this, and on why floating-point equality comparisons are unreliable, show up regularly.</p>
+      </div>
+
+      <h3 class="sub">Booth's algorithm (signed multiplication)</h3>
+      <p>Multiplies two 2's complement numbers by scanning multiplier bit-pairs and choosing add/subtract/no-op based on the transition, exploiting runs of 1s to skip redundant additions.</p>
+      <table>
+        <tr><th>Qₙ Qₙ₋₁</th><th>Operation</th></tr>
+        <tr><td>0 0</td><td>none, arithmetic shift right</td></tr>
+        <tr><td>0 1</td><td>Add multiplicand, then shift</td></tr>
+        <tr><td>1 0</td><td>Subtract multiplicand, then shift</td></tr>
+        <tr><td>1 1</td><td>none, arithmetic shift right</td></tr>
+      </table>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — GATE style (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> What is the range of signed integers representable in 6-bit 2's complement?</summary>
+            <div class="ans">
+            <p>n=6: range is −2ⁿ⁻¹ to +(2ⁿ⁻¹−1) = −2⁵ to +(2⁵−1) = −32 to +31.</p>
+            <p class="final">Answer: −32 to +31</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> Add the 4-bit 2's complement numbers 0111 and 0001. Is there overflow?</summary>
+          <div class="ans">
+            <p>0111 (+7) + 0001 (+1) = 1000 in binary. Both operands are positive (same sign), but the result 1000 has sign bit 1, meaning it reads as negative (−8) — a sign flip from adding two positives is exactly the overflow condition.</p>
+            <p class="final">Answer: Yes, overflow occurs (correct result +8 doesn't fit in 4-bit signed range which maxes at +7)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> Decode the IEEE-754 single precision value with sign=0, exponent=10000001 (129), mantissa=01000000000000000000000.</summary>
+          <div class="ans">
+            <p>Actual exponent = 129 − 127 = 2. Mantissa fraction = 0.01000...₂ = 0.25. Value = (−1)⁰ × 1.25 × 2² = 1.25 × 4.</p>
+            <p class="final">Answer: 5.0</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> Using Booth's algorithm, what is the sign of the product when multiplying −3 (multiplicand) by +5 (multiplier)?</summary>
+          <div class="ans">
+            <p>Booth's algorithm correctly handles signed 2's complement operands directly (that's its whole purpose), so the result naturally comes out as a properly signed product without needing separate sign-magnitude bookkeeping. −3 × 5 = −15, and Booth's trace (scanning multiplier bit-pairs of 0101, adding/subtracting the multiplicand 11101 (−3) at the appropriate shifted positions per the 00/01/10/11 rule) reproduces exactly this value.</p>
+            <p class="final">Answer: −15 (negative), correctly obtained directly from 2's complement operands</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> Explain briefly why floating-point addition is not associative, with the idea behind a numeric example.</summary>
+          <div class="ans">
+            <p>Each floating-point addition rounds its result to fit the available mantissa bits. Adding a very large number and a very small number first can lose the small number's precision entirely (it "disappears" into rounding), while adding two similarly-sized numbers first preserves more of that precision before the large number is added — so (a+b)+c and a+(b+c) can round differently and land on different final values.</p>
+            <p class="final">Answer: Rounding at each intermediate step depends on operand order, so grouping changes the final result</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_ARITHMETIC -->
+    <section class="topic" id="revision">
+      <div class="topic-head"><span class="idx">10</span><h2>Revision Sheet</h2></div>
+      <div class="topic-kicker">EVERYTHING ON ONE SCREEN — LAST-MINUTE PASS</div>
+
+      <div class="two-col">
+        <div class="card formula">
+          <span class="label">Complements</span>
+          <p>1's comp = flip bits. 2's comp = 1's comp + 1 = copy up to first 1 (from LSB), flip rest.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Gray code</span>
+          <p>g₀=b₀; gᵢ=bᵢ⊕bᵢ₋₁. Adjacent codes differ in exactly 1 bit.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">De Morgan</span>
+          <p>(A+B)' = A'B' ; (AB)' = A'+B'. NAND and NOR are each universal.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">SOP / POS</span>
+          <p>Minterm list and maxterm list of the same function are complementary index sets.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">K-map grouping</span>
+          <p>Groups: sizes 2ᵏ, rectangular only, wrap-around adjacency, overlap allowed, don't-cares allowed (never a pure-don't-care group), as large as possible, every 1 covered. Full 7-point checklist below.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Essential PI</span>
+          <p>A prime implicant that is the <em>only</em> one covering some minterm — must appear in every minimum SOP.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Full adder</span>
+          <p>S = A⊕B⊕Cin. Cout = AB + BCin + ACin (majority function).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Subtractor</span>
+          <p>A − B = A + B' + 1 via XOR-controlled adder with mode bit M = Cin.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">MUX realization</span>
+          <p>2ⁿ⁻¹:1 MUX implements any n-var function; leftover variable (or its complement, or 0/1) goes on data lines.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Flip-flops</span>
+          <p>D: Q(next)=D (no hold/toggle). T: T=1→toggle, T=0→hold. JK: J=K=1→toggle, fixes SR's forbidden state. Full unified characteristic + excitation table below.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Mod-N counter</span>
+          <p>Needs ⌈log₂N⌉ flip-flops; the 2ⁿ−N unused states exist regardless, but only become usable don't-cares if self-correcting behavior isn't required — otherwise their transitions must be specified.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Ring vs Johnson counter</span>
+          <p>Ring: n flip-flops → n valid one-hot states; needs one-hot initialization or it locks up (all-zero is invalid, no self-recovery). Johnson: n flip-flops → 2n valid states, separate complete cycle.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">2's complement range</span>
+          <p>n bits → −2ⁿ⁻¹ to +(2ⁿ⁻¹−1). One extra negative number, single zero.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Overflow rule</span>
+          <p>Occurs only when both operands share a sign and the result's sign differs. Carry-in ≠ carry-out of sign bit.</p>
+        </div>
+        <div class="card formula">
+          <span class="label">IEEE-754 single</span>
+          <p>1+8+23 bits, bias 127. Value = (−1)^S·1.M·2^(E−127).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">Mealy vs Moore</span>
+          <p>Mealy: output on transition (input-dependent, fewer states, can glitch on input change). Moore: output in state (less glitch-sensitive to input, not automatically glitch-free — decode logic can still hazard; may need more states).</p>
+        </div>
+        <div class="card formula">
+          <span class="label">PLA vs PAL vs ROM</span>
+          <p>ROM: AND fixed, OR programmable. PLA: both programmable. PAL: AND programmable, OR fixed.</p>
+        </div>
+      </div>
+
+      <div class="card pyq" style="margin-top:26px;">
+        <span class="label">Flip-flop master table — characteristic + excitation, unified</span>
+        <table>
+          <tr><th>FF</th><th>Characteristic equation</th><th>Excitation (Q→Q′: inputs needed)</th></tr>
+          <tr><td>SR</td><td>Q(next) = S + R′Q<br>(S·R=0, else invalid)</td><td>0→0: S=0,R=X<br>0→1: S=1,R=0<br>1→0: S=0,R=1<br>1→1: S=X,R=0</td></tr>
+          <tr><td>JK</td><td>Q(next) = JQ′ + K′Q</td><td>0→0: J=0,K=X<br>0→1: J=1,K=X<br>1→0: J=X,K=1<br>1→1: J=X,K=0</td></tr>
+          <tr><td>D</td><td>Q(next) = D</td><td>0→0: D=0<br>0→1: D=1<br>1→0: D=0<br>1→1: D=1</td></tr>
+          <tr><td>T</td><td>Q(next) = T⊕Q</td><td>0→0: T=0<br>0→1: T=1<br>1→0: T=1<br>1→1: T=0</td></tr>
+        </table>
+        <p>The three facts that answer most flip-flop questions on sight: <strong>JK</strong> — J=K=1 → toggle. <strong>T</strong> — T=1 → toggle (T=0 → hold). <strong>D</strong> — Q(next)=D, always; there's no hold/toggle behavior at all, the next state simply equals whatever D is right now.</p>
+      </div>
+
+      <div class="card pyq" style="margin-top:26px;">
+        <span class="label">K-map grouping — the 7-point checklist (rapid-fire)</span>
+        <ul>
+          <li>Groups must contain <strong>1, 2, 4, 8, 16, ...</strong> cells (a power of 2)</li>
+          <li><strong>Rectangular groups only</strong> — never diagonal or L-shaped</li>
+          <li><strong>Wrap-around adjacency</strong> — edges and corners connect (torus)</li>
+          <li><strong>Overlapping groups allowed</strong> — a cell can belong to several groups</li>
+          <li><strong>Don't-care cells may be used</strong> — but never form a group of only don't-cares</li>
+          <li><strong>Make groups as large as possible</strong> — bigger group = fewer literals</li>
+          <li><strong>Every required 1 must be covered</strong> — nothing left unmatched</li>
+        </ul>
+      </div>
+
+      <div class="card note" style="margin-top:26px;">
+        <span class="label">How to use this sheet</span>
+        <p>Read sections 01–09 once for understanding, then loop back to this page alone for every later revision pass — if any card doesn't immediately make sense, that's the section to reopen.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-head"><h3>Practice — rapid-fire mix (original)</h3><span class="pcount">5 questions</span></div>
+        <details class="qcard"><summary><span class="qn">Q1</span> A function's SOP has 3 essential prime implicants covering all its minterms between them. Is any further minimization step required?</summary>
+          <div class="ans">
+            <p>If the essential PIs alone already cover every minterm, no additional (non-essential) PIs are needed — the minimum SOP is exactly the sum of those essential PIs.</p>
+            <p class="final">Answer: No, the 3 essential PIs already form the minimum SOP</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q2</span> How many select lines does a MUX need to implement any 5-variable Boolean function directly (one variable on the data lines)?</summary>
+          <div class="ans">
+            <p>To implement an n-variable function with one variable left over for the data lines, the MUX needs n−1 select lines, i.e. a 2ⁿ⁻¹:1 MUX. For n=5: 2⁴ = 16:1 MUX with 4 select lines.</p>
+            <p class="final">Answer: 4 select lines (16:1 MUX)</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q3</span> A synchronous mod-10 (decade) counter uses how many flip-flops minimum, and how many of the unused states may be treated as don't-cares?</summary>
+          <div class="ans">
+            <p>⌈log₂10⌉ = 4 flip-flops (2⁴=16 ≥ 10). Unused states = 16 − 10 = 6 — that count is fixed regardless of design choices. Whether those 6 states are actually usable as don't-cares in the excitation K-maps is a separate design decision, not automatic: treating them as don't-cares is only valid if the design doesn't need to specify what happens should the counter ever land in one of those states (e.g. on power-up or due to a glitch). If the design instead requires <strong>self-starting/self-correcting</strong> behavior — guaranteeing that any invalid state transitions back into the valid counting sequence within a bounded number of clocks — then the next-state behavior of some or all of those 6 states must be explicitly specified rather than left as "don't care," which can change (and typically increases) the minimized excitation equations.</p>
+            <p class="final">Answer: 4 flip-flops; 6 unused states exist, and they may be used as don't-cares only if the design doesn't require self-starting/self-correcting behavior — otherwise their transitions must be defined</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q4</span> A JK flip-flop currently at Q=1 must go to Q(next)=1. What are the required J,K values from the excitation table?</summary>
+          <div class="ans">
+            <p>From the JK excitation table, the transition 1→1 requires J=X (don't care) and K=0. With K=0, J=0 holds at 1 and J=1 sets/holds at 1 — either way Q stays 1, which is why J is don't-care. K must stay 0, since K=1 would reset (J=0) or toggle (J=1) Q to 0.</p>
+            <p class="final">Answer: J = X, K = 0</p>
+          </div>
+        </details>
+        <details class="qcard"><summary><span class="qn">Q5</span> An IEEE-754 single precision number has exponent field = 00000000 and a non-zero mantissa. What category does it fall into, and why is there no implicit leading 1?</summary>
+          <div class="ans">
+            <p>An all-zero exponent field is reserved for subnormal numbers (also called denormalized/denormal numbers — older but still common terminology), or true zero if the mantissa is also zero. Subnormals exist to represent values smaller than the smallest normalized number, and they drop the implicit leading 1 (using 0.Mantissa instead of 1.Mantissa) specifically so the format can gracefully represent numbers approaching zero rather than jumping straight from the smallest normal value to zero.</p>
+            <p class="final">Answer: Subnormal (denormalized) number; no implicit 1 because it extends range closer to zero than normalized encoding allows</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <!-- SECTION_REVISION -->
+
+    <footer>
+      Blueprint Notes — Digital Logic for GATE CSE · built for revision, not first-read · diagrams are schematic, not to scale.
+    </footer>
+  </main>
+</div>
+
+<script>
+// Scrollspy: highlight active nav link
+const links = document.querySelectorAll('.navlink');
+const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+function onScroll(){
+  let idx = 0;
+  const y = window.scrollY + 120;
+  sections.forEach((s,i)=>{ if(s && s.offsetTop <= y) idx = i; });
+  links.forEach(l=>l.classList.remove('active'));
+  if(links[idx]) links[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>

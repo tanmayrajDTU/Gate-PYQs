@@ -1,0 +1,114 @@
+-- GATE PYQ Practice Engine: user-state schema
+create table if not exists public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.question_attempts (
+  id bigint generated always as identity primary key,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  question_id text not null,
+  session_id uuid,
+  answer jsonb,
+  result text not null check (result in ('correct','incorrect','unanswered','recorded')),
+  attempted_at timestamptz not null default now()
+);
+
+create index if not exists question_attempts_user_question_idx on public.question_attempts(user_id, question_id);
+create index if not exists question_attempts_user_time_idx on public.question_attempts(user_id, attempted_at desc);
+
+create table if not exists public.question_flags (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  question_id text not null,
+  bookmarked boolean not null default false,
+  revision boolean not null default false,
+  box smallint not null default 1,
+  next_review_at timestamptz,
+  updated_at timestamptz not null default now(),
+  primary key(user_id,question_id)
+);
+
+-- Spaced-repetition columns (safe to re-run on an existing table)
+alter table public.question_flags add column if not exists box smallint not null default 1;
+alter table public.question_flags add column if not exists next_review_at timestamptz;
+
+-- SM-2 scheduler columns (replaces the old fixed-box Leitner scheduler
+-- above; `box`/`next_review_at` are kept as-is for backward compatibility
+-- and because next_review_at is still the source of truth for what's due).
+-- Safe to re-run.
+alter table public.question_flags add column if not exists ease_factor real not null default 2.5;
+alter table public.question_flags add column if not exists interval_days integer not null default 0;
+alter table public.question_flags add column if not exists repetitions integer not null default 0;
+
+-- One-time backfill: any row created before this migration has ease_factor
+-- sitting at the just-added default (2.5) with repetitions=0, which the app
+-- would otherwise mistake for "review it fresh" even though `box` shows it
+-- already progressed under the old scheduler. Carry that progress forward
+-- into an equivalent SM-2 starting point instead of losing it. Safe to
+-- re-run — it only touches rows that still look untouched by SM-2.
+update public.question_flags
+set
+  interval_days = case box
+    when 1 then 1
+    when 2 then 3
+    when 3 then 7
+    when 4 then 14
+    else 30
+  end,
+  repetitions = greatest(box - 1, 0)
+where revision = true
+  and repetitions = 0
+  and ease_factor = 2.5
+  and box > 1;
+
+create table if not exists public.practice_sessions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  config jsonb not null,
+  question_ids jsonb not null,
+  started_at timestamptz not null default now(),
+  completed_at timestamptz
+);
+
+create index if not exists practice_sessions_user_time_idx on public.practice_sessions(user_id, started_at desc);
+
+alter table public.profiles enable row level security;
+alter table public.question_attempts enable row level security;
+alter table public.question_flags enable row level security;
+alter table public.practice_sessions enable row level security;
+
+drop policy if exists "profiles own" on public.profiles;
+drop policy if exists "attempts own" on public.question_attempts;
+drop policy if exists "flags own" on public.question_flags;
+drop policy if exists "sessions own" on public.practice_sessions;
+
+create policy "profiles own" on public.profiles for all using (auth.uid()=id) with check (auth.uid()=id);
+create policy "attempts own" on public.question_attempts for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+create policy "flags own" on public.question_flags for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+create policy "sessions own" on public.practice_sessions for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+
+create or replace function public.handle_new_user() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  insert into public.profiles(id) values(new.id) on conflict do nothing;
+  return new;
+end; $$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created after insert on auth.users for each row execute procedure public.handle_new_user();
+
+-- Confidence self-rating per attempt ("knew it" / "guessed" / "didn't
+-- know"), captured right after submitting an answer. Nullable — historical
+-- attempts and anything the person skips rating simply have no value here.
+-- Safe to re-run.
+alter table public.question_attempts add column if not exists confidence text check (confidence in ('knew','guessed','unknown'));
+
+-- Revision-reward columns: a durable, monotonic count of how many times a
+-- card has actually been graded (unlike `repetitions`, which resets to 0 on
+-- an "again" and therefore can't be used to compute lifetime points/badges),
+-- plus a dedicated timestamp for "was a genuine review done today" that's
+-- only touched by grading — never by the bookmark/revision toggle, so a
+-- bare bookmark click can't masquerade as revision activity for streak or
+-- point purposes. Safe to re-run.
+alter table public.question_flags add column if not exists review_count integer not null default 0;
+alter table public.question_flags add column if not exists last_reviewed_at timestamptz;

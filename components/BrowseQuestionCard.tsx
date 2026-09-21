@@ -56,7 +56,7 @@ export function BrowseQuestionCard({ q, index }: { q: Question; index: number })
 
       <div style={{ marginTop: 18, display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
         <button className="btn btn-soft" onClick={() => setShowAnswer(s => !s)}>{showAnswer ? 'Hide answer' : 'Show answer'}</button>
-        {showAnswer && markedToAll && <span className="muted" style={{ fontSize: 13 }}>Marks awarded to all candidates — GATE declared this question wrong/out of syllabus.</span>}
+        {showAnswer && markedToAll && <span className="muted" style={{ fontSize: 13 }}>Marks awarded to all candidates (GATE declared this question ambiguous, having multiple correct options, or containing errors).</span>}
         {showAnswer && !markedToAll && q.type === 'nat' && <span className="pill">Answer: {q.answer ?? '—'}</span>}
         {showAnswer && !markedToAll && q.type === 'descriptive' && <span className="muted" style={{ fontSize: 13 }}>No fixed answer is stored for this question — use the GateOverflow discussion for the solution.</span>}
         {showAnswer && !markedToAll && (q.type === 'mcq' || q.type === 'msq') && !q.answer && <span className="muted" style={{ fontSize: 13 }}>No answer key is stored for this question.</span>}

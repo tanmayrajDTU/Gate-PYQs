@@ -1,0 +1,92 @@
+[
+  {
+    "id": "question866",
+    "number": "1.1.3",
+    "bodyHtml": "<a name=\"866\"></a><div itemprop=\"text\"><ol style=\"list-style-type:lower-alpha\">\n\t<li>In how many ways can a given positive integer $n \\geq 2$ be expressed as the sum of $2$ positive integers (which are not necessarily distinct). For example, for $n=3$, the number of ways is $2$, i.e., $1+2, 2+1$. Give only the answer without any explanation.</li>\n\t<li>In how many ways can a given positive integer $n \\geq 3$ be expressed as the sum of $3$ positive integers (which are not necessarily distinct). For example, for $n=4$, the number of ways is $3$, i.e., $1+2+1, 2+1+1$ and $1+1+2$. Give only the answer without explanation.</li>\n\t<li>In how many ways can a given positive integer $n \\geq k$ be expressed as the sum of $k$ positive integers (which are not necessarily distinct). Give only the answer without explanation.</li>\n</ol></div>"
+  },
+  {
+    "id": "question1522",
+    "number": "4.12.19",
+    "bodyHtml": "<a name=\"1522\"></a><div itemprop=\"text\">\n<ol style=\"list-style-type:lower-alpha\"><li>Mr. X claims the following:&nbsp;\n\t<p>If a relation R is both symmetric and transitive, then R is reflexive. For this, Mr. X offers the following proof:</p>\n\n\t<p>“From xRy, using symmetry we get yRx. Now because R is transitive xRy and yRx together imply xRx. Therefore, R is reflexive”.</p>\n\t</li>\n\t<li>Give an example of a relation R which is symmetric and transitive but not reflexive.</li>\n</ol>\n</div>"
+  },
+  {
+    "id": "question1722",
+    "number": "5.4.2",
+    "bodyHtml": "<a name=\"1722\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type:lower-alpha\">\n\t<li>Find the points of local maxima and minima, if any, of the following function defined in $0\\leq x\\leq 6$. $$x^3-6x^2+9x+15$$</li>\n\t<li>Integrate $$\\int_{-\\pi}^{\\pi} x \\cos x dx$$</li>\n</ol></div>"
+  },
+  {
+    "id": "question755",
+    "number": "3.5.4",
+    "bodyHtml": "<a name=\"755\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type:upper-alpha\">\n\t<li>Insert the following keys one by one into a binary search tree in the order specified.$$15, 32, 20, 9, 3, 25, 12, 1$$Show the final binary search tree after the insertions.</li>\n\t<li>Draw the binary search tree after deleting $15$ from it.</li>\n\t<li>Complete the statements $S1$, $S2$&nbsp;and $S3$ in the following function so that the function computes the depth of a binary tree rooted at $t$.\n\t<pre class=\"prettyprint lang-c_cpp\">typedef struct tnode{\n    int key;\n    struct tnode *left, *right;\n} *Tree;\n\nint depth (Tree t)\n{\n    int x, y;\n    if (t == NULL) return 0;\n    x = depth (t -&gt; left);\nS1:     ___________;\n\nS2:     if (x &gt; y) return __________;\n\nS3:     else return _______;\n\n}\n</pre>\n\t</li>\n</ol></div>"
+  },
+  {
+    "id": "question2640",
+    "number": "1.23.8",
+    "bodyHtml": "<a name=\"2640\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type:upper-alpha\">\n\t<li>Consider the following Pascal function where $A$ and $B$ are non-zero positive integers. What is the value of $\\text{GET}(3, 2)$?\n\t<pre class=\"prettyprint lang-c_cpp\">function GET(A,B:integer): integer;\nbegin\n    if B=0 then\n        GET:= 1\n    else if A &lt; B then\n        GET:= 0\n    else\n        GET:= GET(A-1, B) + GET(A-1, B-1)\nend;</pre>\n\t</li>\n\t<li>The Pascal procedure given for computing the transpose of an $N \\times N, (N&gt;1)$ matrix $A$ of integers has an error. Find the error and correct it.&nbsp;Assume that the following declaration are made in the main program\n\t<pre class=\"prettyprint lang-c_cpp\">const\n    MAXSIZE=20;\ntype\n    INTARR=array [1..MAXSIZE,1..MAXSIZE] of integer;\nProcedure TRANSPOSE (var A: INTARR; N : integer);\nvar\n    I, J, TMP: integer;\nbegin\n    for I:=1 to N – 1 do\n    for J:=1 to N do\n    begin\n        TMP:= A[I, J];\n        A[I, J]:= A[J, I];\n        A[J, I]:= TMP\n    end\nend;\n</pre>\n\t</li>\n</ol></div>"
+  },
+  {
+    "id": "question2644",
+    "number": "2.12.11",
+    "bodyHtml": "<a name=\"2644\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type:upper-alpha\">\n\t<li>Translate the arithmetic expression $a^\\ast -(b+c)$ into syntax tree.</li>\n\t<li>\n\t<p>A grammar is said to have cycles if it is the case that $A \\overset{+}{\\Rightarrow}&nbsp;A$</p>\n\tShow that no grammar that has cycles can be $\\text{LL(1)}.$</li>\n</ol></div>"
+  },
+  {
+    "id": "question1728",
+    "number": "2.12.15",
+    "bodyHtml": "<a name=\"1728\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type:upper-alpha\">\n\t<li>Let $G_1 = (N, T, P, S_1)$ be a CFG where, $N=\\{S_1, A, B\\},T=\\{a, b\\}$ and $P$ is given by$$\\begin{array}{l|l}<br>\n\tS_1 \\rightarrow a S_1 b &amp;S_1 \\rightarrow a B b \\\\<br>\n\tS_1 \\rightarrow a A b &amp;&nbsp;B \\rightarrow Bb\\\\<br>\n\tA \\rightarrow a A &amp;&nbsp;B \\rightarrow b\\\\<br>\n\tA \\rightarrow a<br>\n\t\\end{array}$$What is $L(G_1)$?</li>\n\t<li>\n\t<p>Use the grammar in Part(a) to give a CFG for $L_2 = \\{a^ib^ja^kb^l \\mid i, j, k, l&nbsp;\\geq 1, i=j \\text{ or } k=l\\}$ by adding not more than $5$ production rules.</p>\n\t</li>\n\t<li>\n\t<p>Is $L_2$ inherently ambiguous?</p>\n\t</li>\n</ol></div>"
+  },
+  {
+    "id": "question875",
+    "number": "2.20.4",
+    "bodyHtml": "<a name=\"875\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type: upper-alpha;\"><li>Construct all the parse trees corresponding to $i + j * k$ for the grammar<br>&nbsp; &nbsp;$E \\rightarrow&nbsp;E+E$<br>&nbsp; &nbsp;$E&nbsp;\\rightarrow&nbsp;E*E$<br>&nbsp; &nbsp;$E&nbsp;\\rightarrow&nbsp;id$</li><li>In this grammar, what is the precedence of the two operators $*$ and $+$?</li><li>If only one parse tree is desired for any string in the same language, what changes are to be made so that the resulting LALR(1) grammar is unambiguous?</li></ol></div>"
+  },
+  {
+    "id": "question1737",
+    "number": "2.22.6",
+    "bodyHtml": "<a name=\"1737\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type: upper-alpha;\">\n\t<li>\n\t<p>An identifier in a programming language consists of up to six letters and digits of which the first character must be a letter. Derive a regular expression for the identifier.</p>\n\t</li>\n\t<li>\n\t<p>Build an $LL(1)$ parsing table for the language defined by the $LL(1)$ grammar with productions</p>\n\n\t<p>$\\text{Program} \\rightarrow \\text{ begin } d \\text{ semi } X\\text{ end}$</p>\n\n\t<p>$X \\rightarrow d \\text{ semi } X \\mid sY$</p>\n\n\t<p>$Y \\rightarrow \\text{ semi } s Y \\mid \\epsilon$</p>\n\t</li>\n</ol></div>"
+  },
+  {
+    "id": "question1735",
+    "number": "3.1.3",
+    "bodyHtml": "<a name=\"1735\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type: upper-alpha;\"><li>Derive a recurrence relation for the size of the smallest AVL tree with height $h$.</li><li>What is the size of the smallest AVL tree with height $8$?</li></ol></div>"
+  },
+  {
+    "id": "question1511",
+    "number": "3.4.3",
+    "bodyHtml": "<a name=\"1511\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type:upper-alpha\">\n\t<li>\n\t<p>In binary tree, a full node is defined to be a node with $2$ children. Use induction on the height of the binary tree to prove that the number of full nodes plus one is equal to the number of leaves.</p>\n\t</li>\n\t<li>\n\t<p>Draw the min-heap that results from insertion of the following elements in order into an initially empty min-heap: $7, 6, 5, 4, 3, 2, 1$. Show the result after the deletion of the root of this heap.</p>\n\t</li>\n</ol></div>"
+  },
+  {
+    "id": "question1505",
+    "number": "6.20.8",
+    "bodyHtml": "<a name=\"1505\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type:upper-alpha\">\n\t<li>\n\t<p>Given that $A$ is regular and $(A \\cup B)$ is regular, does it follow that $B$ is necessarily regular? Justify your answer.</p>\n\t</li>\n\t<li>\n\t<p>Given two finite automata $M1, M2$, outline an algorithm to decide if $L(M1) \\subset L(M2)$. (note: strict subset)</p>\n\t</li>\n</ol></div>"
+  },
+  {
+    "id": "question678",
+    "number": "6.3.8",
+    "bodyHtml": "<a name=\"678\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type:upper-alpha\">\n\t<li>Construct as minimal finite state machine that accepts the language, over $\\{0,1\\}$, of all strings that contain neither the substring $00$ nor the substring $11$.</li>\n\t<li>Consider the grammar\n\t<ul>\n\t\t<li>$S \\to aSAb&nbsp;$</li>\n\t\t<li>$S \\to \\epsilon&nbsp;$</li>\n\t\t<li>$A \\to bA $</li>\n\t\t<li>$ A \\to \\epsilon $</li>\n\t</ul>\n\n\t<p>where $S$, $A$ are non-terminal symbols with $S$ being the start symbol; $a, b$ are terminal symbols and&nbsp;$\\epsilon$ is the empty string. This grammar generates strings of the form $a^ib^j$&nbsp;for some $i, j \\geq&nbsp;0$, where $i$ and $j$ satisfy some condition. What is the condition on the values of $i$ and $j$?</p>\n\t</li>\n</ol></div>"
+  },
+  {
+    "id": "question2508",
+    "number": "1.21.2",
+    "bodyHtml": "<a name=\"2508\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type:upper-alpha\">\n\t<li>\n\t<p>Assume that a CPU has only two registers $R_1$ and $R_2$ and that only the following instruction is available $XOR \\: R_i, R_j;\\{R_j \\leftarrow R_i \\oplus R_j, \\text{ for } i, j =1, 2\\}$</p>\n\n\t<p>Using this XOR instruction, find an instruction sequence in order to exchange the contents of the registers $R_1$ and $R_2$</p>\n\t</li>\n\t<li>\n\t<p>The line p of the circuit shown in figure has stuck at $1$ fault. Determine an input test to detect the fault.</p>\n\n\t<p><img alt=\"\" src=\"https://gateoverflow.in/?qa=blob&amp;qa_blobid=10498487433934476735\" width=\"450\"></p>\n\t</li>\n</ol></div>"
+  },
+  {
+    "id": "question870",
+    "number": "3.2.10",
+    "bodyHtml": "<a name=\"870\"></a><div itemprop=\"text\"><ol style=\"list-style-type:lower-alpha\">\n<li>The following table refers to search items for a key in $B$-trees and $B^+$ trees.<br>\n$$\\begin{array}{|ll|ll|} \\hline &amp; \\textbf {B-tree} &amp; &amp; \\textbf {B}^+\\text{-tree} &nbsp; \\\\\\hline \\text{Successful search&nbsp; &nbsp; &nbsp; } &amp;\\text{&nbsp; &nbsp; Unsuccessful search} &amp;\\text{Successful search&nbsp; &nbsp; &nbsp;} &amp; \\text{&nbsp; &nbsp; &nbsp;Unsuccessful search} &nbsp;&nbsp;\\\\\\hline &nbsp;\\text{$X_1$} &amp;\\text{$X_2$} &amp; \\text{$X_3$} &amp;\\text{$X_4$}\\\\\\hline&nbsp; \\end{array}$$<br>\nA successful search means that the key exists in the database and unsuccessful means that it is not present in the database. Each of the entries $X_1, X_2, X_3$ and $X_4$ can have a value of either Constant or Variable. Constant means that the search time is the same, independent of the specific key value, where variable means that it is dependent on the specific key value chosen for the search.<br>\nGive the correct values for the entries $X_1, X_2, X_3$ and $X_4$ (for example $X_1 = \\text{Constant},$ $X_2 = \\text{Constant }, X_3 = \\text{Constant}, X_4=\\text{ Constant})$</li>\n<li>Relation $R(A,B)$ has the following view defined on it:\n<pre class=\"prettyprint lang-sql\">CREATE VIEW V AS \n(SELECT R1.A,R2.B \nFROM R AS R1, R as R2 \nWHERE R1.B=R2.A)</pre>\n\n<ol style=\"list-style-type:lower-roman\">\n<li>The current contents of relation $R$ are shown below. What are the contents of the view $V$?<br>\n$$ \\begin{array}{|c|c|} \\hline \\text {A} &amp; \\text {B} \\\\\\hline&nbsp; \\text {1} &amp; &nbsp;\\text{2} \\\\ \\text{2}&amp; \\text{3} \\\\ \\text{2} &amp;\\text{4}\\\\&nbsp;\\text {4} &amp; &nbsp;\\text{5} \\\\ \\text{6}&amp; \\text{7} \\\\ \\text{6} &amp;\\text{8} \\\\ \\text{9} &amp; \\text{10}\\\\\\hline \\end{array}$$</li>\n<li>The tuples $(2,11)$ and $(11,6)$ are now inserted into $R.$ What are the <em>additional </em>tuples that are inserted in $V$?</li>\n</ol>\n</li>\n</ol></div>"
+  },
+  {
+    "id": "question860",
+    "number": "4.12.2",
+    "bodyHtml": "<a name=\"860\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type:upper-alpha\">\n<li>Express the function $f(x,y,z) = xy' + yz'$ with only one complement operation and one or more AND/OR operations. Draw the logic circuit implementing the expression obtained, using a single NOT gate and one or more AND/OR gates.</li>\n<li>Transform the following logic circuit (without expressing &nbsp;its switching function) into an equivalent logic circuit that employs only $6$ NAND gates each with $2$-inputs.\n<p style=\"text-align:center\"><img alt=\"\" height=\"188\" src=\"https://gateoverflow.in/?qa=blob&amp;qa_blobid=16679161044048693001\" width=\"386\"></p>\n</li>\n</ol>\n\n\n</div>"
+  },
+  {
+    "id": "question2500",
+    "number": "4.4.7",
+    "bodyHtml": "<a name=\"2500\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type:upper-alpha\">\n\t<li>Let $\\ast$ be a Boolean operation defined as $A\\ast B = AB + \\overline{A}\\;\\overline{B}$. If $C=A\\ast B$ then evaluate and fill in the blanks:\n\t<ol style=\"list-style-type:lower-roman\">\n\t\t<li>$A\\ast A=$______</li>\n\t\t<li>$C\\ast A=$______</li>\n\t</ol>\n\t</li>\n\t<li>\n\t<p>Solve the following boolean equations for the values of $A, B$ and $C:$<br>\n\t$AB+\\overline{A}C=1$<br>\n\t$AC+B=0$</p>\n\t</li>\n</ol></div>"
+  },
+  {
+    "id": "question2523",
+    "number": "5.25.8",
+    "bodyHtml": "<a name=\"2523\"></a><div itemprop=\"text\"><ol start=\"1\" style=\"list-style-type:upper-alpha\">\n\t<li>Draw a precedence graph for the following sequential code. The statements are numbered from $S_1$ to $S_6$\n\t<table border=\"0\" cellpadding=\"1\" style=\"width:500px\">\n\t\t<tbody>\n\t\t\t<tr>\n\t\t\t\t<td>$S_1$</td>\n\t\t\t\t<td>read n</td>\n\t\t\t</tr>\n\t\t\t<tr>\n\t\t\t\t<td>$S_2$</td>\n\t\t\t\t<td>i := 1</td>\n\t\t\t</tr>\n\t\t\t<tr>\n\t\t\t\t<td>$S_3$</td>\n\t\t\t\t<td>if i &gt; n next</td>\n\t\t\t</tr>\n\t\t\t<tr>\n\t\t\t\t<td>$S_4$</td>\n\t\t\t\t<td>a(i) := i+1</td>\n\t\t\t</tr>\n\t\t\t<tr>\n\t\t\t\t<td>$S_5$</td>\n\t\t\t\t<td>i := i+1</td>\n\t\t\t</tr>\n\t\t\t<tr>\n\t\t\t\t<td>$S_6$</td>\n\t\t\t\t<td>next : write a(i)</td>\n\t\t\t</tr>\n\t\t</tbody>\n\t</table>\n\t</li>\n\t<li>\n\t<p>Can this graph be converted to a concurrent program using parbegin-parend construct only?</p>\n\t</li>\n</ol></div>"
+  }
+]

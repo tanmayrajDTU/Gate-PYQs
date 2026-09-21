@@ -267,7 +267,16 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
                 <b className={correct === true ? 'success' : correct === false ? 'danger' : ''}>{correct === true ? 'Correct' : correct === false ? 'Incorrect' : 'Answer recorded'}</b>
                 {pointsAwarded[q.id] > 0 && <span className="pill" style={{ background: 'var(--accent-soft)', color: 'var(--accent-strong)' }}>+{pointsAwarded[q.id]} pts</span>}
               </div>
-              {q.answer && <div className="muted" style={{ marginTop: 6 }}>Correct answer: {q.answer}</div>}
+              {q.answer && (
+                <div className="muted" style={{ marginTop: 6 }}>
+                  Correct answer: {q.answer}
+                  {q.answer.trim().toUpperCase() === 'ALL' && (
+                    <span style={{ display: 'block', marginTop: 4, fontSize: 13 }}>
+                      (Marks awarded to all candidates — GATE declared this question ambiguous, having multiple correct options, or containing errors)
+                    </span>
+                  )}
+                </div>
+              )}
               {q.type === 'descriptive' && <div className="muted" style={{ marginTop: 6 }}>Descriptive questions have no stored answer key, so they're marked correct automatically on submit. Use GateOverflow to check your working.</div>}
               {q.gateOverflowUrl && <a className="btn btn-soft" style={{ marginTop: 12 }} href={q.gateOverflowUrl} target="_blank" rel="noreferrer">Open GateOverflow <ExternalLink size={15} /></a>}
             </div>

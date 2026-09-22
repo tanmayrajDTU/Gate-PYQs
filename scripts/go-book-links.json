@@ -1,0 +1,660 @@
+{
+  "url": "https://gateoverflow.in/book",
+  "title": "GATE Overflow PYQ Book / GATE Overflow for GATE CSE",
+  "links": [
+    {
+      "text": "",
+      "href": "https://gateoverflow.in/"
+    },
+    {
+      "text": "Tanmay_Raj",
+      "href": "https://gateoverflow.in/user/Tanmay_Raj"
+    },
+    {
+      "text": "",
+      "href": "https://gateoverflow.in/user/"
+    },
+    {
+      "text": "@Tanmay_Raj",
+      "href": "https://gateoverflow.in/user/"
+    },
+    {
+      "text": "Profile",
+      "href": "https://gateoverflow.in/user/"
+    },
+    {
+      "text": "Edit Profile",
+      "href": "https://gateoverflow.in/account"
+    },
+    {
+      "text": "Messages",
+      "href": "https://gateoverflow.in/messages"
+    },
+    {
+      "text": "My favorites",
+      "href": "https://gateoverflow.in/favorites"
+    },
+    {
+      "text": "My Updates",
+      "href": "https://gateoverflow.in/updates"
+    },
+    {
+      "text": "Logout",
+      "href": "https://gateoverflow.in/logout"
+    },
+    {
+      "text": "Prep Tracker",
+      "href": "https://gateoverflow.in/performance"
+    },
+    {
+      "text": "",
+      "href": "https://gateoverflow.in/"
+    },
+    {
+      "text": "Ask",
+      "href": "https://gateoverflow.in/ask"
+    },
+    {
+      "text": "Activity",
+      "href": "https://gateoverflow.in/activity"
+    },
+    {
+      "text": "Questions",
+      "href": "https://gateoverflow.in/questions"
+    },
+    {
+      "text": "Subjects",
+      "href": "https://gateoverflow.in/subject"
+    },
+    {
+      "text": "Blogs",
+      "href": "https://gateoverflow.in/blogs"
+    },
+    {
+      "text": "Previous Years",
+      "href": "https://gateoverflow.in/previous-years"
+    },
+    {
+      "text": "Tests",
+      "href": "https://gateoverflow.in/tests"
+    },
+    {
+      "text": "Quiz Module",
+      "href": "https://gateoverflow.in/random-quiz"
+    },
+    {
+      "text": "Lists",
+      "href": "https://gateoverflow.in/userlists"
+    },
+    {
+      "text": "GATE CSE 2027 Schedule",
+      "href": "https://gateoverflow.in/gate-schedule"
+    },
+    {
+      "text": "Q&A",
+      "href": "https://gateoverflow.in/qa"
+    },
+    {
+      "text": "Unanswered",
+      "href": "https://gateoverflow.in/unanswered"
+    },
+    {
+      "text": "Categories",
+      "href": "https://gateoverflow.in/categories"
+    },
+    {
+      "text": "Tags",
+      "href": "https://gateoverflow.in/tags"
+    },
+    {
+      "text": "Users",
+      "href": "https://gateoverflow.in/users"
+    },
+    {
+      "text": "New Blog",
+      "href": "https://gateoverflow.in/blog/new"
+    },
+    {
+      "text": "Examinations",
+      "href": "https://gateoverflow.in/exam"
+    },
+    {
+      "text": "Colleges",
+      "href": "https://gateoverflow.in/colleges"
+    },
+    {
+      "text": "Subscribe to GO Classes for GATE CSE 2027",
+      "href": "https://www.goclasses.in/"
+    },
+    {
+      "text": "GATEOverflow Test Series for GATE CSE 2027",
+      "href": "https://gateoverflow.in/blog/18293/gate-overflow-test-series-for-gate-cse-2027-with-ai-feedback"
+    },
+    {
+      "text": "Test Access Information",
+      "href": "https://gateoverflow.in/user/"
+    },
+    {
+      "text": "GATEOverflow FAQs",
+      "href": "https://gateoverflow.in/faq"
+    },
+    {
+      "text": "Books Recommendation and More",
+      "href": "https://gatecse.in/"
+    },
+    {
+      "text": "Show all notices",
+      "href": "https://gateoverflow.in/book#"
+    },
+    {
+      "text": "Open",
+      "href": "https://gateoverflow.in/q2a-chat"
+    },
+    {
+      "text": "leo_t",
+      "href": "https://gateoverflow.in/user/leo_t"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=273612&dmuser=leo_t"
+    },
+    {
+      "text": "nichu22314",
+      "href": "https://gateoverflow.in/user/nichu22314"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=245162&dmuser=nichu22314"
+    },
+    {
+      "text": "https://gateoverflow.in/blog/12861/resources-i-followed-during-my-preparation",
+      "href": "https://gateoverflow.in/blog/12861/resources-i-followed-during-my-preparation"
+    },
+    {
+      "text": "Shaik Masthan",
+      "href": "https://gateoverflow.in/user/Shaik%20Masthan"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=44335&dmuser=Shaik%20Masthan"
+    },
+    {
+      "text": "nichu22314",
+      "href": "https://gateoverflow.in/user/nichu22314"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=245162&dmuser=nichu22314"
+    },
+    {
+      "text": "evanjalist.pathrose",
+      "href": "https://gateoverflow.in/user/evanjalist.pathrose"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=392204&dmuser=evanjalist.pathrose"
+    },
+    {
+      "text": "leo_t",
+      "href": "https://gateoverflow.in/user/leo_t"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=273612&dmuser=leo_t"
+    },
+    {
+      "text": "medaanilkumar1998",
+      "href": "https://gateoverflow.in/user/medaanilkumar1998"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=412708&dmuser=medaanilkumar1998"
+    },
+    {
+      "text": "medaanilkumar1998",
+      "href": "https://gateoverflow.in/user/medaanilkumar1998"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=412708&dmuser=medaanilkumar1998"
+    },
+    {
+      "text": "leo_t",
+      "href": "https://gateoverflow.in/user/leo_t"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=273612&dmuser=leo_t"
+    },
+    {
+      "text": "nehanshd",
+      "href": "https://gateoverflow.in/user/nehanshd"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=247395&dmuser=nehanshd"
+    },
+    {
+      "text": "leo_t",
+      "href": "https://gateoverflow.in/user/leo_t"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=273612&dmuser=leo_t"
+    },
+    {
+      "text": "someoone",
+      "href": "https://gateoverflow.in/user/someoone"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=305661&dmuser=someoone"
+    },
+    {
+      "text": "0shan",
+      "href": "https://gateoverflow.in/user/0shan"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=340467&dmuser=0shan"
+    },
+    {
+      "text": "0shan",
+      "href": "https://gateoverflow.in/user/0shan"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=340467&dmuser=0shan"
+    },
+    {
+      "text": "Shaik Masthan",
+      "href": "https://gateoverflow.in/user/Shaik%20Masthan"
+    },
+    {
+      "text": "DM",
+      "href": "https://gateoverflow.in/q2a-chat?dm=44335&dmuser=Shaik%20Masthan"
+    },
+    {
+      "text": "Search UI",
+      "href": "https://gateoverflow.in/searchui"
+    },
+    {
+      "text": "Quick search syntax",
+      "href": "https://gateoverflow.in/book#"
+    },
+    {
+      "text": "PSU Career Opportunities via GATE 2027",
+      "href": "https://gateoverflow.in/blog/18652/psu-career-opportunities-via-gate-2027"
+    },
+    {
+      "text": "IIT Guwahati Placement Report 2026",
+      "href": "https://gateoverflow.in/blog/18645/iit-guwahati-placement-report-2026"
+    },
+    {
+      "text": "ISRO Recruitment of Scientist/Engineer 'SC' 2026",
+      "href": "https://gateoverflow.in/blog/18641/isro-recruitment-of-scientist-engineer-sc-2026"
+    },
+    {
+      "text": "Delhi Transco Limited (DTL) Recruitment of Assistant Manager (T) through GATE 2026",
+      "href": "https://gateoverflow.in/blog/18639/delhi-transco-limited-dtl-recruitment-of-assistant-manager-t-through-gate-2026"
+    },
+    {
+      "text": "NIC Recruitment of Scientific/Technical Assistant-A via GATE Score (2024 – 2026)",
+      "href": "https://gateoverflow.in/blog/18637/nic-recruitment-of-scientific-technical-assistant-a-via-gate-score-2024-2026"
+    },
+    {
+      "text": "All categories",
+      "href": "https://gateoverflow.in/"
+    },
+    {
+      "text": "General Aptitude",
+      "href": "https://gateoverflow.in/general-aptitude"
+    },
+    {
+      "text": "Engineering Mathematics",
+      "href": "https://gateoverflow.in/mathematics"
+    },
+    {
+      "text": "Digital Logic",
+      "href": "https://gateoverflow.in/digital-logic"
+    },
+    {
+      "text": "Programming and DS",
+      "href": "https://gateoverflow.in/programming-in-c"
+    },
+    {
+      "text": "Algorithms",
+      "href": "https://gateoverflow.in/algorithms"
+    },
+    {
+      "text": "Theory of Computation",
+      "href": "https://gateoverflow.in/theory-of-computation"
+    },
+    {
+      "text": "Compiler Design",
+      "href": "https://gateoverflow.in/compiler-design"
+    },
+    {
+      "text": "Operating System",
+      "href": "https://gateoverflow.in/operating-system"
+    },
+    {
+      "text": "Databases",
+      "href": "https://gateoverflow.in/databases"
+    },
+    {
+      "text": "CO & Architecture",
+      "href": "https://gateoverflow.in/co-and-architecture"
+    },
+    {
+      "text": "Computer Networks",
+      "href": "https://gateoverflow.in/computer-networks"
+    },
+    {
+      "text": "Artificial Intelligence",
+      "href": "https://gateoverflow.in/artificial-intelligence"
+    },
+    {
+      "text": "Machine Learning",
+      "href": "https://gateoverflow.in/machine-learning"
+    },
+    {
+      "text": "Data Mining and Warehousing",
+      "href": "https://gateoverflow.in/data-mining-and-warehousing"
+    },
+    {
+      "text": "Non GATE CSE",
+      "href": "https://gateoverflow.in/not-in-gate-syllabus"
+    },
+    {
+      "text": "Others",
+      "href": "https://gateoverflow.in/others"
+    },
+    {
+      "text": "Admissions",
+      "href": "https://gateoverflow.in/admissions"
+    },
+    {
+      "text": "Exam Queries",
+      "href": "https://gateoverflow.in/exam-queries"
+    },
+    {
+      "text": "Tier 1 Placement Questions",
+      "href": "https://gateoverflow.in/tier-1-placement-questions"
+    },
+    {
+      "text": "Job Queries",
+      "href": "https://gateoverflow.in/job-queries"
+    },
+    {
+      "text": "Projects",
+      "href": "https://gateoverflow.in/projects"
+    },
+    {
+      "text": "Unknown Category",
+      "href": "https://gateoverflow.in/unknown-category"
+    },
+    {
+      "text": "whats the main focus of this test series , what...",
+      "href": "https://gateoverflow.in/blog/18293/?show=18655#c18655"
+    },
+    {
+      "text": "Online Application Link is active. Kindly check...",
+      "href": "https://gateoverflow.in/blog/18639/?show=18654#c18654"
+    },
+    {
+      "text": "GATE 2027 already cooking 🔥🚀 .",
+      "href": "https://gateoverflow.in/blog/18652/?show=18653#c18653"
+    },
+    {
+      "text": "Check access list present on your gateoverflow...",
+      "href": "https://gateoverflow.in/blog/18293/?show=18651#c18651"
+    },
+    {
+      "text": "Where can i see my purchases or any pending...",
+      "href": "https://gateoverflow.in/blog/18293/?show=18650#c18650"
+    },
+    {
+      "text": "",
+      "href": "https://x.com/gateoverflow"
+    },
+    {
+      "text": "",
+      "href": "https://www.instagram.com/gateoverflow"
+    },
+    {
+      "text": "",
+      "href": "https://www.facebook.com/gateoverflow"
+    },
+    {
+      "text": "",
+      "href": "https://www.youtube.com/gateoverflowofficial"
+    },
+    {
+      "text": "",
+      "href": "https://www.linkedin.com/company/gateoverflow"
+    },
+    {
+      "text": "Send feedback",
+      "href": "https://gateoverflow.in/feedback"
+    },
+    {
+      "text": "Rank Predictor",
+      "href": "https://rank.gateoverflow.in/"
+    },
+    {
+      "text": "Useful Links",
+      "href": "https://gateoverflow.in/usefullinks"
+    },
+    {
+      "text": "FAQ",
+      "href": "https://gateoverflow.in/faq"
+    },
+    {
+      "text": "Corrections",
+      "href": "https://gateoverflow.in/corrections"
+    },
+    {
+      "text": "Copyright",
+      "href": "https://gateoverflow.in/copyright"
+    },
+    {
+      "text": "Testimonials",
+      "href": "https://gateoverflow.in/blogs/testimonial"
+    },
+    {
+      "text": "My Preferences",
+      "href": "https://gateoverflow.in/account"
+    },
+    {
+      "text": "Chat Logs",
+      "href": "https://gateoverflow.in/chatlog"
+    },
+    {
+      "text": "Chat",
+      "href": "https://gateoverflow.in/chat"
+    },
+    {
+      "text": "GO Timeline",
+      "href": "https://gateoverflow.in/go-timeline"
+    },
+    {
+      "text": "Badges",
+      "href": "https://gateoverflow.in/badges"
+    },
+    {
+      "text": "Search tips",
+      "href": "https://gateoverflow.in/search-tips"
+    },
+    {
+      "text": "Exam Category",
+      "href": "https://gateoverflow.in/exam/categories"
+    },
+    {
+      "text": "Blog Category",
+      "href": "https://gateoverflow.in/blog/categories"
+    },
+    {
+      "text": "Blog Tags",
+      "href": "https://gateoverflow.in/blog/tags"
+    },
+    {
+      "text": "Privacy",
+      "href": "https://gateoverflow.in/privacy"
+    },
+    {
+      "text": "Test Series",
+      "href": "https://gateoverflow.in/test-series"
+    },
+    {
+      "text": "GATE CSE Marks Distribution",
+      "href": "https://gateoverflow.in/marks-distribution"
+    },
+    {
+      "text": "Refund Policy",
+      "href": "https://gateoverflow.in/terms-and-conditions"
+    },
+    {
+      "text": "Terms and Conditions",
+      "href": "https://gateoverflow.in/terms-and-conditions"
+    },
+    {
+      "text": "Contact Us",
+      "href": "https://gateoverflow.in/contact-us"
+    },
+    {
+      "text": "All Polls",
+      "href": "https://gateoverflow.in/list-polls"
+    },
+    {
+      "text": "GO Feature Awareness Videos",
+      "href": "https://gateoverflow.in/videos"
+    },
+    {
+      "text": "Book Viewer",
+      "href": "https://gateoverflow.in/book"
+    },
+    {
+      "text": "Flagged Posts by Tag",
+      "href": "https://gateoverflow.in/flagged"
+    },
+    {
+      "text": "Chun",
+      "href": "https://rxchun.github.io/?tm=polaris"
+    },
+    {
+      "text": "Get OpenAI API key",
+      "href": "https://platform.openai.com/api-keys"
+    },
+    {
+      "text": "Get Gemini key",
+      "href": "https://aistudio.google.com/app/apikey"
+    },
+    {
+      "text": "Get Qwen key",
+      "href": "https://qwen.ai/apiplatform"
+    }
+  ],
+  "selects": [
+    {
+      "name": "bv-book-select",
+      "options": [
+        {
+          "text": "-- Select a Book --",
+          "value": ""
+        },
+        {
+          "text": "GATE Overflow for GATE CSE Volume 2",
+          "value": "book_filter1_volume2"
+        },
+        {
+          "text": "GATE Overflow for GATE CSE Volume 3",
+          "value": "book_filter1_volume3"
+        },
+        {
+          "text": "GATE Overflow for GATE CSE Volume 1",
+          "value": "book_filter1_volume1"
+        },
+        {
+          "text": "GATE Overflow for GATE Engineering Mathematics and Aptitude",
+          "value": "book_gate_em"
+        },
+        {
+          "text": "GATE Overflow for GATE DA",
+          "value": "book_gate_da"
+        },
+        {
+          "text": "GATE Overflow for NIELIT",
+          "value": "book_filter4"
+        },
+        {
+          "text": "GATE Overflow for TIFR CS",
+          "value": "book_filter5"
+        },
+        {
+          "text": "GATE Overflow for UGCNET CSE",
+          "value": "book_filter6"
+        },
+        {
+          "text": "GATE Overflow for CSE Standard Books",
+          "value": "book_filter7"
+        }
+      ]
+    },
+    {
+      "name": "q2a-chat-widget-channel",
+      "options": [
+        {
+          "text": "General",
+          "value": "cse__general"
+        },
+        {
+          "text": "Admissions",
+          "value": "cse__cat-38"
+        },
+        {
+          "text": "ISRO",
+          "value": "cse__cat-77"
+        },
+        {
+          "text": "Job Queries",
+          "value": "cse__cat-98"
+        },
+        {
+          "text": "Site Issues",
+          "value": "cse__cat-115"
+        },
+        {
+          "text": "Study Resources",
+          "value": "cse__cat-60"
+        }
+      ]
+    },
+    {
+      "name": "gai-provider",
+      "options": [
+        {
+          "text": "OpenAI",
+          "value": "openai"
+        },
+        {
+          "text": "Qwen",
+          "value": "qwen"
+        },
+        {
+          "text": "Gemini",
+          "value": "gemini"
+        },
+        {
+          "text": "Ollama",
+          "value": "ollama"
+        }
+      ]
+    },
+    {
+      "name": "gai-model",
+      "options": []
+    }
+  ],
+  "bodySnippet": "\t\n81\n Ask\nActivity\nQuestions\nSubjects\nBlogs\nPrevious Years\nTests\nQuiz Module\nLists\nGATE CSE 2027 Schedule\nQ&A\nUnanswered\nCategories\nTags\nUsers\nNew Blog\nExaminations\nColleges\nGATE Overflow PYQ Book\n☰\n-- Select a Book --\nGATE Overflow for GATE CSE Volume 2\nGATE Overflow for GATE CSE Volume 3\nGATE Overflow for GATE CSE Volume 1\nGATE Overflow for GATE Engineering Mathematics and Aptitude\nGATE Overflow for GATE DA\nGATE Overflow for NIELIT\nGATE Overflow for TIFR CS\nGATE Overflow for UGCNET CSE\nGATE Overflow for CSE Standard Books\nExpand All\nCollapse All\nHide Finished\n📝 Show Notes\n🎯 Practice\n⛶\n\nSelect a section from the sidebar to view its content.\n\nFollow Us\n \n \n \n \nCommunity Other Links\nSend feedback\n \nRank Predictor\n \nUseful Links\n \nFAQ\n \nCorrections\n \nCopyright\n \nTestimonials\n \nMy Preferences\n \nChat Logs\n \nChat\n \nGO Timeline\n \nBadges\n \nSearch tips\n \nExam Category\n \nBlog Category\n \nBlog Tags\n \nPrivacy\n \nTest Series\n \nGATE CSE Marks Distribution\n \nRefund Policy\n \nTerms and Conditions\n \nContact Us\n \nAll Polls\n \nGO Feature Awareness Videos\n \nBook Viewer\n \nFlagged Posts by Tag\nCopyright © 2026. Developed by Chun\nProf. Charlie\nYour personal prep mentor\n⊘\n⚙\n💬\n⤢\n✕\nAI:\nOpenAI\nQwen\nGemini\nOllama\nModel: gpt-4o-mini\n+ API Key\nAPI Key Required\nOpenAI requires an API key to chat. Paste your key in the field above, or get one from:\nGet a key:\nGet OpenAI API key • Get Gemini key • Get Qwen key\n📊 Analyze my weak areas\n📝 Give me a quiz\n📅 Study plan for this week\n💡 Tip to improve score\n📚 W"
+}

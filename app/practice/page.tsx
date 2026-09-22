@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { allQuestions } from '../../lib/data';
 import { PracticeClient } from '../../components/PracticeClient';
+import { MultiTopicSelect } from '../../components/MultiTopicSelect';
 import { getCurrentUserId, loadAttempts, loadFlags } from '../../lib/persistence';
 
 export default function PracticePage() {
@@ -18,7 +19,11 @@ export default function PracticePage() {
 function PracticePageInner() {
   const searchParams = useSearchParams();
   const initialSubject = searchParams.get('subject') || 'all';
-  const initialTopic = searchParams.get('topic') || 'all';
+  const rawTopicsParam = searchParams.get('topics') || searchParams.get('topic');
+  const initialSelectedTopics = useMemo(() => {
+    if (!rawTopicsParam || rawTopicsParam === 'all') return [];
+    return rawTopicsParam.split(',').map(s => s.trim()).filter(Boolean);
+  }, [rawTopicsParam]);
   const only = searchParams.get('only') || 'all';
   const [savedIds, setSavedIds] = useState<string[] | null>(only === 'all' ? [] : null);
   const [filterMessage, setFilterMessage] = useState('');
@@ -44,7 +49,7 @@ function PracticePageInner() {
   const [started, setStarted] = useState(false);
   const [volume, setVolume] = useState('all');
   const [subject, setSubject] = useState(initialSubject);
-  const [topic, setTopic] = useState(initialTopic);
+  const [selectedTopics, setSelectedTopics] = useState<string[]>(initialSelectedTopics);
   const [year, setYear] = useState('all');
   const [type, setType] = useState('all');
   const [count, setCount] = useState('20');
@@ -67,19 +72,34 @@ function PracticePageInner() {
     );
   }, [volume, subject]);
 
+  const topicOptions = useMemo(() => {
+    return topics.map(t => {
+      const qCount = allQuestions.filter(q =>
+        (volume === 'all' || q.volume === Number(volume)) &&
+        (subject === 'all' || q.subjectId === subject) &&
+        q.topicId === t.topicId
+      ).length;
+      return {
+        id: t.topicId,
+        label: `${t.topicNumber} · ${t.topic}`,
+        count: qCount,
+      };
+    });
+  }, [topics, volume, subject]);
+
   const years = useMemo(() => {
     return [...new Set(allQuestions.filter(q =>
       (volume === 'all' || q.volume === Number(volume)) &&
       (subject === 'all' || q.subjectId === subject) &&
-      (topic === 'all' || q.topicId === topic)
+      (selectedTopics.length === 0 || selectedTopics.includes(q.topicId))
     ).map(q => q.year).filter((y): y is number => y !== null))].sort((a, b) => b - a);
-  }, [volume, subject, topic]);
+  }, [volume, subject, selectedTopics]);
 
   const pool = useMemo(() => {
     const base = allQuestions.filter(q =>
       (volume === 'all' || q.volume === Number(volume)) &&
       (subject === 'all' || q.subjectId === subject) &&
-      (topic === 'all' || q.topicId === topic) &&
+      (selectedTopics.length === 0 || selectedTopics.includes(q.topicId)) &&
       (year === 'all' || q.year === Number(year)) &&
       (type === 'all' || q.type === type)
     );
@@ -87,7 +107,7 @@ function PracticePageInner() {
     if (savedIds === null) return [];
     const ids = new Set(savedIds);
     return base.filter(q => ids.has(q.id));
-  }, [volume, subject, topic, year, type, only, savedIds]);
+  }, [volume, subject, selectedTopics, year, type, only, savedIds]);
 
   const maxCount = Math.min(Number(count), pool.length);
   const start = () => {
@@ -119,7 +139,7 @@ function PracticePageInner() {
       <div className="card section">
         <div className="grid form-grid">
           <Field label="Volume">
-            <select value={volume} onChange={e => { setVolume(e.target.value); setSubject('all'); setTopic('all'); setYear('all'); }}>
+            <select value={volume} onChange={e => { setVolume(e.target.value); setSubject('all'); setSelectedTopics([]); setYear('all'); }}>
               <option value="all">All volumes</option>
               <option value="1">Volume 1</option>
               <option value="2">Volume 2</option>
@@ -127,16 +147,18 @@ function PracticePageInner() {
             </select>
           </Field>
           <Field label="Subject">
-            <select value={subject} onChange={e => { setSubject(e.target.value); setTopic('all'); setYear('all'); }}>
+            <select value={subject} onChange={e => { setSubject(e.target.value); setSelectedTopics([]); setYear('all'); }}>
               <option value="all">All subjects</option>
               {subjects.map(q => <option key={q.subjectId} value={q.subjectId}>{q.subject}</option>)}
             </select>
           </Field>
-          <Field label="Topic">
-            <select value={topic} onChange={e => { setTopic(e.target.value); setYear('all'); }}>
-              <option value="all">All topics</option>
-              {topics.map(q => <option key={q.topicId} value={q.topicId}>{q.topicNumber} · {q.topic}</option>)}
-            </select>
+          <Field label="Topics">
+            <MultiTopicSelect
+              options={topicOptions}
+              selected={selectedTopics}
+              onChange={setSelectedTopics}
+              placeholder="All topics"
+            />
           </Field>
           <Field label="GATE year">
             <select value={year} onChange={e => setYear(e.target.value)}>

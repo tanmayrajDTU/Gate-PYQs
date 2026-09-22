@@ -142,11 +142,20 @@ export type BadgeContext = {
   hasPerfectWeek: boolean;        // any single Mon-Sun week with practice activity on all 7 days
   totalReviewCount: number;       // lifetime sum of review_count across all flagged questions
   activeRevisionCount: number;    // distinct questions currently flagged revision=true
+
+  // Non-GATE specific stats:
+  nonGateCorrectCount?: number;
+  knowledgeGateCorrectCount?: number;
+  isroCorrectCount?: number;
+  tifrCorrectCount?: number;
+  solutionQuestionsCorrectCount?: number;
+  nonGateExamsAttemptedCount?: number;
+  gateCorrectCount?: number;
 };
 
 export type Badge = {
   id: string;
-  category: 'milestone' | 'streak' | 'mastery';
+  category: 'milestone' | 'streak' | 'mastery' | 'non-gate';
   title: string;
   description: string;
   check: (ctx: BadgeContext) => boolean;
@@ -182,6 +191,88 @@ export const BADGES: Badge[] = [
   { id: 'time-traveler', category: 'mastery', title: 'Time Traveler', description: 'Attempt questions from 15 different GATE years.', check: c => c.yearsAttemptedCount >= 15, progress: c => ({ current: Math.min(c.yearsAttemptedCount, 15), target: 15 }) },
   { id: 'reviewer', category: 'mastery', title: 'Reviewer', description: 'Complete 50 spaced-repetition reviews.', check: c => c.totalReviewCount >= 50, progress: c => ({ current: Math.min(c.totalReviewCount, 50), target: 50 }) },
   { id: 'revision-queue-builder', category: 'mastery', title: 'Revision Queue Builder', description: 'Keep 25 questions actively in your revision queue.', check: c => c.activeRevisionCount >= 25, progress: c => ({ current: Math.min(c.activeRevisionCount, 25), target: 25 }) },
+
+  // --- Non-GATE Specific Badges ---
+  {
+    id: 'non-gate-pioneer',
+    category: 'non-gate',
+    title: 'Non-GATE Pioneer',
+    description: 'Solve your first Non-GATE question correctly.',
+    check: c => (c.nonGateCorrectCount ?? 0) >= 1,
+    progress: c => ({ current: Math.min(c.nonGateCorrectCount ?? 0, 1), target: 1 }),
+  },
+  {
+    id: 'knowledge-seeker',
+    category: 'non-gate',
+    title: 'Knowledge Seeker',
+    description: 'Solve 50 Knowledge Gate practice questions correctly.',
+    check: c => (c.knowledgeGateCorrectCount ?? 0) >= 50,
+    progress: c => ({ current: Math.min(c.knowledgeGateCorrectCount ?? 0, 50), target: 50 }),
+  },
+  {
+    id: 'knowledge-master',
+    category: 'non-gate',
+    title: 'Knowledge Master',
+    description: 'Solve 200 Knowledge Gate practice questions correctly.',
+    check: c => (c.knowledgeGateCorrectCount ?? 0) >= 200,
+    progress: c => ({ current: Math.min(c.knowledgeGateCorrectCount ?? 0, 200), target: 200 }),
+  },
+  {
+    id: 'isro-cadet',
+    category: 'non-gate',
+    title: 'ISRO Cadet',
+    description: 'Solve 25 ISRO CSE questions correctly.',
+    check: c => (c.isroCorrectCount ?? 0) >= 25,
+    progress: c => ({ current: Math.min(c.isroCorrectCount ?? 0, 25), target: 25 }),
+  },
+  {
+    id: 'isro-scientist',
+    category: 'non-gate',
+    title: 'ISRO Scientist',
+    description: 'Solve 100 ISRO CSE questions correctly.',
+    check: c => (c.isroCorrectCount ?? 0) >= 100,
+    progress: c => ({ current: Math.min(c.isroCorrectCount ?? 0, 100), target: 100 }),
+  },
+  {
+    id: 'tifr-scholar',
+    category: 'non-gate',
+    title: 'TIFR Scholar',
+    description: 'Solve 25 TIFR CSE questions correctly.',
+    check: c => (c.tifrCorrectCount ?? 0) >= 25,
+    progress: c => ({ current: Math.min(c.tifrCorrectCount ?? 0, 25), target: 25 }),
+  },
+  {
+    id: 'tifr-fellow',
+    category: 'non-gate',
+    title: 'TIFR Research Fellow',
+    description: 'Solve 100 TIFR CSE questions correctly.',
+    check: c => (c.tifrCorrectCount ?? 0) >= 100,
+    progress: c => ({ current: Math.min(c.tifrCorrectCount ?? 0, 100), target: 100 }),
+  },
+  {
+    id: 'cosmic-explorer',
+    category: 'non-gate',
+    title: 'Cosmic Explorer',
+    description: 'Attempt questions across all 3 Non-GATE collections (Knowledge Gate, ISRO, and TIFR).',
+    check: c => (c.nonGateExamsAttemptedCount ?? 0) >= 3,
+    progress: c => ({ current: Math.min(c.nonGateExamsAttemptedCount ?? 0, 3), target: 3 }),
+  },
+  {
+    id: 'solution-studier',
+    category: 'non-gate',
+    title: 'Solution Studier',
+    description: 'Solve 50 practice questions that include comprehensive step-by-step solutions.',
+    check: c => (c.solutionQuestionsCorrectCount ?? 0) >= 50,
+    progress: c => ({ current: Math.min(c.solutionQuestionsCorrectCount ?? 0, 50), target: 50 }),
+  },
+  {
+    id: 'multiverse-scholar',
+    category: 'non-gate',
+    title: 'Multiverse Scholar',
+    description: 'Solve at least 100 GATE questions and 100 Non-GATE questions correctly.',
+    check: c => (c.gateCorrectCount ?? 0) >= 100 && (c.nonGateCorrectCount ?? 0) >= 100,
+    progress: c => ({ current: Math.min(c.gateCorrectCount ?? 0, 100) + Math.min(c.nonGateCorrectCount ?? 0, 100), target: 200 }),
+  },
 ];
 
 export function computeBadges(ctx: BadgeContext) {

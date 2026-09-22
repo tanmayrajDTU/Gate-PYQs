@@ -14,7 +14,7 @@ export function BrowseQuestionCard({ q, index }: { q: Question; index: number })
   useEffect(() => {
     if (cardRef.current) void typesetMath([cardRef.current]);
     attachImageFallback(cardRef.current, q.gateOverflowUrl);
-  }, [q.id]);
+  }, [q.id, showAnswer]);
 
   // "ALL" marks a question that GATE officially declared wrong/out-of-
   // syllabus, where marks were awarded to every candidate regardless of
@@ -51,6 +51,15 @@ export function BrowseQuestionCard({ q, index }: { q: Question; index: number })
               </div>
             );
           })}
+        </div>
+      )}
+
+      {showAnswer && q.solution && (
+        <div className="card" style={{ marginTop: 18, padding: 16, background: 'var(--surface2)', borderLeft: '3px solid var(--accent)' }}>
+          <div style={{ fontWeight: 600, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text)' }}>
+            <span>Solution &amp; Explanation</span>
+          </div>
+          <div className="solution-body" dangerouslySetInnerHTML={{ __html: sanitizeHtml(q.solution) }} />
         </div>
       )}
 

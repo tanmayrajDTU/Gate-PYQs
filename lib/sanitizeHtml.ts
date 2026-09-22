@@ -28,7 +28,7 @@ DOMPurify.addHook('afterSanitizeAttributes', node => {
 const ALLOWED_TAGS = [
   'a', 'b', 'strong', 'i', 'em', 'u', 's', 'sub', 'sup', 'br', 'p', 'div', 'span',
   'ul', 'ol', 'li', 'table', 'thead', 'tbody', 'tr', 'td', 'th', 'img',
-  'code', 'pre', 'blockquote', 'hr',
+  'code', 'pre', 'blockquote', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
 ];
 
 const ALLOWED_ATTR = ['href', 'src', 'alt', 'title', 'colspan', 'rowspan', 'class', 'target', 'rel'];

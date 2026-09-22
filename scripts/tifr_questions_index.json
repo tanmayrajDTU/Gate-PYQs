@@ -1,0 +1,2434 @@
+{
+  "book": "TIFR CS",
+  "total": 607,
+  "questions": [
+    {
+      "text": "81",
+      "href": "javascript:history.back()"
+    },
+    {
+      "text": "GATE Overflow PYQ Book",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "☰",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "▼",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.1.1 TIFR CSE 2025 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.2.1 TIFR CSE 2024 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.3.1 TIFR CSE 2011 | Part B | Question: 27",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.3.2 TIFR CSE 2012 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.3.3 TIFR CSE 2014 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.3.4 TIFR CSE 2016 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.3.5 TIFR CSE 2017 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.3.6 TIFR CSE 2018 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.3.7 TIFR CSE 2018 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.3.8 TIFR CSE 2019 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.3.9 TIFR CSE 2020 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.3.10 TIFR CSE 2024 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.3.11 TIFR CSE 2024 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.4.1 TIFR CSE 2010 | Part B | Question: 29",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.4.2 TIFR CSE 2012 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.4.3 TIFR CSE 2019 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.5.1 TIFR CSE 2024 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.6.1 TIFR CSE 2024 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.7.1 TIFR CSE 2013 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.7.2 TIFR CSE 2013 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.7.3 TIFR CSE 2014 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.8.1 TIFR CSE 2015 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.9.1 TIFR CSE 2025 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.10.1 TIFR CSE 2023 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.11.1 TIFR CSE 2010 | Part B | Question: 24",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.11.2 TIFR CSE 2014 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.11.3 TIFR CSE 2014 | Part B | Question: 20",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.11.4 TIFR CSE 2015 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.11.5 TIFR CSE 2016 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.11.6 TIFR CSE 2017 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.11.7 TIFR CSE 2020 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.11.8 TIFR CSE 2022 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.12.1 TIFR CSE 2025 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.13.1 TIFR CSE 2025 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.14.1 TIFR CSE 2014 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.14.2 TIFR CSE 2014 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.14.3 TIFR CSE 2014 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.15.1 TIFR CSE 2011 | Part B | Question: 35",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.15.2 TIFR CSE 2013 | Part B | Question: 17",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.15.3 TIFR CSE 2014 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.15.4 TIFR CSE 2014 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.15.5 TIFR CSE 2015 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.15.6 TIFR CSE 2018 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.15.7 TIFR CSE 2018 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.15.8 TIFR CSE 2019 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.15.9 TIFR CSE 2021 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.16.1 TIFR CSE 2010 | Part B | Question: 39",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.16.2 TIFR CSE 2011 | Part B | Question: 37",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.16.3 TIFR CSE 2013 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.16.4 TIFR CSE 2017 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.16.5 TIFR CSE 2017 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.16.6 TIFR CSE 2022 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.17.1 TIFR CSE 2024 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.18.1 TIFR CSE 2012 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.18.2 TIFR CSE 2013 | Part B | Question: 18",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.18.3 TIFR CSE 2018 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.19.1 TIFR CSE 2025 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.20.1 TIFR CSE 2014 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.20.2 TIFR CSE 2015 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.20.3 TIFR CSE 2017 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.20.4 TIFR CSE 2023 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.21.1 TIFR CSE 2025 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.22.1 TIFR CSE 2024 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.23.1 TIFR CSE 2018 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.23.2 TIFR CSE 2022 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.23.3 TIFR CSE 2025 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.24.1 TIFR CSE 2010 | Part B | Question: 23",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.24.2 TIFR CSE 2010 | Part B | Question: 27",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.24.3 TIFR CSE 2011 | Part B | Question: 21",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.24.4 TIFR CSE 2011 | Part B | Question: 31",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.24.5 TIFR CSE 2011 | Part B | Question: 39",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.24.6 TIFR CSE 2012 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.24.7 TIFR CSE 2013 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.24.8 TIFR CSE 2013 | Part B | Question: 20",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.24.9 TIFR CSE 2017 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.24.10 TIFR CSE 2021 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.24.11 TIFR CSE 2022 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.24.12 TIFR CSE 2022 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.25.1 TIFR CSE 2014 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "1.26.1 TIFR CSE 2011 | Part B | Question: 29",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "2.1.1 TIFR CSE 2015 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "2.2.1 TIFR CSE 2022 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "2.3.1 TIFR CSE 2012 | Part B | Question: 17",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "2.4.1 TIFR CSE 2012 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "3.1.1 TIFR CSE 2011 | Part B | Question: 36",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "4.1.1 TIFR CSE 2010 | Part B | Question: 33",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "4.1.2 TIFR CSE 2013 | Part B | Question: 19",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "5.1.1 TIFR CSE 2021 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "5.2.1 TIFR CSE 2010 | Part B | Question: 21",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "5.2.2 TIFR CSE 2014 | Part B | Question: 17",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "5.2.3 TIFR CSE 2017 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "5.2.4 TIFR CSE 2020 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "5.2.5 TIFR CSE 2020 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "5.3.1 TIFR CSE 2015 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "5.4.1 TIFR CSE 2015 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "5.5.1 TIFR CSE 2010 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "5.5.2 TIFR CSE 2011 | Part A | Question: 16",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "5.5.3 TIFR CSE 2012 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "5.5.4 TIFR CSE 2019 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "5.5.5 TIFR CSE 2020 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.1.1 TIFR CSE 2012 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.1.2 TIFR CSE 2013 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.1.3 TIFR CSE 2015 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.1.4 TIFR CSE 2017 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.2.1 TIFR CSE 2016 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.2.2 TIFR CSE 2022 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.3.1 TIFR CSE 2025 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.4.1 TIFR CSE 2011 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.4.2 TIFR CSE 2012 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.4.3 TIFR CSE 2013 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.4.4 TIFR CSE 2015 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.4.5 TIFR CSE 2016 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.4.6 TIFR CSE 2017 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.4.7 TIFR CSE 2019 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.4.8 TIFR CSE 2021 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.4.9 TIFR CSE 2022 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.4.10 TIFR CSE 2023 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.4.11 TIFR CSE 2023 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.4.12 TIFR CSE 2024 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.4.13 TIFR CSE 2025 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.5.1 TIFR CSE 2010 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.5.2 TIFR CSE 2021 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.6.1 TIFR CSE 2014 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.7.1 TIFR CSE 2024 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.8.1 TIFR CSE 2014 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.8.2 TIFR CSE 2016 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.8.3 TIFR CSE 2018 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.9.1 TIFR CSE 2021 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.10.1 TIFR CSE 2014 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "6.10.2 TIFR CSE 2017 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.1.1 TIFR CSE 2024 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.2.1 TIFR CSE 2017 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.2.2 TIFR CSE 2020 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.3.1 TIFR CSE 2024 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.4.1 TIFR CSE 2010 | Part B | Question: 36",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.4.2 TIFR CSE 2012 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.4.3 TIFR CSE 2018 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.4.4 TIFR CSE 2019 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.4.5 TIFR CSE 2023 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.5.1 TIFR CSE 2016 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.5.2 TIFR CSE 2020 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.5.3 TIFR CSE 2020 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.6.1 TIFR CSE 2013 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.6.2 TIFR CSE 2016 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.6.3 TIFR CSE 2017 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.6.4 TIFR CSE 2017 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.6.5 TIFR CSE 2018 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.6.6 TIFR CSE 2021 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.6.7 TIFR CSE 2021 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.6.8 TIFR CSE 2023 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.6.9 TIFR CSE 2025 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.7.1 TIFR CSE 2011 | Part B | Question: 33",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.7.2 TIFR CSE 2015 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.7.3 TIFR CSE 2015 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.7.4 TIFR CSE 2016 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.7.5 TIFR CSE 2016 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.7.6 TIFR CSE 2016 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.7.7 TIFR CSE 2016 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.7.8 TIFR CSE 2017 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.7.9 TIFR CSE 2019 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.7.10 TIFR CSE 2019 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.7.11 TIFR CSE 2021 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.8.1 TIFR CSE 2012 | Part B | Question: 20",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.8.2 TIFR CSE 2021 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.8.3 TIFR CSE 2022 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.8.4 TIFR CSE 2022 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.9.1 TIFR CSE 2021 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.10.1 TIFR CSE 2025 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.11.1 TIFR CSE 2022 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.11.2 TIFR CSE 2023 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.12.1 TIFR CSE 2022 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "7.13.1 TIFR CSE 2016 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.1.1 TIFR CSE 2010 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.1.2 TIFR CSE 2012 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.1.3 TIFR CSE 2012 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.1.4 TIFR CSE 2014 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.1.5 TIFR CSE 2016 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.1.6 TIFR CSE 2017 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.1.7 TIFR CSE 2017 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.2.1 TIFR CSE 2010 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.2.2 TIFR CSE 2011 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.2.3 TIFR CSE 2011 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.2.4 TIFR CSE 2012 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.2.5 TIFR CSE 2015 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.2.6 TIFR CSE 2016 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.2.7 TIFR CSE 2018 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.2.8 TIFR CSE 2019 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.2.9 TIFR CSE 2021 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.2.10 TIFR CSE 2023 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.2.11 TIFR CSE 2025 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "8.3.1 TIFR CSE 2013 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.1.1 TIFR CSE 2019 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.2.1 TIFR CSE 2025 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.3.1 TIFR CSE 2012 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.3.2 TIFR CSE 2013 | Part B | Question: 16",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.3.3 TIFR CSE 2014 | Part B | Question: 18",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.3.4 TIFR CSE 2017 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.3.5 TIFR CSE 2017 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.3.6 TIFR CSE 2018 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.3.7 TIFR CSE 2019 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.3.8 TIFR CSE 2021 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.3.9 TIFR CSE 2023 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.4.1 TIFR CSE 2012 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.4.2 TIFR CSE 2014 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.4.3 TIFR CSE 2014 | Part B | Question: 16",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.5.1 TIFR CSE 2025 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.6.1 TIFR CSE 2012 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.6.2 TIFR CSE 2013 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.7.1 TIFR CSE 2023 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.1 TIFR CSE 2010 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.2 TIFR CSE 2010 | Part A | Question: 18",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.3 TIFR CSE 2011 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.4 TIFR CSE 2011 | Part B | Question: 23",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.5 TIFR CSE 2012 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.6 TIFR CSE 2016 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.7 TIFR CSE 2016 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.8 TIFR CSE 2019 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.9 TIFR CSE 2021 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.10 TIFR CSE 2022 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.11 TIFR CSE 2022 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.12 TIFR CSE 2023 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.13 TIFR CSE 2023 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "9.8.14 TIFR CSE 2025 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.1.1 TIFR CSE 2024 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.2.1 TIFR CSE 2023 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.3.1 TIFR CSE 2014 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.4.1 TIFR CSE 2011 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.4.2 TIFR CSE 2015 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.4.3 TIFR CSE 2019 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.5.1 TIFR CSE 2012 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.6.1 TIFR CSE 2018 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.6.2 TIFR CSE 2022 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.6.3 TIFR CSE 2023 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.7.1 TIFR CSE 2016 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.8.1 TIFR CSE 2023 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.9.1 TIFR CSE 2010 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.9.2 TIFR CSE 2011 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.9.3 TIFR CSE 2011 | Part A | Question: 17",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.9.4 TIFR CSE 2012 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.9.5 TIFR CSE 2014 | Part A | Question: 16",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.9.6 TIFR CSE 2014 | Part A | Question: 18",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.9.7 TIFR CSE 2019 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.9.8 TIFR CSE 2021 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.10.1 TIFR CSE 2010 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.10.2 TIFR CSE 2011 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.10.3 TIFR CSE 2012 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.10.4 TIFR CSE 2013 | Part A | Question: 16",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.10.5 TIFR CSE 2014 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.10.6 TIFR CSE 2015 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.10.7 TIFR CSE 2020 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.10.8 TIFR CSE 2020 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.10.9 TIFR CSE 2022 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "10.11.1 TIFR CSE 2012 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.1.1 TIFR CSE 2022 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.2.1 TIFR CSE 2016 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.2.2 TIFR CSE 2019 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.2.3 TIFR CSE 2025 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.2.4 TIFR CSE 2025 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.3.1 TIFR CSE 2010 | Part A | Question: 16",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.3.2 TIFR CSE 2010 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.3.3 TIFR CSE 2012 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.3.4 TIFR CSE 2013 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.3.5 TIFR CSE 2015 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.3.6 TIFR CSE 2018 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.3.7 TIFR CSE 2018 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.3.8 TIFR CSE 2020 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.3.9 TIFR CSE 2021 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.3.10 TIFR CSE 2023 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.3.11 TIFR CSE 2023 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.3.12 TIFR CSE 2024 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.3.13 TIFR CSE 2024 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.4.1 TIFR CSE 2024 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.5.1 TIFR CSE 2020 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.5.2 TIFR CSE 2021 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.5.3 TIFR CSE 2022 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.6.1 TIFR CSE 2025 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.7.1 TIFR CSE 2010 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.7.2 TIFR CSE 2016 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.7.3 TIFR CSE 2016 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.7.4 TIFR CSE 2017 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.7.5 TIFR CSE 2020 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.7.6 TIFR CSE 2022 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.7.7 TIFR CSE 2023 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.7.8 TIFR CSE 2023 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "11.7.9 TIFR CSE 2023 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.1.1 TIFR CSE 2025 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.2.1 TIFR CSE 2010 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.2.2 TIFR CSE 2010 | Part B | Question: 38",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.2.3 TIFR CSE 2011 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.2.4 TIFR CSE 2012 | Part A | Question: 17",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.2.5 TIFR CSE 2013 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.2.6 TIFR CSE 2013 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.2.7 TIFR CSE 2018 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.3.1 TIFR CSE 2021 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.4.1 TIFR CSE 2025 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.1 TIFR CSE 2010 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.2 TIFR CSE 2010 | Part A | Question: 19, TIFR CSE 2014 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.3 TIFR CSE 2011 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.4 TIFR CSE 2012 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.5 TIFR CSE 2012 | Part A | Question: 20",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.6 TIFR CSE 2013 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.7 TIFR CSE 2013 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.8 TIFR CSE 2015 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.9 TIFR CSE 2016 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.10 TIFR CSE 2018 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.11 TIFR CSE 2018 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.12 TIFR CSE 2019 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.13 TIFR CSE 2020 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.14 TIFR CSE 2022 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.5.15 TIFR CSE 2022 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.6.1 TIFR CSE 2011 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.6.2 TIFR CSE 2012 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.6.3 TIFR CSE 2014 | Part A | Question: 17",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.6.4 TIFR CSE 2015 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.6.5 TIFR CSE 2020 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.6.6 TIFR CSE 2021 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.6.7 TIFR CSE 2022 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.6.8 TIFR CSE 2025 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.7.1 TIFR CSE 2011 | Part A | Question: 19",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.7.2 TIFR CSE 2012 | Part A | Question: 19",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.7.3 TIFR CSE 2017 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.7.4 TIFR CSE 2020 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.8.1 TIFR CSE 2024 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.9.1 TIFR CSE 2023 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.10.1 TIFR CSE 2024 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.11.1 TIFR CSE 2010 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.11.2 TIFR CSE 2012 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.11.3 TIFR CSE 2013 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.11.4 TIFR CSE 2013 | Part A | Question: 17",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.11.5 TIFR CSE 2019 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.11.6 TIFR CSE 2020 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.11.7 TIFR CSE 2021 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.11.8 TIFR CSE 2023 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.11.9 TIFR CSE 2024 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.12.1 TIFR CSE 2023 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.13.1 TIFR CSE 2011 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.13.2 TIFR CSE 2014 | Part A | Question: 19",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.14.1 TIFR CSE 2013 | Part A | Question: 18",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.14.2 TIFR CSE 2015 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.14.3 TIFR CSE 2016 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.14.4 TIFR CSE 2016 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.14.5 TIFR CSE 2020 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.14.6 TIFR CSE 2022 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.14.7 TIFR CSE 2022 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "12.14.8 TIFR CSE 2022 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "13.1.1 TIFR CSE 2010 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "13.1.2 TIFR CSE 2013 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "13.1.3 TIFR CSE 2013 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "13.1.4 TIFR CSE 2013 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "13.1.5 TIFR CSE 2016 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "13.1.6 TIFR CSE 2017 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "13.1.7 TIFR CSE 2018 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "13.1.8 TIFR CSE 2018 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "13.1.9 TIFR CSE 2019 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "13.1.10 TIFR CSE 2019 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.1.1 TIFR CSE 2019 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.2.1 TIFR CSE 2013 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.2.2 TIFR CSE 2014 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.2.3 TIFR CSE 2015 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.2.4 TIFR CSE 2020 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.3.1 TIFR CSE 2011 | Part A | Question: 18",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.3.2 TIFR CSE 2018 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.3.3 TIFR CSE 2020 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.3.4 TIFR CSE 2021 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.4.1 TIFR CSE 2010 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.4.2 TIFR CSE 2013 | Part A | Question: 20",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.4.3 TIFR CSE 2014 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.4.4 TIFR CSE 2020 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.4.5 TIFR CSE 2025 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.5.1 TIFR CSE 2011 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.5.2 TIFR CSE 2011 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.5.3 TIFR CSE 2013 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.6.1 TIFR CSE 2014 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.7.1 TIFR CSE 2012 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.8.1 TIFR CSE 2010 | Part A | Question: 20",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.8.2 TIFR CSE 2011 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.8.3 TIFR CSE 2013 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.9.1 TIFR CSE 2014 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.9.2 TIFR CSE 2017 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.10.1 TIFR CSE 2010 | Part A | Question: 17",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.10.2 TIFR CSE 2012 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.10.3 TIFR CSE 2012 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.10.4 TIFR CSE 2013 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.10.5 TIFR CSE 2015 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.10.6 TIFR CSE 2015 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.10.7 TIFR CSE 2016 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.10.8 TIFR CSE 2017 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.10.9 TIFR CSE 2017 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.11.1 TIFR CSE 2011 | Part A | Question: 20",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.11.2 TIFR CSE 2018 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.11.3 TIFR CSE 2019 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.11.4 TIFR CSE 2019 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.11.5 TIFR CSE 2019 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.11.6 TIFR CSE 2021 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.11.7 TIFR CSE 2023 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.12.1 TIFR CSE 2011 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.12.2 TIFR CSE 2013 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.12.3 TIFR CSE 2013 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.12.4 TIFR CSE 2014 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.13.1 TIFR CSE 2023 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.14.1 TIFR CSE 2014 | Part A | Question: 20",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.14.2 TIFR CSE 2020 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.14.3 TIFR CSE 2020 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.14.4 TIFR CSE 2020 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.14.5 TIFR CSE 2021 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.15.1 TIFR CSE 2010 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.15.2 TIFR CSE 2014 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.15.3 TIFR CSE 2014 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.15.4 TIFR CSE 2015 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.15.5 TIFR CSE 2015 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.16.1 TIFR CSE 2024 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.17.1 TIFR CSE 2013 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.18.1 TIFR CSE 2012 | Part A | Question: 18",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.18.2 TIFR CSE 2014 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.19.1 TIFR CSE 2013 | Part A | Question: 19",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.19.2 TIFR CSE 2016 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.19.3 TIFR CSE 2023 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.20.1 TIFR CSE 2012 | Part A | Question: 16",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.20.2 TIFR CSE 2017 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.20.3 TIFR CSE 2019 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.20.4 TIFR CSE 2020 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.21.1 TIFR CSE 2015 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.22.1 TIFR CSE 2018 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "14.23.1 TIFR CSE 2018 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "15.1.1 TIFR CSE 2025 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "15.2.1 TIFR CSE 2025 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "16.1.1 TIFR CSE 2024 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "16.2.1 TIFR CSE 2025 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "16.3.1 TIFR CSE 2025 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "16.4.1 TIFR CSE 2024 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "16.5.1 TIFR CSE 2025 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "17.1.1 TIFR CSE 2011 | Part B | Question: 40",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "18.1.1 TIFR CSE 2013 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "18.2.1 TIFR CSE 2010 | Part B | Question: 28",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "18.2.2 TIFR CSE 2010 | Part B | Question: 32",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "18.2.3 TIFR CSE 2011 | Part B | Question: 22",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "18.2.4 TIFR CSE 2011 | Part B | Question: 26",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "18.2.5 TIFR CSE 2011 | Part B | Question: 28",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "18.2.6 TIFR CSE 2011 | Part B | Question: 34",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "18.2.7 TIFR CSE 2012 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "18.2.8 TIFR CSE 2015 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "18.3.1 TIFR CSE 2020 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "18.4.1 TIFR CSE 2012 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.1 TIFR CSE 2026 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.2 TIFR CSE 2026 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.3 TIFR CSE 2026 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.4 TIFR CSE 2026 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.5 TIFR CSE 2026 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.6 TIFR CSE 2026 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.7 TIFR CSE 2026 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.8 TIFR CSE 2026 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.9 TIFR CSE 2026 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.10 TIFR CSE 2026 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.11 TIFR CSE 2026 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.12 TIFR CSE 2026 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.13 TIFR CSE 2026 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.14 TIFR CSE 2026 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.15 TIFR CSE 2026 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.16 TIFR CSE 2026 | Part A | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.17 TIFR CSE 2026 | Part A | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.18 TIFR CSE 2026 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.19 TIFR CSE 2026 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.20 TIFR CSE 2026 | Part A | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.21 TIFR CSE 2026 | Part A | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.22 TIFR CSE 2026 | Part A | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.23 TIFR CSE 2026 | Part A | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.24 TIFR CSE 2026 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.25 TIFR CSE 2026 | Part A | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.26 TIFR CSE 2026 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.27 TIFR CSE 2026 | Part A | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.28 TIFR CSE 2026 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.29 TIFR CSE 2026 | Part A | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.30 TIFR CSE 2026 | Part A | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.31 TIFR LIDS 2024 | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.32 TIFR LIDS 2024 | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.33 TIFR LIDS 2024 | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.34 TIFR LIDS 2024 | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.35 TIFR LIDS 2024 | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.36 TIFR LIDS 2024 | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.37 TIFR LIDS 2024 | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.38 TIFR LIDS 2024 | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.39 TIFR LIDS 2024 | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.40 TIFR LIDS 2024 | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.41 TIFR LIDS 2024 | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.42 TIFR LIDS 2024 | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.43 TIFR LIDS 2024 | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.44 TIFR LIDS 2024 | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.45 TIFR LIDS 2024 | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.46 TIFR LIDS 2025 | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.47 TIFR LIDS 2025 | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.48 TIFR LIDS 2025 | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.49 TIFR LIDS 2025 | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.50 TIFR LIDS 2025 | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.51 TIFR LIDS 2025 | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.52 TIFR LIDS 2025 | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.53 TIFR LIDS 2025 | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.54 TIFR LIDS 2025 | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.55 TIFR LIDS 2025 | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.56 TIFR LIDS 2025 | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.57 TIFR LIDS 2025 | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.58 TIFR LIDS 2025 | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.59 TIFR LIDS 2025 | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.60 TIFR LIDS 2025 | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.61 TIFR LIDS 2026 | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.62 TIFR LIDS 2026 | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.63 TIFR LIDS 2026 | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.64 TIFR LIDS 2026 | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.65 TIFR LIDS 2026 | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.66 TIFR LIDS 2026 | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.67 TIFR LIDS 2026 | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.68 TIFR LIDS 2026 | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.69 TIFR LIDS 2026 | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.70 TIFR LIDS 2026 | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.71 TIFR LIDS 2026 | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.72 TIFR LIDS 2026 | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.73 TIFR LIDS 2026 | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.74 TIFR LIDS 2026 | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "19.1.75 TIFR LIDS 2026 | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.1.1 TIFR CSE 2011 | Part B | Question: 30",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.2.1 TIFR CSE 2014 | Part B | Question: 19",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.3.1 TIFR CSE 2010 | Part B | Question: 26",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.4.1 TIFR CSE 2012 | Part B | Question: 16",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.4.2 TIFR CSE 2013 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.4.3 TIFR CSE 2014 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.4.4 TIFR CSE 2015 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.4.5 TIFR CSE 2018 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.5.1 TIFR CSE 2021 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.6.1 TIFR CSE 2021 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.6.2 TIFR CSE 2022 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.7.1 TIFR CSE 2022 | Part B | Question: 1",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.8.1 TIFR CSE 2017 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.9.1 TIFR CSE 2012 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "20.9.2 TIFR CSE 2023 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.1.1 TIFR CSE 2011 | Part B | Question: 24",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.2.1 TIFR CSE 2020 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.3.1 TIFR CSE 2010 | Part B | Question: 30",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.3.2 TIFR CSE 2010 | Part B | Question: 37",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.3.3 TIFR CSE 2017 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.3.4 TIFR CSE 2019 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.4.1 TIFR CSE 2011 | Part B | Question: 32",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.4.2 TIFR CSE 2019 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.5.1 TIFR CSE 2019 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.6.1 TIFR CSE 2010 | Part B | Question: 31",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.6.2 TIFR CSE 2011 | Part B | Question: 38",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.6.3 TIFR CSE 2016 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.6.4 TIFR CSE 2018 | Part A | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "21.6.5 TIFR CSE 2021 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.1.1 TIFR CSE 2013 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.1.2 TIFR CSE 2014 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.1.3 TIFR CSE 2016 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.2.1 TIFR CSE 2024 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.3.1 TIFR CSE 2024 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.4.1 TIFR CSE 2020 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.4.2 TIFR CSE 2020 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.4.3 TIFR CSE 2021 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.5.1 TIFR CSE 2021 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.6.1 TIFR CSE 2022 | Part A | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.7.1 TIFR CSE 2024 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.8.1 TIFR CSE 2010 | Part B | Question: 25",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.8.2 TIFR CSE 2011 | Part B | Question: 25",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.8.3 TIFR CSE 2020 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.8.4 TIFR CSE 2024 | Part B | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.9.1 TIFR CSE 2022 | Part A | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.9.2 TIFR CSE 2025 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.10.1 TIFR CSE 2024 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.11.1 TIFR CSE 2010 | Part B | Question: 22",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.11.2 TIFR CSE 2010 | Part B | Question: 35",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.11.3 TIFR CSE 2012 | Part B | Question: 18",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.11.4 TIFR CSE 2014 | Part B | Question: 13",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.11.5 TIFR CSE 2015 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.11.6 TIFR CSE 2017 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.11.7 TIFR CSE 2017 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.11.8 TIFR CSE 2018 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.11.9 TIFR CSE 2018 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.11.10 TIFR CSE 2019 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.11.11 TIFR CSE 2023 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.11.12 TIFR CSE 2023 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.12.1 TIFR CSE 2024 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.13.1 TIFR CSE 2016 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.13.2 TIFR CSE 2019 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.13.3 TIFR CSE 2021 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.13.4 TIFR CSE 2023 | Part B | Question: 14",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.13.5 TIFR CSE 2025 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.14.1 TIFR CSE 2024 | Part A | Question: 5",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.15.1 TIFR CSE 2010 | Part B | Question: 40",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.15.2 TIFR CSE 2012 | Part B | Question: 19",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.15.3 TIFR CSE 2025 | Part B | Question: 4",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.16.1 TIFR CSE 2016 | Part B | Question: 3",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.16.2 TIFR CSE 2018 | Part B | Question: 15",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.17.1 TIFR CSE 2010 | Part B | Question: 34",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.17.2 TIFR CSE 2015 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.17.3 TIFR CSE 2017 | Part B | Question: 9",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.17.4 TIFR CSE 2018 | Part B | Question: 2",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.17.5 TIFR CSE 2019 | Part B | Question: 11",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.17.6 TIFR CSE 2021 | Part B | Question: 7",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.17.7 TIFR CSE 2022 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.18.1 TIFR CSE 2013 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.18.2 TIFR CSE 2013 | Part B | Question: 8",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.18.3 TIFR CSE 2014 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.18.4 TIFR CSE 2015 | Part B | Question: 10",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.18.5 TIFR CSE 2015 | Part B | Question: 6",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.18.6 TIFR CSE 2018 | Part B | Question: 12",
+      "href": "javascript:void(0)"
+    },
+    {
+      "text": "22.19.1 TIFR CSE 2024 | Part A | Question: 12",
+      "href": "javascript:void(0)"
+    }
+  ]
+}

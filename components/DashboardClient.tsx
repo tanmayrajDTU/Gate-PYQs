@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, BarChart3, BookOpenCheck, Bookmark, CalendarClock, Flame, Layers, Minus, Plus, RotateCcw, Target, Trophy, XCircle } from 'lucide-react';
 import { allQuestions, getSubjects } from '../lib/data';
+import { allOtherQuestions } from '../lib/otherData';
 import { getCurrentUserId, loadAttempts, loadFlags, type FlagRow } from '../lib/persistence';
 import { computeStreak, daysUntil, dayKey } from '../lib/spacedRepetition';
 import { computePoints, computeLevel, computeBadges, computeRedemptionCount, hasPerfectWeek, computeReviewPoints, mergeActivityDates, BadgeContext } from '../lib/gamification';
@@ -45,8 +46,11 @@ export function DashboardClient(){
     });
   }
 
+  const gateIds = useMemo(() => new Set(allQuestions.map(q => q.id)), []);
+
   const metrics=useMemo(()=>{
-    const latest=new Map<string,string>();for(const a of attempts){if(!latest.has(a.question_id))latest.set(a.question_id,a.result)};
+    const gateAttempts = attempts.filter(a => gateIds.has(a.question_id));
+    const latest=new Map<string,string>();for(const a of gateAttempts){if(!latest.has(a.question_id))latest.set(a.question_id,a.result)};
     const attempted=latest.size;
     const results=[...latest.values()];
     const correct=results.filter(r=>r==='correct').length;
@@ -55,7 +59,7 @@ export function DashboardClient(){
     const now=Date.now();
     const revisionDue=Object.values(flags).filter(v=>v.revision && (!v.nextReviewAt || new Date(v.nextReviewAt).getTime()<=now)).length;
     return {attempted,correct,incorrect,evaluable,accuracy:evaluable?Math.round(correct/evaluable*100):0,bookmarks:Object.values(flags).filter(v=>v.bookmarked).length,revision:Object.values(flags).filter(v=>v.revision).length,revisionDue,latest}
-  }, [attempts,flags]);
+  }, [attempts,flags,gateIds]);
 
   // Streak/heatmap should reflect revision-review days too, not just fresh
   // practice attempts — see mergeActivityDates for why lastReviewedAt
@@ -74,7 +78,11 @@ export function DashboardClient(){
   useEffect(() => { setGateDaysLeft(daysUntil(GATE_DATE)); }, []);
   const overallPct = Math.round(Math.min(100, metrics.attempted / allQuestions.length * 100));
 
-  const typeMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.type])), []);
+  const typeMap = useMemo(() => {
+    const map = new Map(allQuestions.map(q => [q.id, q.type]));
+    for (const q of allOtherQuestions) map.set(q.id, q.type);
+    return map;
+  }, []);
   const subjectMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.subjectId])), []);
   const topicMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.topicId])), []);
   const yearMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.year])), []);
@@ -110,11 +118,24 @@ export function DashboardClient(){
     const redemptionCount = computeRedemptionCount(attempts);
     const totalReviewCount = Object.values(flags).reduce((sum, f) => sum + (f.reviewCount ?? 0), 0);
     const activeRevisionCount = Object.values(flags).filter(f => f.revision).length;
+
+    const otherQuestionMap = new Map(allOtherQuestions.map(q => [q.id, q]));
+    const gateQuestionMap = new Map(allQuestions.map(q => [q.id, q]));
+    const nonGateCorrectCount = [...solvedIds].filter(id => otherQuestionMap.has(id)).length;
+    const gateCorrectCount = [...solvedIds].filter(id => gateQuestionMap.has(id)).length;
+    const knowledgeGateCorrectCount = [...solvedIds].filter(id => otherQuestionMap.get(id)?.exam === 'Knowledge Gate Practice').length;
+    const isroCorrectCount = [...solvedIds].filter(id => otherQuestionMap.get(id)?.exam === 'ISRO CSE').length;
+    const tifrCorrectCount = [...solvedIds].filter(id => otherQuestionMap.get(id)?.exam === 'TIFR CSE').length;
+    const solutionQuestionsCorrectCount = [...solvedIds].filter(id => Boolean(otherQuestionMap.get(id)?.solution)).length;
+    const nonGateExamsAttemptedCount = new Set(attempts.map(a => otherQuestionMap.get(a.question_id)?.exam).filter(Boolean)).size;
+
     return {
       correctCount: solvedIds.size, longestStreak: streak.longest, subjectStats, natCorrectCount, subjectsAttemptedCount,
       msqCorrectCount, mcqCorrectCount, descriptiveCorrectCount, totalAttemptedCount, topicsAttemptedCount,
       subjectsTotalCount, attemptedTypesCount, yearsAttemptedCount, redemptionCount, hasPerfectWeek: hasPerfectWeek(activityDates),
       totalReviewCount, activeRevisionCount,
+      nonGateCorrectCount, knowledgeGateCorrectCount, isroCorrectCount, tifrCorrectCount,
+      solutionQuestionsCorrectCount, nonGateExamsAttemptedCount, gateCorrectCount,
     };
   }, [attempts, flags, subjectMap, topicMap, yearMap, subjectsTotalCount, solvedIds, streak.longest, typeMap, activityDates]);
   const badges = useMemo(() => computeBadges(badgeCtx), [badgeCtx]);

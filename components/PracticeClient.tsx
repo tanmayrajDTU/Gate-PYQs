@@ -10,6 +10,8 @@ import { isNatAnswerCorrect } from '../lib/natAnswer';
 import { POINTS_BY_TYPE, REVIEW_POINTS } from '../lib/gamification';
 import { DEFAULT_SM2_STATE, GRADE_LABELS, maturityLabel, type Sm2State, type Grade } from '../lib/spacedRepetition';
 import { formatShortDate } from '../lib/format';
+import { sanitizeHtml } from '../lib/sanitizeHtml';
+import { typesetMath } from '../lib/mathjax';
 
 type Feedback = 'immediate' | 'end';
 
@@ -262,23 +264,42 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
           <QuestionRenderer q={q} selected={answer} onSelect={v => setAnswers(a => ({ ...a, [q.id]: v }))} submitted={isSubmitted} />
 
           {isSubmitted && feedback === 'immediate' && (
-            <div className="card" style={{ padding: 18, marginTop: 14 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <b className={correct === true ? 'success' : correct === false ? 'danger' : ''}>{correct === true ? 'Correct' : correct === false ? 'Incorrect' : 'Answer recorded'}</b>
-                {pointsAwarded[q.id] > 0 && <span className="pill" style={{ background: 'var(--accent-soft)', color: 'var(--accent-strong)' }}>+{pointsAwarded[q.id]} pts</span>}
-              </div>
-              {q.answer && (
-                <div className="muted" style={{ marginTop: 6 }}>
-                  Correct answer: {q.answer}
-                  {q.answer.trim().toUpperCase() === 'ALL' && (
-                    <span style={{ display: 'block', marginTop: 4, fontSize: 13 }}>
-                      (Marks awarded to all candidates — GATE declared this question ambiguous, having multiple correct options, or containing errors)
-                    </span>
+            <div className="card" style={{ padding: 18, marginTop: 14, borderLeft: correct === true ? '3px solid var(--success)' : correct === false ? '3px solid var(--danger)' : '3px solid var(--accent)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <b className={correct === true ? 'success' : correct === false ? 'danger' : ''} style={{ fontSize: 16 }}>
+                      {correct === true ? '✓ Correct' : correct === false ? '✗ Incorrect' : 'Answer recorded'}
+                    </b>
+                    {pointsAwarded[q.id] > 0 && <span className="pill" style={{ background: 'var(--accent-soft)', color: 'var(--accent-strong)' }}>+{pointsAwarded[q.id]} pts</span>}
+                  </div>
+                  {q.answer && (
+                    <div className="muted" style={{ marginTop: 6, fontSize: 13.5 }}>
+                      <b>Correct answer:</b> {q.answer}
+                      {q.answer.trim().toUpperCase() === 'ALL' && (
+                        <span style={{ display: 'block', marginTop: 4, fontSize: 12 }}>
+                          (Marks awarded to all candidates — GATE declared this question ambiguous, having multiple correct options, or containing errors)
+                        </span>
+                      )}
+                    </div>
                   )}
+                  {q.type === 'descriptive' && <div className="muted" style={{ marginTop: 6, fontSize: 13 }}>Descriptive questions have no stored answer key, so they're marked correct automatically on submit. Use GateOverflow to check your working.</div>}
                 </div>
-              )}
-              {q.type === 'descriptive' && <div className="muted" style={{ marginTop: 6 }}>Descriptive questions have no stored answer key, so they're marked correct automatically on submit. Use GateOverflow to check your working.</div>}
-              {q.gateOverflowUrl && <a className="btn btn-soft" style={{ marginTop: 12 }} href={q.gateOverflowUrl} target="_blank" rel="noreferrer">Open GateOverflow <ExternalLink size={15} /></a>}
+                {q.gateOverflowUrl && (
+                  <a className="btn btn-soft" href={q.gateOverflowUrl} target="_blank" rel="noreferrer" style={{ gap: 6, fontSize: 13 }}>
+                    Open GateOverflow <ExternalLink size={14} />
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+
+          {isSubmitted && feedback === 'end' && (
+            <div className="card" style={{ padding: 16, marginTop: 14, background: 'var(--surface2)', borderLeft: '3px solid var(--accent)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                <span className="pill" style={{ background: 'var(--answered-bg)', color: 'var(--success)', fontWeight: 700 }}>✓ Answer Saved</span>
+                <span className="muted" style={{ fontSize: 13 }}>End-of-test mode active: your response has been saved. Full scoring, explanations, and answer keys will appear in your final review.</span>
+              </div>
             </div>
           )}
 
@@ -347,6 +368,12 @@ function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revisi
 
   const [graded, setGraded] = useState<Record<string, { grade: Grade; nextReviewAt: string }>>({});
   const [gradeMessage, setGradeMessage] = useState('');
+  const [expandedSolution, setExpandedSolution] = useState<Record<string, boolean>>({});
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (resultsRef.current) void typesetMath([resultsRef.current]);
+  }, [expandedSolution]);
 
   async function gradeQuestion(questionId: string, grade: Grade) {
     if (!userId) { setGradeMessage('Sign in to save these to your revision schedule.'); return; }
@@ -399,7 +426,61 @@ function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revisi
       </div>
     )}
 
-    <div className="card section" style={{ marginTop: 18 }}><div className="section-head"><h3>Question review</h3><span className="pill">{items.length} questions</span></div><div className="table-like"><div className="table-row header"><span>Question</span><span>Type</span><span>Result</span><span>Saved</span><span>Source</span></div>{items.map((q, i) => { const result = !submitted[q.id] ? 'Unanswered' : evaluateAnswer(q, answers[q.id] || []) === true ? 'Correct' : evaluateAnswer(q, answers[q.id] || []) === false ? 'Incorrect' : 'Recorded'; return <div className="table-row" key={q.id}><span><b>{i + 1}. {q.title}</b><div className="muted">{q.subject} · {q.topic}{review[q.id] ? ' · Marked for review' : ''}{revision[q.id] || graded[q.id] ? ' · Revision' : ''}</div></span><span>{q.type.toUpperCase()}</span><span className={result === 'Correct' ? 'success' : result === 'Incorrect' ? 'danger' : ''}>{result}</span><span>{bookmarks[q.id] ? '⭐' : '—'}</span><span>{q.gateOverflowUrl && <a href={q.gateOverflowUrl} target="_blank" rel="noreferrer" className="btn btn-soft"><ExternalLink size={14} /> GateOverflow</a>}</span></div>; })}</div></div>
+    <div className="card section" style={{ marginTop: 18 }} ref={resultsRef}>
+      <div className="section-head">
+        <h3>Question review</h3>
+        <span className="pill">{items.length} questions</span>
+      </div>
+      <div className="table-like" style={{ overflowX: 'auto' }}>
+        <div className="table-row header" style={{ gridTemplateColumns: 'minmax(200px, 1.4fr) 75px 95px 65px minmax(140px, .9fr)', minWidth: 620 }}>
+          <span>Question</span>
+          <span>Type</span>
+          <span>Result</span>
+          <span>Saved</span>
+          <span>Source / Solution</span>
+        </div>
+        {items.map((q, i) => {
+          const result = !submitted[q.id]
+            ? 'Unanswered'
+            : evaluateAnswer(q, answers[q.id] || []) === true
+            ? 'Correct'
+            : evaluateAnswer(q, answers[q.id] || []) === false
+            ? 'Incorrect'
+            : 'Recorded';
+          return (
+            <div key={q.id}>
+              <div className="table-row" style={{ gridTemplateColumns: 'minmax(200px, 1.4fr) 75px 95px 65px minmax(140px, .9fr)', minWidth: 620 }}>
+                <span>
+                  <b>{i + 1}. {q.title}</b>
+                  <div className="muted">{q.subject} · {q.topic}{review[q.id] ? ' · Marked for review' : ''}{revision[q.id] || graded[q.id] ? ' · Revision' : ''}</div>
+                </span>
+                <span>{q.type.toUpperCase()}</span>
+                <span className={result === 'Correct' ? 'success' : result === 'Incorrect' ? 'danger' : ''}>{result}</span>
+                <span>{bookmarks[q.id] ? '⭐' : '—'}</span>
+                <span style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
+                  {q.solution && (
+                    <button className="btn btn-soft" onClick={() => setExpandedSolution(s => ({ ...s, [q.id]: !s[q.id] }))} style={{ fontSize: 12, padding: '4px 8px' }}>
+                      {expandedSolution[q.id] ? 'Hide Solution' : 'View Solution'}
+                    </button>
+                  )}
+                  {q.gateOverflowUrl && (
+                    <a href={q.gateOverflowUrl} target="_blank" rel="noreferrer" className="btn btn-soft" style={{ fontSize: 12, padding: '4px 8px' }}>
+                      <ExternalLink size={13} /> GateOverflow
+                    </a>
+                  )}
+                </span>
+              </div>
+              {expandedSolution[q.id] && q.solution && (
+                <div style={{ padding: '12px 16px', background: 'var(--surface2)', borderLeft: '3px solid var(--accent)', margin: '8px 0 16px 0', borderRadius: 6 }}>
+                  <div style={{ fontWeight: 600, marginBottom: 6 }}>Solution &amp; Explanation</div>
+                  <div className="solution-body" dangerouslySetInnerHTML={{ __html: sanitizeHtml(q.solution) }} />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
   </div>;
 }
 

@@ -5,9 +5,11 @@ import {
   Sunrise, Flame, Rocket, Target, Hash, Compass, Globe2, LucideIcon,
   ListChecks, ListOrdered, PenLine, Star, Dumbbell, LayoutGrid, Route,
   Layers, Diamond, History, Moon, Shield, Undo2, CalendarCheck,
-  BookOpenCheck, ListPlus, Info,
+  BookOpenCheck, ListPlus, Info, BookMarked, GraduationCap, Satellite,
+  Telescope, Atom, Brain, Orbit, FileText, Boxes,
 } from 'lucide-react';
 import { allQuestions, getSubjects } from '../../lib/data';
+import { allOtherQuestions } from '../../lib/otherData';
 import { getCurrentUserId, loadAttempts, loadFlags, type FlagRow } from '../../lib/persistence';
 import { computePoints, computeLevel, computeBadges, computeRedemptionCount, hasPerfectWeek, computeReviewPoints, mergeActivityDates, POINTS_BY_TYPE, REVIEW_POINTS } from '../../lib/gamification';
 import { formatNumber } from '../../lib/format';
@@ -42,6 +44,16 @@ const BADGE_ICONS: Record<string, LucideIcon> = {
   'time-traveler': History,
   'reviewer': BookOpenCheck,
   'revision-queue-builder': ListPlus,
+  'non-gate-pioneer': Compass,
+  'knowledge-seeker': BookMarked,
+  'knowledge-master': GraduationCap,
+  'isro-cadet': Satellite,
+  'isro-scientist': Telescope,
+  'tifr-scholar': Atom,
+  'tifr-fellow': Brain,
+  'cosmic-explorer': Orbit,
+  'solution-studier': FileText,
+  'multiverse-scholar': Boxes,
 };
 
 export default function Achievements() {
@@ -69,7 +81,11 @@ export default function Achievements() {
     })();
   }, []);
 
-  const typeMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.type])), []);
+  const typeMap = useMemo(() => {
+    const map = new Map(allQuestions.map(q => [q.id, q.type]));
+    for (const q of allOtherQuestions) map.set(q.id, q.type);
+    return map;
+  }, []);
   const subjectMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.subjectId])), []);
   const topicMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.topicId])), []);
   const yearMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q.year])), []);
@@ -116,17 +132,32 @@ export default function Achievements() {
   const totalReviewCount = useMemo(() => Object.values(flags).reduce((sum, f) => sum + (f.reviewCount ?? 0), 0), [flags]);
   const activeRevisionCount = useMemo(() => Object.values(flags).filter(f => f.revision).length, [flags]);
 
+  const otherQuestionMap = useMemo(() => new Map(allOtherQuestions.map(q => [q.id, q])), []);
+  const gateQuestionMap = useMemo(() => new Map(allQuestions.map(q => [q.id, q])), []);
+
+  const nonGateCorrectCount = useMemo(() => [...solvedIds].filter(id => otherQuestionMap.has(id)).length, [solvedIds, otherQuestionMap]);
+  const gateCorrectCount = useMemo(() => [...solvedIds].filter(id => gateQuestionMap.has(id)).length, [solvedIds, gateQuestionMap]);
+  const knowledgeGateCorrectCount = useMemo(() => [...solvedIds].filter(id => otherQuestionMap.get(id)?.exam === 'Knowledge Gate Practice').length, [solvedIds, otherQuestionMap]);
+  const isroCorrectCount = useMemo(() => [...solvedIds].filter(id => otherQuestionMap.get(id)?.exam === 'ISRO CSE').length, [solvedIds, otherQuestionMap]);
+  const tifrCorrectCount = useMemo(() => [...solvedIds].filter(id => otherQuestionMap.get(id)?.exam === 'TIFR CSE').length, [solvedIds, otherQuestionMap]);
+  const solutionQuestionsCorrectCount = useMemo(() => [...solvedIds].filter(id => Boolean(otherQuestionMap.get(id)?.solution)).length, [solvedIds, otherQuestionMap]);
+  const nonGateExamsAttemptedCount = useMemo(() => new Set(attempts.map(a => otherQuestionMap.get(a.question_id)?.exam).filter(Boolean)).size, [attempts, otherQuestionMap]);
+
   const badgeCtx = {
     correctCount: solvedIds.size, longestStreak: streak.longest, subjectStats, natCorrectCount, subjectsAttemptedCount,
     msqCorrectCount, mcqCorrectCount, descriptiveCorrectCount, totalAttemptedCount, topicsAttemptedCount,
     subjectsTotalCount, attemptedTypesCount, yearsAttemptedCount, redemptionCount, hasPerfectWeek: perfectWeek,
     totalReviewCount, activeRevisionCount,
+    nonGateCorrectCount, knowledgeGateCorrectCount, isroCorrectCount, tifrCorrectCount,
+    solutionQuestionsCorrectCount, nonGateExamsAttemptedCount, gateCorrectCount,
   };
   const badges = useMemo(() => computeBadges(badgeCtx), [
     solvedIds, streak.longest, subjectStats, natCorrectCount, subjectsAttemptedCount,
     msqCorrectCount, mcqCorrectCount, descriptiveCorrectCount, totalAttemptedCount, topicsAttemptedCount,
     subjectsTotalCount, attemptedTypesCount, yearsAttemptedCount, redemptionCount, perfectWeek,
     totalReviewCount, activeRevisionCount,
+    nonGateCorrectCount, knowledgeGateCorrectCount, isroCorrectCount, tifrCorrectCount,
+    solutionQuestionsCorrectCount, nonGateExamsAttemptedCount, gateCorrectCount,
   ]);
   const unlockedCount = badges.filter(b => b.unlocked).length;
 
@@ -175,16 +206,29 @@ export default function Achievements() {
       <div className="card section" style={{ marginTop: 14 }}>
         <div className="section-head"><h3>Badges</h3><span className="muted" style={{ fontSize: 12 }}>{unlockedCount} of {badges.length} unlocked</span></div>
         <div className="muted" style={{ fontSize: 12, marginTop: -6, marginBottom: 12 }}>Tap a badge to see how to unlock it.</div>
-        <div style={{ display: 'flex', gap: 14, marginBottom: 16, fontSize: 11.5 }}>
+        <div style={{ display: 'flex', gap: 14, marginBottom: 16, fontSize: 11.5, flexWrap: 'wrap' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--accent)', display: 'inline-block' }} />Milestone</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--warning)', display: 'inline-block' }} />Streak</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--success)', display: 'inline-block' }} />Mastery</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: '50%', background: '#8b5cf6', display: 'inline-block' }} />Non-GATE</span>
         </div>
         <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(148px, 1fr))', gap: 12 }}>
           {badges.map(({ badge, unlocked, progress }) => {
-            const tone = badge.category === 'streak' ? 'warning' : badge.category === 'mastery' ? 'success' : 'accent';
-            const color = `var(--${tone})`;
-            const soft = `var(--${tone}-soft)`;
+            const isNonGate = badge.category === 'non-gate';
+            const color = badge.category === 'streak'
+              ? 'var(--warning)'
+              : badge.category === 'mastery'
+              ? 'var(--success)'
+              : isNonGate
+              ? '#8b5cf6'
+              : 'var(--accent)';
+            const soft = badge.category === 'streak'
+              ? 'var(--warning-soft)'
+              : badge.category === 'mastery'
+              ? 'var(--success-soft)'
+              : isNonGate
+              ? 'rgba(139, 92, 246, 0.12)'
+              : 'var(--accent-soft)';
             const Icon = BADGE_ICONS[badge.id] ?? Trophy;
             return (
               <div

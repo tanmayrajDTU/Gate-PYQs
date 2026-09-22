@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { allQuestions } from '../../lib/data';
 import { BrowseQuestionCard } from '../../components/BrowseQuestionCard';
+import { MultiTopicSelect } from '../../components/MultiTopicSelect';
 
 const PAGE_SIZE = 10;
 
@@ -18,9 +19,15 @@ export default function BrowsePage() {
 
 function BrowsePageInner() {
   const searchParams = useSearchParams();
+  const rawTopicsParam = searchParams.get('topics') || searchParams.get('topic');
+  const initialSelectedTopics = useMemo(() => {
+    if (!rawTopicsParam || rawTopicsParam === 'all') return [];
+    return rawTopicsParam.split(',').map(s => s.trim()).filter(Boolean);
+  }, [rawTopicsParam]);
+
   const [volume, setVolume] = useState('all');
   const [subject, setSubject] = useState(searchParams.get('subject') || 'all');
-  const [topic, setTopic] = useState(searchParams.get('topic') || 'all');
+  const [selectedTopics, setSelectedTopics] = useState<string[]>(initialSelectedTopics);
   const [year, setYear] = useState('all');
   const [type, setType] = useState('all');
   const [search, setSearch] = useState('');
@@ -41,27 +48,42 @@ function BrowsePageInner() {
     );
   }, [volume, subject]);
 
+  const topicOptions = useMemo(() => {
+    return topics.map(t => {
+      const qCount = allQuestions.filter(q =>
+        (volume === 'all' || q.volume === Number(volume)) &&
+        (subject === 'all' || q.subjectId === subject) &&
+        q.topicId === t.topicId
+      ).length;
+      return {
+        id: t.topicId,
+        label: `${t.topicNumber} · ${t.topic}`,
+        count: qCount,
+      };
+    });
+  }, [topics, volume, subject]);
+
   const years = useMemo(() => {
     return [...new Set(allQuestions.filter(q =>
       (volume === 'all' || q.volume === Number(volume)) &&
       (subject === 'all' || q.subjectId === subject) &&
-      (topic === 'all' || q.topicId === topic)
+      (selectedTopics.length === 0 || selectedTopics.includes(q.topicId))
     ).map(q => q.year).filter((y): y is number => y !== null))].sort((a, b) => b - a);
-  }, [volume, subject, topic]);
+  }, [volume, subject, selectedTopics]);
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
     return allQuestions.filter(q =>
       (volume === 'all' || q.volume === Number(volume)) &&
       (subject === 'all' || q.subjectId === subject) &&
-      (topic === 'all' || q.topicId === topic) &&
+      (selectedTopics.length === 0 || selectedTopics.includes(q.topicId)) &&
       (year === 'all' || q.year === Number(year)) &&
       (type === 'all' || q.type === type) &&
       (!term || q.title.toLowerCase().includes(term) || q.number.toLowerCase().includes(term))
     );
-  }, [volume, subject, topic, year, type, search]);
+  }, [volume, subject, selectedTopics, year, type, search]);
 
-  useEffect(() => { setPage(1); }, [volume, subject, topic, year, type, search]);
+  useEffect(() => { setPage(1); }, [volume, subject, selectedTopics, year, type, search]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
@@ -80,7 +102,7 @@ function BrowsePageInner() {
       <div className="card section">
         <div className="grid form-grid">
           <Field label="Volume">
-            <select value={volume} onChange={e => { setVolume(e.target.value); setSubject('all'); setTopic('all'); setYear('all'); }}>
+            <select value={volume} onChange={e => { setVolume(e.target.value); setSubject('all'); setSelectedTopics([]); setYear('all'); }}>
               <option value="all">All volumes</option>
               <option value="1">Volume 1</option>
               <option value="2">Volume 2</option>
@@ -88,16 +110,18 @@ function BrowsePageInner() {
             </select>
           </Field>
           <Field label="Subject">
-            <select value={subject} onChange={e => { setSubject(e.target.value); setTopic('all'); setYear('all'); }}>
+            <select value={subject} onChange={e => { setSubject(e.target.value); setSelectedTopics([]); setYear('all'); }}>
               <option value="all">All subjects</option>
               {subjects.map(q => <option key={q.subjectId} value={q.subjectId}>{q.subject}</option>)}
             </select>
           </Field>
-          <Field label="Topic">
-            <select value={topic} onChange={e => { setTopic(e.target.value); setYear('all'); }}>
-              <option value="all">All topics</option>
-              {topics.map(q => <option key={q.topicId} value={q.topicId}>{q.topicNumber} · {q.topic}</option>)}
-            </select>
+          <Field label="Topics">
+            <MultiTopicSelect
+              options={topicOptions}
+              selected={selectedTopics}
+              onChange={setSelectedTopics}
+              placeholder="All topics"
+            />
           </Field>
           <Field label="GATE year">
             <select value={year} onChange={e => setYear(e.target.value)}>

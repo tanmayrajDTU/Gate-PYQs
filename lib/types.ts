@@ -4,4 +4,5 @@ export type Question = {
   topic:string; topicId:string; topicNumber:string; year:number|null; exam:string; type:QuestionType;
   bodyHtml:string; options:{label:string;html:string}[]; answer:string|null; gateOverflowUrl:string|null;
   answerUrl:string|null; tags:string[];
+  solution?:string|null;
 };

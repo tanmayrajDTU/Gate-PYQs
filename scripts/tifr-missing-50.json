@@ -1,0 +1,2252 @@
+[
+  {
+    "id": "tifr_25106",
+    "number": "1.3.2",
+    "title": "1.3.2 TIFR CSE 2012 | Part B | Question: 6",
+    "volume": 0,
+    "subject": "Algorithms",
+    "subjectId": "tifr_algorithms",
+    "topic": "Asymptotic Notations",
+    "topicId": "tifr_asymptotic_notations",
+    "topicNumber": "1.3",
+    "year": 2012,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $n$ be a large integer. Which of the following statements is <strong>TRUE</strong>?</p></div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2012\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2012 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/algorithms\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">algorithms </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/asymptotic-notations\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">asymptotic-notations </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$2^{\\sqrt{2\\log n}}&lt; \\frac{n}{\\log n}&lt; n^{1/3}$"
+      },
+      {
+        "label": "B",
+        "html": "$\\frac{n}{\\log n}&lt; n^{1/3}&lt; 2^{\\sqrt{2\\log n}}$"
+      },
+      {
+        "label": "C",
+        "html": "$2^{\\sqrt{2\\log n}}&lt; n^{1/3}&lt; \\frac{n}{\\log n}$"
+      },
+      {
+        "label": "D",
+        "html": "$n^{1/3}&lt; 2^{\\sqrt{2\\log n}}&lt;\\frac{n}{\\log n}$"
+      },
+      {
+        "label": "E",
+        "html": "$\\frac{n}{\\log n}&lt; 2^{\\sqrt{2\\log n}}&lt;n^{1/3}$"
+      }
+    ],
+    "answer": "C",
+    "gateOverflowUrl": "https://gateoverflow.in/25106/tifr-cse-2012-part-b-question-6",
+    "answerUrl": "https://gateoverflow.in/25106#25114",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_algorithms"
+    ]
+  },
+  {
+    "id": "tifr_419143",
+    "number": "1.5.1",
+    "title": "1.5.1 TIFR CSE 2024 | Part A | Question: 3",
+    "volume": 0,
+    "subject": "Algorithms",
+    "subjectId": "tifr_algorithms",
+    "topic": "Combinatory",
+    "topicId": "tifr_combinatory",
+    "topicNumber": "1.5",
+    "year": 2024,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>There is a $100 \\mathrm{~cm}$ long ruler that has 11 ants on positions $0 \\mathrm{~cm}, 10 \\mathrm{~cm}, 20 \\mathrm{~cm}, 30 \\mathrm{~cm}$, ..., $100 \\mathrm{~cm}$. The ant at the $0 \\mathrm{~cm}$ mark is facing towards the $100 \\mathrm{~cm}$ mark, and the ant at the $100 \\mathrm{~cm}$ is facing towards the $0 \\mathrm{~cm}$ mark; all other ants is either facing towards $0 \\mathrm{~cm}$ or towards the $100 \\mathrm{~cm}$ mark.</p>\n\n<p>All ants start moving in the direction they are facing at a speed of $1 \\mathrm{~cm}$ per second. Whenever an ant collides with another ant, the two instantly reverse their direction and continue moving in the other direction. All ants continue moving until they fall off the ruler when they move past one of the two ends (at $0 \\mathrm{~cm}$ or $100 \\mathrm{~cm}$ marks).</p>\n\n<p>How long will it take for all ants to fall off the ruler?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2024\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2024 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/analytical-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">analytical-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/combinatory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">combinatory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "At most $50$ seconds, but cannot be determined without knowing the directions of all ants."
+      },
+      {
+        "label": "B",
+        "html": "$50$ seconds."
+      },
+      {
+        "label": "C",
+        "html": "At least $50$ seconds and at most $100$ seconds, but cannot be determined without knowing the directions of all ants."
+      },
+      {
+        "label": "D",
+        "html": "$100$ seconds."
+      },
+      {
+        "label": "E",
+        "html": "More than $100$ seconds, but cannot be determined without knowing the directions of all ants."
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/419143/tifr-cse-2024-part-a-question-3",
+    "answerUrl": "https://gateoverflow.in/419143#441783",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_algorithms"
+    ]
+  },
+  {
+    "id": "tifr_98010",
+    "number": "1.11.5",
+    "title": "1.11.5 TIFR CSE 2016 | Part B | Question: 12",
+    "volume": 0,
+    "subject": "Algorithms",
+    "subjectId": "tifr_algorithms",
+    "topic": "Identify Function",
+    "topicId": "tifr_identify_function",
+    "topicNumber": "1.11",
+    "year": 2016,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>A computer program computes a function $\\: f \\: \\{0, 1\\}^* \\times \\{0, 1\\}^* \\rightarrow \\{0, 1\\}^*$. Suppose $f(a, b)$ ahs length $\\mid b \\mid ^2$, where $\\mid a \\mid$ and&nbsp;$\\mid b&nbsp;\\mid$ are the lengths of $a$ and $b$. Suppose, using this program, the following computation is performed.</p><pre class=\"prettyprint lang-cpp prettyprinted\" style=\"\"><span class=\"pln\">x</span><span class=\"pun\">=</span><span class=\"str\">\"01\"</span><span class=\"pln\">\n</span><span class=\"kwd\">for</span><span class=\"pln\"> i</span><span class=\"pun\">=</span><span class=\"lit\">1</span><span class=\"pun\">,</span><span class=\"pln\"> </span><span class=\"pun\">...</span><span class=\"pln\"> </span><span class=\"pun\">,</span><span class=\"pln\"> n </span><span class=\"kwd\">do</span><span class=\"pln\">\n    x</span><span class=\"pun\">=</span><span class=\"pln\">f</span><span class=\"pun\">(</span><span class=\"str\">\"01\"</span><span class=\"pun\">,</span><span class=\"pln\"> x</span><span class=\"pun\">)</span></pre><p>Suppose at the end, the length of the string $x$ is $t$. Which of the following is TRUE (assume $n \\geq 10)?$</p></div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2016\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2016 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/algorithms\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">algorithms </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/identify-function\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">identify-function </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$t \\leq 2n$"
+      },
+      {
+        "label": "B",
+        "html": "$n &lt; t \\leq n^2$"
+      },
+      {
+        "label": "C",
+        "html": "$n^2 &lt; t \\leq n^{\\log_2 n}$"
+      },
+      {
+        "label": "D",
+        "html": "$n^{\\log_2 n} &lt; t \\leq 2^{(2^n)}$"
+      },
+      {
+        "label": "E",
+        "html": "$2^{(2^n)} &lt; t$"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/98010/tifr-cse-2016-part-b-question-12",
+    "answerUrl": "https://gateoverflow.in/98010#175617",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_algorithms"
+    ]
+  },
+  {
+    "id": "tifr_280493",
+    "number": "1.15.8",
+    "title": "1.15.8 TIFR CSE 2019 | Part B | Question: 2",
+    "volume": 0,
+    "subject": "Algorithms",
+    "subjectId": "tifr_algorithms",
+    "topic": "Minimum Spanning Tree",
+    "topicId": "tifr_minimum_spanning_tree",
+    "topicNumber": "1.15",
+    "year": 2019,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>How many distinct minimum weight spanning trees does the following undirected, weighted graph have ?</p>\n\n<p style=\"text-align:center\"><img alt=\"\" height=\"274\" src=\"https://gateoverflow.in/?qa=blob&amp;qa_blobid=8700882534748085867\" width=\"312\"></p>\n\n\n\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2019\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2019 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/algorithms\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">algorithms </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/minimum-spanning-tree\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">minimum-spanning-tree </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$8$"
+      },
+      {
+        "label": "B",
+        "html": "$16$"
+      },
+      {
+        "label": "C",
+        "html": "$32$"
+      },
+      {
+        "label": "D",
+        "html": "$64$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/280493/tifr-cse-2019-part-b-question-2",
+    "answerUrl": "https://gateoverflow.in/280493#280545",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_algorithms"
+    ]
+  },
+  {
+    "id": "tifr_358938",
+    "number": "1.24.10",
+    "title": "1.24.10 TIFR CSE 2021 | Part B | Question: 15",
+    "volume": 0,
+    "subject": "Algorithms",
+    "subjectId": "tifr_algorithms",
+    "topic": "Sorting",
+    "topicId": "tifr_sorting",
+    "topicNumber": "1.24",
+    "year": 2021,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $A\\left [ i \\right ] : i=0, 1, 2, \\dots , n-1$ be an array of $n$ distinct integers. We wish to sort $A$ in ascending order. We are given that each element in the array is at a position that is at most $k$ away from its position in the sorted array, that is, we are given that $A[i]$ will move to a position in $\\left \\{ i-k,i-k+1,\\dots,i,\\dots ,i+k-1,i+k \\right \\}$ after the array is sorted in ascending order. Suppose insertion sort is used to sort this array: that is, in the&nbsp;$i$ th&nbsp;iteration,&nbsp;$A[i]$ is compared with the elements in positions $A[i-1], A[i-2], \\dots$ until one that is smaller is found and $A[i]$ is inserted after that element. Note that elements can be moved back when later insertions are made before them. Let $t(n)$ be the worst-case number of comparisons made by insertion sort for such inputs. Then,</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2021\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2021 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/algorithms\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">algorithms </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/sorting\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">sorting </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/time-complexity\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">time-complexity </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$t\\left ( n \\right ) = \\Theta \\left ( n^{2} \\right )$"
+      },
+      {
+        "label": "B",
+        "html": "$t\\left ( n \\right ) = \\Theta \\left ( n\\: \\log_{2}\\:n \\right )$"
+      },
+      {
+        "label": "C",
+        "html": "$t\\left ( n \\right ) = \\Theta \\left ( nk\\:\\log\\:k \\right )$"
+      },
+      {
+        "label": "D",
+        "html": "$t\\left ( n \\right ) = \\Theta \\left ( n\\:\\log_{2}\\:k \\right )$"
+      },
+      {
+        "label": "E",
+        "html": "$t\\left ( n \\right ) = \\Theta \\left ( nk \\right )$"
+      }
+    ],
+    "answer": "E",
+    "gateOverflowUrl": "https://gateoverflow.in/358938/tifr-cse-2021-part-b-question-15",
+    "answerUrl": "https://gateoverflow.in/358938#359952",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_algorithms"
+    ]
+  },
+  {
+    "id": "tifr_27344",
+    "number": "5.2.2",
+    "title": "5.2.2 TIFR CSE 2014 | Part B | Question: 17",
+    "volume": 0,
+    "subject": "Digital Logic",
+    "subjectId": "tifr_digital_logic",
+    "topic": "Boolean Algebra",
+    "topicId": "tifr_boolean_algebra",
+    "topicNumber": "5.2",
+    "year": 2014,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $f: \\left\\{0, 1\\right\\}^{n} \\rightarrow \\left\\{0, 1\\right\\}$ be a boolean function computed by a logical circuit comprising just binary&nbsp;AND and binary OR gates (assume that the circuit does not have any feedback). Let PARITY : $\\left\\{0, 1\\right\\}^{n} \\rightarrow \\left\\{0, 1\\right\\}$&nbsp;be the boolean function that outputs $1$ if the total number of input bits set to $1$ is odd. Similarly, let&nbsp;MAJORITY be the boolean function that outputs $1$ if the number of input bits that are set to $1$ is at least as&nbsp;large as the number of input bits that are set to $0$. Then, which of the following is NOT possible?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2014\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2014 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/boolean-algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">boolean-algebra </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$f(0, 0, . . . , 0) = f(1, 1, . . . , 1) = 0$."
+      },
+      {
+        "label": "B",
+        "html": "$f(0, 0, . . . , 0) = f(1, 1. . . . , 1) = 1$"
+      },
+      {
+        "label": "C",
+        "html": "$f$ is the MAJORITY function."
+      },
+      {
+        "label": "D",
+        "html": "$f$ is the PARITY function."
+      },
+      {
+        "label": "E",
+        "html": "$f$ outputs $1$ at exactly one assignment of the input bits."
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/27344/tifr-cse-2014-part-b-question-17",
+    "answerUrl": "https://gateoverflow.in/27344#27595",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_digital_logic"
+    ]
+  },
+  {
+    "id": "tifr_29162",
+    "number": "5.4.1",
+    "title": "5.4.1 TIFR CSE 2015 | Part A | Question: 4",
+    "volume": 0,
+    "subject": "Digital Logic",
+    "subjectId": "tifr_digital_logic",
+    "topic": "Combinational Circuit",
+    "topicId": "tifr_combinational_circuit",
+    "topicNumber": "5.4",
+    "year": 2015,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>The Boolean function obtained by adding an inverter to each and every input of an $\\text{AND}$ gate is:</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2015\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2015 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/digital-logic\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">digital-logic </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/combinational-circuit\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">combinational-circuit </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/digital-circuits\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">digital-circuits </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\text{OR}$"
+      },
+      {
+        "label": "B",
+        "html": "$\\text{XOR}$"
+      },
+      {
+        "label": "C",
+        "html": "$\\text{NAND}$"
+      },
+      {
+        "label": "D",
+        "html": "$\\text{NOR}$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/29162/tifr-cse-2015-part-a-question-4",
+    "answerUrl": "https://gateoverflow.in/29162#29164",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_digital_logic"
+    ]
+  },
+  {
+    "id": "tifr_419333",
+    "number": "7.3.1",
+    "title": "7.3.1 TIFR CSE 2024 | Part B | Question: 14",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Graph Theory",
+    "subjectId": "tifr_discrete_mathematics_graph_theory",
+    "topic": "Combinatory",
+    "topicId": "tifr_combinatory",
+    "topicNumber": "7.3",
+    "year": 2024,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>For an undirected graph $G$, let $\\bar{G}$ refer to the complement (a graph on the same vertex set as $G$, with $(i, j)$ as an edge in $\\bar{G}$ if and only if it is not an edge in $G$ ). Consider the following statements.</p>\n\n<ol start=\"1\" style=\"list-style-type:lower-roman\">\n\t<li>$G$ has a vertex-cover of size at most $k$.</li>\n\t<li>$\\bar{G}$ has an independent set of size at least $k$.</li>\n\t<li>$G$ has an independent set of size at least $n-k$.</li>\n\t<li>$G$ has a clique of size at least $k$.</li>\n\t<li>$\\bar{G}$ has a clique of size at least $n-k$.</li>\n</ol>\n\n<p>Which of the following is true for any graph $G$ and its complement graph $\\bar{G}$?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2024\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2024 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/graph-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">graph-theory </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/combinatory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">combinatory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "(i) is equivalent to (iii) and (iv)."
+      },
+      {
+        "label": "B",
+        "html": "(i) is equivalent to (iii) and (v)."
+      },
+      {
+        "label": "C",
+        "html": "(i) is equivalent to (ii) and (iv)."
+      },
+      {
+        "label": "D",
+        "html": "(i) is equivalent to (ii) and (v)"
+      },
+      {
+        "label": "E",
+        "html": "None of the five statements are equivalent to each other.\n\t<p>&nbsp;</p>"
+      }
+    ],
+    "answer": "B",
+    "gateOverflowUrl": "https://gateoverflow.in/419333/tifr-cse-2024-part-b-question-14",
+    "answerUrl": "https://gateoverflow.in/419333#440432",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_graph_theory"
+    ]
+  },
+  {
+    "id": "tifr_96825",
+    "number": "7.7.5",
+    "title": "7.7.5 TIFR CSE 2016 | Part A | Question: 2",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Graph Theory",
+    "subjectId": "tifr_discrete_mathematics_graph_theory",
+    "topic": "Graph Connectivity",
+    "topicId": "tifr_graph_connectivity",
+    "topicNumber": "7.7",
+    "year": 2016,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Consider the graph shown below:</p>\n\n<p><img alt=\"\" src=\"https://gateoverflow.in/?qa=blob&amp;qa_blobid=8537536919515153129\"></p>\n\n<p>The following experiment is performed using this graph. First, an edge $e =\\{i,j\\}$ of the graph is chosen uniformly at random from the set of $9$ possibilities. Next, a common neighbour $k$ of $i$ and $j$ is chosen, again uniformly from the set of possibilities. (Note that the set of possibilities is always non-empty.) Thus, $\\{i, j, k\\}$ is a triangle in the graph. What is the probability that the triangle finally picked is $\\{1, 2, 3\\}$?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2016\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2016 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/graph-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">graph-theory </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/graph-connectivity\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">graph-connectivity </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/probability\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">probability </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\frac{1}{6}$"
+      },
+      {
+        "label": "B",
+        "html": "$\\frac{1}{4}$"
+      },
+      {
+        "label": "C",
+        "html": "$\\frac{1}{3}$"
+      },
+      {
+        "label": "D",
+        "html": "$\\frac{2}{3}$"
+      },
+      {
+        "label": "E",
+        "html": "$\\frac{5}{6}$"
+      }
+    ],
+    "answer": "A",
+    "gateOverflowUrl": "https://gateoverflow.in/96825/tifr-cse-2016-part-a-question-2",
+    "answerUrl": "https://gateoverflow.in/96825#178752",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_graph_theory"
+    ]
+  },
+  {
+    "id": "tifr_18496",
+    "number": "9.8.2",
+    "title": "9.8.2 TIFR CSE 2010 | Part A | Question: 18",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Set Theory & Algebra",
+    "subjectId": "tifr_discrete_mathematics_set_theory_algebra",
+    "topic": "Set Theory",
+    "topicId": "tifr_set_theory",
+    "topicNumber": "9.8",
+    "year": 2010,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $X$ be a set of size $n$. How many pairs of sets (A, B) are there that satisfy the condition $A\\subseteq B \\subseteq X$ ?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2010\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2010 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$2^{n+1}$"
+      },
+      {
+        "label": "B",
+        "html": "$2^{2n}$"
+      },
+      {
+        "label": "C",
+        "html": "$3^{n}$"
+      },
+      {
+        "label": "D",
+        "html": "$2^{n} + 1$"
+      },
+      {
+        "label": "E",
+        "html": "$3^{n + 1}$"
+      }
+    ],
+    "answer": "C",
+    "gateOverflowUrl": "https://gateoverflow.in/18496/tifr-cse-2010-part-a-question-18",
+    "answerUrl": "https://gateoverflow.in/18496#18507",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_set_theory_algebra"
+    ]
+  },
+  {
+    "id": "tifr_20039",
+    "number": "9.8.3",
+    "title": "9.8.3 TIFR CSE 2011 | Part A | Question: 10",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Set Theory & Algebra",
+    "subjectId": "tifr_discrete_mathematics_set_theory_algebra",
+    "topic": "Set Theory",
+    "topicId": "tifr_set_theory",
+    "topicNumber": "9.8",
+    "year": 2011,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $m$, $n$ denote two integers from the set $\\{1, 2,\\dots,10\\}$. The number of ordered pairs $\\left ( m, n \\right )$ such that $2^{m}+2^{n}$ is divisible by $5$ is.</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2011\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2011 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory%26algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory&amp;algebra </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$10$"
+      },
+      {
+        "label": "B",
+        "html": "$14$"
+      },
+      {
+        "label": "C",
+        "html": "$24$"
+      },
+      {
+        "label": "D",
+        "html": "$8$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "C",
+    "gateOverflowUrl": "https://gateoverflow.in/20039/tifr-cse-2011-part-a-question-10",
+    "answerUrl": "https://gateoverflow.in/20039#20045",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_set_theory_algebra"
+    ]
+  },
+  {
+    "id": "tifr_20400",
+    "number": "9.8.4",
+    "title": "9.8.4 TIFR CSE 2011 | Part B | Question: 23",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Set Theory & Algebra",
+    "subjectId": "tifr_discrete_mathematics_set_theory_algebra",
+    "topic": "Set Theory",
+    "topicId": "tifr_set_theory",
+    "topicNumber": "9.8",
+    "year": 2011,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Suppose $(S_{1}, S_{2},\\ldots,S_{m})$ is a finite collection of non-empty subsets of a universe $U.$ Note that the sets in this collection need not&nbsp;be distinct. Consider the following basic step to be performed on this sequence. While there exist sets $S_{i}$ and $S_{j}$ in the sequence, neither of which is a subset of the other, delete them from the sequence, and&nbsp;</p>\n\n<ol start=\"1\" style=\"list-style-type:lower-roman\">\n\t<li>If $S_{i}\\cap S_{j}\\neq \\emptyset$, then add the sets $S_{i}\\cup S_{j}$ and $S_{i}\\cap S_{j}$ to the sequence;</li>\n\t<li>If $S_{i}\\cap S_{j} = \\emptyset$, then add only the set $S_{i}\\cup S_{j}$ to the sequence.</li>\n</ol>\n\n<p>In each step we delete two sets from the sequence and add at most two sets to the sequence. Also, note that empty sets are never added to the sequence. Which of the following statements is TRUE?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2011\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2011 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory%26algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory&amp;algebra </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "The size of the smallest set in the sequence decreases in every step"
+      },
+      {
+        "label": "B",
+        "html": "The size of the largest set in the sequence increases in every step"
+      },
+      {
+        "label": "C",
+        "html": "The process always terminates"
+      },
+      {
+        "label": "D",
+        "html": "The process terminates if $U$ is finite but might not if $U$ is infinite"
+      },
+      {
+        "label": "E",
+        "html": "There is a finite collection of subsets of a finite universe $U$ and a choice of $S_{i}$ and $S_{j}$ in each step such that the process does not terminate"
+      }
+    ],
+    "answer": "C",
+    "gateOverflowUrl": "https://gateoverflow.in/20400/tifr-cse-2011-part-b-question-23",
+    "answerUrl": "https://gateoverflow.in/20400#315125",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_set_theory_algebra"
+    ]
+  },
+  {
+    "id": "tifr_21007",
+    "number": "9.8.5",
+    "title": "9.8.5 TIFR CSE 2012 | Part A | Question: 8",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Set Theory & Algebra",
+    "subjectId": "tifr_discrete_mathematics_set_theory_algebra",
+    "topic": "Set Theory",
+    "topicId": "tifr_set_theory",
+    "topicNumber": "9.8",
+    "year": 2012,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>How many pairs of sets $(A, B)$ are there that satisfy the condition $A, B \\subseteq \\left\\{1, 2,...,5\\right\\}, A \\cap B = \\{\\}?$</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2012\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2012 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory%26algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory&amp;algebra </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$125$"
+      },
+      {
+        "label": "B",
+        "html": "$127$"
+      },
+      {
+        "label": "C",
+        "html": "$130$"
+      },
+      {
+        "label": "D",
+        "html": "$243$"
+      },
+      {
+        "label": "E",
+        "html": "$257$"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/21007/tifr-cse-2012-part-a-question-8",
+    "answerUrl": "https://gateoverflow.in/21007#21052",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_set_theory_algebra"
+    ]
+  },
+  {
+    "id": "tifr_97234",
+    "number": "9.8.6",
+    "title": "9.8.6 TIFR CSE 2016 | Part A | Question: 8",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Set Theory & Algebra",
+    "subjectId": "tifr_discrete_mathematics_set_theory_algebra",
+    "topic": "Set Theory",
+    "topicId": "tifr_set_theory",
+    "topicNumber": "9.8",
+    "year": 2016,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $A$ and $B$ be finite sets such that $A \\subseteq B$. Then, what is the value of the expression:</p>\n\n<p><div class=\"MathJax_Display MathJax_Processing\"></div>$$\\sum&nbsp;\\limits_{C:A \\subseteq C \\subseteq B} (-1)^{\\mid C \\setminus&nbsp;A \\mid,}$$</p>\n\n<p>Where $C \\setminus A=\\{x \\in C : x \\notin A \\}$?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2016\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2016 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory%26algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory&amp;algebra </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "Always $0$"
+      },
+      {
+        "label": "B",
+        "html": "Always $1$"
+      },
+      {
+        "label": "C",
+        "html": "$0$ if $A=B$ and $1$ otherwise"
+      },
+      {
+        "label": "D",
+        "html": "$1$ if $A=B$ and $0$ otherwise"
+      },
+      {
+        "label": "E",
+        "html": "Depends on the size of the universe"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/97234/tifr-cse-2016-part-a-question-8",
+    "answerUrl": "https://gateoverflow.in/97234#97293",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_set_theory_algebra"
+    ]
+  },
+  {
+    "id": "tifr_98014",
+    "number": "9.8.7",
+    "title": "9.8.7 TIFR CSE 2016 | Part B | Question: 14",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Set Theory & Algebra",
+    "subjectId": "tifr_discrete_mathematics_set_theory_algebra",
+    "topic": "Set Theory",
+    "topicId": "tifr_set_theory",
+    "topicNumber": "9.8",
+    "year": 2016,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Consider a family $\\mathcal{F}$ of subsets of $\\{1, 2, \\dots , n\\}$ such that for any two distinct sets $A$ and $B$ in $\\mathcal{F}$ we have: $A \\subset B$ or $ B \\subset A$ or $A \\cap B = \\emptyset$. Which of the following statements is TRUE? (Hint: what does the Venn diagram of this family look like?)</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2016\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2016 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory%26algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory&amp;algebra </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\mid \\mathcal{F} \\mid \\leq 2n$ and there exists a family $\\mathcal{F}$ such that $\\mid&nbsp;\\mathcal{F} \\mid =2n$"
+      },
+      {
+        "label": "B",
+        "html": "$\\mid \\mathcal{F} \\mid \\leq n^2$&nbsp;and there exists a family $\\mathcal{F}$ such that $\\mid&nbsp;\\mathcal{F} \\mid =n^2$"
+      },
+      {
+        "label": "C",
+        "html": "$\\mid \\mathcal{F} \\mid \\leq 2n^2$&nbsp;and there exists a family $\\mathcal{F}$ such that $\\mid&nbsp;\\mathcal{F} \\mid =2n^2$"
+      },
+      {
+        "label": "D",
+        "html": "$\\mid \\mathcal{F} \\mid \\leq 2^{n-1}$&nbsp;and there exists a family $\\mathcal{F}$ such that $\\mid&nbsp;\\mathcal{F} \\mid =2^{n-1}$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "A",
+    "gateOverflowUrl": "https://gateoverflow.in/98014/tifr-cse-2016-part-b-question-14",
+    "answerUrl": "https://gateoverflow.in/98014#98066",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_set_theory_algebra"
+    ]
+  },
+  {
+    "id": "tifr_280509",
+    "number": "9.8.8",
+    "title": "9.8.8 TIFR CSE 2019 | Part A | Question: 1",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Set Theory & Algebra",
+    "subjectId": "tifr_discrete_mathematics_set_theory_algebra",
+    "topic": "Set Theory",
+    "topicId": "tifr_set_theory",
+    "topicNumber": "9.8",
+    "year": 2019,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let&nbsp;$X$ be a set with $n$ elements. How many subsets of $X$ have odd cardinality?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2019\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2019 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/engineering-mathematics\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">engineering-mathematics </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/discrete-mathematics\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">discrete-mathematics </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory%26algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory&amp;algebra </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$n$&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;"
+      },
+      {
+        "label": "B",
+        "html": "$2^n$"
+      },
+      {
+        "label": "C",
+        "html": "$2^{n/2}$"
+      },
+      {
+        "label": "D",
+        "html": "$2^{n-1}$"
+      },
+      {
+        "label": "E",
+        "html": "Can not be determined without knowing whether $n$ is odd or even"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/280509/tifr-cse-2019-part-a-question-1",
+    "answerUrl": "https://gateoverflow.in/280509#280515",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_set_theory_algebra"
+    ]
+  },
+  {
+    "id": "tifr_358959",
+    "number": "9.8.9",
+    "title": "9.8.9 TIFR CSE 2021 | Part A | Question: 9",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Set Theory & Algebra",
+    "subjectId": "tifr_discrete_mathematics_set_theory_algebra",
+    "topic": "Set Theory",
+    "topicId": "tifr_set_theory",
+    "topicNumber": "9.8",
+    "year": 2021,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Fix $n\\geq 6$. Consider the set $\\mathcal{C}$ of binary strings $x_{1}, x_{2} \\dots x_{n}$ of length $n$ such that the bits satisfy the following set of equalities, all modulo $2$: $x_{i}+x_{i+1}+x_{i+2}=0$ for all $1\\leq i\\leq n-2, x_{n-1}+x_{n}+x_{1}=0,$ and $x_{n}+x_{1}+x_{2}=0.$ What is the size of the set $\\mathcal{C}$?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2021\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2021 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory%26algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory&amp;algebra </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$1$ for all $n\\geq 6$"
+      },
+      {
+        "label": "B",
+        "html": "$4$ for all $n\\geq 6$"
+      },
+      {
+        "label": "C",
+        "html": "$0$ for all $n\\geq 6$"
+      },
+      {
+        "label": "D",
+        "html": "&nbsp;If $n\\geq 6$ is divisible by $3 \\left |&nbsp;\\mathcal{C} \\right |=1$. If $n\\geq 6$ is $\\textit{not}$ divisible by $3$ then $\\left | \\mathcal{C} \\right |=4$."
+      },
+      {
+        "label": "E",
+        "html": "If $n\\geq 6$ is divisible by $3$ $\\left | \\mathcal{C} \\right |=4$. If $n\\geq 6$ is not divisible by $3$ then $\\left | \\mathcal{C} \\right |=1$."
+      }
+    ],
+    "answer": "E",
+    "gateOverflowUrl": "https://gateoverflow.in/358959/tifr-cse-2021-part-a-question-9",
+    "answerUrl": "https://gateoverflow.in/358959#359207",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_set_theory_algebra"
+    ]
+  },
+  {
+    "id": "tifr_381941",
+    "number": "9.8.10",
+    "title": "9.8.10 TIFR CSE 2022 | Part A | Question: 11",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Set Theory & Algebra",
+    "subjectId": "tifr_discrete_mathematics_set_theory_algebra",
+    "topic": "Set Theory",
+    "topicId": "tifr_set_theory",
+    "topicNumber": "9.8",
+    "year": 2022,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $X$ be a finite set. A family $\\mathcal{F}$ of subsets of $X$ is said to be <em>upward closed</em> if the following holds for all sets $A, B \\subseteq X$ :</p>\n\n<p>$$A \\in \\mathcal{F} \\text { and } A \\subseteq B \\Rightarrow B \\in \\mathcal{F}.$$</p>\n\n<p>For families $\\mathcal{F}$ and $\\mathcal{G}$ of subsets of $X$, let</p>\n\n<p>$$\\mathcal{F} \\sqcup \\mathcal{G}=\\{A \\cup B: A \\in \\mathcal{F} \\text { and } B \\in \\mathcal{G}\\}.$$</p>\n\n<p>Suppose $\\mathcal{F}$ and $\\mathcal{G}$ are upward closed families. Then which of the following is true?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2022\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2022 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory%26algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory&amp;algebra </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\mathcal{F} \\sqcup \\mathcal{G}=\\mathcal{F} \\cap \\mathcal{G}$"
+      },
+      {
+        "label": "B",
+        "html": "$\\mathcal{F} \\sqcup \\mathcal{G}=\\mathcal{F} \\cup \\mathcal{G}$"
+      },
+      {
+        "label": "C",
+        "html": "$\\mathcal{F} \\sqcup \\mathcal{G}=\\mathcal{F} \\backslash \\mathcal{G}$"
+      },
+      {
+        "label": "D",
+        "html": "$\\mathcal{F} \\sqcup \\mathcal{G}=\\mathcal{G} \\backslash \\mathcal{F}$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "A",
+    "gateOverflowUrl": "https://gateoverflow.in/381941/tifr-cse-2022-part-a-question-11",
+    "answerUrl": "https://gateoverflow.in/381941#443645",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_set_theory_algebra"
+    ]
+  },
+  {
+    "id": "tifr_381943",
+    "number": "9.8.11",
+    "title": "9.8.11 TIFR CSE 2022 | Part A | Question: 9",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Set Theory & Algebra",
+    "subjectId": "tifr_discrete_mathematics_set_theory_algebra",
+    "topic": "Set Theory",
+    "topicId": "tifr_set_theory",
+    "topicNumber": "9.8",
+    "year": 2022,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>You are given the following properties of sets $A, B, X$, and $Y$. For notation, $|A|$ denotes the cardinality of set $A$ (i.e., the number of elements in $A$ ), and $A \\backslash B$ denotes the set of elements that are in $A$ but not in $B$.</p>\n\n<ol>\n\t<li>$A \\cup B=X \\cup Y$</li>\n\t<li>$A \\cap B=X \\cap Y=\\emptyset$</li>\n\t<li>$|Y \\backslash A|=2$</li>\n\t<li>$|A \\backslash X|=4$</li>\n</ol>\n\n<p>Which of the following statements $\\text{MUST}$ then be $\\text{FALSE?}$</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2022\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2022 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory%26algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory&amp;algebra </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$|X|=5$"
+      },
+      {
+        "label": "B",
+        "html": "$|Y|=5$"
+      },
+      {
+        "label": "C",
+        "html": "$|A \\cup X|=|B \\cup Y|$"
+      },
+      {
+        "label": "D",
+        "html": "$|A \\cap X|=|B \\cap Y|$"
+      },
+      {
+        "label": "E",
+        "html": "$|A|=|B|$"
+      }
+    ],
+    "answer": "B",
+    "gateOverflowUrl": "https://gateoverflow.in/381943/tifr-cse-2022-part-a-question-9",
+    "answerUrl": "https://gateoverflow.in/381943#382559",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_set_theory_algebra"
+    ]
+  },
+  {
+    "id": "tifr_400133",
+    "number": "9.8.12",
+    "title": "9.8.12 TIFR CSE 2023 | Part A | Question: 10",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Set Theory & Algebra",
+    "subjectId": "tifr_discrete_mathematics_set_theory_algebra",
+    "topic": "Set Theory",
+    "topicId": "tifr_set_theory",
+    "topicNumber": "9.8",
+    "year": 2023,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $Q$ be a set with $n$ elements. Consider a system with states of the form $(S, R)$ where $S \\subseteq Q$ and $R \\subseteq Q$, with the further restriction that $R \\subseteq S$. Note that $(\\emptyset, \\emptyset)$ is also a valid state of the system (here $\\emptyset$ denotes the empty set). How many possible states does the system have?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2023\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2023 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory%26algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory&amp;algebra </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$3^{n}$"
+      },
+      {
+        "label": "B",
+        "html": "$2^{n}$"
+      },
+      {
+        "label": "C",
+        "html": "$4^{n}$"
+      },
+      {
+        "label": "D",
+        "html": "$n^{3}$"
+      },
+      {
+        "label": "E",
+        "html": "$\\left(\\begin{array}{l}n \\\\ 3\\end{array}\\right)$"
+      }
+    ],
+    "answer": "A",
+    "gateOverflowUrl": "https://gateoverflow.in/400133/tifr-cse-2023-part-a-question-10",
+    "answerUrl": "https://gateoverflow.in/400133#403586",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_set_theory_algebra"
+    ]
+  },
+  {
+    "id": "tifr_400132",
+    "number": "9.8.13",
+    "title": "9.8.13 TIFR CSE 2023 | Part A | Question: 11",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Set Theory & Algebra",
+    "subjectId": "tifr_discrete_mathematics_set_theory_algebra",
+    "topic": "Set Theory",
+    "topicId": "tifr_set_theory",
+    "topicNumber": "9.8",
+    "year": 2023,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>We are given a set $S=\\left\\{x_{1}, \\ldots, x_{n}\\right\\}$ of distinct positive integers such that $\\operatorname{gcd}\\left(x_{i}, x_{j}\\right)= 1$ for any $i, j \\in\\{1, \\ldots, n\\}$ where $i \\neq j$. What is the total number of invertible $2 \\times 2$ matrices whose entries are distinct elements from the set $S$ ?</p>\n\n<p>$\\textbf{(Note:}$ For positive integers $a$ and $b, \\operatorname{gcd}(a, b)$ denotes the greatest common divisor of $a$ and $b)$.</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2023\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2023 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory%26algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory&amp;algebra </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$n^{4}$"
+      },
+      {
+        "label": "B",
+        "html": "$(n-1)^{4}$"
+      },
+      {
+        "label": "C",
+        "html": "$n^{2}(n-1)^{2} / 4$"
+      },
+      {
+        "label": "D",
+        "html": "$n(n-1)(n-2)(n-3)$"
+      },
+      {
+        "label": "E",
+        "html": "$n(n-1)(n-2)(n-3) / 4$ !\n\t<p>&nbsp;</p>"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/400132/tifr-cse-2023-part-a-question-11",
+    "answerUrl": "https://gateoverflow.in/400132#403057",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_set_theory_algebra"
+    ]
+  },
+  {
+    "id": "tifr_473098",
+    "number": "9.8.14",
+    "title": "9.8.14 TIFR CSE 2025 | Part A | Question: 15",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Set Theory & Algebra",
+    "subjectId": "tifr_discrete_mathematics_set_theory_algebra",
+    "topic": "Set Theory",
+    "topicId": "tifr_set_theory",
+    "topicNumber": "9.8",
+    "year": 2025,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>How many subsets of $\\{1,2, \\ldots, 2 n\\}$ do not contain two numbers with sum $2 n+1?$</p></div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2025\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2025 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/set-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">set-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$3^{n}+\\binom{2 n}{2}$"
+      },
+      {
+        "label": "B",
+        "html": "$3^{n}$"
+      },
+      {
+        "label": "C",
+        "html": "$4^{n}-\\binom{2 n}{2}$"
+      },
+      {
+        "label": "D",
+        "html": "$2^{n}$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above<p>&nbsp;</p>"
+      }
+    ],
+    "answer": "B",
+    "gateOverflowUrl": "https://gateoverflow.in/473098/tifr-cse-2025-part-a-question-15",
+    "answerUrl": "https://gateoverflow.in/473098#474277",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_set_theory_algebra"
+    ]
+  },
+  {
+    "id": "tifr_400138",
+    "number": "11.3.11",
+    "title": "11.3.11 TIFR CSE 2023 | Part A | Question: 5",
+    "volume": 0,
+    "subject": "Engineering Mathematics: Linear Algebra",
+    "subjectId": "tifr_engineering_mathematics_linear_algebra",
+    "topic": "Matrix",
+    "topicId": "tifr_matrix",
+    "topicNumber": "11.3",
+    "year": 2023,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Suppose $A$ is a $2 \\times 2$ matrix such that the sum of the principal diagonal entries of $A$ is $10$ and the sum of the principal diagonal entries of $A^{2}$ is $20$. (For any $2 \\times 2$ matrix $B$, the principal diagonal entries of $B$ are the entries $B_{1,1}$ and $B_{2,2}.)$ What is $\\operatorname{det}(A)?$&nbsp;</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2023\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2023 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/linear-algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">linear-algebra </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/matrix\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">matrix </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$0$"
+      },
+      {
+        "label": "B",
+        "html": "$40$"
+      },
+      {
+        "label": "C",
+        "html": "$80$"
+      },
+      {
+        "label": "D",
+        "html": "Nonzero, but cannot be uniquely determined from the above data."
+      },
+      {
+        "label": "E",
+        "html": "Cannot be uniquely determined from the above data, and could also be zero."
+      }
+    ],
+    "answer": "B",
+    "gateOverflowUrl": "https://gateoverflow.in/400138/tifr-cse-2023-part-a-question-5",
+    "answerUrl": "https://gateoverflow.in/400138#402552",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_engineering_mathematics_linear_algebra"
+    ]
+  },
+  {
+    "id": "tifr_381945",
+    "number": "12.14.8",
+    "title": "12.14.8 TIFR CSE 2022 | Part A | Question: 7",
+    "volume": 0,
+    "subject": "Engineering Mathematics: Probability",
+    "subjectId": "tifr_engineering_mathematics_probability",
+    "topic": "Uniform Distribution",
+    "topicId": "tifr_uniform_distribution",
+    "topicNumber": "12.14",
+    "year": 2022,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Initially, $N$ white beads are arranged in a circle. A number $k$ is chosen uniformly at random from $\\{1, \\ldots, N-1\\}$. Then a set of $k$ beads is chosen uniformly from the white beads, and these $k$ beads are coloured black. The position of the beads remains unchanged. What is the probability that the black beads occur sequentially in the circle, i.e., at most two black beads have white beads next to them?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2022\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2022 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/probability\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">probability </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/uniform-distribution\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">uniform-distribution </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\frac{2N}{2N+1}$"
+      },
+      {
+        "label": "B",
+        "html": "$\\frac{N^2}{(N-1)(N-1)!}$"
+      },
+      {
+        "label": "C",
+        "html": "$$\\displaystyle{}\\frac{N}{N-1} \\sum_{k=1}^{N-1} \\frac{1}{\\left(\\begin{array}{l}N \\\\ k\\end{array}\\right)}$$"
+      },
+      {
+        "label": "D",
+        "html": "$$\\displaystyle{}\\frac{1}{N}+\\sum_{k=1}^{N-1} \\frac{1}{\\left(\\begin{array}{l}N \\\\ k\\end{array}\\right)}$$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "C",
+    "gateOverflowUrl": "https://gateoverflow.in/381945/tifr-cse-2022-part-a-question-7",
+    "answerUrl": "https://gateoverflow.in/381945#385955",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_engineering_mathematics_probability"
+    ]
+  },
+  {
+    "id": "tifr_179270",
+    "number": "14.3.2",
+    "title": "14.3.2 TIFR CSE 2018 | Part A | Question: 1",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Circle",
+    "topicId": "tifr_circle",
+    "topicNumber": "14.3",
+    "year": 2018,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Consider a point $A$ inside a circle $C$ that is at distance $9$ from the centre of a circle. Suppose you told that there is a chord of length $24$ passing through $A$ with $A$ as its midpoint. How many distinct chords of $C$ have integer length and pass through $A?$</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2018\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2018 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/circle\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">circle </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$2$"
+      },
+      {
+        "label": "B",
+        "html": "$6$"
+      },
+      {
+        "label": "C",
+        "html": "$7$"
+      },
+      {
+        "label": "D",
+        "html": "$12$"
+      },
+      {
+        "label": "E",
+        "html": "$14$"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/179270/tifr-cse-2018-part-a-question-1",
+    "answerUrl": "https://gateoverflow.in/179270#179404",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_18206",
+    "number": "14.4.1",
+    "title": "14.4.1 TIFR CSE 2010 | Part A | Question: 2",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Clock Time",
+    "topicId": "tifr_clock_time",
+    "topicNumber": "14.4",
+    "year": 2010,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>The hour hand and the minute hands of a clock meet at noon and again at mid-night. In between they meet $N$ times, where $N$ is.:</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2010\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2010 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/clock-time\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">clock-time </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$6$"
+      },
+      {
+        "label": "B",
+        "html": "$11$"
+      },
+      {
+        "label": "C",
+        "html": "$12$"
+      },
+      {
+        "label": "D",
+        "html": "$13$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "E",
+    "gateOverflowUrl": "https://gateoverflow.in/18206/tifr-cse-2010-part-a-question-2",
+    "answerUrl": "https://gateoverflow.in/18206#30601",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_25502",
+    "number": "14.4.2",
+    "title": "14.4.2 TIFR CSE 2013 | Part A | Question: 20",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Clock Time",
+    "topicId": "tifr_clock_time",
+    "topicNumber": "14.4",
+    "year": 2013,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Consider a well functioning clock where the hour, minute and the seconds needles are exactly at zero.&nbsp;How much time later will the minutes needle be exactly one minute ahead ($1/60$ th of the circumference) of&nbsp;the hours needle and the seconds needle again exactly at zero?</p>\n\n<p>Hint: When the desired event happens both the hour needle and the minute needle have moved an integer multiple of $1/60$ th of the circumference.</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2013\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2013 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/clock-time\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">clock-time </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$144$ minutes"
+      },
+      {
+        "label": "B",
+        "html": "$66$ minutes"
+      },
+      {
+        "label": "C",
+        "html": "$96$ minutes"
+      },
+      {
+        "label": "D",
+        "html": "$72$ minutes"
+      },
+      {
+        "label": "E",
+        "html": "$132$ minutes&nbsp;"
+      }
+    ],
+    "answer": "E",
+    "gateOverflowUrl": "https://gateoverflow.in/25502/tifr-cse-2013-part-a-question-20",
+    "answerUrl": "https://gateoverflow.in/25502#251877",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_25998",
+    "number": "14.4.3",
+    "title": "14.4.3 TIFR CSE 2014 | Part A | Question: 10",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Clock Time",
+    "topicId": "tifr_clock_time",
+    "topicNumber": "14.4",
+    "year": 2014,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>A person went out between $4$pm and $5$pm to chat with her friend and returned between $5$pm and $6$pm.&nbsp;On her return, she found that the hour-hand and the minute-hand of her (well-functioning) clock had just&nbsp;exchanged their positions with respect to their earlier positions at the time of her leaving. The person must&nbsp;have gone out to chat at</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2014\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2014 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/clock-time\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">clock-time </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "Twenty five minutes past $4$pm."
+      },
+      {
+        "label": "B",
+        "html": "Twenty six and $\\dfrac{122}{143}$ minutes past $4$pm."
+      },
+      {
+        "label": "C",
+        "html": "Twenty seven and $\\dfrac{1}{3}$ minutes past $4$pm."
+      },
+      {
+        "label": "D",
+        "html": "Twenty eight minutes past $4$pm."
+      },
+      {
+        "label": "E",
+        "html": "None of the above."
+      }
+    ],
+    "answer": "B",
+    "gateOverflowUrl": "https://gateoverflow.in/25998/tifr-cse-2014-part-a-question-10",
+    "answerUrl": "https://gateoverflow.in/25998#26158",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_333114",
+    "number": "14.4.4",
+    "title": "14.4.4 TIFR CSE 2020 | Part A | Question: 12",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Clock Time",
+    "topicId": "tifr_clock_time",
+    "topicNumber": "14.4",
+    "year": 2020,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>The hour needle of a clock is malfunctioning and travels in the anti-clockwise direction, i.e., opposite to the usual direction, at the same speed it would have if it was working correctly. The minute needle is working correctly. Suppose the two needles show the correct time at $12$ noon, thus both needles are together at the $12$ mark. After how much time do the two needles meet again?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2020\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2020 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/clock-time\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">clock-time </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\dfrac{10}{11}$ hour"
+      },
+      {
+        "label": "B",
+        "html": "$\\dfrac{11}{12}$ hour"
+      },
+      {
+        "label": "C",
+        "html": "$\\dfrac{12}{13}$ hour"
+      },
+      {
+        "label": "D",
+        "html": "$\\dfrac{19}{22}$ hour"
+      },
+      {
+        "label": "E",
+        "html": "One hour"
+      }
+    ],
+    "answer": "C",
+    "gateOverflowUrl": "https://gateoverflow.in/333114/tifr-cse-2020-part-a-question-12",
+    "answerUrl": "https://gateoverflow.in/333114#333885",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_473103",
+    "number": "14.4.5",
+    "title": "14.4.5 TIFR CSE 2025 | Part A | Question: 10",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Clock Time",
+    "topicId": "tifr_clock_time",
+    "topicNumber": "14.4",
+    "year": 2025,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>A clock shows $3:00$.&nbsp; After $10^{1024}$ minutes, what minute does the minute hand point to?</p></div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2025\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2025 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/clock-time\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">clock-time </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$0$"
+      },
+      {
+        "label": "B",
+        "html": "$20$"
+      },
+      {
+        "label": "C",
+        "html": "$40$"
+      },
+      {
+        "label": "D",
+        "html": "$50$"
+      },
+      {
+        "label": "E",
+        "html": "$10$<p>&nbsp;</p>"
+      }
+    ],
+    "answer": "C",
+    "gateOverflowUrl": "https://gateoverflow.in/473103/tifr-cse-2025-part-a-question-10",
+    "answerUrl": "https://gateoverflow.in/473103#473480",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_20223",
+    "number": "14.5.1",
+    "title": "14.5.1 TIFR CSE 2011 | Part A | Question: 13",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Complex Number",
+    "topicId": "tifr_complex_number",
+    "topicNumber": "14.5",
+    "year": 2011,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>If $z=\\dfrac{\\sqrt{3}-i}{2}$ and $\\large(z^{95}+ i^{67})^{97}= z^{n}$, then the smallest value of $n$ is</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2011\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2011 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/complex-number\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">complex-number </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$1$"
+      },
+      {
+        "label": "B",
+        "html": "$10$"
+      },
+      {
+        "label": "C",
+        "html": "$11$"
+      },
+      {
+        "label": "D",
+        "html": "$12$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "A",
+    "gateOverflowUrl": "https://gateoverflow.in/20223/tifr-cse-2011-part-a-question-13",
+    "answerUrl": "https://gateoverflow.in/20223#20280",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_20009",
+    "number": "14.5.2",
+    "title": "14.5.2 TIFR CSE 2011 | Part A | Question: 5",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Complex Number",
+    "topicId": "tifr_complex_number",
+    "topicNumber": "14.5",
+    "year": 2011,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Three distinct points $x, y, z$ lie on a unit circle of the complex plane and satisfy $x+y+z=0$. Then $x, y, z$ form the vertices of .</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2011\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2011 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/complex-number\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">complex-number </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/non-gatecse\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">non-gatecse </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "An isosceles but not equilateral triangle."
+      },
+      {
+        "label": "B",
+        "html": "An equilateral triangle."
+      },
+      {
+        "label": "C",
+        "html": "A triangle of any shape."
+      },
+      {
+        "label": "D",
+        "html": "A triangle whose shape can't be determined."
+      },
+      {
+        "label": "E",
+        "html": "None of the above."
+      }
+    ],
+    "answer": "B",
+    "gateOverflowUrl": "https://gateoverflow.in/20009/tifr-cse-2011-part-a-question-5",
+    "answerUrl": "https://gateoverflow.in/20009#356776",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_25429",
+    "number": "14.5.3",
+    "title": "14.5.3 TIFR CSE 2013 | Part A | Question: 7",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Complex Number",
+    "topicId": "tifr_complex_number",
+    "topicNumber": "14.5",
+    "year": 2013,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>For any complex number $z$, $arg$ $z$ defines its phase, chosen to be in the interval $0\\leq arg z &lt; 360^{∘}$. If $z_{1}, z_{2}$ and $z_{3}$ are three complex numbers with the same modulus but different phases ($arg z_{3} &lt; arg z_{2} &lt; arg z_{1} &lt; 180^{∘}$), then the quantity</p>\n\n<p><div class=\"MathJax_Display MathJax_Processing\"></div>$$\\frac{arg \\left(z_{1}/z_{2}\\right)}{arg \\left[(z_{1}-z_{3})/(z_{2}-z_{3})\\right]}$$</p>\n\n<p>is a constant, and has the value</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2013\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2013 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/complex-number\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">complex-number </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/non-gatecse\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">non-gatecse </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "2"
+      },
+      {
+        "label": "B",
+        "html": "$\\frac{1}{3}$"
+      },
+      {
+        "label": "C",
+        "html": "1"
+      },
+      {
+        "label": "D",
+        "html": "3"
+      },
+      {
+        "label": "E",
+        "html": "$\\frac{1}{2}$"
+      }
+    ],
+    "answer": "A",
+    "gateOverflowUrl": "https://gateoverflow.in/25429/tifr-cse-2013-part-a-question-7",
+    "answerUrl": "https://gateoverflow.in/25429#357114",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_26386",
+    "number": "14.6.1",
+    "title": "14.6.1 TIFR CSE 2014 | Part A | Question: 12",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Convex Sets Functions",
+    "topicId": "tifr_convex_sets_functions",
+    "topicNumber": "14.6",
+    "year": 2014,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $f(x)= 2^{x}$. Consider the following inequality for real numbers $a, b$ and $0 &lt; \\lambda &lt; 1$:</p>\n\n<p>$f(\\lambda a + b) \\leq \\lambda f(a) + (1 - \\lambda) f (\\frac{b}{1 - \\lambda})$.</p>\n\n<p>Consider the following 3 conditions:</p>\n\n<ol>\n\t<li>$\\lambda= 0.5$</li>\n\t<li>$0 &lt; a \\leq&nbsp;2, b &gt; 0$</li>\n\t<li>$a/\\lambda &gt; 2, 0 &lt; b ≤ 1 − \\lambda$</li>\n</ol>\n\n<p>Which of the following statements is TRUE?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2014\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2014 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/convex-sets-functions\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">convex-sets-functions </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/non-gatecse\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">non-gatecse </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "The above inequality holds under conditions $(1)$ and $(2)$ but not under condition $(3)$."
+      },
+      {
+        "label": "B",
+        "html": "The above inequality holds under conditions $(2)$ and $(3)$ but not under condition $(1)$."
+      },
+      {
+        "label": "C",
+        "html": "The above inequality holds under conditions $(1)$ and $(3)$ but not under condition $(2)$."
+      },
+      {
+        "label": "D",
+        "html": "The above inequality holds under all the three conditions."
+      },
+      {
+        "label": "E",
+        "html": "The above inequality holds under none of the three conditions."
+      }
+    ],
+    "answer": null,
+    "gateOverflowUrl": "https://gateoverflow.in/26386/tifr-cse-2014-part-a-question-12",
+    "answerUrl": null,
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_21002",
+    "number": "14.7.1",
+    "title": "14.7.1 TIFR CSE 2012 | Part A | Question: 6",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Cost Market Price",
+    "topicId": "tifr_cost_market_price",
+    "topicNumber": "14.7",
+    "year": 2012,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>A certain pair of used shoes can be repaired for $Rs.1250$ and will last for $1$ year. A pair of the same kind of shoes can be purchased new for $Rs.2800$ and will last for $2$ years. The average cost per year of the new shoes is what percent greater than the cost of repairing the used shoes?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2012\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2012 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/cost-market-price\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">cost-market-price </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$5%$"
+      },
+      {
+        "label": "B",
+        "html": "$12%$"
+      },
+      {
+        "label": "C",
+        "html": "$15%$"
+      },
+      {
+        "label": "D",
+        "html": "$3%$"
+      },
+      {
+        "label": "E",
+        "html": "$24%$"
+      }
+    ],
+    "answer": "B",
+    "gateOverflowUrl": "https://gateoverflow.in/21002/tifr-cse-2012-part-a-question-6",
+    "answerUrl": "https://gateoverflow.in/21002#45726",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_18500",
+    "number": "14.8.1",
+    "title": "14.8.1 TIFR CSE 2010 | Part A | Question: 20",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Factors",
+    "topicId": "tifr_factors",
+    "topicNumber": "14.8",
+    "year": 2010,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>How many integers from $1$ to $1000$ are divisible by $30$ but not by $16$?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2010\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2010 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/factors\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">factors </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$29$"
+      },
+      {
+        "label": "B",
+        "html": "$31$"
+      },
+      {
+        "label": "C",
+        "html": "$32$"
+      },
+      {
+        "label": "D",
+        "html": "$33$"
+      },
+      {
+        "label": "E",
+        "html": "$25$"
+      }
+    ],
+    "answer": "A",
+    "gateOverflowUrl": "https://gateoverflow.in/18500/tifr-cse-2010-part-a-question-20",
+    "answerUrl": "https://gateoverflow.in/18500#18505",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_20226",
+    "number": "14.8.2",
+    "title": "14.8.2 TIFR CSE 2011 | Part A | Question: 15",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Factors",
+    "topicId": "tifr_factors",
+    "topicNumber": "14.8",
+    "year": 2011,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>The exponent of $3$ in the product $100!$ is</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2011\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2011 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/factors\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">factors </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tricky\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tricky </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$27$"
+      },
+      {
+        "label": "B",
+        "html": "$33$"
+      },
+      {
+        "label": "C",
+        "html": "$44$"
+      },
+      {
+        "label": "D",
+        "html": "$48$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/20226/tifr-cse-2011-part-a-question-15",
+    "answerUrl": "https://gateoverflow.in/20226#20229",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_25434",
+    "number": "14.8.3",
+    "title": "14.8.3 TIFR CSE 2013 | Part A | Question: 12",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Factors",
+    "topicId": "tifr_factors",
+    "topicNumber": "14.8",
+    "year": 2013,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Among numbers $1$ to $1000$ how many are divisible by $3$ or $7$?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2013\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2013 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/factors\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">factors </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/normal\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">normal </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$333$"
+      },
+      {
+        "label": "B",
+        "html": "$142$"
+      },
+      {
+        "label": "C",
+        "html": "$475$"
+      },
+      {
+        "label": "D",
+        "html": "$428$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/25434/tifr-cse-2013-part-a-question-12",
+    "answerUrl": "https://gateoverflow.in/25434#25436",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_26329",
+    "number": "14.9.1",
+    "title": "14.9.1 TIFR CSE 2014 | Part A | Question: 11",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Fractions",
+    "topicId": "tifr_fractions",
+    "topicNumber": "14.9",
+    "year": 2014,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>A large community practices birth control in the following peculiar fashion. Each set of parents&nbsp;continues having children until a son is born; then they stop. What is the ratio of boys to girls in the&nbsp;community if, in the absence of birth control, $51\\%$ of the babies are born male?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2014\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2014 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/fractions\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">fractions </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tricky\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tricky </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$51:49$"
+      },
+      {
+        "label": "B",
+        "html": "$1:1$"
+      },
+      {
+        "label": "C",
+        "html": "$49:51$"
+      },
+      {
+        "label": "D",
+        "html": "$51:98$"
+      },
+      {
+        "label": "E",
+        "html": "$98:51$"
+      }
+    ],
+    "answer": "A",
+    "gateOverflowUrl": "https://gateoverflow.in/26329/tifr-cse-2014-part-a-question-11",
+    "answerUrl": "https://gateoverflow.in/26329#26345",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_94931",
+    "number": "14.9.2",
+    "title": "14.9.2 TIFR CSE 2017 | Part A | Question: 1",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Fractions",
+    "topicId": "tifr_fractions",
+    "topicNumber": "14.9",
+    "year": 2017,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>A suitcase weighs one kilogram plus half of its weight. How much does the suitcase weigh?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2017\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2017 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/fractions\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">fractions </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/normal\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">normal </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$1.3333$... kilograms"
+      },
+      {
+        "label": "B",
+        "html": "$1.5$ kilograms"
+      },
+      {
+        "label": "C",
+        "html": "$1.666$... kilograms"
+      },
+      {
+        "label": "D",
+        "html": "$2$ kilograms"
+      },
+      {
+        "label": "E",
+        "html": "cannot be determined from the given data"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/94931/tifr-cse-2017-part-a-question-1",
+    "answerUrl": "https://gateoverflow.in/94931#94942",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_18493",
+    "number": "14.10.1",
+    "title": "14.10.1 TIFR CSE 2010 | Part A | Question: 17",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Geometry",
+    "topicId": "tifr_geometry",
+    "topicNumber": "14.10",
+    "year": 2010,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Suppose there is a sphere with diameter <strong>at least</strong> $6$ inches. Through this sphere we drill a hole along a diameter. The part of the sphere lost in the process of drilling the hole looks like two caps joined to a cylinder, where the cylindrical part has length $6$ inches. It turns out that the volume of the remaining portion of the sphere does not depend on the diameter of the sphere. Using this fact, determine the volume of the remaining part.</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2010\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2010 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$24\\pi$ cu. inches"
+      },
+      {
+        "label": "B",
+        "html": "$36\\pi$ cu. inches"
+      },
+      {
+        "label": "C",
+        "html": "$27\\pi$&nbsp;cu. inches"
+      },
+      {
+        "label": "D",
+        "html": "$32\\pi$&nbsp;cu. inches"
+      },
+      {
+        "label": "E",
+        "html": "$35\\pi$&nbsp;cu. inches"
+      }
+    ],
+    "answer": "B",
+    "gateOverflowUrl": "https://gateoverflow.in/18493/tifr-cse-2010-part-a-question-17",
+    "answerUrl": "https://gateoverflow.in/18493#18818",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_20984",
+    "number": "14.10.2",
+    "title": "14.10.2 TIFR CSE 2012 | Part A | Question: 4",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Geometry",
+    "topicId": "tifr_geometry",
+    "topicNumber": "14.10",
+    "year": 2012,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $\\text{ABC}$ be a triangle with $\\text{n} $ distinct points inside. A triangulation of $\\text{ABC}$ with respect to the $\\text{n}$ points is obtained by connecting as many points as possible, such that no more line segments can be added without intersecting other line segments. In other words $\\text{ABC}$ has been partitioned into triangles with end points at the $\\text{n}$ points or at the vertices $\\text{A,B,C}$. For example, the following figure gives one possible triangulation of $\\text{ABC}$ with two points inside it.</p>\n\n<p><img alt=\"\" height=\"209\" src=\"https://gateoverflow.in/?qa=blob&amp;qa_blobid=14258357542524714668\" width=\"321\"><br>\nAlthough there are many different ways to triangulate $\\text{ABC}$ with the $n$ points inside, the number of triangles depends only on $n$. In the above figure it is five. How many triangles are there in a triangulation of $\\text{ABC}$ with $n$ points inside it?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2012\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2012 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$3n - 1$"
+      },
+      {
+        "label": "B",
+        "html": "$n^{2} + 1$"
+      },
+      {
+        "label": "C",
+        "html": "$n + 3$"
+      },
+      {
+        "label": "D",
+        "html": "$2n + 1$"
+      },
+      {
+        "label": "E",
+        "html": "$4n - 3$"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/20984/tifr-cse-2012-part-a-question-4",
+    "answerUrl": "https://gateoverflow.in/20984#20988",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_21001",
+    "number": "14.10.3",
+    "title": "14.10.3 TIFR CSE 2012 | Part A | Question: 5",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Geometry",
+    "topicId": "tifr_geometry",
+    "topicNumber": "14.10",
+    "year": 2012,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>What is the maximum number of points of intersection between the diagonals of a convex octagon (8-vertex planar polygon)? Note that a polygon is said to be convex if the line segment joining any two points in its interior lies wholly in the interior of the polygon. Only points of intersection between diagonals that lie in the interior of the octagon are to be considered for this problem.</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2012\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2012 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "55"
+      },
+      {
+        "label": "B",
+        "html": "60"
+      },
+      {
+        "label": "C",
+        "html": "65"
+      },
+      {
+        "label": "D",
+        "html": "70"
+      },
+      {
+        "label": "E",
+        "html": "75"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/21001/tifr-cse-2012-part-a-question-5",
+    "answerUrl": "https://gateoverflow.in/21001#27024",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_25387",
+    "number": "14.10.4",
+    "title": "14.10.4 TIFR CSE 2013 | Part A | Question: 5",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Geometry",
+    "topicId": "tifr_geometry",
+    "topicNumber": "14.10",
+    "year": 2013,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>The late painter Maqbool Fida Husain once coloured the surface of a huge hollow steel sphere, of radius $1$ metre, using just two colours, Red and Blue. As was his style however, both the red and blue areas were a bunch of highly irregular disconnected regions. The late sculptor Ramkinkar Baij then tried to fit in a cube inside the sphere, the eight vertices of the cube touching only red coloured parts of the surface of the sphere. Assume $\\pi=3.14$ for solving this problem. Which of the following is true?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2013\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2013 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "Baij is bound to succeed if the area of the red part is $10 sq. metres$;"
+      },
+      {
+        "label": "B",
+        "html": "Baij is bound to fail if the area of the red part is $10 sq. metres$;"
+      },
+      {
+        "label": "C",
+        "html": "Baij is bound to fail if the area of the red part is $11 sq. metres$;"
+      },
+      {
+        "label": "D",
+        "html": "Baij is bound to succeed if the area of the red part is $11 sq. metres$;"
+      },
+      {
+        "label": "E",
+        "html": "None of the above."
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/25387/tifr-cse-2013-part-a-question-5",
+    "answerUrl": "https://gateoverflow.in/25387#318627",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_29158",
+    "number": "14.10.5",
+    "title": "14.10.5 TIFR CSE 2015 | Part A | Question: 2",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Geometry",
+    "topicId": "tifr_geometry",
+    "topicNumber": "14.10",
+    "year": 2015,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Consider a circle with a circumference of one unit length. Let $d&lt; \\dfrac{1}{6}$. Suppose that we independently throw two arcs, each of length $d$, randomly on this circumference so that each arc is uniformly distributed along the circle circumference. The arc attaches itself exactly to the circumference so that arc of length $d$ exactly covers length $d$ of the circumference. What can be said about the probability that the two arcs do not intersect each other?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2015\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2015 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "It equals $(1 - d)$"
+      },
+      {
+        "label": "B",
+        "html": "It equals $(1 - 3d)$"
+      },
+      {
+        "label": "C",
+        "html": "It equals $(1 - 2d)$"
+      },
+      {
+        "label": "D",
+        "html": "It equals $1$"
+      },
+      {
+        "label": "E",
+        "html": "It equals $(1 - d)$ $(1 - d)$"
+      }
+    ],
+    "answer": "C",
+    "gateOverflowUrl": "https://gateoverflow.in/29158/tifr-cse-2015-part-a-question-2",
+    "answerUrl": "https://gateoverflow.in/29158#29179",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_29575",
+    "number": "14.10.6",
+    "title": "14.10.6 TIFR CSE 2015 | Part A | Question: 9",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Geometry",
+    "topicId": "tifr_geometry",
+    "topicNumber": "14.10",
+    "year": 2015,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Consider a square of side length $2$. We throw five points into the square. Consider the following statements:</p>\n\n<ol start=\"1\" style=\"list-style-type:lower-roman\">\n\t<li>There will always be three points that lie on a straight line.</li>\n\t<li>There will always be a line connecting a pair of points such that two points lie on one side of the line and one point on the other.</li>\n\t<li>There will always be a pair of points which are at distance at most $\\sqrt{2}$ from each other.</li>\n</ol>\n\n<p>Which of the above is true:</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2015\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2015 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/easy\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">easy </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\text{(i)}$ only"
+      },
+      {
+        "label": "B",
+        "html": "$\\text{(ii)}$ only"
+      },
+      {
+        "label": "C",
+        "html": "$\\text{(iii)}$ only"
+      },
+      {
+        "label": "D",
+        "html": "$\\text{(ii)}$ and $\\text{(iii)}$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "C",
+    "gateOverflowUrl": "https://gateoverflow.in/29575/tifr-cse-2015-part-a-question-9",
+    "answerUrl": "https://gateoverflow.in/29575#315349",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_97247",
+    "number": "14.10.7",
+    "title": "14.10.7 TIFR CSE 2016 | Part A | Question: 9",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Geometry",
+    "topicId": "tifr_geometry",
+    "topicNumber": "14.10",
+    "year": 2016,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Suppose a rectangular farm has area $100$ square meters. The lengths of its sides are not known. It is known, however, that all the edges are at least $2$&nbsp;meters in length. Which of the following statements about the rectangle's perimeter $p$ (in meters) is FALSE?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2016\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2016 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$p$ can take all values between $45$ and $50$"
+      },
+      {
+        "label": "B",
+        "html": "$p$ can be $52$ for some configuration"
+      },
+      {
+        "label": "C",
+        "html": "$p$ can take all values between $55$ and $60$"
+      },
+      {
+        "label": "D",
+        "html": "$p$ can be $70$ for some configuration"
+      },
+      {
+        "label": "E",
+        "html": "$p$ can be $39$ for some configuration"
+      }
+    ],
+    "answer": "E",
+    "gateOverflowUrl": "https://gateoverflow.in/97247/tifr-cse-2016-part-a-question-9",
+    "answerUrl": "https://gateoverflow.in/97247#97270",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_419145",
+    "number": "16.4.1",
+    "title": "16.4.1 TIFR CSE 2024 | Part A | Question: 1",
+    "volume": 0,
+    "subject": "Non GATE CSE: Geometry",
+    "subjectId": "tifr_non_gate_cse_geometry",
+    "topic": "Geometry",
+    "topicId": "tifr_geometry",
+    "topicNumber": "16.4",
+    "year": 2024,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>If $\\text{O}$ is the center of the circle, what is the area of the shaded portion in square cm?</p>\n\n<p><img alt=\"\" src=\"https://gateoverflow.in/?qa=blob&amp;qa_blobid=11286057001365105535\" width=\"200\"></p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2024\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2024 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$4 \\pi-4 \\sqrt{2}$"
+      },
+      {
+        "label": "B",
+        "html": "$\\frac{7}{2} \\pi-4 \\sqrt{2}$"
+      },
+      {
+        "label": "C",
+        "html": "$\\frac{7}{2} \\pi-4 \\sqrt{3}$"
+      },
+      {
+        "label": "D",
+        "html": "$\\frac{8}{3} \\pi-4 \\sqrt{3}$"
+      },
+      {
+        "label": "E",
+        "html": "$\\frac{8}{3} \\pi-4 \\sqrt{2}$\n\t<p>&nbsp;</p>"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/419145/tifr-cse-2024-part-a-question-1",
+    "answerUrl": "https://gateoverflow.in/419145#420815",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_non_gate_cse_geometry"
+    ]
+  },
+  {
+    "id": "tifr_526397",
+    "number": "19.1.44",
+    "title": "19.1.44 TIFR LIDS 2024 | Question: 2",
+    "volume": 0,
+    "subject": "Others: Others",
+    "subjectId": "tifr_others_others",
+    "topic": "TIFR PYQ",
+    "topicId": "tifr_tifr_pyq",
+    "topicNumber": "19.1",
+    "year": 2024,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>An urn contains $15$ white and $10$ black balls. Balls are drawn one by one from the urn without replacement. What is the probability that the $5^{\\text {th }}$ draw results in a white ball and the $15^{\\text {th }}$ draw results in a black ball?</p></div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr-lids-2024\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr-lids-2024 </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\dfrac{2}{15}$"
+      },
+      {
+        "label": "B",
+        "html": "$\\dfrac{1}{4}$"
+      },
+      {
+        "label": "C",
+        "html": "$\\dfrac{1}{5}$"
+      },
+      {
+        "label": "D",
+        "html": "$\\dfrac{2}{5}$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": null,
+    "gateOverflowUrl": "https://gateoverflow.in/526397/tifr-lids-2024-question-2",
+    "answerUrl": null,
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_others_others"
+    ]
+  },
+  {
+    "id": "tifr_526398",
+    "number": "19.1.45",
+    "title": "19.1.45 TIFR LIDS 2024 | Question: 1",
+    "volume": 0,
+    "subject": "Others: Others",
+    "subjectId": "tifr_others_others",
+    "topic": "TIFR PYQ",
+    "topicId": "tifr_tifr_pyq",
+    "topicNumber": "19.1",
+    "year": 2024,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $f(x)=\\dfrac{1}{\\sqrt{2 \\pi}} \\exp \\left(-\\dfrac{x^{2}}{2}\\right)$ denote the probability density of a standard Gaussian. Then $\\int_{-\\infty}^{\\infty} f(x)^{2} d x$ equals</p></div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr-lids-2024\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr-lids-2024 </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\sqrt{\\dfrac{2}{\\pi}}$."
+      },
+      {
+        "label": "B",
+        "html": "$\\sqrt{\\dfrac{1}{4 \\pi}}$."
+      },
+      {
+        "label": "C",
+        "html": "$2 \\sqrt{\\pi}$."
+      },
+      {
+        "label": "D",
+        "html": "$4 \\sqrt{\\pi}$."
+      },
+      {
+        "label": "E",
+        "html": "$8 \\sqrt{\\pi}$.<p>&nbsp;</p>"
+      }
+    ],
+    "answer": null,
+    "gateOverflowUrl": "https://gateoverflow.in/526398/tifr-lids-2024-question-1",
+    "answerUrl": null,
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_others_others"
+    ]
+  }
+]

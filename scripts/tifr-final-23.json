@@ -1,0 +1,1037 @@
+[
+  {
+    "id": "tifr_27192",
+    "number": "1.3.3",
+    "title": "1.3.3 TIFR CSE 2014 | Part B | Question: 8",
+    "volume": 0,
+    "subject": "Algorithms",
+    "subjectId": "tifr_algorithms",
+    "topic": "Asymptotic Notations",
+    "topicId": "tifr_asymptotic_notations",
+    "topicNumber": "1.3",
+    "year": 2014,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Which of these functions grows fastest with $n$?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2014\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2014 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/algorithms\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">algorithms </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/asymptotic-notations\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">asymptotic-notations </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$e^{n}/n$."
+      },
+      {
+        "label": "B",
+        "html": "$e^{n-0.9 \\log n}$."
+      },
+      {
+        "label": "C",
+        "html": "$2^{n}$."
+      },
+      {
+        "label": "D",
+        "html": "$\\left(\\log n\\right)^{n-1}$."
+      },
+      {
+        "label": "E",
+        "html": "None of the above."
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/27192/tifr-cse-2014-part-b-question-8",
+    "answerUrl": "https://gateoverflow.in/27192#27225",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_algorithms"
+    ]
+  },
+  {
+    "id": "tifr_419334",
+    "number": "1.6.1",
+    "title": "1.6.1 TIFR CSE 2024 | Part B | Question: 13",
+    "volume": 0,
+    "subject": "Algorithms",
+    "subjectId": "tifr_algorithms",
+    "topic": "Complexity Theory",
+    "topicId": "tifr_complexity_theory",
+    "topicNumber": "1.6",
+    "year": 2024,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Suppose we are given a graph $\\text{G=(V, E)}$ with non-negative edge weights $\\left\\{w_{e}\\right\\}_{e \\in E}$.</p>\n\n<p>Consider the following problems:</p>\n\n<p>P1: Finding a minimum spanning tree of $\\text{G}$.<br>\nP2: Finding a maximum spanning tree of&nbsp;$\\text{G}$.<br>\nP3: Finding a cycle of smallest weight in&nbsp;$\\text{G}$.<br>\nP4: Finding a cycle of largest weight in&nbsp;$\\text{G}$.</p>\n\n<p>Note: a cycle consists of distinct vertices.</p>\n\n<p>Assuming $\\mathrm{P} \\neq \\mathrm{NP}$, which of the above problems can be solved in polynomial time?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2024\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2024 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/graph-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">graph-theory </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/minimum-spanning-tree\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">minimum-spanning-tree </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/algorithms\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">algorithms </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/complexity-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">complexity-theory </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\text{P1, P2 but not P3, P4}$."
+      },
+      {
+        "label": "B",
+        "html": "$\\text{P1, P3 but not P2, P4}$."
+      },
+      {
+        "label": "C",
+        "html": "$\\text{P1 but not P2,P3, P4}$."
+      },
+      {
+        "label": "D",
+        "html": "$\\text{P1,P2,P3 but not P4}$."
+      },
+      {
+        "label": "E",
+        "html": "$\\text{P1, P4 but not P2, P3}$.\n\t<p>&nbsp;</p>"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/419334/tifr-cse-2024-part-b-question-13",
+    "answerUrl": "https://gateoverflow.in/419334#442160",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_algorithms"
+    ]
+  },
+  {
+    "id": "tifr_95299",
+    "number": "1.11.6",
+    "title": "1.11.6 TIFR CSE 2017 | Part A | Question: 12",
+    "volume": 0,
+    "subject": "Algorithms",
+    "subjectId": "tifr_algorithms",
+    "topic": "Identify Function",
+    "topicId": "tifr_identify_function",
+    "topicNumber": "1.11",
+    "year": 2017,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Consider the following program modifying an $n \\times n$ square matrix $A$:</p>\n\n<pre class=\"prettyprint lang-cpp prettyprinted\" style=\"\"><span class=\"kwd\">for</span><span class=\"pln\"> i</span><span class=\"pun\">=</span><span class=\"lit\">1</span><span class=\"pln\"> to n</span><span class=\"pun\">:</span><span class=\"pln\">\n    </span><span class=\"kwd\">for</span><span class=\"pln\"> j</span><span class=\"pun\">=</span><span class=\"lit\">1</span><span class=\"pln\"> to n</span><span class=\"pun\">:</span><span class=\"pln\">\n        temp</span><span class=\"pun\">=</span><span class=\"pln\">A</span><span class=\"pun\">[</span><span class=\"pln\">i</span><span class=\"pun\">][</span><span class=\"pln\">j</span><span class=\"pun\">]+</span><span class=\"lit\">10</span><span class=\"pln\">\n        A</span><span class=\"pun\">[</span><span class=\"pln\">i</span><span class=\"pun\">][</span><span class=\"pln\">j</span><span class=\"pun\">]=</span><span class=\"pln\">A</span><span class=\"pun\">[</span><span class=\"pln\">j</span><span class=\"pun\">][</span><span class=\"pln\">i</span><span class=\"pun\">]</span><span class=\"pln\">\n        A</span><span class=\"pun\">[</span><span class=\"pln\">j</span><span class=\"pun\">][</span><span class=\"pln\">i</span><span class=\"pun\">]=</span><span class=\"pln\">temp</span><span class=\"pun\">-</span><span class=\"lit\">10</span><span class=\"pln\">\n    end </span><span class=\"kwd\">for</span><span class=\"pln\">\nend </span><span class=\"kwd\">for</span></pre>\n\n<p>Which of the following statements about the contents of matrix $A$ at the end of this program must be TRUE?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2017\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2017 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/algorithms\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">algorithms </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/identify-function\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">identify-function </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "the new $A$ is the transpose of the old $A$"
+      },
+      {
+        "label": "B",
+        "html": "all elements above the diagonal have their values increased by $10$ and all the values below have their values decreased by $10$"
+      },
+      {
+        "label": "C",
+        "html": "all elements above the diagonal have their values decreased by $10$ and all the values below have their values increased by $10$"
+      },
+      {
+        "label": "D",
+        "html": "the new matrix $A$ is symmetric, that is, $A[i][j]=A[j][i]$ for all $1 \\leq i, j \\leq n$"
+      },
+      {
+        "label": "E",
+        "html": "$A$ remains unchanged"
+      }
+    ],
+    "answer": "E",
+    "gateOverflowUrl": "https://gateoverflow.in/95299/tifr-cse-2017-part-a-question-12",
+    "answerUrl": "https://gateoverflow.in/95299#95754",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_algorithms"
+    ]
+  },
+  {
+    "id": "tifr_358943",
+    "number": "1.15.9",
+    "title": "1.15.9 TIFR CSE 2021 | Part B | Question: 10",
+    "volume": 0,
+    "subject": "Algorithms",
+    "subjectId": "tifr_algorithms",
+    "topic": "Minimum Spanning Tree",
+    "topicId": "tifr_minimum_spanning_tree",
+    "topicNumber": "1.15",
+    "year": 2021,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $G$ be a connected bipartite simple graph (i.e., no parallel edges) with distinct edge weights. Which of the following statements on $\\text{MST}$ (minimum spanning tree) need $\\text{NOT}$ be true?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2021\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2021 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/algorithms\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">algorithms </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/minimum-spanning-tree\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">minimum-spanning-tree </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$G$ has a unique $\\text{MST}$."
+      },
+      {
+        "label": "B",
+        "html": "Every&nbsp;$\\text{MST}$ in&nbsp;$G$ contains the lightest edge."
+      },
+      {
+        "label": "C",
+        "html": "Every $\\text{MST}$ in&nbsp;$G$ contains the second lightest edge."
+      },
+      {
+        "label": "D",
+        "html": "Every $\\text{MST}$ in $G$ contains the third lightest edge."
+      },
+      {
+        "label": "E",
+        "html": "No&nbsp;$\\text{MST}$ in&nbsp;$G$ contains the heaviest edge."
+      }
+    ],
+    "answer": "E",
+    "gateOverflowUrl": "https://gateoverflow.in/358943/tifr-cse-2021-part-b-question-10",
+    "answerUrl": "https://gateoverflow.in/358943#359224",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_algorithms"
+    ]
+  },
+  {
+    "id": "tifr_381998",
+    "number": "1.24.11",
+    "title": "1.24.11 TIFR CSE 2022 | Part B | Question: 11",
+    "volume": 0,
+    "subject": "Algorithms",
+    "subjectId": "tifr_algorithms",
+    "topic": "Sorting",
+    "topicId": "tifr_sorting",
+    "topicNumber": "1.24",
+    "year": 2022,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Consider the following function $\\textsf{count},$ that takes as input $a,$&nbsp;an array of integers, and $\\textsf{N}$, the size of the array.</p>\n\n<pre class=\"prettyprint linenums lang-cpp prettyprinted\" data-pbcklang=\"c_cpp\" data-pbcktabsize=\"4\" style=\"\"><ol class=\"linenums\"><li class=\"L0\"><span class=\"typ\">int</span><span class=\"pln\"> count</span><span class=\"pun\">(</span><span class=\"typ\">int</span><span class=\"pln\"> a</span><span class=\"pun\">[],</span><span class=\"pln\"> </span><span class=\"typ\">int</span><span class=\"pln\"> N</span><span class=\"pun\">)</span><span class=\"pln\"> </span><span class=\"pun\">{</span></li><li class=\"L1\"><span class=\"pln\">    </span><span class=\"typ\">int</span><span class=\"pln\"> i</span><span class=\"pun\">,</span><span class=\"pln\"> j</span><span class=\"pun\">,</span><span class=\"pln\"> count_FN</span><span class=\"pun\">;</span><span class=\"pln\"> </span></li><li class=\"L2\"><span class=\"pln\">    count_FN </span><span class=\"pun\">=</span><span class=\"pln\"> </span><span class=\"lit\">0</span><span class=\"pun\">;</span></li><li class=\"L3\"><span class=\"pln\">    </span><span class=\"kwd\">for</span><span class=\"pln\"> </span><span class=\"pun\">(</span><span class=\"pln\">i</span><span class=\"pun\">=</span><span class=\"lit\">1</span><span class=\"pln\"> </span><span class=\"pun\">;</span><span class=\"pln\"> i</span><span class=\"pun\">&lt;</span><span class=\"pln\">N </span><span class=\"pun\">;</span><span class=\"pln\"> i</span><span class=\"pun\">++)</span><span class=\"pln\"> </span><span class=\"pun\">{</span><span class=\"pln\"> </span></li><li class=\"L4\"><span class=\"pln\">        j</span><span class=\"pun\">=</span><span class=\"pln\">i</span><span class=\"pun\">-</span><span class=\"lit\">1</span><span class=\"pln\"> </span><span class=\"pun\">;</span></li><li class=\"L5\"><span class=\"pln\">            </span><span class=\"kwd\">while</span><span class=\"pln\"> </span><span class=\"pun\">(</span><span class=\"pln\">a</span><span class=\"pun\">[</span><span class=\"pln\">j</span><span class=\"pun\">]&gt;</span><span class=\"pln\">a</span><span class=\"pun\">[</span><span class=\"pln\">i</span><span class=\"pun\">])</span><span class=\"pln\"> </span><span class=\"pun\">{</span></li><li class=\"L6\"><span class=\"pln\">                count_FN</span><span class=\"pun\">++;</span><span class=\"pln\"> </span></li><li class=\"L7\"><span class=\"pln\">                j</span><span class=\"pun\">--;</span><span class=\"pln\"> </span></li><li class=\"L8\"><span class=\"pln\">            </span><span class=\"pun\">}</span><span class=\"pln\"> </span></li><li class=\"L9\"><span class=\"pln\">        </span><span class=\"pun\">}</span></li><li class=\"L0\"><span class=\"pln\">    </span><span class=\"kwd\">return</span><span class=\"pln\"> count_FN</span><span class=\"pun\">;</span></li><li class=\"L1\"><span class=\"pun\">}</span></li></ol></pre>\n\n<p>Further, let $\\textsf{count_IS}$ be the number of comparisons made by the insertion sort algorithm on the array $a$.</p>\n\n<p>Which of the following statements is TRUE for some constant $c?$&nbsp;</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2022\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2022 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/algorithms\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">algorithms </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/sorting\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">sorting </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "For all $\\textsf{N}&nbsp;\\geq c$, there exists an array of size $\\textsf{N}$ for which $\\textsf{count_IS}&nbsp;\\geq \\textsf{N}^2 / c$, while $\\textsf{count_FN} \\leq c \\textsf{N}$"
+      },
+      {
+        "label": "B",
+        "html": "For all $\\textsf{N} \\geq c$, there exists an array of size $\\textsf{N}$ for which $\\textsf{count_FN} \\geq \\textsf{N}^2 / c$, while $\\textsf{count_IS}\\leq c \\textsf{N}$"
+      },
+      {
+        "label": "C",
+        "html": "For all $\\textsf{N} \\geq c$, for all arrays of size $\\textsf{N, count_FN} \\leq \\textsf{count_IS} \\leq c \\times&nbsp;\\textsf{count_FN}$"
+      },
+      {
+        "label": "D",
+        "html": "For all $\\textsf{N} \\geq c$, for all arrays of size $\\textsf{N, count_FN} \\geq \\textsf{N}^2 / c$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": null,
+    "gateOverflowUrl": "https://gateoverflow.in/381998/tifr-cse-2022-part-b-question-11",
+    "answerUrl": null,
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_algorithms"
+    ]
+  },
+  {
+    "id": "tifr_95703",
+    "number": "5.2.3",
+    "title": "5.2.3 TIFR CSE 2017 | Part B | Question: 8",
+    "volume": 0,
+    "subject": "Digital Logic",
+    "subjectId": "tifr_digital_logic",
+    "topic": "Boolean Algebra",
+    "topicId": "tifr_boolean_algebra",
+    "topicNumber": "5.2",
+    "year": 2017,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>For any natural number $n$, an ordering of all binary strings of length $n$ is a Gray code if it starts with $0^n$, and any successive strings in the ordering differ in exactly one bit (the first and last string must also differ by one bit). Thus, for $n=3$, the ordering $(000, 100, 101, 111, 110, 010, 011, 001)$ is a Gray code. Which of the following must be TRUE for all Gray codes over strings of length $n$?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2017\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2017 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/digital-logic\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">digital-logic </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/boolean-algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">boolean-algebra </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "the number of possible Gray codes is even"
+      },
+      {
+        "label": "B",
+        "html": "the number of possible Gray codes is odd"
+      },
+      {
+        "label": "C",
+        "html": "In any Gray code, if two strings are separated by $k$ other strings in the ordering, then they must differ in exactly $k+1$ bits"
+      },
+      {
+        "label": "D",
+        "html": "In any Gray code, if two strings are separated by $k$ other strings in the ordering, then they must differ in exactly $k$ bits"
+      },
+      {
+        "label": "E",
+        "html": "none of the above"
+      }
+    ],
+    "answer": "A",
+    "gateOverflowUrl": "https://gateoverflow.in/95703/tifr-cse-2017-part-b-question-8",
+    "answerUrl": "https://gateoverflow.in/95703#95729",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_digital_logic"
+    ]
+  },
+  {
+    "id": "tifr_18385",
+    "number": "5.5.1",
+    "title": "5.5.1 TIFR CSE 2010 | Part A | Question: 9",
+    "volume": 0,
+    "subject": "Digital Logic",
+    "subjectId": "tifr_digital_logic",
+    "topic": "Number Representation",
+    "topicId": "tifr_number_representation",
+    "topicNumber": "5.5",
+    "year": 2010,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>A table contains $287$ entries. When any one of the entries is requested, it is encoded into a binary string and transmitted. The number of bits required is.</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2010\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2010 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/digital-logic\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">digital-logic </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/number-representation\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">number-representation </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$8$"
+      },
+      {
+        "label": "B",
+        "html": "$9$"
+      },
+      {
+        "label": "C",
+        "html": "$10$"
+      },
+      {
+        "label": "D",
+        "html": "Cannot be determined from the given information."
+      },
+      {
+        "label": "E",
+        "html": "None of the above."
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/18385/tifr-cse-2010-part-a-question-9",
+    "answerUrl": "https://gateoverflow.in/18385#18404",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_digital_logic"
+    ]
+  },
+  {
+    "id": "tifr_19248",
+    "number": "7.4.1",
+    "title": "7.4.1 TIFR CSE 2010 | Part B | Question: 36",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Graph Theory",
+    "subjectId": "tifr_discrete_mathematics_graph_theory",
+    "topic": "Degree of Graph",
+    "topicId": "tifr_degree_of_graph",
+    "topicNumber": "7.4",
+    "year": 2010,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>In a directed graph, every vertex has exactly seven edges coming in. What can one always say about the number of edges going out of its vertices?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2010\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2010 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/graph-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">graph-theory </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/degree-of-graph\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">degree-of-graph </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "Exactly seven edges leave every vertex."
+      },
+      {
+        "label": "B",
+        "html": "Exactly seven edges leave some vertex."
+      },
+      {
+        "label": "C",
+        "html": "Some vertex has at least seven edges leaving it."
+      },
+      {
+        "label": "D",
+        "html": "The number of edges coming out of vertex is odd."
+      },
+      {
+        "label": "E",
+        "html": "None of the above."
+      }
+    ],
+    "answer": "C",
+    "gateOverflowUrl": "https://gateoverflow.in/19248/tifr-cse-2010-part-b-question-36",
+    "answerUrl": "https://gateoverflow.in/19248#19256",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_graph_theory"
+    ]
+  },
+  {
+    "id": "tifr_98006",
+    "number": "7.7.6",
+    "title": "7.7.6 TIFR CSE 2016 | Part B | Question: 11",
+    "volume": 0,
+    "subject": "Discrete Mathematics: Graph Theory",
+    "subjectId": "tifr_discrete_mathematics_graph_theory",
+    "topic": "Graph Connectivity",
+    "topicId": "tifr_graph_connectivity",
+    "topicNumber": "7.7",
+    "year": 2016,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $n \\geq 4$ be an integer. Regard the set $\\mathbb{R}^n$ as a vector space over $\\mathbb{R}$. Consider the following undirected graph $H$.</p>\n\n<p>$$ V(H) = \\{S \\subseteq \\mathbb{R}^n : \\: S \\text{ is a basis for } \\mathbb{R}^n\\};$$</p>\n\n<p>$$E(H) = \\{ \\{S, T\\} \\: : \\: \\mid S \\setminus T \\mid = 1 \\text{ and } \\mid T \\setminus S \\mid =1 \\}, $$</p>\n\n<p>where $S \\setminus T = \\{ x \\in S \\:&nbsp;: \\: x \\notin T \\}$. Which of the following statements is FALSE?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2016\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2016 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/graph-theory\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">graph-theory </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/graph-connectivity\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">graph-connectivity </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$H$ has an inifinite number of vertices"
+      },
+      {
+        "label": "B",
+        "html": "The diameter of $H$ is infinite"
+      },
+      {
+        "label": "C",
+        "html": "$H$ is conneceted"
+      },
+      {
+        "label": "D",
+        "html": "$H$ contains an infinite clique"
+      },
+      {
+        "label": "E",
+        "html": "$H$ contains an infinite independent set"
+      }
+    ],
+    "answer": "B",
+    "gateOverflowUrl": "https://gateoverflow.in/98006/tifr-cse-2016-part-b-question-11",
+    "answerUrl": "https://gateoverflow.in/98006#327805",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_discrete_mathematics_graph_theory"
+    ]
+  },
+  {
+    "id": "tifr_400137",
+    "number": "10.2.1",
+    "title": "10.2.1 TIFR CSE 2023 | Part A | Question: 6",
+    "volume": 0,
+    "subject": "Engineering Mathematics: Calculus",
+    "subjectId": "tifr_engineering_mathematics_calculus",
+    "topic": "Continuity and Differentiability",
+    "topicId": "tifr_continuity_and_differentiability",
+    "topicNumber": "10.2",
+    "year": 2023,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>For a function $f: \\mathbb{R} \\rightarrow \\mathbb{R},$&nbsp;consider the following conditions.</p>\n\n<p>$\\text{(C1)}$ $|f(x)| \\leq|x|$ for all $x \\in \\mathbb{R}$.<br>\n$\\text{(C2)}$&nbsp;$|f(x)| \\leq|x|^{2}$ for all $x \\in \\mathbb{R}$.<br>\n$\\text{(C3)}$&nbsp;$|f(x)| \\leq|x|^{3}$ for all $x \\in \\mathbb{R}$.</p>\n\n<p>Which of the above conditions imply that $f$ is differentiable at $0?$&nbsp;</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2023\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2023 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/calculus\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">calculus </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/continuity-and-differentiability\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">continuity-and-differentiability </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "Condition $\\text{(C1)}$&nbsp;only"
+      },
+      {
+        "label": "B",
+        "html": "Condition $\\text{(C2)}$&nbsp;only"
+      },
+      {
+        "label": "C",
+        "html": "Condition $\\text{(C3)}$ only"
+      },
+      {
+        "label": "D",
+        "html": "Conditions $\\text{(C1)}$&nbsp;and $\\text{(C2)}$&nbsp;only"
+      },
+      {
+        "label": "E",
+        "html": "Conditions $\\text{(C2)}$&nbsp;and $\\text{(C3)}$ only\n\t<p>&nbsp;</p>"
+      }
+    ],
+    "answer": "E",
+    "gateOverflowUrl": "https://gateoverflow.in/400137/tifr-cse-2023-part-a-question-6",
+    "answerUrl": "https://gateoverflow.in/400137#421604",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_engineering_mathematics_calculus"
+    ]
+  },
+  {
+    "id": "tifr_26402",
+    "number": "10.3.1",
+    "title": "10.3.1 TIFR CSE 2014 | Part A | Question: 15",
+    "volume": 0,
+    "subject": "Engineering Mathematics: Calculus",
+    "subjectId": "tifr_engineering_mathematics_calculus",
+    "topic": "Convergence",
+    "topicId": "tifr_convergence",
+    "topicNumber": "10.3",
+    "year": 2014,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Consider the following statements:</p>\n\n<ol>\n\t<li>$b_{1}= \\sqrt{2}$, series with each $b_{i}= \\sqrt{b_{i-1}+ \\sqrt{2}}, i \\geq 2$, converges.</li>\n\t<li>$\\sum ^{\\infty}&nbsp;_{i=1}&nbsp;\\frac{\\cos (i)}{i^{2}}$ converges.</li>\n\t<li>$\\sum ^{\\infty}&nbsp;_{i=0}&nbsp;b_{i}$ converges if $\\lim_{i \\rightarrow \\infty} \\frac{|b_{i+1|}}{|b_{i}|} &lt; 1$</li>\n</ol>\n\n<p><br>\nWhich of the following is TRUE?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2014\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2014 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/convergence\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">convergence </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/non-gatecse\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">non-gatecse </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "Statements $(1)$ and $(2)$ but not $(3)$."
+      },
+      {
+        "label": "B",
+        "html": "Statements $(2)$ and $(3)$ but not $(1)$."
+      },
+      {
+        "label": "C",
+        "html": "Statements $(1)$ and $(3)$ but not $(2)$."
+      },
+      {
+        "label": "D",
+        "html": "All the three statements."
+      },
+      {
+        "label": "E",
+        "html": "None of the three statements."
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/26402/tifr-cse-2014-part-a-question-15",
+    "answerUrl": "https://gateoverflow.in/26402#26423",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_engineering_mathematics_calculus"
+    ]
+  },
+  {
+    "id": "tifr_20219",
+    "number": "10.4.1",
+    "title": "10.4.1 TIFR CSE 2011 | Part A | Question: 11",
+    "volume": 0,
+    "subject": "Engineering Mathematics: Calculus",
+    "subjectId": "tifr_engineering_mathematics_calculus",
+    "topic": "Definite Integral",
+    "topicId": "tifr_definite_integral",
+    "topicNumber": "10.4",
+    "year": 2011,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>$$\\int_{0}^{1} \\log_e(x) dx=$$</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2011\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2011 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/calculus\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">calculus </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/definite-integral\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">definite-integral </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$1$"
+      },
+      {
+        "label": "B",
+        "html": "$-1$"
+      },
+      {
+        "label": "C",
+        "html": "$\\infty$"
+      },
+      {
+        "label": "D",
+        "html": "$-\\infty$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "B",
+    "gateOverflowUrl": "https://gateoverflow.in/20219/tifr-cse-2011-part-a-question-11",
+    "answerUrl": "https://gateoverflow.in/20219#20222",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_engineering_mathematics_calculus"
+    ]
+  },
+  {
+    "id": "tifr_29579",
+    "number": "10.4.2",
+    "title": "10.4.2 TIFR CSE 2015 | Part A | Question: 10",
+    "volume": 0,
+    "subject": "Engineering Mathematics: Calculus",
+    "subjectId": "tifr_engineering_mathematics_calculus",
+    "topic": "Definite Integral",
+    "topicId": "tifr_definite_integral",
+    "topicNumber": "10.4",
+    "year": 2015,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $f(x), x\\in \\left[0, 1\\right]$, be any positive real valued continuous function. Then</p>\n\n<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;$\\displaystyle \\lim_{n \\rightarrow \\infty} (n + 1) \\int_{0}^{1} x^{n} f(x) \\text{d}x$</p>\n\n<p>equals.</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2015\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2015 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/calculus\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">calculus </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/limits\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">limits </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/definite-integral\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">definite-integral </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\max_{x \\in \\left[0, 1\\right]} f(x)$"
+      },
+      {
+        "label": "B",
+        "html": "$\\min_{x \\in \\left[0, 1\\right]} f(x)$"
+      },
+      {
+        "label": "C",
+        "html": "$f(0)$"
+      },
+      {
+        "label": "D",
+        "html": "$f(1)$"
+      },
+      {
+        "label": "E",
+        "html": "$\\infty$"
+      }
+    ],
+    "answer": null,
+    "gateOverflowUrl": "https://gateoverflow.in/29579/tifr-cse-2015-part-a-question-10",
+    "answerUrl": null,
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_engineering_mathematics_calculus"
+    ]
+  },
+  {
+    "id": "tifr_419136",
+    "number": "11.3.12",
+    "title": "11.3.12 TIFR CSE 2024 | Part A | Question: 10",
+    "volume": 0,
+    "subject": "Engineering Mathematics: Linear Algebra",
+    "subjectId": "tifr_engineering_mathematics_linear_algebra",
+    "topic": "Matrix",
+    "topicId": "tifr_matrix",
+    "topicNumber": "11.3",
+    "year": 2024,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $\\text{M}$ be a $3 \\times 3$ matrix over the real numbers such that $\\text{M}^{\\text{T}} \\text{M}=\\mathbf{I}$. Consider the following statements.</p>\n\n<ol start=\"1\" style=\"list-style-type:lower-roman\">\n\t<li>There exists a non-zero vector $x \\in \\mathbb{R}^{3}$ such that $M x=\\mathbf{0}$.</li>\n\t<li>There exist two non-zero vectors $x, y \\in \\mathbb{R}^{3}$ such that the angle between them and that between $\\text{M x}$ and $\\text{M y}$ are different.</li>\n\t<li>There exists a non-zero vector $\\text{x}$ such that its length is different from that of $\\text{M x}$.</li>\n</ol>\n\n<p>Which of the above statements is/are true?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2024\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2024 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/matrix\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">matrix </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/linear-algebra\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">linear-algebra </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "Only $\\text{(i)}$"
+      },
+      {
+        "label": "B",
+        "html": "Only $\\text{(ii)}$."
+      },
+      {
+        "label": "C",
+        "html": "Only $\\text{(iii)}$."
+      },
+      {
+        "label": "D",
+        "html": "All three statements."
+      },
+      {
+        "label": "E",
+        "html": "None of the three statements."
+      }
+    ],
+    "answer": "E",
+    "gateOverflowUrl": "https://gateoverflow.in/419136/tifr-cse-2024-part-a-question-10",
+    "answerUrl": "https://gateoverflow.in/419136#494449",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_engineering_mathematics_linear_algebra"
+    ]
+  },
+  {
+    "id": "tifr_18202",
+    "number": "13.1.1",
+    "title": "13.1.1 TIFR CSE 2010 | Part A | Question: 1",
+    "volume": 0,
+    "subject": "General Aptitude: Analytical Aptitude",
+    "subjectId": "tifr_general_aptitude_analytical_aptitude",
+    "topic": "Logical Reasoning",
+    "topicId": "tifr_logical_reasoning",
+    "topicNumber": "13.1",
+    "year": 2010,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>A box contains $731$ black balls and $2000$ white balls. The following process is to be repeated as long as possible. Arbitrarily select two balls from the box. If they are of the same color, throw them out and put a black ball into the box ( enough extra black balls are available to do this). If they are of different color, place the white ball back into the box and throw the black ball away. Which of the following is correct?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2010\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2010 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/analytical-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">analytical-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/logical-reasoning\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">logical-reasoning </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "The process can be applied indefinitely without any prior bound"
+      },
+      {
+        "label": "B",
+        "html": "The process will stop with a single white ball in the box"
+      },
+      {
+        "label": "C",
+        "html": "The process will stop with a single black ball in the box"
+      },
+      {
+        "label": "D",
+        "html": "The process will stop with the box empty"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "C",
+    "gateOverflowUrl": "https://gateoverflow.in/18202/tifr-cse-2010-part-a-question-1",
+    "answerUrl": "https://gateoverflow.in/18202#18270",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_analytical_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_333116",
+    "number": "14.3.3",
+    "title": "14.3.3 TIFR CSE 2020 | Part A | Question: 13",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Circle",
+    "topicId": "tifr_circle",
+    "topicNumber": "14.3",
+    "year": 2020,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>What is the area of the largest rectangle that can be inscribed in a circle of radius $R$?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2020\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2020 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/circle\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">circle </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$R^{2}/2$"
+      },
+      {
+        "label": "B",
+        "html": "$\\pi \\times R^{2}/2$"
+      },
+      {
+        "label": "C",
+        "html": "$R^{2}$"
+      },
+      {
+        "label": "D",
+        "html": "$2R^{2}$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/333116/tifr-cse-2020-part-a-question-13",
+    "answerUrl": "https://gateoverflow.in/333116#333879",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_95307",
+    "number": "14.10.8",
+    "title": "14.10.8 TIFR CSE 2017 | Part A | Question: 13",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Geometry",
+    "topicId": "tifr_geometry",
+    "topicNumber": "14.10",
+    "year": 2017,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>A set of points $S \\subseteq \\mathbb{R}^2$ is convex if for any points $x, \\: y \\: \\in S$, every point on the straight line joining $x$ and $y$ is also in $S$. For two sets of points $S, T \\subset \\mathbb{R}^2$, define the sum $S+T$ as the set of points obtained by adding a point in $S$ to a point $T$. That is, $S+T := \\{(x_1, x_2) \\in \\mathbb{R}^2 : x_1=y_1+z_1, \\: x_2 = y_2 + z_2, \\quad (y_1, y_2) \\in S, (z_1, z_2) \\in T\\}$. Similarly, $S-T:=\\{(x_1, x_2) \\in \\mathbb{R}^2 : x_1 = y_1-z_1, \\: x_2=y_2-z_2, \\quad (y_1, y_2) \\in S, (z_1, z_2) \\in&nbsp;T \\}$ is the set of points obtained by subtracting a point in $T$ from a point in $S$. Which of the following statements is TRUE for all convex sets $S, \\: T$?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2017\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2017 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$S+T$ is convex but not $S-T$"
+      },
+      {
+        "label": "B",
+        "html": "$S-T$ is convex but not $S+T$"
+      },
+      {
+        "label": "C",
+        "html": "exactle one of&nbsp;$S+T$ and&nbsp;$S-T$ is convex, but it depends on $S$ and $T$ which one"
+      },
+      {
+        "label": "D",
+        "html": "neither&nbsp;$S+T$ nor&nbsp;$S-T$ is convex"
+      },
+      {
+        "label": "E",
+        "html": "both&nbsp;$S+T$ and&nbsp;$S-T$ are convex"
+      }
+    ],
+    "answer": "E",
+    "gateOverflowUrl": "https://gateoverflow.in/95307/tifr-cse-2017-part-a-question-13",
+    "answerUrl": "https://gateoverflow.in/95307#176210",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_95039",
+    "number": "14.10.9",
+    "title": "14.10.9 TIFR CSE 2017 | Part A | Question: 8",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Geometry",
+    "topicId": "tifr_geometry",
+    "topicNumber": "14.10",
+    "year": 2017,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>In a tutorial on geometrical constructions, the teacher asks a student to construct a right-angled triangle ABC where the hypotenuse BC is 8 inches and the length of the perpendicular dropped from A onto the hypotenuse is $h$ inches, and offers various choices for teh value of $h$. For which value of $h$ can such a triangle NOT exist?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2017\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2017 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "3.90 inches"
+      },
+      {
+        "label": "B",
+        "html": "$2 \\sqrt{2}$&nbsp;inches"
+      },
+      {
+        "label": "C",
+        "html": "$2 \\sqrt{3}$&nbsp;inches"
+      },
+      {
+        "label": "D",
+        "html": "4.1 inches"
+      },
+      {
+        "label": "E",
+        "html": "none of the above"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/95039/tifr-cse-2017-part-a-question-8",
+    "answerUrl": "https://gateoverflow.in/95039#95751",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_20260",
+    "number": "14.11.1",
+    "title": "14.11.1 TIFR CSE 2011 | Part A | Question: 20",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Modular Arithmetic",
+    "topicId": "tifr_modular_arithmetic",
+    "topicNumber": "14.11",
+    "year": 2011,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $n&gt;1$ be an odd integer. The number of zeros at the end of the number $99^{n}+1$ is</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2011\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2011 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/modular-arithmetic\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">modular-arithmetic </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$1$"
+      },
+      {
+        "label": "B",
+        "html": "$2$"
+      },
+      {
+        "label": "C",
+        "html": "$3$"
+      },
+      {
+        "label": "D",
+        "html": "$4$"
+      },
+      {
+        "label": "E",
+        "html": "None of the above"
+      }
+    ],
+    "answer": "B",
+    "gateOverflowUrl": "https://gateoverflow.in/20260/tifr-cse-2011-part-a-question-20",
+    "answerUrl": "https://gateoverflow.in/20260#20272",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_179285",
+    "number": "14.11.2",
+    "title": "14.11.2 TIFR CSE 2018 | Part B | Question: 1",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Modular Arithmetic",
+    "topicId": "tifr_modular_arithmetic",
+    "topicNumber": "14.11",
+    "year": 2018,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>What is the remainder when $4444^{4444}$ is divided by $9?$</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2018\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2018 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/modular-arithmetic\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">modular-arithmetic </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$1$"
+      },
+      {
+        "label": "B",
+        "html": "$2$"
+      },
+      {
+        "label": "C",
+        "html": "$5$"
+      },
+      {
+        "label": "D",
+        "html": "$7$"
+      },
+      {
+        "label": "E",
+        "html": "$8$"
+      }
+    ],
+    "answer": "D",
+    "gateOverflowUrl": "https://gateoverflow.in/179285/tifr-cse-2018-part-b-question-1",
+    "answerUrl": "https://gateoverflow.in/179285#179508",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_280508",
+    "number": "14.11.3",
+    "title": "14.11.3 TIFR CSE 2019 | Part A | Question: 2",
+    "volume": 0,
+    "subject": "General Aptitude: Quantitative Aptitude",
+    "subjectId": "tifr_general_aptitude_quantitative_aptitude",
+    "topic": "Modular Arithmetic",
+    "topicId": "tifr_modular_arithmetic",
+    "topicNumber": "14.11",
+    "year": 2019,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>How many proper divisors (that is, divisors other than $1$ or $7200$)&nbsp; does $7200$ have ?</p>\n\n</div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2019\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2019 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/modular-arithmetic\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">modular-arithmetic </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/quantitative-aptitude\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">quantitative-aptitude </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$18$"
+      },
+      {
+        "label": "B",
+        "html": "$20$"
+      },
+      {
+        "label": "C",
+        "html": "$52$"
+      },
+      {
+        "label": "D",
+        "html": "$54$"
+      },
+      {
+        "label": "E",
+        "html": "$60$"
+      }
+    ],
+    "answer": "C",
+    "gateOverflowUrl": "https://gateoverflow.in/280508/tifr-cse-2019-part-a-question-2",
+    "answerUrl": "https://gateoverflow.in/280508#280520",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_general_aptitude_quantitative_aptitude"
+    ]
+  },
+  {
+    "id": "tifr_473100",
+    "number": "16.5.1",
+    "title": "16.5.1 TIFR CSE 2025 | Part A | Question: 13",
+    "volume": 0,
+    "subject": "Non GATE CSE: Geometry",
+    "subjectId": "tifr_non_gate_cse_geometry",
+    "topic": "Variance",
+    "topicId": "tifr_variance",
+    "topicNumber": "16.5",
+    "year": 2025,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $(X, Y, Z) \\in \\mathbb{R}^{3}$ be a point chosen uniformly at random from the unit sphere $S^{2}:=\\left\\{(a, b, c) \\in \\mathbb{R}^{3} \\mid a^{2}+b^{2}+c^{2}=1\\right\\}$ in three dimensions. What is the variance of the random variable $Z?$</p></div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr2025\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr2025 </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/geometry\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">geometry </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/uniform-distribution\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">uniform-distribution </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/random-variable\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">random-variable </a></li><li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/variance\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">variance </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "$\\frac{1}{2}$"
+      },
+      {
+        "label": "B",
+        "html": "$\\frac{1}{3}$"
+      },
+      {
+        "label": "C",
+        "html": "$\\frac{1}{4}$"
+      },
+      {
+        "label": "D",
+        "html": "$\\frac{1}{5}$"
+      },
+      {
+        "label": "E",
+        "html": "$1$<p>&nbsp;</p>"
+      }
+    ],
+    "answer": "B",
+    "gateOverflowUrl": "https://gateoverflow.in/473100/tifr-cse-2025-part-a-question-13",
+    "answerUrl": "https://gateoverflow.in/473100#473311",
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_non_gate_cse_geometry"
+    ]
+  },
+  {
+    "id": "tifr_526399",
+    "number": "19.1.46",
+    "title": "19.1.46 TIFR LIDS 2025 | Question: 15",
+    "volume": 0,
+    "subject": "Others: Others",
+    "subjectId": "tifr_others_others",
+    "topic": "TIFR PYQ",
+    "topicId": "tifr_tifr_pyq",
+    "topicNumber": "19.1",
+    "year": 2025,
+    "exam": "TIFR CSE",
+    "type": "mcq",
+    "bodyHtml": "<div class=\"question-text   \"> <p>Let $f: \\mathbb{R} \\rightarrow \\mathbb{R}$ be a differentiable function such that $f$ has at least three distinct real zeros. Define the function $g: \\mathbb{R} \\rightarrow \\mathbb{R}$ as $g(x)=f^{\\prime}(x)+x f(x)$. Then $g$ has</p></div>\n\n<div class=\"qa-q-item-tags\">\n <ul class=\"qa-q-view-tag-list\">\n<li class=\"qa-q-view-tag-item\"> <a href=\"https://gateoverflow.in/tag/tifr-lids-2025\" class=\"qa-tag-link\" target=\"_blank\" rel=\"noopener\">tifr-lids-2025 </a></li>\n</ul>\n</div>",
+    "options": [
+      {
+        "label": "A",
+        "html": "no real zeros"
+      },
+      {
+        "label": "B",
+        "html": "exactly one real zero"
+      },
+      {
+        "label": "C",
+        "html": "at least two real zeros&nbsp;"
+      },
+      {
+        "label": "D",
+        "html": "less than two real zeros"
+      },
+      {
+        "label": "E",
+        "html": "none of the above"
+      }
+    ],
+    "answer": null,
+    "gateOverflowUrl": "https://gateoverflow.in/526399/tifr-lids-2025-question-15",
+    "answerUrl": null,
+    "tags": [
+      "tifr",
+      "tifr-cse",
+      "tifr_others_others"
+    ]
+  }
+]

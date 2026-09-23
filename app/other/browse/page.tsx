@@ -30,6 +30,7 @@ function OtherBrowsePageInner() {
   const [selectedTopics, setSelectedTopics] = useState<string[]>(initialSelectedTopics);
   const [year, setYear] = useState('all');
   const [type, setType] = useState('all');
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(['mcq', 'msq', 'nat']);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
 
@@ -83,17 +84,30 @@ function OtherBrowsePageInner() {
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
-    return allOtherQuestions.filter(q =>
-      (exam === 'all' || q.exam === exam) &&
-      (subject === 'all' || q.subject === subject || q.subjectId === subject) &&
-      (selectedTopics.length === 0 || selectedTopics.includes(q.topicId)) &&
-      (year === 'all' || q.year === Number(year)) &&
-      (type === 'all' || q.type === type) &&
-      (!term || q.title.toLowerCase().includes(term) || q.number.toLowerCase().includes(term) || q.bodyHtml.toLowerCase().includes(term))
-    );
-  }, [exam, subject, selectedTopics, year, type, search]);
+    return allOtherQuestions.filter(q => {
+      if (exam !== 'all' && q.exam !== exam) return false;
+      if (subject !== 'all' && q.subject !== subject && q.subjectId !== subject) return false;
+      if (selectedTopics.length > 0 && !selectedTopics.includes(q.topicId)) return false;
+      if (year !== 'all' && q.year !== Number(year)) return false;
 
-  useEffect(() => { setPage(1); }, [exam, subject, selectedTopics, year, type, search]);
+      // Question type matching
+      if (type === 'objective' || type === 'no_descriptive') {
+        if (q.type === 'descriptive') return false;
+      } else if (type === 'custom') {
+        if (selectedTypes.length > 0 && !selectedTypes.includes(q.type)) return false;
+      } else if (type !== 'all') {
+        if (q.type !== type) return false;
+      }
+
+      if (term && !q.title.toLowerCase().includes(term) && !q.number.toLowerCase().includes(term) && !q.bodyHtml.toLowerCase().includes(term)) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [exam, subject, selectedTopics, year, type, selectedTypes, search]);
+
+  useEffect(() => { setPage(1); }, [exam, subject, selectedTopics, year, type, selectedTypes, search]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
@@ -140,11 +154,50 @@ function OtherBrowsePageInner() {
           <Field label="Question type">
             <select value={type} onChange={e => setType(e.target.value)}>
               <option value="all">All types</option>
-              <option value="mcq">MCQ</option>
-              <option value="msq">MSQ</option>
-              <option value="nat">NAT</option>
-              <option value="descriptive">Descriptive</option>
+              <option value="objective">Objective only (Exclude Descriptive: MCQ, MSQ, NAT)</option>
+              <option value="mcq">MCQ only</option>
+              <option value="msq">MSQ only</option>
+              <option value="nat">NAT only</option>
+              <option value="descriptive">Descriptive only</option>
+              <option value="custom">Custom (select multiple)…</option>
             </select>
+            {type === 'custom' && (
+              <div style={{ marginTop: 10, display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
+                {(['mcq', 'msq', 'nat', 'descriptive'] as const).map(t => {
+                  const checked = selectedTypes.includes(t);
+                  return (
+                    <label key={t} className="radio-card" style={{ padding: '6px 12px', fontSize: 13, cursor: 'pointer' }}>
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => {
+                          setSelectedTypes(prev =>
+                            checked ? prev.filter(x => x !== t) : [...prev, t]
+                          );
+                        }}
+                      />
+                      {t.toUpperCase()}
+                    </label>
+                  );
+                })}
+                <button
+                  type="button"
+                  className="btn btn-soft"
+                  style={{ fontSize: 11, padding: '4px 8px' }}
+                  onClick={() => setSelectedTypes(['mcq', 'msq', 'nat'])}
+                >
+                  Exclude Descriptive
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-soft"
+                  style={{ fontSize: 11, padding: '4px 8px' }}
+                  onClick={() => setSelectedTypes(['mcq', 'msq', 'nat', 'descriptive'])}
+                >
+                  Select all
+                </button>
+              </div>
+            )}
           </Field>
           <Field label="Search text or number">
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="e.g. sorting, critical section, K_m,n" />

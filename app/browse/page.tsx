@@ -30,6 +30,7 @@ function BrowsePageInner() {
   const [selectedTopics, setSelectedTopics] = useState<string[]>(initialSelectedTopics);
   const [year, setYear] = useState('all');
   const [type, setType] = useState('all');
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(['mcq', 'msq', 'nat']);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
 
@@ -73,17 +74,43 @@ function BrowsePageInner() {
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
-    return allQuestions.filter(q =>
-      (volume === 'all' || q.volume === Number(volume)) &&
-      (subject === 'all' || q.subjectId === subject) &&
-      (selectedTopics.length === 0 || selectedTopics.includes(q.topicId)) &&
-      (year === 'all' || q.year === Number(year)) &&
-      (type === 'all' || q.type === type) &&
-      (!term || q.title.toLowerCase().includes(term) || q.number.toLowerCase().includes(term))
-    );
-  }, [volume, subject, selectedTopics, year, type, search]);
+    return allQuestions.filter(q => {
+      if (volume !== 'all' && q.volume !== Number(volume)) return false;
+      if (subject !== 'all' && q.subjectId !== subject) return false;
+      if (selectedTopics.length > 0 && !selectedTopics.includes(q.topicId)) return false;
 
-  useEffect(() => { setPage(1); }, [volume, subject, selectedTopics, year, type, search]);
+      // Year matching
+      if (year !== 'all') {
+        if (!q.year) return false;
+        if (year === 'gte_2000' || year === 'above_2000') {
+          if (q.year < 2000) return false;
+        } else if (year === 'gte_2010') {
+          if (q.year < 2010) return false;
+        } else if (year === 'gte_2015') {
+          if (q.year < 2015) return false;
+        } else if (q.year !== Number(year)) {
+          return false;
+        }
+      }
+
+      // Question type matching
+      if (type === 'objective' || type === 'no_descriptive') {
+        if (q.type === 'descriptive') return false;
+      } else if (type === 'custom') {
+        if (selectedTypes.length > 0 && !selectedTypes.includes(q.type)) return false;
+      } else if (type !== 'all') {
+        if (q.type !== type) return false;
+      }
+
+      if (term && !q.title.toLowerCase().includes(term) && !q.number.toLowerCase().includes(term)) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [volume, subject, selectedTopics, year, type, selectedTypes, search]);
+
+  useEffect(() => { setPage(1); }, [volume, subject, selectedTopics, year, type, selectedTypes, search]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
@@ -125,18 +152,60 @@ function BrowsePageInner() {
           </Field>
           <Field label="GATE year">
             <select value={year} onChange={e => setYear(e.target.value)}>
-              <option value="all">All years</option>
+              <option value="all">All years (1987 - 2026)</option>
+              <option value="gte_2000">2000 and above (2000+)</option>
+              <option value="gte_2010">2010 and above (2010+)</option>
+              <option value="gte_2015">2015 and above (Last 10+ yrs)</option>
               {years.map(y => <option key={y} value={y}>{y}</option>)}
             </select>
           </Field>
           <Field label="Question type">
             <select value={type} onChange={e => setType(e.target.value)}>
               <option value="all">All types</option>
-              <option value="mcq">MCQ</option>
-              <option value="msq">MSQ</option>
-              <option value="nat">NAT</option>
-              <option value="descriptive">Descriptive</option>
+              <option value="objective">Objective only (Exclude Descriptive: MCQ, MSQ, NAT)</option>
+              <option value="mcq">MCQ only</option>
+              <option value="msq">MSQ only</option>
+              <option value="nat">NAT only</option>
+              <option value="descriptive">Descriptive only</option>
+              <option value="custom">Custom (select multiple)…</option>
             </select>
+            {type === 'custom' && (
+              <div style={{ marginTop: 10, display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
+                {(['mcq', 'msq', 'nat', 'descriptive'] as const).map(t => {
+                  const checked = selectedTypes.includes(t);
+                  return (
+                    <label key={t} className="radio-card" style={{ padding: '6px 12px', fontSize: 13, cursor: 'pointer' }}>
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => {
+                          setSelectedTypes(prev =>
+                            checked ? prev.filter(x => x !== t) : [...prev, t]
+                          );
+                        }}
+                      />
+                      {t.toUpperCase()}
+                    </label>
+                  );
+                })}
+                <button
+                  type="button"
+                  className="btn btn-soft"
+                  style={{ fontSize: 11, padding: '4px 8px' }}
+                  onClick={() => setSelectedTypes(['mcq', 'msq', 'nat'])}
+                >
+                  Exclude Descriptive
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-soft"
+                  style={{ fontSize: 11, padding: '4px 8px' }}
+                  onClick={() => setSelectedTypes(['mcq', 'msq', 'nat', 'descriptive'])}
+                >
+                  Select all
+                </button>
+              </div>
+            )}
           </Field>
           <Field label="Search title or number">
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="e.g. 2021 or pointer arithmetic" />

@@ -5,6 +5,7 @@ import { Bookmark, ChevronLeft, ChevronRight, Clock3, ExternalLink, Flag, Rotate
 import Link from 'next/link';
 import type { Question } from '../lib/types';
 import { QuestionRenderer } from './QuestionRenderer';
+import { PracticeReviewCard } from './PracticeReviewCard';
 import { getCurrentUserId, loadFlags, setQuestionFlags, createPracticeSession, updatePracticeSession, recordAttempt, updateAttemptConfidence, scheduleRevisionFromGrade, loadCorrectQuestionIds } from '../lib/persistence';
 import { isNatAnswerCorrect } from '../lib/natAnswer';
 import { POINTS_BY_TYPE, REVIEW_POINTS } from '../lib/gamification';
@@ -122,14 +123,16 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
       // any textarea/select) should suppress the shortcuts below.
       const isTypingField = (target instanceof HTMLInputElement && !isRadioOrCheckbox) || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement;
       if (isTypingField) {
-        // Still allow Enter to submit/advance even while focused on the NAT
-        // input — a natural "submit" gesture that doesn't interfere with
-        // typing digits into the field.
         if (event.key === 'Enter' && q) {
           event.preventDefault();
-          if (!submitted[q.id]) void submitAnswer();
-          else if (idx < items.length - 1) setIdx(i => Math.min(items.length - 1, i + 1));
-          else void finish();
+          if (feedback === 'immediate' && !submitted[q.id]) {
+            void submitAnswer();
+          } else if (idx < items.length - 1) {
+            if (answers[q.id]?.length && !submitted[q.id]) void submitAnswer();
+            setIdx(i => Math.min(items.length - 1, i + 1));
+          } else {
+            void finish();
+          }
         }
         return;
       }
@@ -139,12 +142,17 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
       if (event.key.toLowerCase() === 'r') setReview(s => ({ ...s, [q.id]: !s[q.id] }));
       if (event.key.toLowerCase() === 'b') void toggleFlag('bookmark');
       if (event.key.toLowerCase() === 'v') void toggleFlag('revision');
-      if (event.key.toLowerCase() === 's' && !submitted[q.id]) void submitAnswer();
+      if (feedback === 'immediate' && event.key.toLowerCase() === 's' && !submitted[q.id]) void submitAnswer();
       if (event.key === 'Enter') {
         event.preventDefault();
-        if (!submitted[q.id]) void submitAnswer();
-        else if (idx < items.length - 1) setIdx(i => Math.min(items.length - 1, i + 1));
-        else void finish();
+        if (feedback === 'immediate' && !submitted[q.id]) {
+          void submitAnswer();
+        } else if (idx < items.length - 1) {
+          if (answers[q.id]?.length && !submitted[q.id]) void submitAnswer();
+          setIdx(i => Math.min(items.length - 1, i + 1));
+        } else {
+          void finish();
+        }
       }
       // Digit keys 1-9 select that option (mcq: single-select, msq: toggle).
       // Deliberately digits only, not letters — A-D would collide with the
@@ -190,18 +198,19 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
 
   if (!q) return <div className="card section"><h2>No questions in this session</h2><Link href="/practice" className="btn btn-primary">Back to practice</Link></div>;
 
-  async function submitAnswer() {
-    if (submitted[q.id]) return;
-    const nextResult = evaluateAnswer(q, answers[q.id] || []);
-    setSubmitted(s => ({ ...s, [q.id]: true }));
-    if (nextResult === true && !earnedIds.has(q.id)) {
-      setEarnedIds(s => new Set(s).add(q.id));
-      setPointsAwarded(p => ({ ...p, [q.id]: POINTS_BY_TYPE[q.type] ?? 0 }));
+  async function submitAnswer(targetQ?: Question) {
+    const activeQ = targetQ || q;
+    if (!activeQ || submitted[activeQ.id]) return;
+    const nextResult = evaluateAnswer(activeQ, answers[activeQ.id] || []);
+    setSubmitted(s => ({ ...s, [activeQ.id]: true }));
+    if (nextResult === true && !earnedIds.has(activeQ.id)) {
+      setEarnedIds(s => new Set(s).add(activeQ.id));
+      setPointsAwarded(p => ({ ...p, [activeQ.id]: POINTS_BY_TYPE[activeQ.type] ?? 0 }));
     }
     if (userId) {
       try {
-        const attemptId = await recordAttempt(userId, q.id, sessionId, answers[q.id] || [], nextResult === true ? 'correct' : nextResult === false ? 'incorrect' : 'recorded');
-        if (attemptId != null) setAttemptIds(a => ({ ...a, [q.id]: attemptId }));
+        const attemptId = await recordAttempt(userId, activeQ.id, sessionId, answers[activeQ.id] || [], nextResult === true ? 'correct' : nextResult === false ? 'incorrect' : 'recorded');
+        if (attemptId != null) setAttemptIds(a => ({ ...a, [activeQ.id]: attemptId }));
       } catch (error) {
         console.error(error);
         setSyncMessage('Answer saved locally, but could not sync this attempt.');
@@ -224,19 +233,39 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
   async function finish() {
     const finalElapsed = Math.floor((Date.now() - startedAt) / 1000);
     setElapsed(finalElapsed);
+
+    // Auto-submit any question that has a selected answer but was not explicitly submitted
+    const newlySubmitted: Record<string, boolean> = {};
+    for (const item of items) {
+      if (!submitted[item.id] && (answers[item.id] || []).length > 0) {
+        newlySubmitted[item.id] = true;
+        void submitAnswer(item);
+      }
+    }
+    if (Object.keys(newlySubmitted).length > 0) {
+      setSubmitted(s => ({ ...s, ...newlySubmitted }));
+    }
+
     setDone(true);
     if (userId && sessionId) {
       try {
         await updatePracticeSession(userId, sessionId, {
           feedback, timerMinutes, order, count: items.length, questionCount: items.length,
-          runtime: { index: idx, answers, submitted, review, elapsed: finalElapsed, bookmarks, revision },
+          runtime: { index: idx, answers, submitted: { ...submitted, ...newlySubmitted }, review, elapsed: finalElapsed, bookmarks, revision },
         }, true);
       } catch (error) { console.error(error); setSyncMessage('The result is available, but session completion could not be synced.'); }
     }
   }
 
-  const mm = String(Math.floor(seconds / 60)).padStart(2, '0');
-  const ss = String(seconds % 60).padStart(2, '0');
+  const formatTime = (secs: number) => {
+    const h = Math.floor(secs / 3600);
+    const m = Math.floor((secs % 3600) / 60);
+    const s = secs % 60;
+    if (h > 0) {
+      return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  };
 
   if (done) {
     return <PracticeResults items={items} answers={answers} submitted={submitted} elapsed={elapsed} bookmarks={bookmarks} revision={revision} review={review} syncMessage={syncMessage} userId={userId} attemptIds={attemptIds} sm2States={sm2States} reviewCounts={reviewCounts} />;
@@ -250,7 +279,18 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
           <h1 style={{ margin: 0, fontSize: 24 }}>Question {idx + 1} of {items.length}</h1>
         </div>
         <div className="q-meta">
-          {timerMinutes > 0 && <span className="pill"><Clock3 size={13} /> {mm}:{ss}</span>}
+          {timerMinutes > 0 && (
+            <span
+              className="pill"
+              style={{
+                color: seconds < 300 ? 'var(--danger)' : undefined,
+                borderColor: seconds < 300 ? 'var(--danger)' : undefined,
+                fontWeight: seconds < 300 ? 700 : undefined,
+              }}
+            >
+              <Clock3 size={13} /> {formatTime(seconds)}
+            </span>
+          )}
           <span className="pill">{order === 'random' ? 'Random' : 'Sequential'}</span>
           {userId && <span className="pill">{syncing ? 'Saving…' : 'Synced'}</span>}
         </div>
@@ -261,7 +301,13 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
 
       <div className="two-col grid">
         <div>
-          <QuestionRenderer q={q} selected={answer} onSelect={v => setAnswers(a => ({ ...a, [q.id]: v }))} submitted={isSubmitted} />
+          <QuestionRenderer
+            q={q}
+            selected={answer}
+            onSelect={v => setAnswers(a => ({ ...a, [q.id]: v }))}
+            submitted={isSubmitted}
+            showFeedback={feedback === 'immediate' && isSubmitted}
+          />
 
           {isSubmitted && feedback === 'immediate' && (
             <div className="card" style={{ padding: 18, marginTop: 14, borderLeft: correct === true ? '3px solid var(--success)' : correct === false ? '3px solid var(--danger)' : '3px solid var(--accent)' }}>
@@ -309,15 +355,45 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
               <button className="btn" style={{ background: review[q.id] ? 'var(--review-bg)' : 'var(--surface2)' }} onClick={() => setReview(r => ({ ...r, [q.id]: !r[q.id] }))}><Flag size={16} />{review[q.id] ? 'Marked' : 'Review'}</button>
               <button className="btn" style={{ background: bookmarks[q.id] ? 'var(--btn-soft-bg)' : 'var(--surface2)', color: bookmarks[q.id] ? 'var(--btn-soft-text)' : 'var(--text)' }} onClick={() => void toggleFlag('bookmark')}><Bookmark size={16} />{bookmarks[q.id] ? 'Saved' : 'Save'}</button>
               <button className="btn" style={{ background: revision[q.id] ? 'var(--answered-bg)' : 'var(--surface2)' }} onClick={() => void toggleFlag('revision')}><RotateCcw size={16} />{revision[q.id] ? 'Revision' : 'Revise'}</button>
-              {!isSubmitted && <button className="btn btn-primary" onClick={() => void submitAnswer()}>Submit</button>}
-              {idx < items.length - 1 ? <button className="btn btn-primary" onClick={() => setIdx(idx + 1)}>Next<ChevronRight /></button> : <button className="btn btn-primary" onClick={() => void finish()}>Finish</button>}
+              {feedback === 'immediate' && !isSubmitted && <button className="btn btn-primary" onClick={() => void submitAnswer()}>Submit</button>}
+              {idx < items.length - 1 ? (
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    if (answers[q.id]?.length && !submitted[q.id]) {
+                      void submitAnswer();
+                    }
+                    setIdx(idx + 1);
+                  }}
+                >
+                  Next<ChevronRight />
+                </button>
+              ) : (
+                <button className="btn btn-primary" onClick={() => void finish()}>Finish</button>
+              )}
             </div>
           </div>
         </div>
 
         <div className="card palette">
-          <div className="section-head"><h3>Question palette</h3><span className="pill">{Object.keys(submitted).length} answered</span></div>
-          <div className="palette-grid">{items.map((x, i) => <button key={x.id} className={(i === idx ? 'current ' : '') + (submitted[x.id] ? 'answered ' : '') + (review[x.id] ? 'review' : '')} onClick={() => setIdx(i)}>{i + 1}</button>)}</div>
+          <div className="section-head">
+            <h3>Question palette</h3>
+            <span className="pill">{items.filter(x => submitted[x.id] || (answers[x.id] && answers[x.id].length > 0)).length} answered</span>
+          </div>
+          <div className="palette-grid">
+            {items.map((x, i) => {
+              const isAnswered = submitted[x.id] || (answers[x.id] && answers[x.id].length > 0);
+              return (
+                <button
+                  key={x.id}
+                  className={(i === idx ? 'current ' : '') + (isAnswered ? 'answered ' : '') + (review[x.id] ? 'review' : '')}
+                  onClick={() => setIdx(i)}
+                >
+                  {i + 1}
+                </button>
+              );
+            })}
+          </div>
           <div style={{ marginTop: 18, display: 'grid', gap: 8, fontSize: 12, color: 'var(--muted)' }}><span>🟢 Answered</span><span>🟡 Marked for review</span><span>⬜ Unanswered</span></div>
           <button className="btn btn-primary" style={{ marginTop: 18, width: '100%', justifyContent: 'center' }} onClick={() => void finish()}><RefreshCw size={15} /> End session</button>
         </div>
@@ -327,9 +403,8 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
 }
 
 function evaluateAnswer(q: Question, answer: string[]): boolean | null {
-  // Descriptive questions have no stored answer key, so there is nothing to
-  // grade against. Once submitted, they are marked correct by default.
-  if (q.type === 'descriptive') return true;
+  // Descriptive questions have no stored answer key. If attempted, they evaluate as true (recorded).
+  if (q.type === 'descriptive') return (answer && answer.length > 0) ? true : null;
   if (!q.answer) return null;
   if (!answer.length) return false;
   // "ALL" is a special sentinel (not a real option/value) for GATE questions
@@ -356,15 +431,20 @@ const GRADE_TO_CONFIDENCE: Record<Grade, 'knew' | 'guessed' | 'unknown'> = {
 };
 
 function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revision, review, syncMessage, userId, attemptIds, sm2States, reviewCounts }: { items: Question[]; answers: Record<string, string[]>; submitted: Record<string, boolean>; elapsed: number; bookmarks: Record<string, boolean>; revision: Record<string, boolean>; review: Record<string, boolean>; syncMessage: string; userId: string | null; attemptIds: Record<string, number>; sm2States: Record<string, Sm2State>; reviewCounts: Record<string, number> }) {
-  const attempted = items.filter(q => submitted[q.id]).length;
-  const scored = items.filter(q => submitted[q.id] && evaluateAnswer(q, answers[q.id] || []) === true).length;
-  // Descriptive questions are always evaluable (auto-correct on submit) even
-  // though they have no stored answer key.
-  const evaluableAttempted = items.filter(q => submitted[q.id] && (q.type === 'descriptive' || q.answer)).length;
+  const isQuestionAnswered = (q: Question) => !!submitted[q.id] && (answers[q.id] || []).length > 0;
+  const attempted = items.filter(isQuestionAnswered).length;
+  const scored = items.filter(q => isQuestionAnswered(q) && evaluateAnswer(q, answers[q.id] || []) === true).length;
+  // Descriptive questions are evaluable when attempted
+  const evaluableAttempted = items.filter(q => isQuestionAnswered(q) && (q.type === 'descriptive' || q.answer)).length;
   const evaluable = items.filter(q => q.type === 'descriptive' || q.answer).length;
   const unanswered = items.length - attempted;
   const average = items.length ? Math.round(elapsed / items.length) : 0;
   const accuracy = evaluableAttempted ? Math.round(scored / evaluableAttempted * 100) : 0;
+
+  const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
+  const [filter, setFilter] = useState<'all' | 'incorrect' | 'correct' | 'unanswered' | 'review'>('all');
+  const [localBookmarks, setLocalBookmarks] = useState<Record<string, boolean>>(bookmarks);
+  const [localRevision, setLocalRevision] = useState<Record<string, boolean>>(revision);
 
   const [graded, setGraded] = useState<Record<string, { grade: Grade; nextReviewAt: string }>>({});
   const [gradeMessage, setGradeMessage] = useState('');
@@ -373,7 +453,19 @@ function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revisi
 
   useEffect(() => {
     if (resultsRef.current) void typesetMath([resultsRef.current]);
-  }, [expandedSolution]);
+  }, [expandedSolution, viewMode, filter]);
+
+  async function toggleReviewFlag(questionId: string, kind: 'bookmark' | 'revision') {
+    const priorRevision = !!localRevision[questionId];
+    const nextBookmark = kind === 'bookmark' ? !localBookmarks[questionId] : !!localBookmarks[questionId];
+    const nextRevision = kind === 'revision' ? !localRevision[questionId] : !!localRevision[questionId];
+    if (kind === 'bookmark') setLocalBookmarks(s => ({ ...s, [questionId]: nextBookmark }));
+    else setLocalRevision(s => ({ ...s, [questionId]: nextRevision }));
+    if (userId) {
+      try { await setQuestionFlags(userId, questionId, nextBookmark, nextRevision, priorRevision); }
+      catch (error) { console.error(error); }
+    }
+  }
 
   async function gradeQuestion(questionId: string, grade: Grade) {
     if (!userId) { setGradeMessage('Sign in to save these to your revision schedule.'); return; }
@@ -395,93 +487,252 @@ function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revisi
     }
   }
 
-  const attemptedItems = items.filter(q => submitted[q.id]);
+  const attemptedItems = items.filter(isQuestionAnswered);
+  const incorrectCount = items.filter(q => isQuestionAnswered(q) && q.type !== 'descriptive' && evaluateAnswer(q, answers[q.id] || []) === false).length;
+  const reviewCount = items.filter(q => review[q.id]).length;
 
-  return <div className="setup">
-    <div className="page-title"><div><div className="eyebrow">Session complete</div><h1>Practice results</h1><p>Review your responses and use GateOverflow where a full explanation is not embedded in the dataset.</p></div><Link className="btn btn-primary" href="/practice">Practice again</Link></div>
-    {syncMessage && <div className="card" style={{ padding: 12, marginBottom: 14 }}><span className="muted">{syncMessage}</span></div>}
-    <div className="grid result-grid"><Stat label="Questions" value={items.length} /><Stat label="Attempted" value={attempted} /><Stat label="Unanswered" value={unanswered} /><Stat label="Correct" value={scored} /><Stat label="Accuracy" value={`${accuracy}%`} /><Stat label="Time" value={formatDuration(elapsed)} /><Stat label="Avg / question" value={formatDuration(average)} /><Stat label="Evaluable" value={evaluable} /></div>
+  const displayedItems = items
+    .map((q, idx) => ({ q, originalIndex: idx + 1 }))
+    .filter(({ q }) => {
+      const isAns = isQuestionAnswered(q);
+      if (filter === 'incorrect') return isAns && q.type !== 'descriptive' && evaluateAnswer(q, answers[q.id] || []) === false;
+      if (filter === 'correct') return isAns && evaluateAnswer(q, answers[q.id] || []) === true;
+      if (filter === 'unanswered') return !isAns;
+      if (filter === 'review') return !!review[q.id];
+      return true;
+    });
 
-    {attemptedItems.length > 0 && (
-      <div className="card section" style={{ marginTop: 18 }}>
-        <div className="section-head"><h3>Schedule for revision</h3><span className="pill">SM-2</span></div>
-        <p className="muted" style={{ marginTop: -4, marginBottom: 12 }}>Grade how well you knew each question — this schedules it into your spaced-repetition queue (and continues its existing schedule if it's already there, rather than resetting it). Earns {REVIEW_POINTS} points per review.</p>
-        {gradeMessage && <div className="muted" style={{ marginBottom: 10, fontSize: 13 }}>{gradeMessage}</div>}
-        <div className="table-like">
-          {attemptedItems.map((q, i) => (
-            <div className="table-row" key={q.id} style={{ gridTemplateColumns: '1.6fr 1fr' }}>
-              <span><b>{i + 1}. {q.title}</b><div className="muted">{q.subject} · {q.topic}</div></span>
-              <span style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-                {graded[q.id] ? (
-                  <span className="pill">{GRADE_LABELS[graded[q.id].grade]} · next {formatShortDate(new Date(graded[q.id].nextReviewAt))}</span>
-                ) : (
-                  (['again', 'hard', 'good', 'easy'] as Grade[]).map(g => (
-                    <button key={g} className="btn btn-soft" onClick={() => void gradeQuestion(q.id, g)}>{GRADE_LABELS[g]}</button>
-                  ))
-                )}
-              </span>
-            </div>
-          ))}
+  return (
+    <div className="setup">
+      <div className="page-title">
+        <div>
+          <div className="eyebrow">Session complete</div>
+          <h1>Practice results</h1>
+          <p>Review your responses and use GateOverflow where a full explanation is not embedded in the dataset.</p>
         </div>
+        <Link className="btn btn-primary" href="/practice">Practice again</Link>
       </div>
-    )}
 
-    <div className="card section" style={{ marginTop: 18 }} ref={resultsRef}>
-      <div className="section-head">
-        <h3>Question review</h3>
-        <span className="pill">{items.length} questions</span>
+      {syncMessage && <div className="card" style={{ padding: 12, marginBottom: 14 }}><span className="muted">{syncMessage}</span></div>}
+      <div className="grid result-grid">
+        <Stat label="Questions" value={items.length} />
+        <Stat label="Attempted" value={attempted} />
+        <Stat label="Unanswered" value={unanswered} />
+        <Stat label="Correct" value={scored} />
+        <Stat label="Accuracy" value={`${accuracy}%`} />
+        <Stat label="Time" value={formatDuration(elapsed)} />
+        <Stat label="Avg / question" value={formatDuration(average)} />
+        <Stat label="Evaluable" value={evaluable} />
       </div>
-      <div className="table-like" style={{ overflowX: 'auto' }}>
-        <div className="table-row header" style={{ gridTemplateColumns: 'minmax(200px, 1.4fr) 75px 95px 65px minmax(140px, .9fr)', minWidth: 620 }}>
-          <span>Question</span>
-          <span>Type</span>
-          <span>Result</span>
-          <span>Saved</span>
-          <span>Source / Solution</span>
-        </div>
-        {items.map((q, i) => {
-          const result = !submitted[q.id]
-            ? 'Unanswered'
-            : evaluateAnswer(q, answers[q.id] || []) === true
-            ? 'Correct'
-            : evaluateAnswer(q, answers[q.id] || []) === false
-            ? 'Incorrect'
-            : 'Recorded';
-          return (
-            <div key={q.id}>
-              <div className="table-row" style={{ gridTemplateColumns: 'minmax(200px, 1.4fr) 75px 95px 65px minmax(140px, .9fr)', minWidth: 620 }}>
-                <span>
-                  <b>{i + 1}. {q.title}</b>
-                  <div className="muted">{q.subject} · {q.topic}{review[q.id] ? ' · Marked for review' : ''}{revision[q.id] || graded[q.id] ? ' · Revision' : ''}</div>
-                </span>
-                <span>{q.type.toUpperCase()}</span>
-                <span className={result === 'Correct' ? 'success' : result === 'Incorrect' ? 'danger' : ''}>{result}</span>
-                <span>{bookmarks[q.id] ? '⭐' : '—'}</span>
-                <span style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
-                  {q.solution && (
-                    <button className="btn btn-soft" onClick={() => setExpandedSolution(s => ({ ...s, [q.id]: !s[q.id] }))} style={{ fontSize: 12, padding: '4px 8px' }}>
-                      {expandedSolution[q.id] ? 'Hide Solution' : 'View Solution'}
-                    </button>
-                  )}
-                  {q.gateOverflowUrl && (
-                    <a href={q.gateOverflowUrl} target="_blank" rel="noreferrer" className="btn btn-soft" style={{ fontSize: 12, padding: '4px 8px' }}>
-                      <ExternalLink size={13} /> GateOverflow
-                    </a>
+
+      {attemptedItems.length > 0 && (
+        <div className="card section" style={{ marginTop: 18 }}>
+          <div className="section-head"><h3>Schedule for revision</h3><span className="pill">SM-2</span></div>
+          <p className="muted" style={{ marginTop: -4, marginBottom: 12 }}>Grade how well you knew each question — this schedules it into your spaced-repetition queue (and continues its existing schedule if it's already there, rather than resetting it). Earns {REVIEW_POINTS} points per review.</p>
+          {gradeMessage && <div className="muted" style={{ marginBottom: 10, fontSize: 13 }}>{gradeMessage}</div>}
+          <div className="table-like">
+            {attemptedItems.map((q, i) => (
+              <div className="table-row" key={q.id} style={{ gridTemplateColumns: '1.6fr 1fr' }}>
+                <span><b>{i + 1}. {q.title}</b><div className="muted">{q.subject} · {q.topic}</div></span>
+                <span style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                  {graded[q.id] ? (
+                    <span className="pill">{GRADE_LABELS[graded[q.id].grade]} · next {formatShortDate(new Date(graded[q.id].nextReviewAt))}</span>
+                  ) : (
+                    (['again', 'hard', 'good', 'easy'] as Grade[]).map(g => (
+                      <button key={g} className="btn btn-soft" onClick={() => void gradeQuestion(q.id, g)}>{GRADE_LABELS[g]}</button>
+                    ))
                   )}
                 </span>
               </div>
-              {expandedSolution[q.id] && q.solution && (
-                <div style={{ padding: '12px 16px', background: 'var(--surface2)', borderLeft: '3px solid var(--accent)', margin: '8px 0 16px 0', borderRadius: 6 }}>
-                  <div style={{ fontWeight: 600, marginBottom: 6 }}>Solution &amp; Explanation</div>
-                  <div className="solution-body" dangerouslySetInnerHTML={{ __html: sanitizeHtml(q.solution) }} />
-                </div>
-              )}
-            </div>
-          );
-        })}
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Review Header Card */}
+      <div className="card section" style={{ marginTop: 18 }} ref={resultsRef}>
+        <div className="section-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+          <div>
+            <h3 style={{ margin: 0 }}>Question Review</h3>
+            <p className="muted" style={{ margin: '4px 0 0 0', fontSize: 13 }}>
+              Detailed breakdown of each question with your selected options vs official answer keys.
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+            <button
+              type="button"
+              className={viewMode === 'cards' ? 'btn btn-primary' : 'btn btn-soft'}
+              style={{ fontSize: 12, padding: '5px 12px' }}
+              onClick={() => setViewMode('cards')}
+            >
+              Detailed Cards
+            </button>
+            <button
+              type="button"
+              className={viewMode === 'table' ? 'btn btn-primary' : 'btn btn-soft'}
+              style={{ fontSize: 12, padding: '5px 12px' }}
+              onClick={() => setViewMode('table')}
+            >
+              Summary Table
+            </button>
+          </div>
+        </div>
+
+        {/* Filter Tabs */}
+        <div style={{ marginTop: 14, display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+          <button
+            type="button"
+            className={filter === 'all' ? 'btn btn-primary' : 'btn btn-soft'}
+            style={{ fontSize: 12, padding: '4px 10px' }}
+            onClick={() => setFilter('all')}
+          >
+            All ({items.length})
+          </button>
+          {incorrectCount > 0 && (
+            <button
+              type="button"
+              className={filter === 'incorrect' ? 'btn btn-primary' : 'btn btn-soft'}
+              style={{
+                fontSize: 12,
+                padding: '4px 10px',
+                color: filter === 'incorrect' ? undefined : 'var(--danger)',
+              }}
+              onClick={() => setFilter('incorrect')}
+            >
+              Incorrect ({incorrectCount})
+            </button>
+          )}
+          {scored > 0 && (
+            <button
+              type="button"
+              className={filter === 'correct' ? 'btn btn-primary' : 'btn btn-soft'}
+              style={{
+                fontSize: 12,
+                padding: '4px 10px',
+                color: filter === 'correct' ? undefined : 'var(--success)',
+              }}
+              onClick={() => setFilter('correct')}
+            >
+              Correct ({scored})
+            </button>
+          )}
+          {unanswered > 0 && (
+            <button
+              type="button"
+              className={filter === 'unanswered' ? 'btn btn-primary' : 'btn btn-soft'}
+              style={{ fontSize: 12, padding: '4px 10px' }}
+              onClick={() => setFilter('unanswered')}
+            >
+              Unanswered ({unanswered})
+            </button>
+          )}
+          {reviewCount > 0 && (
+            <button
+              type="button"
+              className={filter === 'review' ? 'btn btn-primary' : 'btn btn-soft'}
+              style={{ fontSize: 12, padding: '4px 10px' }}
+              onClick={() => setFilter('review')}
+            >
+              Marked for Review ({reviewCount})
+            </button>
+          )}
+        </div>
       </div>
+
+      {/* Detailed Cards View (Default) */}
+      {viewMode === 'cards' && (
+        <div style={{ marginTop: 16 }}>
+          {displayedItems.length === 0 ? (
+            <div className="card section muted" style={{ textAlign: 'center', padding: 28 }}>
+              No questions match the selected filter.
+            </div>
+          ) : (
+            displayedItems.map(({ q, originalIndex }) => (
+              <PracticeReviewCard
+                key={q.id}
+                q={q}
+                index={originalIndex}
+                userAnswer={answers[q.id] || []}
+                isSubmitted={!!submitted[q.id]}
+                isBookmarked={!!localBookmarks[q.id]}
+                isRevision={!!localRevision[q.id]}
+                isMarkedReview={!!review[q.id]}
+                onToggleBookmark={() => void toggleReviewFlag(q.id, 'bookmark')}
+                onToggleRevision={() => void toggleReviewFlag(q.id, 'revision')}
+                onGrade={grade => void gradeQuestion(q.id, grade)}
+                gradedState={graded[q.id]}
+                isGradingAvailable={!!userId}
+              />
+            ))
+          )}
+        </div>
+      )}
+
+      {/* Summary Table View */}
+      {viewMode === 'table' && (
+        <div className="card section" style={{ marginTop: 16 }}>
+          <div className="table-like" style={{ overflowX: 'auto' }}>
+            <div className="table-row header" style={{ gridTemplateColumns: 'minmax(200px, 1.4fr) 75px 95px 65px minmax(140px, .9fr)', minWidth: 620 }}>
+              <span>Question</span>
+              <span>Type</span>
+              <span>Result</span>
+              <span>Saved</span>
+              <span>Source / Solution</span>
+            </div>
+            {displayedItems.length === 0 ? (
+              <div style={{ padding: 18, textAlign: 'center' }} className="muted">
+                No questions match the selected filter.
+              </div>
+            ) : (
+              displayedItems.map(({ q, originalIndex }) => {
+                const isAns = isQuestionAnswered(q);
+                const result = !isAns
+                  ? 'Unanswered'
+                  : q.type === 'descriptive'
+                  ? 'Attempted'
+                  : evaluateAnswer(q, answers[q.id] || []) === true
+                  ? 'Correct'
+                  : evaluateAnswer(q, answers[q.id] || []) === false
+                  ? 'Incorrect'
+                  : 'Recorded';
+                return (
+                  <div key={q.id}>
+                    <div className="table-row" style={{ gridTemplateColumns: 'minmax(200px, 1.4fr) 75px 95px 65px minmax(140px, .9fr)', minWidth: 620 }}>
+                      <span>
+                        <b>{originalIndex}. {q.title}</b>
+                        <div className="muted">{q.subject} · {q.topic}{review[q.id] ? ' · Marked for review' : ''}{localRevision[q.id] || graded[q.id] ? ' · Revision' : ''}</div>
+                      </span>
+                      <span>{q.type.toUpperCase()}</span>
+                      <span className={result === 'Correct' ? 'success' : result === 'Incorrect' ? 'danger' : ''}>{result}</span>
+                      <span>{localBookmarks[q.id] ? '⭐' : '—'}</span>
+                      <span style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
+                        {q.solution && (
+                          <button className="btn btn-soft" onClick={() => setExpandedSolution(s => ({ ...s, [q.id]: !s[q.id] }))} style={{ fontSize: 12, padding: '4px 8px' }}>
+                            {expandedSolution[q.id] ? 'Hide Solution' : 'View Solution'}
+                          </button>
+                        )}
+                        {q.gateOverflowUrl && (
+                          <a href={q.gateOverflowUrl} target="_blank" rel="noreferrer" className="btn btn-soft" style={{ fontSize: 12, padding: '4px 8px' }}>
+                            <ExternalLink size={13} /> GateOverflow
+                          </a>
+                        )}
+                      </span>
+                    </div>
+                    {expandedSolution[q.id] && q.solution && (
+                      <div style={{ padding: '12px 16px', background: 'var(--surface2)', borderLeft: '3px solid var(--accent)', margin: '8px 0 16px 0', borderRadius: 6 }}>
+                        <div style={{ fontWeight: 600, marginBottom: 6 }}>Solution &amp; Explanation</div>
+                        <div className="solution-body" dangerouslySetInnerHTML={{ __html: sanitizeHtml(q.solution) }} />
+                      </div>
+                    )}
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+      )}
     </div>
-  </div>;
+  );
 }
 
 function Stat({ label, value }: { label: string; value: string | number }) { return <div className="card stat"><div className="label">{label}</div><div className="result-number">{value}</div></div>; }

@@ -84,6 +84,10 @@ function BrowsePageInner() {
         if (!q.year) return false;
         if (year === 'gte_2000' || year === 'above_2000') {
           if (q.year < 2000) return false;
+        } else if (year === 'gte_2006' || year === 'above_2006') {
+          if (q.year < 2006) return false;
+        } else if (year === 'gte_2008' || year === 'above_2008') {
+          if (q.year < 2008) return false;
         } else if (year === 'gte_2010') {
           if (q.year < 2010) return false;
         } else if (year === 'gte_2015') {
@@ -154,6 +158,8 @@ function BrowsePageInner() {
             <select value={year} onChange={e => setYear(e.target.value)}>
               <option value="all">All years (1987 - 2026)</option>
               <option value="gte_2000">2000 and above (2000+)</option>
+              <option value="gte_2006">2006 and above (2006+)</option>
+              <option value="gte_2008">2008 and above (2008+)</option>
               <option value="gte_2010">2010 and above (2010+)</option>
               <option value="gte_2015">2015 and above (Last 10+ yrs)</option>
               {years.map(y => <option key={y} value={y}>{y}</option>)}

@@ -53,6 +53,10 @@ function filterPool(options: {
       if (!q.year) return false;
       if (year === 'gte_2000' || year === 'above_2000') {
         if (q.year < 2000) return false;
+      } else if (year === 'gte_2006' || year === 'above_2006') {
+        if (q.year < 2006) return false;
+      } else if (year === 'gte_2008' || year === 'above_2008') {
+        if (q.year < 2008) return false;
       } else if (year === 'gte_2010') {
         if (q.year < 2010) return false;
       } else if (year === 'gte_2015') {
@@ -259,6 +263,16 @@ await runTest('Test 3: Year 2015+ (Last 10+ yrs) + All Types + Custom Count 25',
       throw new Error(`Question ${q.id} failed evaluation: type=${q.type}, answer=${q.answer}`);
     }
   }
+
+  // Verify 2006+ and 2008+ pool filters
+  const pool2006 = filterPool({ year: 'gte_2006', type: 'all' });
+  const pool2008 = filterPool({ year: 'gte_2008', type: 'all' });
+
+  if (pool2006.length === 0) throw new Error('2006+ pool should not be empty');
+  if (pool2008.length === 0) throw new Error('2008+ pool should not be empty');
+  if (pool2006.some(q => (q.year ?? 0) < 2006)) throw new Error('Question found with year < 2006 in 2006+ pool');
+  if (pool2008.some(q => (q.year ?? 0) < 2008)) throw new Error('Question found with year < 2008 in 2008+ pool');
+  if (pool2006.length <= pool2008.length) throw new Error('2006+ pool should have strictly more questions than 2008+ pool');
 });
 
 // -----------------------------------------------------------------------------

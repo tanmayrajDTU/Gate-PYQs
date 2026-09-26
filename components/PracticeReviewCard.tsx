@@ -9,6 +9,7 @@ import { attachImageFallback } from '../lib/imageFallback';
 import { isNatAnswerCorrect } from '../lib/natAnswer';
 import { GRADE_LABELS, type Grade, type Sm2State } from '../lib/spacedRepetition';
 import { formatShortDate } from '../lib/format';
+import { isValidGateOverflowUrl } from '../lib/url';
 
 interface PracticeReviewCardProps {
   q: Question;
@@ -284,7 +285,7 @@ export function PracticeReviewCard({
       {/* Action Footer: GateOverflow, Bookmark, Revise, and SM-2 Self-Grading */}
       <div style={{ marginTop: 18, paddingTop: 14, borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-          {q.gateOverflowUrl && (
+          {isValidGateOverflowUrl(q.gateOverflowUrl) && (
             <a
               className="btn btn-soft"
               href={q.gateOverflowUrl}

@@ -13,6 +13,7 @@ import { DEFAULT_SM2_STATE, GRADE_LABELS, maturityLabel, type Sm2State, type Gra
 import { formatShortDate } from '../lib/format';
 import { sanitizeHtml } from '../lib/sanitizeHtml';
 import { typesetMath } from '../lib/mathjax';
+import { isValidGateOverflowUrl } from '../lib/url';
 
 type Feedback = 'immediate' | 'end';
 
@@ -331,8 +332,8 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
                   )}
                   {q.type === 'descriptive' && <div className="muted" style={{ marginTop: 6, fontSize: 13 }}>Descriptive questions have no stored answer key, so they're marked correct automatically on submit. Use GateOverflow to check your working.</div>}
                 </div>
-                {q.gateOverflowUrl && (
-                  <a className="btn btn-soft" href={q.gateOverflowUrl} target="_blank" rel="noreferrer" style={{ gap: 6, fontSize: 13 }}>
+                {isValidGateOverflowUrl(q.gateOverflowUrl) && (
+                  <a className="btn btn-soft" href={q.gateOverflowUrl!} target="_blank" rel="noreferrer" style={{ gap: 6, fontSize: 13 }}>
                     Open GateOverflow <ExternalLink size={14} />
                   </a>
                 )}
@@ -711,8 +712,8 @@ function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revisi
                             {expandedSolution[q.id] ? 'Hide Solution' : 'View Solution'}
                           </button>
                         )}
-                        {q.gateOverflowUrl && (
-                          <a href={q.gateOverflowUrl} target="_blank" rel="noreferrer" className="btn btn-soft" style={{ fontSize: 12, padding: '4px 8px' }}>
+                        {isValidGateOverflowUrl(q.gateOverflowUrl) && (
+                          <a href={q.gateOverflowUrl!} target="_blank" rel="noreferrer" className="btn btn-soft" style={{ fontSize: 12, padding: '4px 8px' }}>
                             <ExternalLink size={13} /> GateOverflow
                           </a>
                         )}

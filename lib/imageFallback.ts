@@ -1,3 +1,5 @@
+import { isValidGateOverflowUrl } from './url';
+
 // Question/option HTML currently hotlinks diagram images straight from
 // gateoverflow.in (see scripts/download-question-images.mjs for the proper
 // long-term fix — self-hosting them under public/question-images/).
@@ -21,13 +23,14 @@ export function attachImageFallback(root: HTMLElement | null, gateOverflowUrl?: 
         img.dataset.fallbackApplied = '1';
         img.style.display = 'none';
 
-        const el = document.createElement(gateOverflowUrl ? 'a' : 'span');
+        const validUrl = isValidGateOverflowUrl(gateOverflowUrl) ? gateOverflowUrl : null;
+        const el = document.createElement(validUrl ? 'a' : 'span');
         el.className = 'img-fallback-notice';
-        el.textContent = gateOverflowUrl
+        el.textContent = validUrl
           ? 'Image unavailable here — view the diagram on GateOverflow ↗'
           : 'Image unavailable';
-        if (gateOverflowUrl) {
-          (el as HTMLAnchorElement).href = gateOverflowUrl;
+        if (validUrl) {
+          (el as HTMLAnchorElement).href = validUrl;
           (el as HTMLAnchorElement).target = '_blank';
           (el as HTMLAnchorElement).rel = 'noreferrer';
         }

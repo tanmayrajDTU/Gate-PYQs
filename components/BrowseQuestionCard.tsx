@@ -6,6 +6,7 @@ import type { Question } from '../lib/types';
 import { sanitizeHtml } from '../lib/sanitizeHtml';
 import { typesetMath } from '../lib/mathjax';
 import { attachImageFallback } from '../lib/imageFallback';
+import { isValidGateOverflowUrl } from '../lib/url';
 
 export function BrowseQuestionCard({ q, index }: { q: Question; index: number }) {
   const [showAnswer, setShowAnswer] = useState(false);
@@ -69,7 +70,7 @@ export function BrowseQuestionCard({ q, index }: { q: Question; index: number })
         {showAnswer && !markedToAll && q.type === 'nat' && <span className="pill">Answer: {q.answer ?? '—'}</span>}
         {showAnswer && !markedToAll && q.type === 'descriptive' && <span className="muted" style={{ fontSize: 13 }}>No fixed answer is stored for this question — use the GateOverflow discussion for the solution.</span>}
         {showAnswer && !markedToAll && (q.type === 'mcq' || q.type === 'msq') && !q.answer && <span className="muted" style={{ fontSize: 13 }}>No answer key is stored for this question.</span>}
-        {showAnswer && q.gateOverflowUrl && <a className="btn btn-soft" href={q.gateOverflowUrl} target="_blank" rel="noreferrer">Open GateOverflow <ExternalLink size={15} /></a>}
+        {showAnswer && isValidGateOverflowUrl(q.gateOverflowUrl) && <a className="btn btn-soft" href={q.gateOverflowUrl!} target="_blank" rel="noreferrer">Open GateOverflow <ExternalLink size={15} /></a>}
       </div>
     </div>
   );

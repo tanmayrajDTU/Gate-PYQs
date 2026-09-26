@@ -6,7 +6,7 @@ import { parseNatAnswer, isNatAnswerCorrect, parseNumericToken } from '../lib/na
 import { sanitizeHtml } from '../lib/sanitizeHtml';
 import { DEFAULT_SM2_STATE, sm2Review, maturityLabel, type Grade, type Sm2State } from '../lib/spacedRepetition';
 import { POINTS_BY_TYPE, REVIEW_POINTS, computeLevel, computePoints, computeBadges, computeStreak } from '../lib/gamification';
-import { allQuestions, getSubjects, getTopics, appCatalog, appStats } from '../lib/data';
+import { allQuestions, getSubjects, getTopics, appCatalog, appStats, isValidGateOverflowUrl } from '../lib/data';
 import { allOtherQuestions, getOtherExams, getOtherSubjects, getOtherTopics, getOtherYears } from '../lib/otherData';
 import type { Question } from '../lib/types';
 
@@ -115,6 +115,14 @@ async function runTestSuite() {
   assert(examSet.has('TIFR CSE'), 'Contains "TIFR CSE" collection');
   assert(solutionsFound >= 4938, 'Over 4,938 questions have full solutions', `Found ${solutionsFound}`);
   assert(missingAnswerCount === 0, 'All Knowledge Gate Practice questions have valid answer keys', `Found ${missingAnswerCount}`);
+
+  let invalidGateOverflowUrls = 0;
+  for (const q of otherQuestions) {
+    if (q.gateOverflowUrl && !isValidGateOverflowUrl(q.gateOverflowUrl)) {
+      invalidGateOverflowUrls++;
+    }
+  }
+  assert(invalidGateOverflowUrls === 0, '0 questions have generic or invalid gateOverflowUrl (e.g. gateoverflow.in/isro)', `Found ${invalidGateOverflowUrls}`);
 
   // -----------------------------------------------------------------
   // 3. Library & Data Helper Modules

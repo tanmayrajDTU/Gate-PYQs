@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Bookmark, ChevronLeft, ChevronRight, Clock3, ExternalLink, Flag, RotateCcw, RefreshCw } from 'lucide-react';
+import { Bookmark, ChevronLeft, ChevronRight, Clock3, ExternalLink, Flag, RotateCcw, RefreshCw, Calculator } from 'lucide-react';
 import Link from 'next/link';
 import type { Question } from '../lib/types';
 import { QuestionRenderer } from './QuestionRenderer';
 import { PracticeReviewCard } from './PracticeReviewCard';
+import { ScientificCalculatorDialog } from './ScientificCalculatorDialog';
 import { getCurrentUserId, loadFlags, setQuestionFlags, createPracticeSession, updatePracticeSession, recordAttempt, updateAttemptConfidence, scheduleRevisionFromGrade, loadCorrectQuestionIds } from '../lib/persistence';
 import { isNatAnswerCorrect } from '../lib/natAnswer';
 import { POINTS_BY_TYPE, REVIEW_POINTS } from '../lib/gamification';
@@ -55,6 +56,7 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
   const [attemptIds, setAttemptIds] = useState<Record<string, number>>({});
   const [sm2States, setSm2States] = useState<Record<string, Sm2State>>({});
   const [reviewCounts, setReviewCounts] = useState<Record<string, number>>({});
+  const [showCalculator, setShowCalculator] = useState(false);
   const lastPersistedRuntime = useRef('');
 
   const q = items[idx];
@@ -143,6 +145,11 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
       if (event.key.toLowerCase() === 'r') setReview(s => ({ ...s, [q.id]: !s[q.id] }));
       if (event.key.toLowerCase() === 'b') void toggleFlag('bookmark');
       if (event.key.toLowerCase() === 'v') void toggleFlag('revision');
+      if (event.altKey && event.key.toLowerCase() === 'c') {
+        event.preventDefault();
+        setShowCalculator(s => !s);
+        return;
+      }
       if (feedback === 'immediate' && event.key.toLowerCase() === 's' && !submitted[q.id]) void submitAnswer();
       if (event.key === 'Enter') {
         event.preventDefault();
@@ -280,6 +287,15 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
           <h1 style={{ margin: 0, fontSize: 24 }}>Question {idx + 1} of {items.length}</h1>
         </div>
         <div className="q-meta">
+          <button
+            type="button"
+            className={showCalculator ? 'btn btn-primary' : 'btn btn-soft'}
+            style={{ fontSize: 12, padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: 6 }}
+            onClick={() => setShowCalculator(s => !s)}
+            title="Open GATE Virtual Scientific Calculator (Alt+C)"
+          >
+            <Calculator size={13} /> Calculator
+          </button>
           {timerMinutes > 0 && (
             <span
               className="pill"
@@ -296,7 +312,7 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
           {userId && <span className="pill">{syncing ? 'Saving…' : 'Synced'}</span>}
         </div>
       </div>
-      <div className="muted" style={{ fontSize: 12, marginTop: -8, marginBottom: 10 }}>Keyboard: 1-9 to select an option · Enter to submit/next · ← → to navigate · R review · B save · V revise</div>
+      <div className="muted" style={{ fontSize: 12, marginTop: -8, marginBottom: 10 }}>Keyboard: 1-9 to select an option · Enter to submit/next · ← → to navigate · R review · B save · V revise · Alt+C calculator</div>
 
       {syncMessage && <div className="card" style={{ padding: 12, marginBottom: 14 }}><span className="muted">{syncMessage}</span>{!userId && <Link href="/login" className="btn btn-soft" style={{ marginLeft: 10 }}>Login</Link>}</div>}
 
@@ -399,6 +415,16 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
           <button className="btn btn-primary" style={{ marginTop: 18, width: '100%', justifyContent: 'center' }} onClick={() => void finish()}><RefreshCw size={15} /> End session</button>
         </div>
       </div>
+
+      <ScientificCalculatorDialog
+        isOpen={showCalculator}
+        onClose={() => setShowCalculator(false)}
+        onInsertAnswer={(val) => {
+          if (q && !submitted[q.id]) {
+            setAnswers(a => ({ ...a, [q.id]: [val] }));
+          }
+        }}
+      />
     </div>
   );
 }
@@ -450,6 +476,7 @@ function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revisi
   const [graded, setGraded] = useState<Record<string, { grade: Grade; nextReviewAt: string }>>({});
   const [gradeMessage, setGradeMessage] = useState('');
   const [expandedSolution, setExpandedSolution] = useState<Record<string, boolean>>({});
+  const [showCalculator, setShowCalculator] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -511,7 +538,18 @@ function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revisi
           <h1>Practice results</h1>
           <p>Review your responses and use GateOverflow where a full explanation is not embedded in the dataset.</p>
         </div>
-        <Link className="btn btn-primary" href="/practice">Practice again</Link>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            className={showCalculator ? 'btn btn-primary' : 'btn btn-soft'}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+            onClick={() => setShowCalculator(s => !s)}
+            title="Open GATE Virtual Scientific Calculator"
+          >
+            <Calculator size={15} /> Calculator
+          </button>
+          <Link className="btn btn-primary" href="/practice">Practice again</Link>
+        </div>
       </div>
 
       {syncMessage && <div className="card" style={{ padding: 12, marginBottom: 14 }}><span className="muted">{syncMessage}</span></div>}
@@ -732,6 +770,11 @@ function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revisi
           </div>
         </div>
       )}
+
+      <ScientificCalculatorDialog
+        isOpen={showCalculator}
+        onClose={() => setShowCalculator(false)}
+      />
     </div>
   );
 }

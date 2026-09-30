@@ -7,6 +7,7 @@ export interface TopicOption {
   id: string;
   label: string;
   count?: number;
+  attemptedCount?: number;
 }
 
 interface MultiTopicSelectProps {
@@ -71,6 +72,15 @@ export function MultiTopicSelect({
     } else {
       onChange([...selected, id]);
     }
+  };
+
+  const attemptedOptions = useMemo(
+    () => options.filter(o => (o.attemptedCount ?? 0) > 0),
+    [options]
+  );
+
+  const selectAttempted = () => {
+    onChange(attemptedOptions.map(o => o.id));
   };
 
   const selectAll = () => {
@@ -249,7 +259,17 @@ export function MultiTopicSelect({
             <span className="muted" style={{ fontWeight: 500 }}>
               {selected.length} of {options.length} selected
             </span>
-            <div style={{ display: 'flex', gap: 10 }}>
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                className="btn btn-soft"
+                onClick={selectAttempted}
+                disabled={attemptedOptions.length === 0}
+                title={attemptedOptions.length === 0 ? 'No topics with attempted questions' : 'Select all attempted topics'}
+                style={{ padding: '2px 8px', fontSize: 11, height: 24 }}
+              >
+                Select attempted ({attemptedOptions.length})
+              </button>
               <button
                 type="button"
                 className="btn btn-soft"
@@ -330,9 +350,14 @@ export function MultiTopicSelect({
                           padding: '1px 6px',
                           background: isSelected ? 'var(--accent)' : 'var(--surface2)',
                           color: isSelected ? '#fff' : 'var(--muted)',
+                          whiteSpace: 'nowrap',
+                          fontWeight: (opt.attemptedCount ?? 0) > 0 ? 600 : 400,
                         }}
+                        title={typeof opt.attemptedCount === 'number' ? `${opt.attemptedCount} attempted out of ${opt.count} available` : `${opt.count} available`}
                       >
-                        {opt.count}
+                        {typeof opt.attemptedCount === 'number'
+                          ? `${opt.attemptedCount} / ${opt.count}`
+                          : opt.count}
                       </span>
                     )}
                   </label>

@@ -1,13 +1,14 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Bookmark, ChevronLeft, ChevronRight, Clock3, ExternalLink, Flag, RotateCcw, RefreshCw, Calculator } from 'lucide-react';
+import { Bookmark, ChevronLeft, ChevronRight, Clock3, ExternalLink, Flag, RotateCcw, RefreshCw, Calculator, History } from 'lucide-react';
 import Link from 'next/link';
 import type { Question } from '../lib/types';
 import { QuestionRenderer } from './QuestionRenderer';
 import { PracticeReviewCard } from './PracticeReviewCard';
 import { ScientificCalculatorDialog } from './ScientificCalculatorDialog';
 import { getCurrentUserId, loadFlags, setQuestionFlags, createPracticeSession, updatePracticeSession, recordAttempt, updateAttemptConfidence, scheduleRevisionFromGrade, loadCorrectQuestionIds } from '../lib/persistence';
+import { saveLocalSession, recordLocalAttempt, type PracticeSessionRecord } from '../lib/sessionHistory';
 import { isNatAnswerCorrect } from '../lib/natAnswer';
 import { POINTS_BY_TYPE, REVIEW_POINTS } from '../lib/gamification';
 import { DEFAULT_SM2_STATE, GRADE_LABELS, maturityLabel, type Sm2State, type Grade } from '../lib/spacedRepetition';
@@ -24,11 +25,34 @@ type Props = {
   feedback: Feedback;
   timerMinutes: number;
   order: 'sequential' | 'random';
+  initialAnswers?: Record<string, string[]>;
+  initialSubmitted?: Record<string, boolean>;
+  initialDone?: boolean;
+  initialElapsed?: number;
+  testTitle?: string;
+  onExitReview?: () => void;
+  onReattempt?: () => void;
 };
 
-export function PracticeClient({ questions, count, feedback, timerMinutes, order }: Props) {
+export function PracticeClient({
+  questions,
+  count,
+  feedback,
+  timerMinutes,
+  order,
+  initialAnswers,
+  initialSubmitted,
+  initialDone = false,
+  initialElapsed = 0,
+  testTitle,
+  onExitReview,
+  onReattempt,
+}: Props) {
   const [items] = useState<Question[]>(() => {
     const pool = [...questions];
+    if (initialDone) {
+      return pool;
+    }
     if (order === 'random') {
       for (let i = pool.length - 1; i > 0; i -= 1) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -38,14 +62,14 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
     return pool.slice(0, count);
   });
   const [idx, setIdx] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string[]>>({});
-  const [submitted, setSubmitted] = useState<Record<string, boolean>>({});
+  const [answers, setAnswers] = useState<Record<string, string[]>>(() => initialAnswers || {});
+  const [submitted, setSubmitted] = useState<Record<string, boolean>>(() => initialSubmitted || {});
   const [review, setReview] = useState<Record<string, boolean>>({});
   const [bookmarks, setBookmarks] = useState<Record<string, boolean>>({});
   const [revision, setRevision] = useState<Record<string, boolean>>({});
   const [seconds, setSeconds] = useState(timerMinutes * 60);
-  const [elapsed, setElapsed] = useState(0);
-  const [done, setDone] = useState(false);
+  const [elapsed, setElapsed] = useState(() => initialElapsed || 0);
+  const [done, setDone] = useState(() => !!initialDone);
   const [startedAt] = useState(() => Date.now());
   const [userId, setUserId] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -77,15 +101,16 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
         setRevision(Object.fromEntries(Object.entries(flags).filter(([, v]) => v.revision).map(([id]) => [id, true])));
         setSm2States(Object.fromEntries(Object.entries(flags).map(([id, v]) => [id, v.sm2])));
         setReviewCounts(Object.fromEntries(Object.entries(flags).map(([id, v]) => [id, v.reviewCount])));
-        setEarnedIds(correctIds);
-        const id = await createPracticeSession(uid, {
-          feedback,
-          timerMinutes,
-          order,
-          count: items.length,
-          questionCount: items.length,
-        }, items.map(x => x.id));
-        if (active) setSessionId(id);
+        if (active && !initialDone) {
+          const id = await createPracticeSession(uid, {
+            feedback,
+            timerMinutes,
+            order,
+            count: items.length,
+            questionCount: items.length,
+          }, items.map(x => x.id));
+          if (active) setSessionId(id);
+        }
       } catch (error) {
         console.error(error);
         if (active) setSyncMessage('Supabase sync is unavailable. Your current session will continue locally.');
@@ -211,6 +236,7 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
     if (!activeQ || submitted[activeQ.id]) return;
     const nextResult = evaluateAnswer(activeQ, answers[activeQ.id] || []);
     setSubmitted(s => ({ ...s, [activeQ.id]: true }));
+    recordLocalAttempt(activeQ.id);
     if (nextResult === true && !earnedIds.has(activeQ.id)) {
       setEarnedIds(s => new Set(s).add(activeQ.id));
       setPointsAwarded(p => ({ ...p, [activeQ.id]: POINTS_BY_TYPE[activeQ.type] ?? 0 }));
@@ -250,16 +276,62 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
         void submitAnswer(item);
       }
     }
+    const allSubmitted = { ...submitted, ...newlySubmitted };
     if (Object.keys(newlySubmitted).length > 0) {
       setSubmitted(s => ({ ...s, ...newlySubmitted }));
     }
 
     setDone(true);
+
+    const isAns = (item: Question) => !!allSubmitted[item.id] && (answers[item.id] || []).length > 0;
+    const attemptedCount = items.filter(isAns).length;
+    const scoredCount = items.filter(q => isAns(q) && evaluateAnswer(q, answers[q.id] || []) === true).length;
+    const evaluableAttempted = items.filter(q => isAns(q) && (q.type === 'descriptive' || q.answer)).length;
+    const accuracy = evaluableAttempted ? Math.round(scoredCount / evaluableAttempted * 100) : 0;
+
+    const uniqueSubjects = [...new Set(items.map(x => x.subject).filter(Boolean))];
+    const firstWithExam = items.find(x => (x as any)?.exam && String((x as any).exam).trim().length > 0);
+    const examType = (((firstWithExam as any)?.exam as string) || 'GATE').trim();
+    const computedTitle = testTitle || (uniqueSubjects.length === 1 
+      ? `${uniqueSubjects[0]} · ${items.length} Questions`
+      : `${examType} Practice · ${items.length} Questions`);
+
+    const sessionRecord: PracticeSessionRecord = {
+      id: sessionId || `session_${startedAt}_${Math.random().toString(36).slice(2, 8)}`,
+      userId,
+      exam: examType,
+      title: computedTitle,
+      config: {
+        feedback,
+        timerMinutes,
+        order,
+        count: items.length,
+        questionCount: items.length,
+        score: scoredCount,
+        accuracy,
+        title: computedTitle,
+        exam: examType,
+      },
+      questionIds: items.map(q => q.id),
+      answers,
+      submitted: allSubmitted,
+      score: scoredCount,
+      totalQuestions: items.length,
+      attemptedCount,
+      accuracy,
+      elapsedSeconds: finalElapsed,
+      startedAt: new Date(startedAt).toISOString(),
+      completedAt: new Date().toISOString(),
+    };
+
+    saveLocalSession(sessionRecord);
+
     if (userId && sessionId) {
       try {
         await updatePracticeSession(userId, sessionId, {
           feedback, timerMinutes, order, count: items.length, questionCount: items.length,
-          runtime: { index: idx, answers, submitted: { ...submitted, ...newlySubmitted }, review, elapsed: finalElapsed, bookmarks, revision },
+          score: scoredCount, accuracy, title: computedTitle, exam: examType,
+          runtime: { index: idx, answers, submitted: allSubmitted, review, elapsed: finalElapsed, bookmarks, revision },
         }, true);
       } catch (error) { console.error(error); setSyncMessage('The result is available, but session completion could not be synced.'); }
     }
@@ -276,7 +348,25 @@ export function PracticeClient({ questions, count, feedback, timerMinutes, order
   };
 
   if (done) {
-    return <PracticeResults items={items} answers={answers} submitted={submitted} elapsed={elapsed} bookmarks={bookmarks} revision={revision} review={review} syncMessage={syncMessage} userId={userId} attemptIds={attemptIds} sm2States={sm2States} reviewCounts={reviewCounts} />;
+    return (
+      <PracticeResults
+        items={items}
+        answers={answers}
+        submitted={submitted}
+        elapsed={elapsed}
+        bookmarks={bookmarks}
+        revision={revision}
+        review={review}
+        syncMessage={syncMessage}
+        userId={userId}
+        attemptIds={attemptIds}
+        sm2States={sm2States}
+        reviewCounts={reviewCounts}
+        testTitle={testTitle}
+        onExitReview={onExitReview}
+        onReattempt={onReattempt}
+      />
+    );
   }
 
   return (
@@ -457,7 +547,39 @@ const GRADE_TO_CONFIDENCE: Record<Grade, 'knew' | 'guessed' | 'unknown'> = {
   easy: 'knew',
 };
 
-function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revision, review, syncMessage, userId, attemptIds, sm2States, reviewCounts }: { items: Question[]; answers: Record<string, string[]>; submitted: Record<string, boolean>; elapsed: number; bookmarks: Record<string, boolean>; revision: Record<string, boolean>; review: Record<string, boolean>; syncMessage: string; userId: string | null; attemptIds: Record<string, number>; sm2States: Record<string, Sm2State>; reviewCounts: Record<string, number> }) {
+function PracticeResults({
+  items,
+  answers,
+  submitted,
+  elapsed,
+  bookmarks,
+  revision,
+  review,
+  syncMessage,
+  userId,
+  attemptIds,
+  sm2States,
+  reviewCounts,
+  testTitle,
+  onExitReview,
+  onReattempt,
+}: {
+  items: Question[];
+  answers: Record<string, string[]>;
+  submitted: Record<string, boolean>;
+  elapsed: number;
+  bookmarks: Record<string, boolean>;
+  revision: Record<string, boolean>;
+  review: Record<string, boolean>;
+  syncMessage: string;
+  userId: string | null;
+  attemptIds: Record<string, number>;
+  sm2States: Record<string, Sm2State>;
+  reviewCounts: Record<string, number>;
+  testTitle?: string;
+  onExitReview?: () => void;
+  onReattempt?: () => void;
+}) {
   const isQuestionAnswered = (q: Question) => !!submitted[q.id] && (answers[q.id] || []).length > 0;
   const attempted = items.filter(isQuestionAnswered).length;
   const scored = items.filter(q => isQuestionAnswered(q) && evaluateAnswer(q, answers[q.id] || []) === true).length;
@@ -534,8 +656,8 @@ function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revisi
     <div className="setup">
       <div className="page-title">
         <div>
-          <div className="eyebrow">Session complete</div>
-          <h1>Practice results</h1>
+          <div className="eyebrow">{testTitle ? testTitle : 'Session complete'}</div>
+          <h1>{testTitle ? 'Test Review & Analysis' : 'Practice results'}</h1>
           <p>Review your responses and use GateOverflow where a full explanation is not embedded in the dataset.</p>
         </div>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -548,7 +670,28 @@ function PracticeResults({ items, answers, submitted, elapsed, bookmarks, revisi
           >
             <Calculator size={15} /> Calculator
           </button>
-          <Link className="btn btn-primary" href="/practice">Practice again</Link>
+          {onReattempt && (
+            <button
+              type="button"
+              className="btn btn-primary"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+              onClick={onReattempt}
+            >
+              <RotateCcw size={15} /> Reattempt
+            </button>
+          )}
+          <Link
+            className="btn btn-soft"
+            href="/history"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+          >
+            <History size={15} /> Test History
+          </Link>
+          {onExitReview ? (
+            <button type="button" className="btn btn-soft" onClick={onExitReview}>Exit Review</button>
+          ) : (
+            <Link className="btn btn-primary" href="/practice">Practice again</Link>
+          )}
         </div>
       </div>
 

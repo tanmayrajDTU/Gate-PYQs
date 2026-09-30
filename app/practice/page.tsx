@@ -1,12 +1,27 @@
 'use client';
 
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { Target, History } from 'lucide-react';
 import { allQuestions } from '../../lib/data';
+import { allOtherQuestions } from '../../lib/otherData';
 import { PracticeClient } from '../../components/PracticeClient';
 import { MultiTopicSelect } from '../../components/MultiTopicSelect';
 import { getCurrentUserId, loadAttempts, loadFlags } from '../../lib/persistence';
+import { loadAllAttemptedQuestionIds, getPracticeSessionById, type PracticeSessionRecord } from '../../lib/sessionHistory';
+
+export function matchesYearFilter(qYear: number | null, yearFilter: string): boolean {
+  if (yearFilter === 'all') return true;
+  if (!qYear) return false;
+  if (yearFilter === 'gte_2000' || yearFilter === 'above_2000') return qYear >= 2000;
+  if (yearFilter === 'gte_2006' || yearFilter === 'above_2006') return qYear >= 2006;
+  if (yearFilter === 'gte_2008' || yearFilter === 'above_2008') return qYear >= 2008;
+  if (yearFilter === 'gte_2010') return qYear >= 2010;
+  if (yearFilter === 'gte_2015') return qYear >= 2015;
+  return qYear === Number(yearFilter);
+}
 
 export default function PracticePage() {
   return (
@@ -27,6 +42,31 @@ function PracticePageInner() {
   const only = searchParams.get('only') || 'all';
   const [savedIds, setSavedIds] = useState<string[] | null>(only === 'all' ? [] : null);
   const [filterMessage, setFilterMessage] = useState('');
+
+  // Reattempt or Review from History
+  const reattemptId = searchParams.get('reattempt');
+  const reviewSessionId = searchParams.get('reviewSession');
+  const [loadedSession, setLoadedSession] = useState<PracticeSessionRecord | null>(null);
+  const [sessionLoading, setSessionLoading] = useState(!!(reattemptId || reviewSessionId));
+
+  useEffect(() => {
+    const targetId = reattemptId || reviewSessionId;
+    if (!targetId) return;
+    let active = true;
+    (async () => {
+      setSessionLoading(true);
+      const uid = await getCurrentUserId();
+      const s = await getPracticeSessionById(targetId, uid);
+      if (!active) return;
+      if (s) {
+        setLoadedSession(s);
+        setStarted(true);
+      }
+      setSessionLoading(false);
+    })();
+    return () => { active = false; };
+  }, [reattemptId, reviewSessionId]);
+
   useEffect(() => {
     if (only === 'all') { setSavedIds([]); return; }
     (async () => {
@@ -59,6 +99,22 @@ function PracticePageInner() {
   const [timer, setTimer] = useState('0');
   const [customTimer, setCustomTimer] = useState('45');
   const [order, setOrder] = useState<'sequential' | 'random'>('sequential');
+  const [attemptedQuestionIds, setAttemptedQuestionIds] = useState<Set<string>>(new Set());
+
+  // Track if user explicitly cleared topics so we don't re-auto-select immediately
+  const userClearedTopicsRef = useRef(false);
+  const prevSubjectRef = useRef(subject);
+
+  // Load attempted question IDs across local storage and Supabase
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const uid = await getCurrentUserId();
+      const ids = await loadAllAttemptedQuestionIds(uid);
+      if (active) setAttemptedQuestionIds(ids);
+    })();
+    return () => { active = false; };
+  }, [started]);
 
   const subjects = useMemo(() => {
     const rows = allQuestions.filter(q => volume === 'all' || q.volume === Number(volume));
@@ -75,20 +131,55 @@ function PracticePageInner() {
     );
   }, [volume, subject]);
 
+  // Topic options filtered by Volume, Subject, AND Year, with attempted question count
   const topicOptions = useMemo(() => {
     return topics.map(t => {
-      const qCount = allQuestions.filter(q =>
+      const topicQuestions = allQuestions.filter(q =>
         (volume === 'all' || q.volume === Number(volume)) &&
         (subject === 'all' || q.subjectId === subject) &&
-        q.topicId === t.topicId
-      ).length;
+        q.topicId === t.topicId &&
+        matchesYearFilter(q.year, year)
+      );
+      const totalCount = topicQuestions.length;
+      const attemptedCount = topicQuestions.filter(q => attemptedQuestionIds.has(q.id)).length;
       return {
         id: t.topicId,
         label: `${t.topicNumber} · ${t.topic}`,
-        count: qCount,
+        count: totalCount,
+        attemptedCount,
       };
     });
-  }, [topics, volume, subject]);
+  }, [topics, volume, subject, year, attemptedQuestionIds]);
+
+  // Reset cleared flag when subject changes
+  useEffect(() => {
+    if (prevSubjectRef.current !== subject) {
+      userClearedTopicsRef.current = false;
+      prevSubjectRef.current = subject;
+      setSelectedTopics([]);
+    }
+  }, [subject]);
+
+  // Auto-select previously attempted topics when topics load if none are chosen yet
+  useEffect(() => {
+    if (!userClearedTopicsRef.current && selectedTopics.length === 0 && topicOptions.length > 0) {
+      const attemptedTopicIds = topicOptions
+        .filter(t => (t.attemptedCount ?? 0) > 0)
+        .map(t => t.id);
+      if (attemptedTopicIds.length > 0) {
+        setSelectedTopics(attemptedTopicIds);
+      }
+    }
+  }, [topicOptions, selectedTopics.length]);
+
+  const handleTopicsChange = (newSelected: string[]) => {
+    if (newSelected.length === 0) {
+      userClearedTopicsRef.current = true;
+    } else {
+      userClearedTopicsRef.current = false;
+    }
+    setSelectedTopics(newSelected);
+  };
 
   const years = useMemo(() => {
     return [...new Set(allQuestions.filter(q =>
@@ -105,22 +196,7 @@ function PracticePageInner() {
       if (selectedTopics.length > 0 && !selectedTopics.includes(q.topicId)) return false;
 
       // Year matching
-      if (year !== 'all') {
-        if (!q.year) return false;
-        if (year === 'gte_2000' || year === 'above_2000') {
-          if (q.year < 2000) return false;
-        } else if (year === 'gte_2006' || year === 'above_2006') {
-          if (q.year < 2006) return false;
-        } else if (year === 'gte_2008' || year === 'above_2008') {
-          if (q.year < 2008) return false;
-        } else if (year === 'gte_2010') {
-          if (q.year < 2010) return false;
-        } else if (year === 'gte_2015') {
-          if (q.year < 2015) return false;
-        } else if (q.year !== Number(year)) {
-          return false;
-        }
-      }
+      if (!matchesYearFilter(q.year, year)) return false;
 
       // Question type matching
       if (type === 'objective' || type === 'no_descriptive') {
@@ -155,6 +231,67 @@ function PracticePageInner() {
     ? Math.max(1, Math.min(720, parseInt(customTimer, 10) || 1))
     : Number(timer);
 
+  // Reconstructed questions for past session review or reattempt
+  const sessionQuestions = useMemo(() => {
+    if (!loadedSession) return null;
+    const qMap = new Map([...allQuestions, ...allOtherQuestions].map(q => [q.id, q]));
+    const found: (typeof allQuestions[0])[] = [];
+    for (const id of loadedSession.questionIds) {
+      const q = qMap.get(id);
+      if (q) found.push(q);
+    }
+    return found;
+  }, [loadedSession]);
+
+  if (sessionLoading) {
+    return <div className="setup"><div className="card section"><p>Loading session data…</p></div></div>;
+  }
+
+  // Review mode from history
+  if (reviewSessionId && loadedSession && sessionQuestions && sessionQuestions.length > 0) {
+    return (
+      <PracticeClient
+        questions={sessionQuestions}
+        count={sessionQuestions.length}
+        feedback={loadedSession.config?.feedback || 'end'}
+        timerMinutes={0}
+        order="sequential"
+        initialAnswers={loadedSession.answers}
+        initialSubmitted={loadedSession.submitted}
+        initialDone={true}
+        initialElapsed={loadedSession.elapsedSeconds}
+        testTitle={loadedSession.title}
+        onExitReview={() => {
+          setLoadedSession(null);
+          setStarted(false);
+          window.location.href = '/history';
+        }}
+        onReattempt={() => {
+          window.location.href = `/practice?reattempt=${loadedSession.id}`;
+        }}
+      />
+    );
+  }
+
+  // Reattempt mode from history
+  if (reattemptId && loadedSession && sessionQuestions && sessionQuestions.length > 0) {
+    return (
+      <PracticeClient
+        questions={sessionQuestions}
+        count={sessionQuestions.length}
+        feedback={loadedSession.config?.feedback || 'immediate'}
+        timerMinutes={loadedSession.config?.timerMinutes ?? 0}
+        order="sequential"
+        testTitle={`Reattempt: ${loadedSession.title}`}
+        onExitReview={() => {
+          setLoadedSession(null);
+          setStarted(false);
+          window.location.href = '/history';
+        }}
+      />
+    );
+  }
+
   if (started) {
     return (
       <PracticeClient
@@ -169,6 +306,24 @@ function PracticePageInner() {
 
   return (
     <div className="setup">
+      {/* Navigation tabs */}
+      <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+        >
+          <Target size={15} /> Practice Setup
+        </button>
+        <Link
+          className="btn btn-soft"
+          href="/history"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+        >
+          <History size={15} /> Past Tests &amp; History
+        </Link>
+      </div>
+
       <div className="page-title">
         <div>
           <div className="eyebrow">Practice builder</div>
@@ -197,7 +352,7 @@ function PracticePageInner() {
             <MultiTopicSelect
               options={topicOptions}
               selected={selectedTopics}
-              onChange={setSelectedTopics}
+              onChange={handleTopicsChange}
               placeholder="All topics"
             />
           </Field>

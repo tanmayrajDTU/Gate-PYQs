@@ -1,11 +1,15 @@
 'use client';
 
-import { Suspense, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { Target, History } from 'lucide-react';
 import { allOtherQuestions, getOtherExams } from '../../../lib/otherData';
 import { PracticeClient } from '../../../components/PracticeClient';
 import { MultiTopicSelect } from '../../../components/MultiTopicSelect';
+import { getCurrentUserId } from '../../../lib/persistence';
+import { loadAllAttemptedQuestionIds } from '../../../lib/sessionHistory';
 
 export default function OtherPracticePage() {
   return (
@@ -37,6 +41,20 @@ function OtherPracticePageInner() {
   const [timer, setTimer] = useState('0');
   const [customTimer, setCustomTimer] = useState('45');
   const [order, setOrder] = useState<'sequential' | 'random'>('sequential');
+  const [attemptedQuestionIds, setAttemptedQuestionIds] = useState<Set<string>>(new Set());
+
+  const userClearedTopicsRef = useRef(false);
+  const prevSubjectRef = useRef(subject);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const uid = await getCurrentUserId();
+      const ids = await loadAllAttemptedQuestionIds(uid);
+      if (active) setAttemptedQuestionIds(ids);
+    })();
+    return () => { active = false; };
+  }, [started]);
 
   const exams = useMemo(() => getOtherExams(), []);
 
@@ -65,18 +83,50 @@ function OtherPracticePageInner() {
 
   const topicOptions = useMemo(() => {
     return topics.map(t => {
-      const qCount = allOtherQuestions.filter(q =>
+      const topicQuestions = allOtherQuestions.filter(q =>
         (exam === 'all' || q.exam === exam) &&
         (subject === 'all' || q.subject === subject || q.subjectId === subject) &&
-        q.topicId === t.topicId
-      ).length;
+        q.topicId === t.topicId &&
+        (year === 'all' || q.year === Number(year))
+      );
+      const totalCount = topicQuestions.length;
+      const attemptedCount = topicQuestions.filter(q => attemptedQuestionIds.has(q.id)).length;
       return {
         id: t.topicId,
         label: `${t.topicNumber} · ${t.topic}`,
-        count: qCount,
+        count: totalCount,
+        attemptedCount,
       };
     });
-  }, [topics, exam, subject]);
+  }, [topics, exam, subject, year, attemptedQuestionIds]);
+
+  useEffect(() => {
+    if (prevSubjectRef.current !== subject) {
+      userClearedTopicsRef.current = false;
+      prevSubjectRef.current = subject;
+      setSelectedTopics([]);
+    }
+  }, [subject]);
+
+  useEffect(() => {
+    if (!userClearedTopicsRef.current && selectedTopics.length === 0 && topicOptions.length > 0) {
+      const attemptedTopicIds = topicOptions
+        .filter(t => (t.attemptedCount ?? 0) > 0)
+        .map(t => t.id);
+      if (attemptedTopicIds.length > 0) {
+        setSelectedTopics(attemptedTopicIds);
+      }
+    }
+  }, [topicOptions, selectedTopics.length]);
+
+  const handleTopicsChange = (newSelected: string[]) => {
+    if (newSelected.length === 0) {
+      userClearedTopicsRef.current = true;
+    } else {
+      userClearedTopicsRef.current = false;
+    }
+    setSelectedTopics(newSelected);
+  };
 
   const years = useMemo(() => {
     return [...new Set(allOtherQuestions.filter(q =>
@@ -135,6 +185,24 @@ function OtherPracticePageInner() {
 
   return (
     <div className="setup">
+      {/* Navigation tabs */}
+      <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+        >
+          <Target size={15} /> Practice Setup
+        </button>
+        <Link
+          className="btn btn-soft"
+          href="/history"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+        >
+          <History size={15} /> Past Tests &amp; History
+        </Link>
+      </div>
+
       <div className="page-title">
         <div>
           <div className="eyebrow">Non-GATE Practice</div>
@@ -161,7 +229,7 @@ function OtherPracticePageInner() {
             <MultiTopicSelect
               options={topicOptions}
               selected={selectedTopics}
-              onChange={setSelectedTopics}
+              onChange={handleTopicsChange}
               placeholder="All topics"
             />
           </Field>

@@ -210,8 +210,15 @@ export function PracticeClient({
     const timer = window.setTimeout(async () => {
       try {
         setSyncing(true);
+        const isAns = (item: Question) => !!submitted[item.id] && (answers[item.id] || []).length > 0;
+        const runningScored = items.filter(q => isAns(q) && evaluateAnswer(q, answers[q.id] || []) === true).length;
+        const evaluableAttempted = items.filter(q => isAns(q) && (q.type === 'descriptive' || q.answer)).length;
+        const runningAccuracy = evaluableAttempted ? Math.round(runningScored / evaluableAttempted * 100) : 0;
+
         await updatePracticeSession(userId, sessionId, {
           feedback, timerMinutes, order, count: items.length, questionCount: items.length,
+          score: runningScored,
+          accuracy: runningAccuracy,
           runtime: JSON.parse(runtime),
         });
         lastPersistedRuntime.current = runtime;
@@ -223,7 +230,7 @@ export function PracticeClient({
       }
     }, 750);
     return () => window.clearTimeout(timer);
-  }, [userId, sessionId, idx, answers, submitted, review, elapsed, done, feedback, timerMinutes, order, items.length]);
+  }, [userId, sessionId, idx, answers, submitted, review, elapsed, done, feedback, timerMinutes, order, items]);
 
   const answer = answers[q?.id] || [];
   const isSubmitted = !!submitted[q?.id];

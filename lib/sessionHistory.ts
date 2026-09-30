@@ -1,5 +1,9 @@
 import { supabase } from './supabase';
 import { loadAttempts } from './persistence';
+import type { Question } from './types';
+import { allQuestions } from './data';
+import { allOtherQuestions } from './otherData';
+import { isNatAnswerCorrect } from './natAnswer';
 
 export interface PracticeSessionRecord {
   id: string;
@@ -33,6 +37,72 @@ export interface PracticeSessionRecord {
 
 const LOCAL_SESSIONS_KEY = 'gate_pyq_sessions_v1';
 const LOCAL_ATTEMPTS_KEY = 'gate_pyq_attempted_ids_v1';
+
+/**
+ * Evaluates whether a user's answer to a question is correct.
+ */
+export function evaluateAnswer(q: Question, answer: string[]): boolean | null {
+  if (q.type === 'descriptive') return (answer && answer.length > 0) ? true : null;
+  if (!q.answer) return null;
+  if (!answer.length) return false;
+  if (q.answer.trim().toUpperCase() === 'ALL') return true;
+  if (q.type === 'nat') {
+    return isNatAnswerCorrect(q.answer, answer[0]);
+  }
+  const expected = q.answer.split(/[{},;\s]+/).map(x => x.trim().toUpperCase()).filter(Boolean).sort();
+  const actual = answer.map(x => x.trim().toUpperCase()).filter(Boolean).sort();
+  return expected.length === actual.length && expected.every((value, i) => value === actual[i]);
+}
+
+let questionLookupMap: Map<string, Question> | null = null;
+function getQuestionMap(): Map<string, Question> {
+  if (!questionLookupMap) {
+    questionLookupMap = new Map<string, Question>();
+    for (const q of allQuestions) questionLookupMap.set(q.id, q);
+    for (const q of allOtherQuestions) questionLookupMap.set(q.id, q);
+  }
+  return questionLookupMap;
+}
+
+/**
+ * Dynamically evaluate score and accuracy on the fly for any past test session
+ * that didn't have metrics saved or had accuracy as 0 despite attempted questions.
+ */
+export function evaluateSessionMetrics(
+  questionIds: string[],
+  answers: Record<string, string[]>,
+  submitted: Record<string, boolean>
+): { score: number; accuracy: number; attemptedCount: number } {
+  const qMap = getQuestionMap();
+  let attempted = 0;
+  let scored = 0;
+  let evaluableAttempted = 0;
+
+  for (const qid of questionIds) {
+    const isSubmitted = !!submitted[qid] && (answers[qid] || []).length > 0;
+    if (!isSubmitted) continue;
+    attempted++;
+
+    const q = qMap.get(qid);
+    if (!q) continue;
+
+    if (q.type === 'descriptive' || q.answer) {
+      evaluableAttempted++;
+    }
+
+    if (q.type === 'descriptive') {
+      scored++;
+    } else if (q.answer) {
+      const isCorrect = evaluateAnswer(q, answers[qid] || []);
+      if (isCorrect === true) {
+        scored++;
+      }
+    }
+  }
+
+  const accuracy = evaluableAttempted > 0 ? Math.round((scored / evaluableAttempted) * 100) : 0;
+  return { score: scored, accuracy, attemptedCount: attempted };
+}
 
 /**
  * Check if a session's exam matches the requested exam filter.
@@ -82,10 +152,32 @@ export function loadLocalSessions(): PracticeSessionRecord[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    return parsed.map((s: any) => ({
-      ...s,
-      exam: (s.exam || s.config?.exam || 'GATE') as string,
-    }));
+    return parsed.map((s: any) => {
+      const qids: string[] = Array.isArray(s.questionIds) ? s.questionIds : [];
+      const answers: Record<string, string[]> = s.answers || {};
+      const submitted: Record<string, boolean> = s.submitted || {};
+      const rawAttempted = s.attemptedCount ?? Object.keys(submitted).filter(k => submitted[k] && answers[k]?.length).length;
+
+      let score = Number(s.score ?? s.config?.score ?? 0);
+      let accuracy = Number(s.accuracy ?? s.config?.accuracy ?? 0);
+      let finalAttempted = rawAttempted;
+
+      // If score/accuracy is missing or 0 when questions were attempted, evaluate dynamically
+      if ((s.score === undefined && s.config?.score === undefined) || (accuracy === 0 && rawAttempted > 0)) {
+        const metrics = evaluateSessionMetrics(qids, answers, submitted);
+        score = metrics.score;
+        accuracy = metrics.accuracy;
+        finalAttempted = metrics.attemptedCount;
+      }
+
+      return {
+        ...s,
+        exam: (s.exam || s.config?.exam || 'GATE') as string,
+        score,
+        accuracy,
+        attemptedCount: finalAttempted,
+      };
+    });
   } catch (e) {
     console.error('Failed to parse local sessions:', e);
     return [];
@@ -96,9 +188,23 @@ export function loadLocalSessions(): PracticeSessionRecord[] {
 export function saveLocalSession(session: PracticeSessionRecord): void {
   if (typeof localStorage === 'undefined') return;
   try {
+    let score = session.score;
+    let accuracy = session.accuracy;
+    let attemptedCount = session.attemptedCount;
+
+    if (score === undefined || accuracy === undefined || (accuracy === 0 && attemptedCount > 0)) {
+      const metrics = evaluateSessionMetrics(session.questionIds || [], session.answers || {}, session.submitted || {});
+      score = metrics.score;
+      accuracy = metrics.accuracy;
+      attemptedCount = metrics.attemptedCount;
+    }
+
     const normalized: PracticeSessionRecord = {
       ...session,
       exam: (session.exam || session.config?.exam || 'GATE') as string,
+      score,
+      accuracy,
+      attemptedCount,
     };
     const current = loadLocalSessions();
     const filtered = current.filter(s => s.id !== session.id);
@@ -210,7 +316,19 @@ export async function loadAllPracticeSessions(userId?: string | null): Promise<P
           const elapsed = Number(runtime.elapsed || 0);
 
           const qids: string[] = Array.isArray(row.question_ids) ? row.question_ids : [];
-          const attemptedCount = Object.keys(submitted).filter(k => submitted[k] && answers[k]?.length).length;
+          const rawAttempted = Object.keys(submitted).filter(k => submitted[k] && answers[k]?.length).length;
+
+          let score = Number(cfg.score ?? 0);
+          let accuracy = Number(cfg.accuracy ?? 0);
+          let finalAttempted = rawAttempted;
+
+          // If score/accuracy is missing or 0 when questions were attempted, evaluate dynamically
+          if (cfg.score === undefined || cfg.accuracy === undefined || (accuracy === 0 && rawAttempted > 0)) {
+            const metrics = evaluateSessionMetrics(qids, answers, submitted);
+            score = metrics.score;
+            accuracy = metrics.accuracy;
+            finalAttempted = metrics.attemptedCount;
+          }
 
           const sessionRecord: PracticeSessionRecord = {
             id: row.id,
@@ -221,10 +339,10 @@ export async function loadAllPracticeSessions(userId?: string | null): Promise<P
             questionIds: qids,
             answers,
             submitted,
-            score: Number(cfg.score || 0),
+            score,
             totalQuestions: qids.length,
-            attemptedCount,
-            accuracy: Number(cfg.accuracy || 0),
+            attemptedCount: finalAttempted,
+            accuracy,
             elapsedSeconds: elapsed,
             startedAt: row.started_at,
             completedAt: row.completed_at,
@@ -266,7 +384,18 @@ export async function getPracticeSessionById(sessionId: string, userId?: string 
         const submitted = (runtime.submitted || {}) as Record<string, boolean>;
         const elapsed = Number(runtime.elapsed || 0);
         const qids: string[] = Array.isArray(data.question_ids) ? data.question_ids : [];
-        const attemptedCount = Object.keys(submitted).filter(k => submitted[k] && answers[k]?.length).length;
+        const rawAttempted = Object.keys(submitted).filter(k => submitted[k] && answers[k]?.length).length;
+
+        let score = Number(cfg.score ?? 0);
+        let accuracy = Number(cfg.accuracy ?? 0);
+        let finalAttempted = rawAttempted;
+
+        if (cfg.score === undefined || cfg.accuracy === undefined || (accuracy === 0 && rawAttempted > 0)) {
+          const metrics = evaluateSessionMetrics(qids, answers, submitted);
+          score = metrics.score;
+          accuracy = metrics.accuracy;
+          finalAttempted = metrics.attemptedCount;
+        }
 
         return {
           id: data.id,
@@ -277,10 +406,10 @@ export async function getPracticeSessionById(sessionId: string, userId?: string 
           questionIds: qids,
           answers,
           submitted,
-          score: Number(cfg.score || 0),
+          score,
           totalQuestions: qids.length,
-          attemptedCount,
-          accuracy: Number(cfg.accuracy || 0),
+          attemptedCount: finalAttempted,
+          accuracy,
           elapsedSeconds: elapsed,
           startedAt: data.started_at,
           completedAt: data.completed_at,

@@ -204,6 +204,38 @@ let fetchedSession: PracticeSessionRecord | null = null;
   assert(matchesExamFilter('Knowledge Gate Practice', 'Knowledge Gate Practice') === true, 'Knowledge Gate filter accepts Knowledge Gate Practice');
   assert(matchesExamFilter('GATE CSE', 'Knowledge Gate Practice') === false, 'Knowledge Gate filter rejects GATE CSE');
 
+  // ---------------------------------------------------------
+  // 7. On-the-fly Accuracy & Score Recalculation for Legacy Sessions
+  // ---------------------------------------------------------
+  console.log('\n--- 7. On-the-fly Accuracy & Score Recalculation ---');
+  const legacySessionId = 'legacy_session_xyz789';
+  const q1CorrectAns = sampleQuestions[0]?.answer || 'A';
+  mockStorage['gate_pyq_sessions_v1'] = JSON.stringify([{
+    id: legacySessionId,
+    exam: 'GATE CSE',
+    title: 'Legacy Practice Session',
+    questionIds: [sampleQuestions[0].id, sampleQuestions[1].id],
+    answers: {
+      [sampleQuestions[0].id]: [q1CorrectAns],
+      [sampleQuestions[1].id]: ['WRONG_ANSWER_123'],
+    },
+    submitted: {
+      [sampleQuestions[0].id]: true,
+      [sampleQuestions[1].id]: true,
+    },
+    score: 0,
+    accuracy: 0,
+    attemptedCount: 2,
+    totalQuestions: 2,
+    startedAt: new Date().toISOString(),
+  }]);
+
+  const loadedLegacy = loadLocalSessions().find(s => s.id === legacySessionId);
+  assert(!!loadedLegacy, 'Found legacy session');
+  assert(loadedLegacy?.score === 1, `Legacy session score dynamically evaluated to 1 (got ${loadedLegacy?.score})`);
+  assert(loadedLegacy?.accuracy === 50, `Legacy session accuracy dynamically evaluated to 50% (got ${loadedLegacy?.accuracy}%)`);
+  assert(loadedLegacy?.attemptedCount === 2, `Attempted count is 2 (got ${loadedLegacy?.attemptedCount})`);
+
   console.log('\n================================================================');
   console.log(`TOTAL TESTS RUN : ${pass + fail}`);
   console.log(`PASSED          : ${pass}`);
